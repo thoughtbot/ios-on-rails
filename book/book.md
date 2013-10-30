@@ -13,5 +13,9 @@
 
 <<[iOS/introduction.md]
 
+<<[iOS/alpha_and_beta.md]
+
+<<[iOS/cocoapods.md]
+
 <<[iOS/app_skeleton.md]
 
