@@ -12,3 +12,6 @@
 \part{Building the Humon iOS App}
 
 <<[iOS/introduction.md]
+
+<<[iOS/app_skeleton.md]
+
