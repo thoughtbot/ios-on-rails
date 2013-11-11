@@ -23,3 +23,8 @@
 
 <<[iOS/creating_an_api_client_afn.md]
 
+<<[iOS/making_a_user.md]
+
+<<[iOS/posting_a_user.md]
+
+<<[iOS/posting_a_user_afn.md]
