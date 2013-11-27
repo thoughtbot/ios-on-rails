@@ -28,3 +28,9 @@
 <<[iOS/posting_a_user.md]
 
 <<[iOS/posting_a_user_afn.md]
+
+<<[iOS/making_an_event.md]
+
+<<[iOS/posting_an_event.md]
+
+<<[iOS/posting_an_event_afn.md]
