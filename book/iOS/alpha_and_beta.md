@@ -14,7 +14,7 @@ Setting these manually is perfectly fine as well, but keeping separate configura
 
 	![Create the new configuration](images/ios_alpha_and_beta_1.png)
 
-    Create a new configuration that's a duplicate of release, and call this new configuration Beta.
+    Select the Humon project and create a new configuration that's a duplicate of release, and call this new configuration Beta.
 	
 2. **Create the new scheme**
 
@@ -25,25 +25,21 @@ Setting these manually is perfectly fine as well, but keeping separate configura
 	![Set the scheme's build configuration](images/ios_alpha_and_beta_3.png)
 	
 	Set this scheme's run build configuration and archive build configuration to Beta.)
-   
-3. **Create user-defined settings**
 
-	![Create user-defined settings](images/ios_alpha_and_beta_4.png)
-
-    Create a user-defined setting in the Humon target's build settings. In Xcode 5 this can be found under Editor > Add Build Setting.
-    
-    Call the new user-defined setting SCHEME_VERSION and set it to Beta for the Beta configuration.
-	
-	Additionally, create a BASE_URL user-defined setting and set its value as your production URL for the release configuration and your staging URL for all the other configurations.
-
-4. **Automate the bundle identifier and display name**
+3. **Automate the bundle identifier and display name**
 
 	![Automate the bundle identifier and display name](images/ios_alpha_and_beta_5.png)
 
-	Change the Bundle identifier and the Bundle display name to include the ${SCHEME_VERSION} value.
+	Under "Info", change the Bundle identifier and the Bundle display name to include `${CONFIGURATION}`. `${CONFIGURATION}` evaluates to the name of the current build configuration.
    
 	Now the name of the Beta app will display as HumonBeta and the bundle identifier will be com.thoughtbot.HumonBeta.
+	
+4. **Use the user-defined setting in a pre-processor macro.**
 
+	![Use the ROOT_URL in a pre-processor macro](images/ios_alpha_and_beta_6.png)
+	
+	Under "Build Settings", search for preprocessor macros and add `ROOT_URL='@"yourProductionURL"'` to the release and Beta configurations and `ROOT_URL='@"yourStagingURL"'` for debug and Alpha configurations.
+	
 5. **Build the app using the new scheme.**
 
-	The app's name should display as HumonBeta if everything has been configured correctly. In addition, you can use BASE_URL instead of a string literal everywhere you want to confitionally use your staging or production base URL.
+	The app's name should display as HumonBeta if everything has been configured correctly. In addition, you can now use `ROOT_URL` instead of a string literal everywhere you want to conditionally use your staging or production base URL.
