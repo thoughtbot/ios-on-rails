@@ -20,7 +20,7 @@ What follows is a succinct version of the instructions on the CocoaPods website:
 
 4. If you have your iOS project open in Xcode, close it and reopen the workspace that Cocoapods generated for you.
 
-5. When using CocoaPods in conjunction with git, it is a good idea to ignore the Pods directory so that the libraries CocoaPods downloads are not under version control. Amend your .gitignore by addding `Pods` to prevent pushing up unncessary code. Anyone who clones your project will have the Podfile and can `pod install` the exact pods and versions that the project requires.
+5. When using CocoaPods in conjunction with git, you may choose to ignore the Pods directory so that the libraries that CocoaPods downloads are not under version control. If you want to do this, add `Pods` your .gitignore. Anyone who clones your project will have the Podfile and can `pod install` to retrieve the libraries and versions that the project requires.
 
 ### Humon's Podfile
 
@@ -29,15 +29,18 @@ Installing the CocoaPods gem and creating a podfile is covered in more detail on
 	platform :ios, '7.0'
 	
 	pod 'TestFlightSDK', '~> 2.0'
-	pod 'AFNetworking', '~> 2.0'
 	pod 'Parse', '~> 1.2.11'
+	
+	pod 'AFNetworking', '~> 2.0'
+	pod 'SSKeychain', '~> 1.2.1'
+	pod 'SVProgressHUD', '~> 1.0'
 	
 	target :HumonTests, :exclusive => true do
 		pod 'Kiwi', '~> 2.2'
-		pod 'KIF', '~> 2.0.0'
-		pod 'Nocilla', '~> 0.7.1'
 	end
 
-The first three pods will be available no matter what target you use to build the app. The ones inside the target block will only be set as dependencies for the test target, since `:exclusive => true do` ensures that the testing pods are not only available to the test target and not in the actual app.
+The `:exclusive => true do` block ensures that the HumonTests target only links to the testing frameworks inside the block. The frameworks outside the block will still be available to HumonTests target. Since they'll be available to the Humon target, which the testing
 
-We will be using the TestFlight SDK to distribute our app to Beta testers. Parse will be used for push notifications and AFNetworking will handle all our API network requests.
+We will be using the TestFlight SDK to distribute our app to Beta testers. Parse will be used for push notifications by both the iOS app and the Rails app. AFNetworking will handle our API network requests, SSKeychain will help us save user info to the keychain, and SVProgressHUD will let us display loading views to the user.
+
+Once you've updated your podfile, go ahead and run `$pod install`
