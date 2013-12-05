@@ -19,3 +19,7 @@
 
 <<[iOS/app_skeleton.md]
 
+<<[iOS/creating_an_api_client.md]
+
+<<[iOS/creating_an_api_client_afn.md]
+
