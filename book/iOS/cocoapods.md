@@ -20,7 +20,7 @@ What follows is a succinct version of the instructions on the [CocoaPods](http:/
 
 4. If you have your iOS project open in Xcode, close it and reopen the workspace that Cocoapods generated for you.
 
-5. When using CocoaPods in conjunction with git, you may choose to ignore the Pods directory so that the libraries that CocoaPods downloads are not under version control. If you want to do this, add `Pods` your .gitignore. Anyone who clones your project will have the Podfile and can `pod install` to retrieve the libraries and versions that the project requires.
+5. When using CocoaPods in conjunction with git, you may choose to ignore the Pods directory so that the libraries that CocoaPods downloads are not under version control. If you want to do this, add `Pods` your .gitignore. Anyone who clones your project will have the Podfile and can `$ pod install` to retrieve the libraries and versions that the project requires.
 
 ### Humon's Podfile
 
@@ -43,4 +43,4 @@ The `:exclusive => true do` block ensures that the HumonTests target only links 
 
 We will be using the TestFlight SDK to distribute our app to Beta testers. Parse will be used for push notifications by both the iOS app and the Rails app. AFNetworking will handle our API network requests, SSKeychain will help us save user info to the keychain, and SVProgressHUD will let us display loading views to the user.
 
-Once you've updated your podfile, go ahead and run `$pod install`
+Once you've updated your podfile, go ahead and run `$ pod install`
