@@ -9,6 +9,10 @@
 
 \mainmatter
 
+\part{Building the Humon Rails App}
+
+<<[Rails/introduction.md]
+
 \part{Building the Humon iOS App}
 
 <<[iOS/introduction.md]
