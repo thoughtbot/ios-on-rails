@@ -11,7 +11,9 @@
 
 \part{Building the Humon Rails App}
 
-<<[Rails/introduction.md]
+<<[rails/introduction.md]
+
+<<[rails/creating_a_get_request.md]
 
 \part{Building the Humon iOS App}
 
