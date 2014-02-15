@@ -17,6 +17,8 @@
 
 <<[rails/creating_a_post_request.md]
 
+<<[rails/creating_a_patch_request.md]
+
 \part{Building the Humon iOS App}
 
 <<[iOS/introduction.md]
