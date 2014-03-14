@@ -41,14 +41,16 @@
 
 <<[iOS/api_client_afn.md]
 
-<<[iOS/making_a_user.md]
+<<[iOS/user_object.md]
 
 <<[iOS/posting_a_user.md]
 
 <<[iOS/posting_a_user_afn.md]
 
-<<[iOS/making_an_event.md]
+<<[iOS/event_object.md]
 
 <<[iOS/posting_an_event.md]
 
 <<[iOS/posting_an_event_afn.md]
+
+<<[iOS/getting_events.md]
