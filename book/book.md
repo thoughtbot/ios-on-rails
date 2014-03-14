@@ -23,15 +23,23 @@
 
 <<[iOS/introduction.md]
 
+<<[iOS/a_new_xcode_project.md]
+
 <<[iOS/alpha_and_beta.md]
 
 <<[iOS/cocoapods.md]
 
 <<[iOS/app_skeleton.md]
 
-<<[iOS/creating_an_api_client.md]
+<<[iOS/map_view_controller.md]
 
-<<[iOS/creating_an_api_client_afn.md]
+<<[iOS/add_an_event_view_controller.md]
+
+<<[iOS/confirmation_view_controller.md]
+
+<<[iOS/api_client.md]
+
+<<[iOS/api_client_afn.md]
 
 <<[iOS/making_a_user.md]
 
