@@ -19,6 +19,8 @@
 
 <<[rails/creating_a_patch_request.md]
 
+<<[rails/creating_a_geocoded_get_request.md]
+
 \part{Building the Humon iOS App}
 
 <<[iOS/introduction.md]
