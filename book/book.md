@@ -1,9 +1,7 @@
-% iOS on Rails
+% iOS on Rails (Beta)
 % thoughtbot; Jessie Young; Diana Zmuda
 
 \clearpage
-
-# Introduction
 
 <<[introduction/introduction.md]
 
