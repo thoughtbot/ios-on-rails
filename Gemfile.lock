@@ -3,11 +3,11 @@ GEM
   remote: https://repo.fury.io/sJsXnYBFBAeqXCsWaScx/me/
   specs:
     Ascii85 (1.0.2)
-    activemodel (4.0.0)
-      activesupport (= 4.0.0)
+    activemodel (4.0.4)
+      activesupport (= 4.0.4)
       builder (~> 3.1.0)
-    activesupport (4.0.0)
-      i18n (~> 0.6, >= 0.6.4)
+    activesupport (4.0.4)
+      i18n (~> 0.6, >= 0.6.9)
       minitest (~> 4.2)
       multi_json (~> 1.3)
       thread_safe (~> 0.1)
@@ -16,7 +16,7 @@ GEM
     asset_sync (1.0.0)
       activemodel
       fog (>= 1.8.0)
-    atomic (1.1.14)
+    atomic (1.1.16)
     builder (3.1.4)
     climate_control (0.0.3)
       activesupport (>= 3.0)
@@ -24,30 +24,36 @@ GEM
       climate_control (>= 0.0.3, < 1.0)
     coderay (1.0.9)
     dotenv (0.7.0)
-    excon (0.27.6)
-    fog (1.11.1)
+    excon (0.32.1)
+    fog (1.21.0)
+      fog-brightbox
+      fog-core (~> 1.21, >= 1.21.1)
+      fog-json
+      nokogiri (~> 1.5, >= 1.5.11)
+    fog-brightbox (0.0.1)
+      fog-core
+      fog-json
+    fog-core (1.21.1)
       builder
-      excon (~> 0.20)
+      excon (~> 0.32)
       formatador (~> 0.2.0)
-      json (~> 1.7)
       mime-types
       net-scp (~> 1.1)
       net-ssh (>= 2.1.3)
-      nokogiri (~> 1.5.0)
-      ruby-hmac
+    fog-json (1.0.0)
+      multi_json (~> 1.0)
     formatador (0.2.4)
-    hashery (2.1.0)
+    hashery (2.1.1)
     i18n (0.6.9)
-    json (1.8.1)
     kindlegen (2.7.0)
       systemu
-    mime-types (1.25)
+    mime-types (2.2)
     minitest (4.7.5)
-    multi_json (1.8.4)
+    multi_json (1.9.0)
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
-    net-ssh (2.7.0)
-    nokogiri (1.5.10)
+    net-ssh (2.8.0)
+    nokogiri (1.5.11)
     paperback (0.0.1)
       activesupport (~> 4.0.0)
       asset_sync (~> 1.0.0)
@@ -69,15 +75,14 @@ GEM
       ttfunk
     redcarpet (2.2.2)
     rmagick (2.13.2)
-    ruby-hmac (0.4.0)
     ruby-rc4 (0.1.5)
-    systemu (2.5.2)
+    systemu (2.6.4)
     terminal-table (1.4.5)
     thor (0.16.0)
-    thread_safe (0.1.3)
-      atomic
-    ttfunk (1.0.3)
-    tzinfo (0.3.38)
+    thread_safe (0.3.0)
+      atomic (>= 1.1.7, < 2)
+    ttfunk (1.1.1)
+    tzinfo (0.3.39)
 
 PLATFORMS
   ruby
