@@ -10,16 +10,22 @@ Just as Rails makes it possible to set up a basic web application in a matter of
 minutes, Rails makes it possible to set up a basic API in a matter of minutes.
 But deciding how to structure your API isn't easy. While experimenting with all
 of the options is a fun weekend project, sometimes you just want to get going.
+This book will help you do just that. While your API will no doubt require some
+tweaking while fleshing out your iOS app, the approach we will be taking is to
+define and build the API first, and then consume this API through our iOS app.
 
-The Rails portion of *iOS on Rails* will help you do just that. In this book, we
-will guide you through what we have found to be a robust, clean, flexible way of
-building out a JSON API with Rails. We provide code samples for GET, POST, and
-PATCH requests. In addition, we will explore some of the alternative approaches
-that we didn't choose and explain why we made the choices that we did.
+The Rails portions of *iOS on Rails* will guide you through what we have found
+to be a robust, clean, flexible way of building out a JSON API with Rails. We
+provide code samples for GET, POST, and PATCH requests. In addition, we will
+explore some of the alternative approaches that we didn't choose and explain
+why we made the choices that we did.
 
 The iOS portion of the book will then walk, step-by-step, through creating an
 iOS application that works with the Rails API you just created. The iOS
-application will use each endpoint.
+application will use each endpoint to post up objects and get back necessary
+data for the user. Our model objects in the iOS app will correspond with the
+model objects in the database, and be populated with response data from the
+API.
 
 ### Who is this book for?
 
@@ -32,5 +38,5 @@ The approach shared in this book is the result of our own experiments as Rails
 and iOS developers working together to build an application. The Rails portions
 of this book assume a basic working knowledge of how to build a web application
 with Rails as well as the Ruby programming language. The iOS portions of this
-book assume a basic working knowledge of how to build an iOS application as well
-as the Objective-C programming language.
+book assume experience with object oriented programming and a
+basic familiarity with the Objective-C programming language.
