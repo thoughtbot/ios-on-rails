@@ -118,8 +118,11 @@ defined this route in our `routes.rb` file. Let's fix that:
       end
     end
 
-When we run the spec again, our error has changed to `The action 'create' could
-not be found for Api::V1::EventsController`. This is good; it means the route we
+When we run the spec again, our error has changed to
+
+    The action 'create' could not be found for Api::V1::EventsController
+
+This is good; it means the route we
 added is working, but we still need to add a `create` method to our
 `EventsController`. So let's do that:
 
@@ -133,7 +136,7 @@ added is working, but we still need to add a `create` method to our
 
     end
 
-Run the spec again, and, our error has changed to `Missing template
+Run the spec again, and our error has changed to `Missing template
 api/v1/events/create`. Again, receiving a different error message is a good
 indication that the last change we made is bringing us closer to a passing test.
 
@@ -188,9 +191,11 @@ the final step: creating our view.
 
 #### View
 
-Our controller is creating an `event`, but we are still getting an
-error when we run our spec (note: your expectation might have a different `id`
-number depending on how many time's you've run your test; that's fine):
+Our
+[`EventsController`](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/controllers/api/v1/events_controller.rb)
+is creating an `event`, but we are still getting an error when we run our spec
+(note: your expectation might have a different `id` number depending on how many
+time's you've run your test; that's fine):
 
 
     expect(response_json).to eq({ 'id' => event.id })
@@ -263,7 +268,7 @@ POST request spec):
 Creating an `event` without attributes does not work because of the validations
 we set up in the GET request section of this book. If you need a refresher,
 check out the validations on
-[`Event`](https://github.com/thoughtbot/humon-rails/blob/master/app/models/event.rb).
+[`Event`](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/models/event.rb).
 
 Right now, rather than our response JSON containing the message and errors we
 want to see, we get `{"id"=>nil}`. Time to look at the `EventsController`.

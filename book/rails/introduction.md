@@ -45,7 +45,7 @@ use Suspenders to start your project, make sure you add those gems to your
 ### Parsing incoming JSON requests
 
 [MultiJson](https://github.com/intridea/multi_json) is an adapter for JSON
-parsers. Another adapter familiar to Rails developers is ActiveRecord. Like
+parsers. Another adapter familiar to Rails developers is ActiveRecord. Just as
 ActiveRecord provides a common interface to database drivers like Postgres and
 MySQL, MultiJson provides a common interface to JSON parsers like Oj and Yajl.
 We get MultiJson for free with Rails because MultiJson is a dependency of
@@ -63,17 +63,18 @@ MultiJson README:
 
 ### Generating outgoing JSON responses
 
-There is no shortage of methods methods to render a JSON response. We looked
-into [Active Model
-Serializers](https://github.com/rails-api/active_model_serializers), RABL, and
-simply using the Rails `.as_json` method. In the end we chose Jbuilder for
+There is no shortage of methods to render a JSON response. We looked into
+[Active Model
+Serializers](https://github.com/rails-api/active_model_serializers),
+[RABL](https://github.com/nesquena/rabl), and simply using the Rails `.as_json`
+method. In the end we chose [Jbuilder](https://github.com/rails/jbuilder) for
 rendering JSON because of its excellent community support (repo is maintained
 under the Rails organization) and the consistency of its view logic to other
 kinds of Rails views such as Haml, ERB, and Builder.
 
 With Jbuilder, we render the JSON from Rails controllers like any other view.
 We're able to use partials like any other Rails view template to compose JSON.
-There's also a cache! method that has the same method signature as
+There's also a `cache!` method that has the same method signature as
 [`ActionView::Helpers::CacheHelper`](http://api.rubyonrails.org/classes/ActionView/Helpers/CacheHelper.html)
 and uses
 [`Rails.cache`](http://guides.rubyonrails.org/caching_with_rails.html#cache-stores)
