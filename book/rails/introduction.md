@@ -14,7 +14,7 @@ user can only have one attendance per event.
 ![Humon database representation](images/humon-database-representation.png)
 
 The Humon application does not ask for a username or password. Instead, we will
-use an ID unique to the device (‘device token’) to track unique users. The iOS
+use an ID unique to the device ('device token') to track unique users. The iOS
 portion of the book will discuss where this token comes from. For now, all you
 need to know is that users are identified by their devices. This approach does
 not allow for multiple users per device or a single account across devices, but
@@ -23,7 +23,24 @@ create the simplest application possible led us to choose immediate usability
 over a more complex authentication system.
 
 We will provide code snippets in context, but you can also view the entire
-example application in GitHub to see how it is structured.
+[example application in
+GitHub](https://github.com/thoughtbot/ios-on-rails/tree/master/example_apps/rails)
+to see how it is structured.
+
+### Setting up our project
+
+We used [Suspenders](https://github.com/thoughtbot/suspenders), a Rails 4
+template with thoughtbot's standard defaults, to start our project. Starting a
+Rails app with Suspenders is simple, just follow the instructions in the
+`README`.
+
+While Suspenders is not required to follow along with this book, it does
+conveniently include all of the gems we will use to test-drive our API,
+including: [Factory Girl](https://github.com/thoughtbot/factory_girl_rails),
+[RSpec](https://github.com/rspec/rspec-rails), and [Shoulda
+Matchers](https://github.com/thoughtbot/shoulda-matchers). So if you choose not to
+use Suspenders to start your project, make sure you add those gems to your
+`Gemfile`.
 
 ### Parsing incoming JSON requests
 
