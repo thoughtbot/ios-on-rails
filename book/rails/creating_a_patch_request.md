@@ -2,7 +2,7 @@
 
 ### It all starts with a request spec
 
-We will start working on our PATCH request the same way we bagan working on our
+We will start working on our PATCH request the same way we began working on our
 other requests: with a request spec. In this test, we want to create an `event`
 with the name `'Old Name'` and send a PATCH request to change the name to
 `'New Name'`.
@@ -11,7 +11,7 @@ In our test setup, we will create the first event with `FactoryGirl` and then
 use the PATCH request with a new event name in the parameters as the spec
 exercise. Our expectation looks at the name of the `event` to confirm that it
 was changed. The spec expectation also looks for the `event.id` in the
-response, since that is what our iOS app will be expecting after a successfull
+response, since that is what our iOS app will be expecting after a successful
 PATCH request.
 
     # spec/requests/api/v1/events/events_spec.rb
@@ -41,9 +41,9 @@ PATCH request.
 
 #### Controller
 
-When we run the test above, we will again get a routing erorr: `No route
+When we run the test above, we will again get a routing error: `No route
 matches [PATCH] "/v1/events/13"` (note: your `id` will likely not be `13` like
-mine, but the error message should otherwise be the same). 
+mine, but the error message should otherwise be the same).
 
 Let's add the `update` route to fix that:
 
@@ -197,7 +197,7 @@ request with *valid* parameters:
        expected: {"message"=>"Validation Failed", "errors"=>["Name can't be blank"]}
             got: {"id"=>24}
 
-Our iOS app will have no way of knowing that a request with invalid paremeters
+Our iOS app will have no way of knowing that a request with invalid parameters
 was passed, since it returns the same JSON either way.
 
 To fix this, we will add a branching statement to our controller method that

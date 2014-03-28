@@ -65,7 +65,7 @@ regular web applications built with Rails. Although the views and controllers
 will be versioned, we will write our migrations like standard Rails migrations
 and keep our models within the models directory. You can see the data migrations
 for our example application
-[here](https://github.com/thoughtbot/humon-rails/tree/master/db/migrate).
+[here](https://github.com/thoughtbot/ios-on-rails/tree/master/example_apps/rails/db/migrate).
 
 At this point, let's assume our `User` model has already been created.
 
@@ -74,7 +74,7 @@ for those validations. In our development process, we would write the following
 tests line-by-line, watching them fail, and writing the lines in our model one
 at a time to make them pass. We will use FactoryGirl, Shoulda Matchers, and
 RSpec for our unit tests. To see our full test setup, see our `spec_helper`
-[here](https://github.com/thoughtbot/humon-rails/blob/master/spec/spec_helper.rb).
+[here](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/spec/spec_helper.rb).
 
     # spec/models/event.rb
 
@@ -127,7 +127,7 @@ and add those validations to the model:
     end
 
 Once this is working, we can add the `event` Factory to
-[`spec/factories.rb`](https://github.com/thoughtbot/humon-rails/blob/master/spec/factories.rb)
+[`spec/factories.rb`](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/spec/factories.rb)
 for use in our request spec.
 
 ### Controller
@@ -178,7 +178,7 @@ For a Rails developer, the views are where there will be the most difference
 between a standard web application and a JSON API.  As with our controllers, we
 will include our views in the `api/v1` directory so that they are versioned.
 
-Just like regular view partials, JBuilder partials minimize duplication by
+Just like regular view partials, Jbuilder partials minimize duplication by
 letting us re-use blocks of view code in many different places. JSON
 representations of data frequently include duplication (a collection is usually
 an array of the same JSON structure that would be found for a single object), so
@@ -211,7 +211,7 @@ the `events` directory. So we will create that partial next:
 #### Caching our view
 
 You might be wondering what the `json.cache!` at the top of our `event` partial
-is doing. JBuilder supports [fragment
+is doing. Jbuilder supports [fragment
 caching](http://guides.rubyonrails.org/caching_with_rails.html#fragment-caching),
 and you tell your app to cache a block of view code by wrapping it in a
 `json.cache!` block. While the load time for the JSON in our view above is going

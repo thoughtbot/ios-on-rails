@@ -124,8 +124,9 @@ And when we run our test again, our error has changed:
     ActionController::RoutingError:
        uninitialized constant Api::V1::Events::NearestsController
 
-Nice! Time to define that controller. In the `NearestsController`, we will be
-using the [`near`
+Nice! Time to define that controller. In the
+[`NearestsController`](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/controllers/api/v1/events/nearests_controller.rb),
+we will be using the [`near`
 scope](https://github.com/alexreisner/geocoder#location-aware-database-queries)
 (given to us by the Geocoder gem) which takes in a latitude-longitude pair,
 radius, and units as arguments:
@@ -151,8 +152,9 @@ Oh yeah! We forgot to actually add the Geocoder gem. Let's do that now.
 
 ### Model (and Gemfile)
 
-Let's start by adding `gem 'geocoder'` to our Gemfile and running `bundle
-install`.
+Let's start by adding `gem 'geocoder'` to our
+[Gemfile](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/Gemfile)
+and running `bundle install`.
 
 We already have the `lat` and `lon` attributes on our `Event` model, so no need
 for a database migration. If we run our test again, however, we will get the
