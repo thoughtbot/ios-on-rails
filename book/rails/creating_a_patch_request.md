@@ -105,7 +105,8 @@ is to add logic to our `update` method that actually updates our `event`:
 
     # app/controllers/api/v1/events_controller.rb
 
-    def update @event = Event.find(params[:id])
+    def update
+      @event = Event.find(params[:id])
 
       if @event.update_attributes(event_params)
         render
