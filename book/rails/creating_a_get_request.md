@@ -102,6 +102,7 @@ the migration was created):
       def change
         create_table :events do |t|
           t.timestamps null: false
+          t.string :address
           t.float :lat, null: false
           t.float :lon, null: false
           t.string :name, null: false
