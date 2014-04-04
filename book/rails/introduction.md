@@ -11,7 +11,7 @@ event has geolocation information (latitude and longitude), which allows us to
 plot it on a map. A user has and belongs to many events through attendances. A
 user can only have one attendance per event.
 
-![Humon database representation](images/humon-database-representation.png)
+![Humon database representation](../images/humon-database-representation.png)
 
 The Humon application does not ask for a username or password. Instead, we will
 use an ID unique to the device ('device token') to track unique users. The iOS
