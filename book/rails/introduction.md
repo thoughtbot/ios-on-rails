@@ -132,7 +132,7 @@ feature as a source of API documentation. While updating the wiki after each API
 change required a small amount of work for our Rails developers, having an place
 where iOS developers could find up-to-date API documentation was an invaluable
 resource. You can see how we structure our wiki
-[here](https://github.com/thoughtbot/humon-rails/wiki/API-Endpoints).
+[here](https://github.com/thoughtbot/ios-on-rails/wiki/API-Endpoints).
 
 If you are interested in exploring other documentation options, here are some
 suggestions:
