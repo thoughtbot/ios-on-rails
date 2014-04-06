@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'GET /v1/events/nearest?lat=&lon=&radius=' do
+describe 'GET /v1/events/nearests?lat=&lon=&radius=' do
   it 'returns the events closest to the lat and lon' do
     near_event = create(:event, lat: 37.760322, lon: -122.429667)
     less_near_event = create(:event, lat: 37.760321, lon: -122.429667)
@@ -9,7 +9,7 @@ describe 'GET /v1/events/nearest?lat=&lon=&radius=' do
     lon = -122.430782
     radius = 5
 
-    get "/v1/events/nearest?lat=#{lat}&lon=#{lon}&radius=#{radius}"
+    get "/v1/events/nearests?lat=#{lat}&lon=#{lon}&radius=#{radius}"
 
     expect(response_json).to eq([
       {
@@ -40,7 +40,7 @@ describe 'GET /v1/events/nearest?lat=&lon=&radius=' do
     lon = -122.430782
     radius = 1
 
-    get "/v1/events/nearest?lat=#{lat}&lon=#{lon}&radius=#{radius}"
+    get "/v1/events/nearests?lat=#{lat}&lon=#{lon}&radius=#{radius}"
 
     expect(response_json).to eq({ 'message' => 'No Events Found' })
     expect(response.code.to_i).to eq 200

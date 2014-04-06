@@ -2,7 +2,7 @@ Humon::Application.routes.draw do
   scope module: :api, defaults: { format: 'json' } do
     namespace :v1 do
       namespace :events do
-        resource :nearest, only: [:show]
+        resources :nearests, only: [:index]
       end
 
       resources :attendances, only: [:create]
