@@ -105,7 +105,7 @@ a GET request at `events/:id`:
       scope module: :api, defaults: { format: 'json' } do
        namespace :v1 do
           namespace :events do
-            resource :nearest, only: [:show]
+            resources :nearests, only: [:index]
           end
 
       ...
@@ -134,7 +134,7 @@ radius, and units as arguments:
     # app/controllers/api/1/events/nearests_controller.rb
 
     class Api::V1::Events::NearestsController < ApiController
-      def show
+      def index
         @events = Event.near(
           [params[:lat], params[:lon]],
           params[:radius],
