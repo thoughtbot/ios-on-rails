@@ -107,6 +107,7 @@ the migration was created):
           t.float :lon, null: false
           t.string :name, null: false
           t.datetime :started_at, null: false
+          t.datetime :ended_at
           t.integer :user_id, null: false
         end
 
