@@ -46,7 +46,7 @@ require a controller of its own, we will create an `events` directory within
 
     # spec/requests/api/v2/events/nearest_spec.rb
 
-    describe 'GET /v1/events/nearest?lat=&lon=&radius=' do
+    describe 'GET /v1/events/nearests?lat=&lon=&radius=' do
       it 'returns the events closest to the lat and lon' do
         near_event = create(:event, lat: 37.760322, lon: -122.429667)
         farther_event = create(:event, lat: 37.760321, lon: -122.429667)
@@ -55,7 +55,7 @@ require a controller of its own, we will create an `events` directory within
         lon = -122.430782
         radius = 5
 
-        get "/v1/events/nearest?lat=#{lat}&lon=#{lon}&radius=#{radius}"
+        get "/v1/events/nearests?lat=#{lat}&lon=#{lon}&radius=#{radius}"
 
         expect(response_json).to eq([
           {
@@ -87,16 +87,16 @@ require a controller of its own, we will create an `events` directory within
 When we run the test above, we get an interesting error:
 
     ActiveRecord::RecordNotFound:
-       Couldn't find Event with id=nearest
+       Couldn't find Event with id=nearests
 
 What's that about!? If we run `rake routes` in our shell we'll see that our app
 has the following GET endpoint defined:
 
     GET   /v1/events/:id(.:format)  api/v1/events#show
 
-Rails is matching `get '/v1/events/nearest'` to this pattern and thinks we are
-looking for an `event` with an `id` of `nearest`. How do we fix this? We need
-to tell our Rails app that a GET request at `events/nearest` is different from
+Rails is matching `get '/v1/events/nearests'` to this pattern and thinks we are
+looking for an `event` with an `id` of `nearests`. How do we fix this? We need
+to tell our Rails app that a GET request at `events/nearests` is different from
 a GET request at `events/:id`:
 
     # config/routes.rb
@@ -117,7 +117,7 @@ a GET request at `events/:id`:
 If we run `rake routes` in the shell again, we'll see that there's a new GET
 endpoint:
 
-    GET   /v1/events/nearest(.:format) api/v1/events/nearests#show
+    GET   /v1/events/nearests(.:format) api/v1/events/nearests#index
 
 And when we run our test again, our error has changed:
 
