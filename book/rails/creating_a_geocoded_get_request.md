@@ -65,7 +65,7 @@ require a controller of its own, we will create an `events` directory within
             'lat' => near_event.lat,
             'lon' => near_event.lon,
             'name' => near_event.name,
-            'owner' => { 'device_token' => near_event.owner.device_token }
+            'owner' => { 'device_token' => near_event.owner.device_token },
             'started_at' => near_event.started_at.iso8601(3),
           },
           {
@@ -75,7 +75,7 @@ require a controller of its own, we will create an `events` directory within
             'lat' => farther_event.lat,
             'lon' => farther_event.lon,
             'name' => farther_event.name,
-            'owner' => { 'device_token' => farther_event.owner.device_token }
+            'owner' => { 'device_token' => farther_event.owner.device_token },
             'started_at' => farther_event.started_at.iso8601(3),
           }
         ])
@@ -220,7 +220,7 @@ When we run our test again, and it passes! Time to address the sad path...
 We want to explicitly define what happens when there are no events nearby.
 Let's do that through writing a test first:
 
-    # spec/requests/api/v2/events/nearest_spec.rb
+    # spec/requests/api/v1/events/nearest_spec.rb
 
     describe 'GET /v1/events/nearest?lat=&lon=&radius=' do
 
