@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>iOS on Rails (Beta): Introduction</title>
+  <style type="text/css"><![CDATA[code{white-space: pre;}]]></style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="data:text/css,%2A%20%7B%0A%20%20%2Dmoz%2Dbox%2Dsizing%3A%20border%2Dbox%3B%0A%20%20%2Dwebkit%2Dbox%2Dsizing%3A%20border%2Dbox%3B%0A%20%20box%2Dsizing%3A%20border%2Dbox%3B%20%7D%0A%0Abody%20%7B%0A%20%20font%2Dsize%3A%201em%3B%0A%20%20height%3A%20100%25%3B%0A%20%20margin%3A%200%20auto%3B%0A%20%20max%2Dwidth%3A%2054em%3B%0A%20%20padding%3A%200%201em%204%2E5em%3B%20%7D%0A%20%20%40media%20screen%20and%20%28min%2Dwidth%3A%20600px%29%20%7B%0A%20%20%20%20body%20%7B%0A%20%20%20%20%20%20padding%3A%200%204em%204%2E5em%3B%20%7D%20%7D%0A%20%20%40media%20screen%20and%20%28min%2Dwidth%3A%20700px%29%20%7B%0A%20%20%20%20body%20%7B%0A%20%20%20%20%20%20font%2Dsize%3A%201%2E125em%3B%20%7D%20%7D%0A%20%20%40media%20screen%20and%20%28min%2Dwidth%3A%20800px%29%20%7B%0A%20%20%20%20body%20%7B%0A%20%20%20%20%20%20padding%3A%200%206em%204%2E5em%3B%20%7D%20%7D%0A%20%20%40media%20screen%20and%20%28min%2Dwidth%3A%20880px%29%20%7B%0A%20%20%20%20body%20%7B%0A%20%20%20%20%20%20padding%3A%200%208em%204%2E5em%3B%20%7D%20%7D%0A%20%20%40media%20screen%20and%20%28min%2Dwidth%3A%20940px%29%20%7B%0A%20%20%20%20body%20%7B%0A%20%20%20%20%20%20padding%3A%200%2010em%204%2E5em%3B%20%7D%20%7D%0A%20%20%40media%20screen%20and%20%28min%2Dwidth%3A%201800px%29%20%7B%0A%20%20%20%20body%20%7B%0A%20%20%20%20%20%20font%2Dsize%3A%201%2E375em%3B%20%7D%20%7D%0A%0Anav%20%7B%0A%20%20border%2Dbottom%3A%201px%20dashed%20%23dddddd%3B%0A%20%20border%2Dtop%3A%201px%20dashed%20%23dddddd%3B%0A%20%20padding%3A%201%2E5em%200%3B%0A%20%20margin%3A%201%2E5em%200%3B%20%7D%0A%20%20nav%20%3E%20ul%20%3E%20li%20%3E%20a%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%20%7D%0A%0Aheader%20%7B%0A%20%20padding%3A%204%2E5em%200%3B%20%7D%0A%0Abody%20%7B%0A%20%20%2Dwebkit%2Dfont%2Dsmoothing%3A%20antialiased%3B%0A%20%20color%3A%20%23444444%3B%0A%20%20font%2Dfamily%3A%20%22proxima%2Dnova%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0A%20%20line%2Dheight%3A%201%2E5em%3B%20%7D%0A%0Ah1%2C%20h2%2C%20h3%2C%20h4%2C%20h5%2C%20h6%20%7B%0A%20%20color%3A%20%23222222%3B%0A%20%20font%2Dfamily%3A%20%22proxima%2Dnova%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0A%20%20line%2Dheight%3A%201%2E25em%3B%0A%20%20margin%3A%201%2E5em%200%200%2E375em%3B%0A%20%20text%2Drendering%3A%20optimizeLegibility%3B%20%7D%0A%20%20h1%20%3E%20a%2C%20h2%20%3E%20a%2C%20h3%20%3E%20a%2C%20h4%20%3E%20a%2C%20h5%20%3E%20a%2C%20h6%20%3E%20a%20%7B%0A%20%20%20%20color%3A%20%23222222%3B%20%7D%0A%0Ah1%20%7B%0A%20%20margin%3A%203em%200%200%2E375em%3B%0A%20%20font%2Dsize%3A%201%2E75em%3B%20%7D%0A%20%20h1%20%3E%20a%20%7B%0A%20%20%20%20color%3A%20%23c32f34%3B%20%7D%0A%20%20%20%20h1%20%3E%20a%3Ahover%2C%20h1%20%3E%20a%3Afocus%20%7B%0A%20%20%20%20%20%20color%3A%20%23222222%3B%20%7D%0A%20%20h1%2Etitle%20%7B%0A%20%20%20%20font%2Dsize%3A%203em%3B%0A%20%20%20%20font%2Dweight%3A%20900%3B%0A%20%20%20%20line%2Dheight%3A%201%3B%0A%20%20%20%20margin%3A%200%200%20%2E125em%3B%20%7D%0A%20%20%20%20%40media%20screen%20and%20%28min%2Dwidth%3A%20600px%29%20%7B%0A%20%20%20%20%20%20h1%2Etitle%20%7B%0A%20%20%20%20%20%20%20%20font%2Dsize%3A%204em%3B%20%7D%20%7D%0A%0Ah2%20%7B%0A%20%20font%2Dsize%3A%201em%3B%0A%20%20letter%2Dspacing%3A%201px%3B%0A%20%20text%2Dtransform%3A%20uppercase%3B%20%7D%0A%20%20h2%2Eauthor%20%7B%0A%20%20%20%20color%3A%20%23999999%3B%0A%20%20%20%20float%3A%20left%3B%0A%20%20%20%20font%2Dsize%3A%201em%3B%0A%20%20%20%20font%2Dweight%3A%20200%3B%0A%20%20%20%20margin%3A%200%3B%0A%20%20%20%20text%2Dtransform%3A%20none%3B%20%7D%0A%20%20%20%20%40media%20screen%20and%20%28min%2Dwidth%3A%20600px%29%20%7B%0A%20%20%20%20%20%20h2%2Eauthor%20%7B%0A%20%20%20%20%20%20%20%20font%2Dsize%3A%201%2E25em%3B%20%7D%20%7D%0A%20%20%20%20h2%2Eauthor%3Anot%28%3Alast%2Dchild%29%20%7B%0A%20%20%20%20%20%20margin%2Dright%3A%201em%3B%20%7D%0A%0Ah3%20%7B%0A%20%20font%2Dsize%3A%201em%3B%20%7D%0A%0Ah4%20%7B%0A%20%20font%2Dsize%3A%201%2E5em%3B%20%7D%0A%0Ah5%20%7B%0A%20%20font%2Dsize%3A%201%2E25em%3B%20%7D%0A%0Ah6%20%7B%0A%20%20font%2Dsize%3A%201em%3B%20%7D%0A%0Ap%20%7B%0A%20%20margin%3A%200%200%200%2E75em%3B%20%7D%0A%0Aa%20%7B%0A%20%20%2Dmoz%2Dtransition%3A%20all%200%2E15s%20ease%2Dout%200%3B%0A%20%20%2Dwebkit%2Dtransition%3A%20all%200%2E15s%20ease%2Dout%200%3B%0A%20%20color%3A%20%23477dca%3B%0A%20%20text%2Ddecoration%3A%20none%3B%0A%20%20transition%3A%20all%200%2E15s%20ease%2Dout%200%3B%20%7D%0A%20%20a%3Ahover%20%7B%0A%20%20%20%20color%3A%20%232c5999%3B%20%7D%0A%20%20a%3Aactive%2C%20a%3Afocus%20%7B%0A%20%20%20%20color%3A%20%232c5999%3B%0A%20%20%20%20outline%3A%20none%3B%20%7D%0A%0Ahr%20%7B%0A%20%20border%3A%20none%3B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23dddddd%3B%0A%20%20margin%3A%201%2E5em%200%3B%20%7D%0A%0Aimg%20%7B%0A%20%20margin%3A%200%3B%0A%20%20max%2Dwidth%3A%20100%25%3B%20%7D%0A%0Acode%20%7B%0A%20%20font%2Dfamily%3A%20inconsolata%2C%20%22Bitstream%20Vera%20Sans%20Mono%22%2C%20Consolas%2C%20Courier%2C%20monospace%3B%0A%20%20font%2Dsize%3A%20%2E875em%3B%0A%20%20white%2Dspace%3A%20pre%3B%0A%20%20word%2Dwrap%3A%20break%2Dword%3B%20%7D%0A%0Apre%20%7B%0A%20%20background%3A%20%23f7f7f7%3B%0A%20%20border%3A%201px%20solid%20%23dddddd%3B%0A%20%20line%2Dheight%3A%201%2E35%3B%0A%20%20overflow%2Dx%3A%20scroll%3B%0A%20%20padding%3A%20%2E5rem%201rem%3B%0A%20%20white%2Dspace%3A%20pre%3B%0A%20%20word%2Dwrap%3A%20normal%3B%20%7D%0A%20%20pre%20code%20%7B%0A%20%20%20%20word%2Dwrap%3A%20normal%3B%20%7D%0A%0Ablockquote%20%7B%0A%20%20border%2Dleft%3A%202px%20solid%20%23dddddd%3B%0A%20%20color%3A%20%236a6a6a%3B%0A%20%20margin%3A%201%2E5em%200%3B%0A%20%20padding%2Dleft%3A%200%2E75em%3B%20%7D%0A" rel="stylesheet" />
+  <script type="text/javascript"><![CDATA[
+    (function() {
+      var config = {
+        kitId: 'bgd6ksj',
+        scriptTimeout: 3000
+      };
+      var h=document.getElementsByTagName("html")[0];h.className+=" wf-loading";var t=setTimeout(function(){h.className=h.className.replace(/(\s|^)wf-loading(\s|$)/g," ");h.className+=" wf-inactive"},config.scriptTimeout);var tk=document.createElement("script"),d=false;tk.src='//use.typekit.net/'+config.kitId+'.js';tk.type="text/javascript";tk.async="true";tk.onload=tk.onreadystatechange=function(){var a=this.readyState;if(d||a&&a!="complete"&&a!="loaded")return;d=true;clearTimeout(t);try{Typekit.load(config)}catch(b){}};var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(tk,s)
+    })();
+  ]]></script>
+</head>
+<body><section id="introduction" class="level1">
+<h1>Introduction</h1>
+<section id="why-this-book" class="level3">
+<h3>Why this book?</h3>
+<p>There are many ways to build the backend for an iOS application but you only need one. And depending on the complexity of the API you are going to create, different solutions work best for different applications.</p>
+<p>Just as Rails makes it possible to set up a basic web application in a matter of minutes, Rails makes it possible to set up a basic API in a matter of minutes. But deciding how to structure your API isn't easy. While experimenting with all of the options is a fun weekend project, sometimes you just want to get going. This book will help you do just that. While your API will no doubt require some tweaking while fleshing out your iOS app, the approach we will be taking is to define and build the API first, and then consume this API through our iOS app.</p>
+<p>The Rails portions of <em>iOS on Rails</em> will guide you through what we have found to be a robust, clean, flexible way of building out a JSON API with Rails. We provide code samples for GET, POST, and PATCH requests. In addition, we will explore some of the alternative approaches that we didn't choose and explain why we made the choices that we did.</p>
+<p>The iOS portion of the book will then walk, step-by-step, through creating an iOS application that works with the Rails API you just created. The iOS application will use each endpoint to post up objects and get back necessary data for the user. Our model objects in the iOS app will correspond with the model objects in the database, and be populated with response data from the API.</p>
+</section>
+<section id="who-is-this-book-for" class="level3">
+<h3>Who is this book for?</h3>
+<p>This book is for a developer who wants to build an iOS application with a Rails backend. It's also a book for both a Rails developer and an iOS developer to share and use in concert to create an app quickly and with more flexibility to change it than a backend-as-a-service provider like StackMob or Parse.</p>
+<p>The approach shared in this book is the result of our own experiments as Rails and iOS developers working together to build an application. The Rails portions of this book assume a basic working knowledge of how to build a web application with Rails as well as the Ruby programming language. The iOS portions of this book assume experience with object oriented programming and a basic familiarity with the Objective-C programming language.</p>
+<p></p>
+</section>
+<section id="creating-a-get-request" class="level2">
+<h2>Creating a GET request</h2>
+<section id="it-all-starts-with-a-request-spec" class="level3">
+<h3>It all starts with a request spec</h3>
+<p>At thoughtbot, we do test-driven and Outside-in development, which means that we start work on any feature by writing a high-level test that describes user behaviors. You can read a more detailed description of Outside-in development <a href="http://rubylearning.com/blog/2010/10/05/outside-in-development/">here</a>, but the benefits can be summarized as follows:</p>
+<blockquote>
+<p>Outside-in along with the test-driven process helps you write just the minimum amount of code that provides value to stakeholders, and not a line more.</p>
+</blockquote>
+<p>The external interface of our application will be the iOS app that GETs and POSTs data to the Rails app, so <a href="https://www.relishapp.com/rspec/rspec-rails/docs/feature-specs/feature-spec">feature specs</a>, which usually interact with the application via web interfaces, do not make sense. Jonas Nicklas, the creator of Capybara, <a href="http://www.elabs.se/blog/34-capybara-and-testing-apis">said it best</a>: "Do not test APIs with Capybara. It wasn't designed for it."</p>
+<p>Instead, we will use <a href="https://www.relishapp.com/rspec/rspec-rails/docs/request-specs/request-spec">request specs</a>. RSpec request specs, like feature specs, are a great way to ensure the entire stack is working together properly but via HTTP verbs, response codes, and responses rather than browser interactions.</p>
+<pre><code># spec/requests/api/v1/events/events_spec.rb
+
+require 'spec_helper'
+
+describe 'GET /v1/events/:id' do
+  it 'returns an event by :id' do
+    event = create(:event)
+
+    get "/v1/events/#{event.id}"
+
+    expect(response_json).to eq(
+      {
+        'address' =&gt; event.address,
+        'ended_at' =&gt; event.ended_at,
+        'id' =&gt; event.id,
+        'lat' =&gt; event.lat,
+        'lon' =&gt; event.lon,
+        'name' =&gt; event.name,
+        'started_at' =&gt; event.started_at.iso8601(3),
+        'owner' =&gt; {
+          'device_token' =&gt; event.owner.device_token
+        }
+      }
+    )
+  end
+end</code></pre>
+</section>
+<section id="model" class="level3">
+<h3>Model</h3>
+<p>This first error we will get for the request spec above is that our app does not have a factory named <code>event</code>. FactoryGirl guesses the class of the object based on the factory name, so creating the <code>event</code> factory is a good opportunity to set up our <code>Event</code> model.</p>
+<p>At the model level, Rails applications that serve a JSON API look exactly like regular web applications built with Rails. Although the views and controllers will be versioned, we will write our migrations like standard Rails migrations and keep our models within the models directory. You can see the data migrations for our example application <a href="https://github.com/thoughtbot/ios-on-rails/tree/master/example_apps/rails/db/migrate">here</a>.</p>
+<p>At this point, let's assume our <code>User</code> model has already been created.</p>
+<p>Our <code>Event</code> model has a few validations and relations, so we will write tests for those validations. In our development process, we would write the following tests line-by-line, watching them fail, and writing the lines in our model one at a time to make them pass. We will use FactoryGirl, Shoulda Matchers, and RSpec for our unit tests. To see our full test setup, see our <code>spec_helper</code> <a href="https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/spec/spec_helper.rb">here</a>.</p>
+<pre><code># spec/models/event.rb
+
+require 'spec_helper'
+
+describe Event, 'Validations' do
+  it { should validate_presence_of(:lat) }
+  it { should validate_presence_of(:lon) }
+  it { should validate_presence_of(:name) }
+  it { should validate_presence_of(:started_at) }
+end
+
+describe Event, 'Associations' do
+  it { should have_many(:attendances) }
+  it { should belong_to(:owner).class_name('User') }
+end</code></pre>
+<p>To make the tests pass, we will write a migration (note: your file name will be different, as the numbers in the name are generated based on the date and time the migration was created):</p>
+<pre><code># db/migrate/20131028210819_create_events.rb
+
+class CreateEvents &lt; ActiveRecord::Migration
+  def change
+    create_table :events do |t|
+      t.timestamps null: false
+      t.string :address
+      t.float :lat, null: false
+      t.float :lon, null: false
+      t.string :name, null: false
+      t.datetime :started_at, null: false
+      t.integer :user_id, null: false
+    end
+
+    add_index :events, :user_id
+  end
+end</code></pre>
+<p>and add those validations to the model:</p>
+<pre><code># app/models/event.rb
+
+class Event &lt; ActiveRecord::Base
+  validates :lat, presence: true
+  validates :lon, presence: true
+  validates :name, presence: true
+  validates :started_at, presence: true
+
+  belongs_to :owner, foreign_key: 'user_id', class_name: 'User'
+end</code></pre>
+<p>Once this is working, we can add the <code>event</code> Factory to <a href="https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/spec/factories.rb"><code>spec/factories.rb</code></a> for use in our request spec.</p>
+</section>
+<section id="controller" class="level3">
+<h3>Controller</h3>
+<p>At this point, we can create an <code>event</code> object using FactoryGirl, but our request spec is failing on the next line. This is because we have no routes set up for the path we are using in our test's GET request (<code>get "/v1/events/#{event.id}"</code>). To fix this, we need to add a controller and configure our <code>routes.rb</code> file.</p>
+<p>As we discussed in the versioning section of our introduction, we will add controllers within <code>api/v1</code> directory so that we may release future versions of our API without breaking older versions of our application.</p>
+<p>Because our <code>routes.rb</code> file tells our controllers to look for the JSON format by default, we do not need to tell our individual controllers to render JSON templates. We do, however, need to add our new paths to our routes file:</p>
+<pre><code># config/routes.rb
+
+Humon::Application.routes.draw do
+  scope module: :api, defaults: { format: 'json' } do
+    namespace :v1 do
+      resources :events, only: [:show]
+    end
+  end
+end</code></pre>
+<p>Aside from including our controller within the <code>api/v1 directory</code>, our <code>EventsController</code> looks much like a standard Rails controller. To make our request spec pass, we need to add a single action to our API:</p>
+<pre><code># app/controllers/api/v1/events_controller.rb
+
+class Api::V1::EventsController &lt; ApplicationController
+  def show
+    @event = Event.find(params[:id])
+  end
+end</code></pre>
+</section>
+<section id="view" class="level3">
+<h3>View</h3>
+<p>Our controller and routes are set up, but we still need one final piece before our spec will pass: a view. Our request spec is looking for a view template with some response JSON, but so we need to create that view.</p>
+<p>For a Rails developer, the views are where there will be the most difference between a standard web application and a JSON API. As with our controllers, we will include our views in the <code>api/v1</code> directory so that they are versioned.</p>
+<p>Just like regular view partials, Jbuilder partials minimize duplication by letting us re-use blocks of view code in many different places. JSON representations of data frequently include duplication (a collection is usually an array of the same JSON structure that would be found for a single object), so partials are especially handy when creating a JSON API. We will use Jbuilder&#x2019;s DSL to tell our show view to find the event partial:</p>
+<pre><code># app/views/api/v1/events/show.json.jbuilder
+
+json.partial! 'event', event: @event</code></pre>
+<p>Our show GET view is looking for a partial named <code>_event.json.jbuilder</code> within the <code>events</code> directory. So we will create that partial next:</p>
+<pre><code># app/views/api/v1/events/_event.json.jbuilder
+
+json.cache! event do
+  json.address event.address
+  json.ended_at event.ended_at
+  json.id event.id
+  json.lat event.lat
+  json.lon event.lon
+  json.name event.name
+  json.started_at event.started_at
+
+  json.owner do
+    json.device_token event.owner.device_token
+  end
+end</code></pre>
+<section id="caching-our-view" class="level4">
+<h4>Caching our view</h4>
+<p>You might be wondering what the <code>json.cache!</code> at the top of our <code>event</code> partial is doing. Jbuilder supports <a href="http://guides.rubyonrails.org/caching_with_rails.htmlfragment-caching.html">fragment caching</a>, and you tell your app to cache a block of view code by wrapping it in a <code>json.cache!</code> block. While the load time for the JSON in our view above is going to be teeny tiny, adding fragment caching is simple and a good habit to get into for apps that are likely to expand over time.</p>
+<p>If you're interested in learning more about fragment caching, there is a great <a href="http://railscasts.com/episodes/90-fragment-caching-revised">Railscast</a> (paid) on the topic.</p>
+</section>
+</section>
+<section id="putting-it-all-together" class="level3">
+<h3>Putting it all together</h3>
+<p>We have now successfully created our first API endpoint for Humon and our request spec should pass!</p>
+<p>But let's test it manually just to make sure. Our iOS app isn't up and running yet, so we will have to create records in Rails console. Make sure you are in your project directory in Terminal, run <code>rails console</code> and the enter the following:</p>
+<pre><code>User.create(device_token: '12345')
+Event.create(
+  address: '85 2nd Street',
+  lat: 37.8050217,
+  lon: -122.409155,
+  name: 'Best event OF ALL TIME!',
+  owner: User.find_by(device_token: '12345')
+)</code></pre>
+<p>Assuming this created your first event (<code>id</code> will equal 1) and you are running <code>rails server</code> in Terminal (you will need to exit from Rails console or open a new Terminal window to do this), when you visit <code>localhost:3000/v1/events/1</code> in your browser you should see something like this:</p>
+<pre><code>{
+  "address":"85 2nd Street",
+  "ended_at":"2013-09-17T00:00:00.000Z",
+  "id":1,
+  "lat":37.8050217,
+  "lon":-122.409155,
+  "name":"Best event OF ALL TIME!",
+  "started_at":"2013-09-16T00:00:00.000Z",
+  "owner":{
+    "device_token":"234324235"
+   }
+ }</code></pre>
+<p>Alternatively, you can run a <a href="http://curl.haxx.se/docs/manpage.html">curl</a> request (<code>curl http://localhost:3000/v1/events/1</code>) from Terminal and see the same JSON output.</p>
+<p>Congratulations, you just created your first API endpoint with Rails!</p>
+<p></p>
+</section>
+</section>
+<section id="a-rails-api-client-with-nsurlsession" class="level2">
+<h2>A Rails API Client With NSURLSession</h2>
+<p>Before we go about making our first API request, we need to decide how we are going to make our networking calls. As mentioned in the Cocoapods chapter, the AFNetworking framework is a clean and reliable solution to making networking requests. We will be using AFNetworking in this book, but we'll also include examples of how to make a few API requests manually for reference. AFNetworking brings a lot more to the table than just wrapping up your network requests; but, like a programming planeteer, the choice is yours.</p>
+<section id="creating-a-singleton-client-object" class="level3">
+<h3>Creating a Singleton Client Object</h3>
+<p>Create a subclass of NSObject called HUMRailsClient. All of our API requests will be handled by one instance of the HUMRailsClient, so we're going to create a singleton of HUMRailsClient called sharedClient. What we will create and refer to as a singleton isn't a dictionary-definition singleton, since we aren't completely limiting the instantiation of HUMRailsClient to only one object. We are, however, limiting the instantiation of HUMRailsClient to only one object if we always use our sharedClient. Essentially, our sharedClient is a singleton if we use it consistantly but is not if we errantly decide to instantiate another instance of HUMRailsClient using [[HUMRailsClient alloc] init].</p>
+<p>Declare a class method that will return our singleton by adding <code>+ (instancetype)sharedClient;</code> to your HUMRailsClient.h file. We use instancetype as our return type to indicate that this class method will return an instance of HUMRailsClient. The + indicates that sharedClient is a class method to be called directly on the HUMRailsClient class. Prepending your class method with "shared" indicates to other developers that the method returns a singleton.</p>
+<p>Now let's implement this method:</p>
+<pre><code>// HUMRailsClient.m
+
++ (instancetype)sharedClient
+{
+    static HUMRailsClient *_sharedClient = nil;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&amp;onceToken, ^{
+    
+        // Code to be run only once
+        _sharedClient = [[HUMRailsClient alloc] init];
+        
+    });
+
+    return _sharedClient;
+}</code></pre>
+<p>First, we declare a static variable of type HUMRailsClient. Since it's a static variable, _sharedClient will last for the life of the program.</p>
+<p>Then, we use Grand Central Dispatch to execute a block of code once and only once. If you are using XCode and begin typing dispatch_once, you can even use autocomplete to find and insert the entire dispatch_once code snippet. dispatch_once takes a reference to a static variable of type dispatch_once_t and a block of code to execute. dispatch_once_t is a long variable type that indicates whether or not the block of code has been executed already. On the first call of dispatch_once, the onceToken is set and the block executed, but on every subsequent call the block is not executed because the onceToken has already been set.</p>
+<p>Inside the block we instantiate a HUMRailsClient and set it as the value of the static variable <em>sharedClient. Once that is done, we simply need to return our singleton </em>sharedClient.</p>
+</section>
+<section id="creating-a-session-for-handling-requests" class="level3">
+<h3>Creating a Session for Handling Requests</h3>
+<p>iOS7 introduced the NSURLSessions class, which is an object that handles groups of HTTP requests. Each API request we make in a NSURLSession is encapsulated in a NSURLSessionTask, which executes the request asynchronously and notifies you of completion by executing a block or by calling a method on its delegate.</p>
+<p>There are three different types of NSURLSessions, including one that allows your app to continue downloading data even if your app is in the background. The type of a session is determined by its <code>sessionConfiguration</code>, but for simple API requests we only need to use the default session type.</p>
+<p>Declare a session property and a static app secret string by placing:</p>
+<pre><code>// HUMRailsClient.m
+
+static NSString *const HUMAppSecret =
+    @"yourOwnUniqueAppSecretThatYouShouldRandomlyGenerateAndKeepSecret";
+
+@interface HUMRailsClient ()
+
+@property (strong, nonatomic) NSURLSession *session;
+
+@end</code></pre>
+<p>above your <span class="citation" data-cites="implementation">@implementation</span> inside of HUMRailsClient.m. We will use the <code>HUMAppSecret</code> to sign POST requests to /users so that the backend can validate that the request is coming from the mobile app.</p>
+<p>Then, overwrite the HUMRailsClient's init method to set the client's <code>session</code> when we initialize it:</p>
+<pre><code>// HUMRailsClient.m
+
+- (instancetype)init
+{
+    self = [super init];
+    
+    if (!self)
+        return nil;
+    
+    // Create a session configuration
+    NSURLSessionConfiguration *sessionConfiguration =
+        [NSURLSessionConfiguration defaultSessionConfiguration];
+    sessionConfiguration.timeoutIntervalForRequest = 30.0;
+    sessionConfiguration.timeoutIntervalForResource = 30.0;
+    
+    //Set the session headers
+    NSDictionary *headers = [HUMUserSession userID] ?
+        @{
+          @"Accept" : @"application/json",
+          @"Content-Type" : @"application/json",
+          @"X-DEVICE-TOKEN" : [HUMUserSession userID]
+          } :
+        @{
+          @"Accept" : @"application/json",
+          @"Content-Type" : @"application/json",
+          @"X-APP-SECRET" : HUMAppSecret
+          };
+    [sessionConfiguration setHTTPAdditionalHeaders:headers];
+    
+    // Create a session
+    _session = [NSURLSession sessionWithConfiguration:sessionConfiguration];
+    
+    return self;
+}
+    </code></pre>
+<p>This custom init method creates a <code>sessionConfiguration</code>, uses the <code>sessionConfiguration</code> to create an NSURLSession, and sets the session on the <code>_sharedClient</code>.</p>
+<p>We could just use the default NSURLSessionConfiguration that is returned from NSURLSessionConfiguration's class method <code>defaultSessionConfiguration</code> to create our NSURLSession. However, we also want to change our timeout properties to 30 seconds and add some HTTP headers that we will be sending and receiving JSON from our API.</p>
+</section>
+<section id="setting-the-session-headers" class="level3">
+<h3>Setting the Session Headers</h3>
+<p>Setting the session headers on the <code>sessionConfiguration</code> is particularly important, since sending the app secret is necessary for user creation, while the user's ID is necessary for all other requests. When we initialize the <code>sharedClient</code> singleton, we place the user ID in the header if we've already saved one in the keychain, or the app secret if there is no user ID saved in the keychain. Having the app secret in the header is only necessary for the POST to /users request, so we'll change out the app secret header one we have successfully made that request</p>
+</section>
+</section>
+<section id="a-rails-api-client-with-afnetworking" class="level2">
+<h2>A Rails API Client With AFNetworking</h2>
+<p>Now that we've created our own networking client, let's see how we could do this using the AFNetworking framework. We'll create another client that is a subclass of AFNetworking's session manager instead of NSObject.</p>
+<section id="creating-a-singleton-client-object-1" class="level3">
+<h3>Creating a Singleton Client Object</h3>
+<p>Create a subclass of AFHTTPSessionManager called HUMRailsAFNClient. Declare a class method that will return a shared client singleton as we did in our other client by adding <code>+ (instancetype)sharedClient;</code> to your HUMRailsAFNClient.h file. The implementation of this method looks similar as well:</p>
+<pre><code>// HUMRailsAFNClient.m
+
++ (instancetype)sharedClient
+{
+    static HUMRailsAFNClient *_sharedClient = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&amp;onceToken, ^{
+        
+        // Create a client
+        NSURL *baseURL = [NSURL URLWithString:ROOT_URL];
+        _sharedClient = [[HUMRailsAFNClient alloc] initWithBaseURL:baseURL];
+
+        // Set the client header fields
+        if ([HUMUserSession userID])
+            [_sharedClient.requestSerializer setValue:[HUMUserSession userID]
+                                   forHTTPHeaderField:@"X-DEVICE-TOKEN"];
+        else
+            [_sharedClient.requestSerializer setValue:HUMAppSecret
+                                   forHTTPHeaderField:@"X-APP-SECRET"];
+        
+    });
+    
+    return _sharedClient;
+}</code></pre>
+<p>With AFNetworking, we don't have to manually set up the session configuration and session with our own custom init method. We simply initialize the client using <code>initWithBaseURL:</code>, which means that our paths later will be relative to this ROOT_URL.</p>
+</section>
+<section id="setting-the-session-headers-1" class="level3">
+<h3>Setting the Session Headers</h3>
+<p>As before, we need to set the user's ID in the header if we have already created a user for this device. If not, we set the app secret so that we can make a POST to /users to create a user with the app secret.</p>
+</section>
+</section>
+</section></body>
+</html>

@@ -1,4 +1,3 @@
 source 'https://rubygems.org'
-source 'https://repo.fury.io/sJsXnYBFBAeqXCsWaScx/me/'
 
-gem 'paperback'
+gem 'paperback', git: 'git@github.com:thoughtbot/paperback.git'

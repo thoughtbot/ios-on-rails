@@ -1,17 +1,23 @@
-Installation
-------------
+## Get the latest release of the book
 
-The paperback gem is currently private and available via GemFury.
+The quickest way to start reading right now is to view the PDF version here:
 
-Do a `bundle install` as you normally would and you'll have the `paperback`
-binary available to you.
+<https://github.com/thoughtbot/ios-on-rails/raw/master/releases/ios-on-rails.pdf>
 
-Dependencies
-------------
+The book is currently available in the following formats:
 
-In addition to `brew install imagemagick`, you may have to `gem install rmagick`.
+* PDF: [release/ios-on-rails.pdf](https://github.com/thoughtbot/ios-on-rails/raw/master/releases/ios-on-rails.pdf)
+* Single-page HTML: [release/ios-on-rails.html](https://github.com/thoughtbot/ios-on-rails/raw/master/releases/ios-on-rails.html)
+* Epub (iPad, Nook): [release/ios-on-rails.epub](https://github.com/thoughtbot/ios-on-rails/raw/master/releaseis/ios-on-rails.epub)
+* Mobi (Kindle): [release/ios-on-rails.mobi](https://github.com/thoughtbot/ios-on-rails/raw/master/releases/ios-on-rails.mobi)
 
-Building
---------
+For the HTML version, clone the repository and look at the HTML so that images
+and other assets are properly loaded.
 
-To build the book document files, `paperback build`.
+## Questions?
+
+If you have a customer support question, please email <learn@thoughtbot.com>.
+
+If you are a [Learn Prime](https://learn.thoughtbot.com/prime)
+subscriber visit <http://forum.thoughtbot.com> for discussion and technical
+questions.
