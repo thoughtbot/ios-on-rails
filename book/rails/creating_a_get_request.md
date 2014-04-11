@@ -246,7 +246,8 @@ following:
       lat: 37.8050217,
       lon: -122.409155,
       name: 'Best event OF ALL TIME!',
-      owner: User.find_by(device_token: '12345')
+      owner: User.find_by(device_token: '12345'),
+      started_at: Time.zone.now
     )
 
 Assuming this created your first event (`id` will equal 1) and you are running
