@@ -222,6 +222,12 @@ RSpec request specs, like feature specs, are a great way to ensure the entire
 stack is working together properly but via HTTP verbs, response codes, and
 responses rather than browser interactions.
 
+When writing our request specs, we found that we were calling
+`JSON.parse(response.body)` over and over again. We abstracted this into a
+method called
+[`response_json`](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/spec/support/response_json.rb),
+which we use below and in all of our request specs that include a JSON response.
+
     # spec/requests/api/v1/events/events_spec.rb
 
     require 'spec_helper'
@@ -299,6 +305,7 @@ the migration was created):
         create_table :events do |t|
           t.timestamps null: false
           t.string :address
+          t.datetime :ended_at
           t.float :lat, null: false
           t.float :lon, null: false
           t.string :name, null: false
@@ -435,7 +442,8 @@ following:
       lat: 37.8050217,
       lon: -122.409155,
       name: 'Best event OF ALL TIME!',
-      owner: User.find_by(device_token: '12345')
+      owner: User.find_by(device_token: '12345'),
+      started_at: Time.zone.now
     )
 
 Assuming this created your first event (`id` will equal 1) and you are running
@@ -1073,7 +1081,7 @@ require a controller of its own, we will create an `events` directory within
             'lat' => near_event.lat,
             'lon' => near_event.lon,
             'name' => near_event.name,
-            'owner' => { 'device_token' => near_event.owner.device_token }
+            'owner' => { 'device_token' => near_event.owner.device_token },
             'started_at' => near_event.started_at.iso8601(3),
           },
           {
@@ -1083,7 +1091,7 @@ require a controller of its own, we will create an `events` directory within
             'lat' => farther_event.lat,
             'lon' => farther_event.lon,
             'name' => farther_event.name,
-            'owner' => { 'device_token' => farther_event.owner.device_token }
+            'owner' => { 'device_token' => farther_event.owner.device_token },
             'started_at' => farther_event.started_at.iso8601(3),
           }
         ])
@@ -1228,7 +1236,7 @@ When we run our test again, and it passes! Time to address the sad path...
 We want to explicitly define what happens when there are no events nearby.
 Let's do that through writing a test first:
 
-    # spec/requests/api/v2/events/nearest_spec.rb
+    # spec/requests/api/v1/events/nearest_spec.rb
 
     describe 'GET /v1/events/nearest?lat=&lon=&radius=' do
 
@@ -1610,7 +1618,7 @@ Having the HUMMapViewController present modally means that the HUMAddEventViewCo
     	[self presentViewController:navigationController animated:YES completion:nil];
 	}
 
-Since the `addEventViewController` isn't being placed on a navigation stack with the HUMMapViewController, it won't have a navigation bar but default. We'll place the `addEventViewController` inside its own navigation controller so that it will have a navigation stack and navigation bar of its own.
+Since the `addEventViewController` isn't being placed on a navigation stack with the HUMMapViewController, it won't have a navigation bar by default. We'll place the `addEventViewController` inside its own navigation controller so that it will have a navigation stack and navigation bar of its own.
 
 Now we can present the `navigationController` instead of the `addEventViewController`. This presents the entire `navigationController`'s navigation stack, but right now the only view controller inside the navigation stack is the `addEventViewController`.
 
@@ -1709,7 +1717,7 @@ We set the share button to call the method `presentActivityViewController` when 
                          completion:nil];
     }
 
-Inside of the method, we create and present a UIActivityViewController. The activityViewController contains activities that allow users to save pictures to their camera roll, or post links to twitter, etc. When we intialize this view controller, we have to include an array of activity items that we want to save or post or share. The activity items you include can be strings, images, or even custom objects. In our case, we're going to want to include a dummy string that will later contain our event info.
+Inside of the method, we create and present a UIActivityViewController. The activityViewController contains activities that allow users to save pictures to their camera roll, or post links to twitter, etc. When we initialize this view controller, we have to include an array of activity items that we want to save or post or share. The activity items you include can be strings, images, or even custom objects. In our case, we're going to want to include a dummy string that will later contain our event info.
 
 We also set the activityViewController's excludedActivityTypes so that the activity view that pops up will not allow the user to copy the event text or print it. There are quite a few activity types that Apple provides by default in the UIActivityViewController and you can exclude them by including them in the array of excluded types. Keep in mind that some options won't always be available, like "Save to Camera Roll" which is only available if one of the activity items is a UIImage.
 

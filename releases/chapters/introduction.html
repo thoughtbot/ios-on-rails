@@ -45,6 +45,7 @@
 </blockquote>
 <p>The external interface of our application will be the iOS app that GETs and POSTs data to the Rails app, so <a href="https://www.relishapp.com/rspec/rspec-rails/docs/feature-specs/feature-spec">feature specs</a>, which usually interact with the application via web interfaces, do not make sense. Jonas Nicklas, the creator of Capybara, <a href="http://www.elabs.se/blog/34-capybara-and-testing-apis">said it best</a>: "Do not test APIs with Capybara. It wasn't designed for it."</p>
 <p>Instead, we will use <a href="https://www.relishapp.com/rspec/rspec-rails/docs/request-specs/request-spec">request specs</a>. RSpec request specs, like feature specs, are a great way to ensure the entire stack is working together properly but via HTTP verbs, response codes, and responses rather than browser interactions.</p>
+<p>When writing our request specs, we found that we were calling <code>JSON.parse(response.body)</code> over and over again. We abstracted this into a method called <a href="https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/spec/support/response_json.rb"><code>response_json</code></a>, which we use below and in all of our request specs that include a JSON response.</p>
 <pre><code># spec/requests/api/v1/events/events_spec.rb
 
 require 'spec_helper'
@@ -101,6 +102,7 @@ class CreateEvents &lt; ActiveRecord::Migration
     create_table :events do |t|
       t.timestamps null: false
       t.string :address
+      t.datetime :ended_at
       t.float :lat, null: false
       t.float :lon, null: false
       t.string :name, null: false
@@ -187,7 +189,8 @@ Event.create(
   lat: 37.8050217,
   lon: -122.409155,
   name: 'Best event OF ALL TIME!',
-  owner: User.find_by(device_token: '12345')
+  owner: User.find_by(device_token: '12345'),
+  started_at: Time.zone.now
 )</code></pre>
 <p>Assuming this created your first event (<code>id</code> will equal 1) and you are running <code>rails server</code> in Terminal (you will need to exit from Rails console or open a new Terminal window to do this), when you visit <code>localhost:3000/v1/events/1</code> in your browser you should see something like this:</p>
 <pre><code>{

@@ -227,6 +227,7 @@ end</code></pre>
 </blockquote>
 <p>The external interface of our application will be the iOS app that GETs and POSTs data to the Rails app, so <a href="https://www.relishapp.com/rspec/rspec-rails/docs/feature-specs/feature-spec">feature specs</a>, which usually interact with the application via web interfaces, do not make sense. Jonas Nicklas, the creator of Capybara, <a href="http://www.elabs.se/blog/34-capybara-and-testing-apis">said it best</a>: &quot;Do not test APIs with Capybara. It wasn't designed for it.&quot;</p>
 <p>Instead, we will use <a href="https://www.relishapp.com/rspec/rspec-rails/docs/request-specs/request-spec">request specs</a>. RSpec request specs, like feature specs, are a great way to ensure the entire stack is working together properly but via HTTP verbs, response codes, and responses rather than browser interactions.</p>
+<p>When writing our request specs, we found that we were calling <code>JSON.parse(response.body)</code> over and over again. We abstracted this into a method called <a href="https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/spec/support/response_json.rb"><code>response_json</code></a>, which we use below and in all of our request specs that include a JSON response.</p>
 <pre><code># spec/requests/api/v1/events/events_spec.rb
 
 require 'spec_helper'
@@ -283,6 +284,7 @@ class CreateEvents &lt; ActiveRecord::Migration
     create_table :events do |t|
       t.timestamps null: false
       t.string :address
+      t.datetime :ended_at
       t.float :lat, null: false
       t.float :lon, null: false
       t.string :name, null: false
@@ -369,7 +371,8 @@ Event.create(
   lat: 37.8050217,
   lon: -122.409155,
   name: 'Best event OF ALL TIME!',
-  owner: User.find_by(device_token: '12345')
+  owner: User.find_by(device_token: '12345'),
+  started_at: Time.zone.now
 )</code></pre>
 <p>Assuming this created your first event (<code>id</code> will equal 1) and you are running <code>rails server</code> in Terminal (you will need to exit from Rails console or open a new Terminal window to do this), when you visit <code>localhost:3000/v1/events/1</code> in your browser you should see something like this:</p>
 <pre><code>{
@@ -786,7 +789,7 @@ describe 'GET /v1/events/nearest?lat=&amp;lon=&amp;radius=' do
         'lat' =&gt; near_event.lat,
         'lon' =&gt; near_event.lon,
         'name' =&gt; near_event.name,
-        'owner' =&gt; { 'device_token' =&gt; near_event.owner.device_token }
+        'owner' =&gt; { 'device_token' =&gt; near_event.owner.device_token },
         'started_at' =&gt; near_event.started_at.iso8601(3),
       },
       {
@@ -796,7 +799,7 @@ describe 'GET /v1/events/nearest?lat=&amp;lon=&amp;radius=' do
         'lat' =&gt; farther_event.lat,
         'lon' =&gt; farther_event.lon,
         'name' =&gt; farther_event.name,
-        'owner' =&gt; { 'device_token' =&gt; farther_event.owner.device_token }
+        'owner' =&gt; { 'device_token' =&gt; farther_event.owner.device_token },
         'started_at' =&gt; farther_event.started_at.iso8601(3),
       }
     ])
@@ -882,7 +885,7 @@ irb(main):002:0&gt; event.geocoded?
 <section id="it-all-starts-with-a-request-spec-part-ii-2" class="level3">
 <h3>It all starts with a request spec, part II</h3>
 <p>We want to explicitly define what happens when there are no events nearby. Let's do that through writing a test first:</p>
-<pre><code># spec/requests/api/v2/events/nearest_spec.rb
+<pre><code># spec/requests/api/v1/events/nearest_spec.rb
 
 describe 'GET /v1/events/nearest?lat=&amp;lon=&amp;radius=' do
 
@@ -1206,7 +1209,7 @@ end</code></pre>
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:addEventViewController];
     [self presentViewController:navigationController animated:YES completion:nil];
 }</code></pre>
-<p>Since the <code>addEventViewController</code> isn't being placed on a navigation stack with the HUMMapViewController, it won't have a navigation bar but default. We'll place the <code>addEventViewController</code> inside its own navigation controller so that it will have a navigation stack and navigation bar of its own.</p>
+<p>Since the <code>addEventViewController</code> isn't being placed on a navigation stack with the HUMMapViewController, it won't have a navigation bar by default. We'll place the <code>addEventViewController</code> inside its own navigation controller so that it will have a navigation stack and navigation bar of its own.</p>
 <p>Now we can present the <code>navigationController</code> instead of the <code>addEventViewController</code>. This presents the entire <code>navigationController</code>'s navigation stack, but right now the only view controller inside the navigation stack is the <code>addEventViewController</code>.</p>
 <p>You can run the Humon app now and press the &quot;Add&quot; button. However, you won't be able to cancel out of the HUMAddEventViewController, so lets handle that next.</p>
 </section>
@@ -1294,7 +1297,7 @@ end</code></pre>
                        animated:YES
                      completion:nil];
 }</code></pre>
-<p>Inside of the method, we create and present a UIActivityViewController. The activityViewController contains activities that allow users to save pictures to their camera roll, or post links to twitter, etc. When we intialize this view controller, we have to include an array of activity items that we want to save or post or share. The activity items you include can be strings, images, or even custom objects. In our case, we're going to want to include a dummy string that will later contain our event info.</p>
+<p>Inside of the method, we create and present a UIActivityViewController. The activityViewController contains activities that allow users to save pictures to their camera roll, or post links to twitter, etc. When we initialize this view controller, we have to include an array of activity items that we want to save or post or share. The activity items you include can be strings, images, or even custom objects. In our case, we're going to want to include a dummy string that will later contain our event info.</p>
 <p>We also set the activityViewController's excludedActivityTypes so that the activity view that pops up will not allow the user to copy the event text or print it. There are quite a few activity types that Apple provides by default in the UIActivityViewController and you can exclude them by including them in the array of excluded types. Keep in mind that some options won't always be available, like &quot;Save to Camera Roll&quot; which is only available if one of the activity items is a UIImage.</p>
 </section>
 <section id="adding-an-edit-button" class="level3">

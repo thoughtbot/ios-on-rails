@@ -110,6 +110,12 @@ RSpec request specs, like feature specs, are a great way to ensure the entire
 stack is working together properly but via HTTP verbs, response codes, and
 responses rather than browser interactions.
 
+When writing our request specs, we found that we were calling
+`JSON.parse(response.body)` over and over again. We abstracted this into a
+method called
+[`response_json`](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/spec/support/response_json.rb),
+which we use below and in all of our request specs that include a JSON response.
+
     # spec/requests/api/v1/events/events_spec.rb
 
     require 'spec_helper'
@@ -187,6 +193,7 @@ the migration was created):
         create_table :events do |t|
           t.timestamps null: false
           t.string :address
+          t.datetime :ended_at
           t.float :lat, null: false
           t.float :lon, null: false
           t.string :name, null: false
@@ -323,7 +330,8 @@ following:
       lat: 37.8050217,
       lon: -122.409155,
       name: 'Best event OF ALL TIME!',
-      owner: User.find_by(device_token: '12345')
+      owner: User.find_by(device_token: '12345'),
+      started_at: Time.zone.now
     )
 
 Assuming this created your first event (`id` will equal 1) and you are running
