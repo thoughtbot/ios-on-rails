@@ -1,5 +1,5 @@
 class Api::V1::Events::NearestsController < ApiController
-  def show
+  def index
     @events = Event.near(
       [params[:lat], params[:lon]],
       params[:radius],
