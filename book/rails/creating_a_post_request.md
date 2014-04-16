@@ -198,6 +198,7 @@ method. Time to add some logic:
           lon: params[:lon],
           name: params[:name],
           started_at: params[:started_at],
+          ended_at: params[:ended_at],
           owner: user
         }
       end
