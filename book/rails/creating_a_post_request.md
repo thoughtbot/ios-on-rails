@@ -201,6 +201,14 @@ method. Time to add some logic:
           owner: user
         }
       end
+      
+      def user
+        User.find_or_create_by(device_token: device_token)
+      end
+
+      def device_token
+        params[:owner].try(:[], :device_token)
+      end
     end
 
 Our error message has changed yet again, and now it is time for us to move to
