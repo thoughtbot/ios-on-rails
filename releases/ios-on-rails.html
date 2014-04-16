@@ -510,12 +510,21 @@ class Api::V1::EventsController &lt; ApiController
   def event_params
     {
       address: params[:address],
+      ended_at: params[:ended_at],
       lat: params[:lat],
       lon: params[:lon],
       name: params[:name],
       started_at: params[:started_at],
       owner: user
     }
+  end
+
+  def user
+    User.find_or_create_by(device_token: device_token)
+  end
+
+  def device_token
+    params[:owner].try(:[], :device_token)
   end
 end</code></pre>
 <p>Our error message has changed yet again, and now it is time for us to move to the final step: creating our view.</p>
@@ -774,7 +783,7 @@ class Api::V1::EventsController &lt; ApiController
 <p>Before we jump into setting up our <code>Event</code> model with the Geocoder gem, let's write a request spec for this new endpoint. Since this new endpoint will require a controller of its own, we will create an <code>events</code> directory within <code>spec/requests</code> and include this spec there:</p>
 <pre><code># spec/requests/api/v2/events/nearest_spec.rb
 
-describe 'GET /v1/events/nearest?lat=&amp;lon=&amp;radius=' do
+describe 'GET /v1/events/nearests?lat=&amp;lon=&amp;radius=' do
   it 'returns the events closest to the lat and lon' do
     near_event = create(:event, lat: 37.760322, lon: -122.429667)
     farther_event = create(:event, lat: 37.760321, lon: -122.429667)
@@ -783,7 +792,7 @@ describe 'GET /v1/events/nearest?lat=&amp;lon=&amp;radius=' do
     lon = -122.430782
     radius = 5
 
-    get &quot;/v1/events/nearest?lat=#{lat}&amp;lon=#{lon}&amp;radius=#{radius}&quot;
+    get &quot;/v1/events/nearests?lat=#{lat}&amp;lon=#{lon}&amp;radius=#{radius}&quot;
 
     expect(response_json).to eq([
       {
@@ -814,17 +823,17 @@ end</code></pre>
 <h3>Controller</h3>
 <p>When we run the test above, we get an interesting error:</p>
 <pre><code>ActiveRecord::RecordNotFound:
-   Couldn't find Event with id=nearest</code></pre>
+   Couldn't find Event with id=nearests</code></pre>
 <p>What's that about!? If we run <code>rake routes</code> in our shell we'll see that our app has the following GET endpoint defined:</p>
 <pre><code>GET   /v1/events/:id(.:format)  api/v1/events#show</code></pre>
-<p>Rails is matching <code>get '/v1/events/nearest'</code> to this pattern and thinks we are looking for an <code>event</code> with an <code>id</code> of <code>nearest</code>. How do we fix this? We need to tell our Rails app that a GET request at <code>events/nearest</code> is different from a GET request at <code>events/:id</code>:</p>
+<p>Rails is matching <code>get '/v1/events/nearests'</code> to this pattern and thinks we are looking for an <code>event</code> with an <code>id</code> of <code>nearests</code>. How do we fix this? We need to tell our Rails app that a GET request at <code>events/nearests</code> is different from a GET request at <code>events/:id</code>:</p>
 <pre><code># config/routes.rb
 
 Humon::Application.routes.draw do
   scope module: :api, defaults: { format: 'json' } do
    namespace :v1 do
       namespace :events do
-        resource :nearest, only: [:show]
+        resources :nearests, only: [:index]
       end
 
   ...
@@ -833,7 +842,7 @@ Humon::Application.routes.draw do
   end
 end</code></pre>
 <p>If we run <code>rake routes</code> in the shell again, we'll see that there's a new GET endpoint:</p>
-<pre><code>GET   /v1/events/nearest(.:format) api/v1/events/nearests#show</code></pre>
+<pre><code>GET   /v1/events/nearests(.:format) api/v1/events/nearests#index</code></pre>
 <p>And when we run our test again, our error has changed:</p>
 <pre><code>ActionController::RoutingError:
    uninitialized constant Api::V1::Events::NearestsController</code></pre>
@@ -841,7 +850,7 @@ end</code></pre>
 <pre><code># app/controllers/api/1/events/nearests_controller.rb
 
 class Api::V1::Events::NearestsController &lt; ApiController
-  def show
+  def index
     @events = Event.near(
       [params[:lat], params[:lon]],
       params[:radius],
