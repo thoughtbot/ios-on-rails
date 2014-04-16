@@ -246,7 +246,7 @@ describe 'GET /v1/events/:id' do
         'lat' =&gt; event.lat,
         'lon' =&gt; event.lon,
         'name' =&gt; event.name,
-        'started_at' =&gt; event.started_at.iso8601(3),
+        'started_at' =&gt; event.started_at.as_json,
         'owner' =&gt; {
           'device_token' =&gt; event.owner.device_token
         }
@@ -429,7 +429,7 @@ end</code></pre>
 
 describe 'POST /v1/events' do
   it 'saves the address, lat, lon, name, and started_at date' do
-    date = 'Wed, 30 Oct 2013 11:59:55 -0700'.to_datetime
+    date = Time.zone.now
     device_token = '123abcd456xyz'
     owner = create(:user, device_token: device_token)
 
@@ -448,14 +448,18 @@ describe 'POST /v1/events' do
     event = Event.last
     expect(response_json).to eq({ 'id' =&gt; event.id })
     expect(event.address).to eq '123 Example St.'
-    expect(event.ended_at).to eq date
+    expect(event.ended_at.to_i).to eq date.to_i
     expect(event.lat).to eq 1.0
     expect(event.lon).to eq 1.0
     expect(event.name).to eq 'Fun Place!!'
-    expect(event.started_at).to eq date
+    expect(event.started_at.to_i).to eq date.to_i
     expect(event.owner).to eq owner
   end
 end</code></pre>
+<p>Note about the time comparisons above: the reason we are calling <code>to_i</code> on <code>event.started_at</code> and <code>event.ended_at</code> is that Ruby time (the time we are setting when we declare the <code>date</code> variable) is more precise than ActiveRecord time (the time we are getting back from <code>Event.last</code>). If you run the tests without <code>to_i</code>, you will see something like this:</p>
+<pre><code>    expected: Wed, 16 Apr 2014 17:13:47 UTC +00:00
+         got: Wed, 16 Apr 2014 17:13:47 UTC +00:00</code></pre>
+<p>Even though the date objects themselves appear equal, as <a href="http://blog.tddium.com/2011/08/07/rails-time-comparisons-devil-details-etc/">this blog post on time comparisons in Rails notes</a>, &quot;When the value is read back from the database, it's only preserved to microsecond precision, while the in-memory representation is precise to nanoseconds.&quot; Calling <code>to_i</code> on these dates normalizes them to use the same place value, which renders them equal for our test.</p>
 <section id="controller-1" class="level4">
 <h4>Controller</h4>
 <p>When we run the test above, our first error should be <code>No route matches [POST] &quot;/v1/events&quot;</code>. This is exactly the error we would expect, since we haven't defined this route in our <code>routes.rb</code> file. Let's fix that:</p>
@@ -790,7 +794,7 @@ describe 'GET /v1/events/nearest?lat=&amp;lon=&amp;radius=' do
         'lon' =&gt; near_event.lon,
         'name' =&gt; near_event.name,
         'owner' =&gt; { 'device_token' =&gt; near_event.owner.device_token },
-        'started_at' =&gt; near_event.started_at.iso8601(3),
+        'started_at' =&gt; near_event.started_at.as_json,
       },
       {
         'address' =&gt; farther_event.address,
@@ -800,7 +804,7 @@ describe 'GET /v1/events/nearest?lat=&amp;lon=&amp;radius=' do
         'lon' =&gt; farther_event.lon,
         'name' =&gt; farther_event.name,
         'owner' =&gt; { 'device_token' =&gt; farther_event.owner.device_token },
-        'started_at' =&gt; farther_event.started_at.iso8601(3),
+        'started_at' =&gt; farther_event.started_at.as_json,
       }
     ])
   end

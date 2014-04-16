@@ -14,7 +14,7 @@ describe 'GET /v1/events/:id' do
         'lat' => event.lat,
         'lon' => event.lon,
         'name' => event.name,
-        'started_at' => event.started_at.iso8601(3),
+        'started_at' => event.started_at.as_json,
         'owner' => {
           'device_token' => event.owner.device_token
         }
@@ -25,7 +25,7 @@ end
 
 describe 'POST /v1/events' do
   it 'saves the address, lat, lon, name, and started_at date' do
-    date = 'Wed, 30 Oct 2013 11:59:55 -0700'.to_datetime
+    date = Time.zone.now
     device_token = '123abcd456xyz'
     owner = create(:user, device_token: device_token)
 
@@ -44,11 +44,11 @@ describe 'POST /v1/events' do
     event = Event.last
     expect(response_json).to eq({ 'id' => event.id })
     expect(event.address).to eq '123 Example St.'
-    expect(event.ended_at).to eq date
+    expect(event.ended_at.to_i).to eq date.to_i
     expect(event.lat).to eq 1.0
     expect(event.lon).to eq 1.0
     expect(event.name).to eq 'Fun Place!!'
-    expect(event.started_at).to eq date
+    expect(event.started_at.to_i).to eq date.to_i
     expect(event.owner).to eq owner
   end
 

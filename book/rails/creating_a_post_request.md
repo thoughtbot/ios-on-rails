@@ -73,7 +73,7 @@ GET request: with a request spec.
 
     describe 'POST /v1/events' do
       it 'saves the address, lat, lon, name, and started_at date' do
-        date = 'Wed, 30 Oct 2013 11:59:55 -0700'.to_datetime
+        date = Time.zone.now
         device_token = '123abcd456xyz'
         owner = create(:user, device_token: device_token)
 
@@ -92,14 +92,31 @@ GET request: with a request spec.
         event = Event.last
         expect(response_json).to eq({ 'id' => event.id })
         expect(event.address).to eq '123 Example St.'
-        expect(event.ended_at).to eq date
+        expect(event.ended_at.to_i).to eq date.to_i
         expect(event.lat).to eq 1.0
         expect(event.lon).to eq 1.0
         expect(event.name).to eq 'Fun Place!!'
-        expect(event.started_at).to eq date
+        expect(event.started_at.to_i).to eq date.to_i
         expect(event.owner).to eq owner
       end
     end
+
+Note about the time comparisons above: the reason we are calling `to_i` on
+`event.started_at` and `event.ended_at` is that Ruby time (the time we are
+setting when we declare the `date` variable) is more precise than ActiveRecord
+time (the time we are getting back from `Event.last`). If you run the tests
+without `to_i`, you will see something like this:
+
+        expected: Wed, 16 Apr 2014 17:13:47 UTC +00:00
+             got: Wed, 16 Apr 2014 17:13:47 UTC +00:00
+
+Even though the date objects themselves appear equal, as [this blog post on time
+comparisons in Rails
+notes](http://blog.tddium.com/2011/08/07/rails-time-comparisons-devil-details-etc/),
+"When the value is read back from the database, it's only preserved to
+microsecond precision, while the in-memory representation is precise to
+nanoseconds." Calling `to_i` on these dates normalizes them to use the same
+place value, which renders them equal for our test.
 
 
 #### Controller

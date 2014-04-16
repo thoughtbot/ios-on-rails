@@ -50,7 +50,7 @@ which we use below and in all of our request specs that include a JSON response.
             'lat' => event.lat,
             'lon' => event.lon,
             'name' => event.name,
-            'started_at' => event.started_at.iso8601(3),
+            'started_at' => event.started_at.as_json,
             'owner' => {
               'device_token' => event.owner.device_token
             }

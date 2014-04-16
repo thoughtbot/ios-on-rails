@@ -116,7 +116,7 @@ describe 'GET /v1/events/:id' do
         'lat' =&gt; event.lat,
         'lon' =&gt; event.lon,
         'name' =&gt; event.name,
-        'started_at' =&gt; event.started_at.iso8601(3),
+        'started_at' =&gt; event.started_at.as_json,
         'owner' =&gt; {
           'device_token' =&gt; event.owner.device_token
         }

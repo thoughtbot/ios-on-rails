@@ -66,7 +66,7 @@ require a controller of its own, we will create an `events` directory within
             'lon' => near_event.lon,
             'name' => near_event.name,
             'owner' => { 'device_token' => near_event.owner.device_token },
-            'started_at' => near_event.started_at.iso8601(3),
+            'started_at' => near_event.started_at.as_json,
           },
           {
             'address' => farther_event.address,
@@ -76,7 +76,7 @@ require a controller of its own, we will create an `events` directory within
             'lon' => farther_event.lon,
             'name' => farther_event.name,
             'owner' => { 'device_token' => farther_event.owner.device_token },
-            'started_at' => farther_event.started_at.iso8601(3),
+            'started_at' => farther_event.started_at.as_json,
           }
         ])
       end
