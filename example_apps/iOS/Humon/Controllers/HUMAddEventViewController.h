@@ -6,6 +6,10 @@
 //  Copyright (c) 2013 thoughtbot. All rights reserved.
 //
 
+@import MapKit;
+
 @interface HUMAddEventViewController : UITableViewController
+
+- (instancetype)initWithEventCoordinate:(CLLocationCoordinate2D)coordinate;
 
 @end

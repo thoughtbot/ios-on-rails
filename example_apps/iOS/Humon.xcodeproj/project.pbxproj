@@ -9,6 +9,30 @@
 /* Begin PBXBuildFile section */
 		093FFD8A1819DA4B0006E686 /* HUMDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 093FFD881819DA4B0006E686 /* HUMDataModel.xcdatamodeld */; };
 		093FFD8C1819DAD20006E686 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 093FFD8B1819DAD20006E686 /* CoreData.framework */; };
+		093FFDCD1832AA720006E686 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 093FFDCC1832AA720006E686 /* SenTestingKit.framework */; };
+		093FFDCE1832AA720006E686 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0991A9B7181085D000881332 /* Foundation.framework */; };
+		093FFDCF1832AA720006E686 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0991A9BB181085D000881332 /* UIKit.framework */; };
+		093FFDD51832AA730006E686 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 093FFDD31832AA730006E686 /* InfoPlist.strings */; };
+		093FFDE21832AABC0006E686 /* HUMUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 093FFDE11832AABC0006E686 /* HUMUITests.m */; };
+		093FFDE31832ABA40006E686 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0991A9B9181085D000881332 /* CoreGraphics.framework */; };
+		097D569418E4509E00AC0883 /* NSDateFormatter+HUMDefaultDateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 097D567A18E4509E00AC0883 /* NSDateFormatter+HUMDefaultDateFormatter.m */; };
+		097D569918E4509E00AC0883 /* HUMTimeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 097D568518E4509E00AC0883 /* HUMTimeCell.m */; };
+		097D569A18E4509E00AC0883 /* HUMTimePickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 097D568718E4509E00AC0883 /* HUMTimePickerCell.m */; };
+		097D569B18E4509E00AC0883 /* HUMRailsAFNClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 097D568A18E4509E00AC0883 /* HUMRailsAFNClient.m */; };
+		097D569C18E4509E00AC0883 /* HUMRailsClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 097D568C18E4509E00AC0883 /* HUMRailsClient.m */; };
+		097D569D18E4509E00AC0883 /* HUMAddEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 097D568F18E4509E00AC0883 /* HUMAddEventViewController.m */; };
+		097D569E18E4509E00AC0883 /* HUMConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 097D569118E4509E00AC0883 /* HUMConfirmationViewController.m */; };
+		097D569F18E4509E00AC0883 /* HUMMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 097D569318E4509E00AC0883 /* HUMMapViewController.m */; };
+		097D56A718E450A900AC0883 /* HUMEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 097D56A218E450A900AC0883 /* HUMEvent.m */; };
+		097D56A818E450A900AC0883 /* HUMUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 097D56A418E450A900AC0883 /* HUMUser.m */; };
+		097D56A918E450A900AC0883 /* HUMUserSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 097D56A618E450A900AC0883 /* HUMUserSession.m */; };
+		097D56F319087D0300AC0883 /* HUMLocateEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 097D56F219087D0300AC0883 /* HUMLocateEventViewController.m */; };
+		097D56FB1908CDA300AC0883 /* HUMAppearanceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 097D56FA1908CDA300AC0883 /* HUMAppearanceManager.m */; };
+		097D57011908D0B100AC0883 /* UIImage+HUMColorImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 097D57001908D0B100AC0883 /* UIImage+HUMColorImage.m */; };
+		097D57041908F81900AC0883 /* HUMFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 097D57031908F81900AC0883 /* HUMFooterView.m */; };
+		097D570719090E8600AC0883 /* HUMTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 097D570619090E8600AC0883 /* HUMTextFieldCell.m */; };
+		097D570D19093A3F00AC0883 /* HUMButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 097D570C19093A3F00AC0883 /* HUMButton.m */; };
+		097D5710190946D900AC0883 /* NSObject+HUMNullCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = 097D570F190946D900AC0883 /* NSObject+HUMNullCheck.m */; };
 		0991A9B8181085D000881332 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0991A9B7181085D000881332 /* Foundation.framework */; };
 		0991A9BA181085D000881332 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0991A9B9181085D000881332 /* CoreGraphics.framework */; };
 		0991A9BC181085D000881332 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0991A9BB181085D000881332 /* UIKit.framework */; };
@@ -21,13 +45,19 @@
 		0991A9D9181085D000881332 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0991A9BB181085D000881332 /* UIKit.framework */; };
 		0991A9E1181085D000881332 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0991A9DF181085D000881332 /* InfoPlist.strings */; };
 		0991A9E3181085D000881332 /* HumonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0991A9E2181085D000881332 /* HumonTests.m */; };
-		09C1AE261843D0040044E521 /* HUMAddEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C1AE211843D0040044E521 /* HUMAddEventViewController.m */; };
-		09C1AE271843D0040044E521 /* HUMConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C1AE231843D0040044E521 /* HUMConfirmationViewController.m */; };
-		09C1AE281843D0040044E521 /* HUMMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C1AE251843D0040044E521 /* HUMMapViewController.m */; };
+		111DB5B1CBE24A519BA10EAE /* libPods-HumonUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 36F6FB009F914E0BB4DE201B /* libPods-HumonUITests.a */; };
+		4E46F5EF9B01469D9ED70D65 /* libPods-HumonTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B9E902ACF20470E9806E200 /* libPods-HumonTests.a */; };
 		9E101084E69E42909C8457D0 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D996E00A1E7349AE89853F21 /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		093FFDD91832AA730006E686 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0991A9AC181085D000881332 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0991A9B3181085D000881332;
+			remoteInfo = Humon;
+		};
 		0991A9DA181085D000881332 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0991A9AC181085D000881332 /* Project object */;
@@ -40,6 +70,49 @@
 /* Begin PBXFileReference section */
 		093FFD891819DA4B0006E686 /* HUMDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = HUMDataModel.xcdatamodel; sourceTree = "<group>"; };
 		093FFD8B1819DAD20006E686 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		093FFDCB1832AA720006E686 /* HumonUITests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HumonUITests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		093FFDCC1832AA720006E686 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		093FFDD21832AA730006E686 /* HumonUITests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HumonUITests-Info.plist"; sourceTree = "<group>"; };
+		093FFDD41832AA730006E686 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		093FFDD81832AA730006E686 /* HumonUITests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HumonUITests-Prefix.pch"; sourceTree = "<group>"; };
+		093FFDE01832AABC0006E686 /* HUMUITests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUMUITests.h; sourceTree = "<group>"; };
+		093FFDE11832AABC0006E686 /* HUMUITests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMUITests.m; sourceTree = "<group>"; };
+		097D567918E4509E00AC0883 /* NSDateFormatter+HUMDefaultDateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+HUMDefaultDateFormatter.h"; sourceTree = "<group>"; };
+		097D567A18E4509E00AC0883 /* NSDateFormatter+HUMDefaultDateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+HUMDefaultDateFormatter.m"; sourceTree = "<group>"; };
+		097D568418E4509E00AC0883 /* HUMTimeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUMTimeCell.h; sourceTree = "<group>"; };
+		097D568518E4509E00AC0883 /* HUMTimeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMTimeCell.m; sourceTree = "<group>"; };
+		097D568618E4509E00AC0883 /* HUMTimePickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUMTimePickerCell.h; sourceTree = "<group>"; };
+		097D568718E4509E00AC0883 /* HUMTimePickerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMTimePickerCell.m; sourceTree = "<group>"; };
+		097D568918E4509E00AC0883 /* HUMRailsAFNClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUMRailsAFNClient.h; sourceTree = "<group>"; };
+		097D568A18E4509E00AC0883 /* HUMRailsAFNClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMRailsAFNClient.m; sourceTree = "<group>"; };
+		097D568B18E4509E00AC0883 /* HUMRailsClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUMRailsClient.h; sourceTree = "<group>"; };
+		097D568C18E4509E00AC0883 /* HUMRailsClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMRailsClient.m; sourceTree = "<group>"; };
+		097D568E18E4509E00AC0883 /* HUMAddEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUMAddEventViewController.h; sourceTree = "<group>"; };
+		097D568F18E4509E00AC0883 /* HUMAddEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMAddEventViewController.m; sourceTree = "<group>"; };
+		097D569018E4509E00AC0883 /* HUMConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUMConfirmationViewController.h; sourceTree = "<group>"; };
+		097D569118E4509E00AC0883 /* HUMConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMConfirmationViewController.m; sourceTree = "<group>"; };
+		097D569218E4509E00AC0883 /* HUMMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUMMapViewController.h; sourceTree = "<group>"; };
+		097D569318E4509E00AC0883 /* HUMMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMMapViewController.m; sourceTree = "<group>"; };
+		097D56A118E450A900AC0883 /* HUMEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUMEvent.h; sourceTree = "<group>"; };
+		097D56A218E450A900AC0883 /* HUMEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMEvent.m; sourceTree = "<group>"; };
+		097D56A318E450A900AC0883 /* HUMUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUMUser.h; sourceTree = "<group>"; };
+		097D56A418E450A900AC0883 /* HUMUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMUser.m; sourceTree = "<group>"; };
+		097D56A518E450A900AC0883 /* HUMUserSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUMUserSession.h; sourceTree = "<group>"; };
+		097D56A618E450A900AC0883 /* HUMUserSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMUserSession.m; sourceTree = "<group>"; };
+		097D56F119087D0300AC0883 /* HUMLocateEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUMLocateEventViewController.h; sourceTree = "<group>"; };
+		097D56F219087D0300AC0883 /* HUMLocateEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMLocateEventViewController.m; sourceTree = "<group>"; };
+		097D56F91908CDA300AC0883 /* HUMAppearanceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUMAppearanceManager.h; sourceTree = "<group>"; };
+		097D56FA1908CDA300AC0883 /* HUMAppearanceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMAppearanceManager.m; sourceTree = "<group>"; };
+		097D56FF1908D0B100AC0883 /* UIImage+HUMColorImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+HUMColorImage.h"; sourceTree = "<group>"; };
+		097D57001908D0B100AC0883 /* UIImage+HUMColorImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+HUMColorImage.m"; sourceTree = "<group>"; };
+		097D57021908F81900AC0883 /* HUMFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HUMFooterView.h; path = Views/HUMFooterView.h; sourceTree = "<group>"; };
+		097D57031908F81900AC0883 /* HUMFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HUMFooterView.m; path = Views/HUMFooterView.m; sourceTree = "<group>"; };
+		097D570519090E8600AC0883 /* HUMTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUMTextFieldCell.h; sourceTree = "<group>"; };
+		097D570619090E8600AC0883 /* HUMTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMTextFieldCell.m; sourceTree = "<group>"; };
+		097D570B19093A3F00AC0883 /* HUMButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HUMButton.h; path = Views/HUMButton.h; sourceTree = "<group>"; };
+		097D570C19093A3F00AC0883 /* HUMButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HUMButton.m; path = Views/HUMButton.m; sourceTree = "<group>"; };
+		097D570E190946D900AC0883 /* NSObject+HUMNullCheck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+HUMNullCheck.h"; sourceTree = "<group>"; };
+		097D570F190946D900AC0883 /* NSObject+HUMNullCheck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+HUMNullCheck.m"; sourceTree = "<group>"; };
 		0991A9B4181085D000881332 /* Humon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Humon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0991A9B7181085D000881332 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0991A9B9181085D000881332 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -56,17 +129,27 @@
 		0991A9DE181085D000881332 /* HumonTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HumonTests-Info.plist"; sourceTree = "<group>"; };
 		0991A9E0181085D000881332 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0991A9E2181085D000881332 /* HumonTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HumonTests.m; sourceTree = "<group>"; };
-		09C1AE201843D0040044E521 /* HUMAddEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUMAddEventViewController.h; sourceTree = "<group>"; };
-		09C1AE211843D0040044E521 /* HUMAddEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMAddEventViewController.m; sourceTree = "<group>"; };
-		09C1AE221843D0040044E521 /* HUMConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUMConfirmationViewController.h; sourceTree = "<group>"; };
-		09C1AE231843D0040044E521 /* HUMConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMConfirmationViewController.m; sourceTree = "<group>"; };
-		09C1AE241843D0040044E521 /* HUMMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUMMapViewController.h; sourceTree = "<group>"; };
-		09C1AE251843D0040044E521 /* HUMMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMMapViewController.m; sourceTree = "<group>"; };
+		36F6FB009F914E0BB4DE201B /* libPods-HumonUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HumonUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		494D5B60B9C74C878D89F660 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		68E9FE1BF314452EA719FB0F /* Pods-HumonTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HumonTests.xcconfig"; path = "Pods/Pods-HumonTests.xcconfig"; sourceTree = "<group>"; };
+		9B9E902ACF20470E9806E200 /* libPods-HumonTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HumonTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A087C54C12844AC0A6C2AA0D /* Pods-HumonUITests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HumonUITests.xcconfig"; path = "Pods/Pods-HumonUITests.xcconfig"; sourceTree = "<group>"; };
 		D996E00A1E7349AE89853F21 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		093FFDC81832AA720006E686 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				093FFDE31832ABA40006E686 /* CoreGraphics.framework in Frameworks */,
+				093FFDCD1832AA720006E686 /* SenTestingKit.framework in Frameworks */,
+				093FFDCF1832AA720006E686 /* UIKit.framework in Frameworks */,
+				093FFDCE1832AA720006E686 /* Foundation.framework in Frameworks */,
+				111DB5B1CBE24A519BA10EAE /* libPods-HumonUITests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0991A9B1181085D000881332 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -86,20 +169,122 @@
 				0991A9D7181085D000881332 /* XCTest.framework in Frameworks */,
 				0991A9D9181085D000881332 /* UIKit.framework in Frameworks */,
 				0991A9D8181085D000881332 /* Foundation.framework in Frameworks */,
+				4E46F5EF9B01469D9ED70D65 /* libPods-HumonTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		093FFDD01832AA720006E686 /* HumonUITests */ = {
+			isa = PBXGroup;
+			children = (
+				093FFDE01832AABC0006E686 /* HUMUITests.h */,
+				093FFDE11832AABC0006E686 /* HUMUITests.m */,
+				093FFDD11832AA730006E686 /* Supporting Files */,
+			);
+			path = HumonUITests;
+			sourceTree = "<group>";
+		};
+		093FFDD11832AA730006E686 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				093FFDD21832AA730006E686 /* HumonUITests-Info.plist */,
+				093FFDD31832AA730006E686 /* InfoPlist.strings */,
+				093FFDD81832AA730006E686 /* HumonUITests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		097D567818E4509E00AC0883 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				097D567918E4509E00AC0883 /* NSDateFormatter+HUMDefaultDateFormatter.h */,
+				097D567A18E4509E00AC0883 /* NSDateFormatter+HUMDefaultDateFormatter.m */,
+				097D56FF1908D0B100AC0883 /* UIImage+HUMColorImage.h */,
+				097D57001908D0B100AC0883 /* UIImage+HUMColorImage.m */,
+				097D570E190946D900AC0883 /* NSObject+HUMNullCheck.h */,
+				097D570F190946D900AC0883 /* NSObject+HUMNullCheck.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		097D567D18E4509E00AC0883 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				097D570519090E8600AC0883 /* HUMTextFieldCell.h */,
+				097D570619090E8600AC0883 /* HUMTextFieldCell.m */,
+				097D568418E4509E00AC0883 /* HUMTimeCell.h */,
+				097D568518E4509E00AC0883 /* HUMTimeCell.m */,
+				097D568618E4509E00AC0883 /* HUMTimePickerCell.h */,
+				097D568718E4509E00AC0883 /* HUMTimePickerCell.m */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		097D568818E4509E00AC0883 /* Clients */ = {
+			isa = PBXGroup;
+			children = (
+				097D568918E4509E00AC0883 /* HUMRailsAFNClient.h */,
+				097D568A18E4509E00AC0883 /* HUMRailsAFNClient.m */,
+				097D568B18E4509E00AC0883 /* HUMRailsClient.h */,
+				097D568C18E4509E00AC0883 /* HUMRailsClient.m */,
+			);
+			path = Clients;
+			sourceTree = "<group>";
+		};
+		097D568D18E4509E00AC0883 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				097D569218E4509E00AC0883 /* HUMMapViewController.h */,
+				097D569318E4509E00AC0883 /* HUMMapViewController.m */,
+				097D56F119087D0300AC0883 /* HUMLocateEventViewController.h */,
+				097D56F219087D0300AC0883 /* HUMLocateEventViewController.m */,
+				097D568E18E4509E00AC0883 /* HUMAddEventViewController.h */,
+				097D568F18E4509E00AC0883 /* HUMAddEventViewController.m */,
+				097D569018E4509E00AC0883 /* HUMConfirmationViewController.h */,
+				097D569118E4509E00AC0883 /* HUMConfirmationViewController.m */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		097D56A018E450A900AC0883 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				097D56A118E450A900AC0883 /* HUMEvent.h */,
+				097D56A218E450A900AC0883 /* HUMEvent.m */,
+				097D56A318E450A900AC0883 /* HUMUser.h */,
+				097D56A418E450A900AC0883 /* HUMUser.m */,
+				097D56A518E450A900AC0883 /* HUMUserSession.h */,
+				097D56A618E450A900AC0883 /* HUMUserSession.m */,
+				097D56F91908CDA300AC0883 /* HUMAppearanceManager.h */,
+				097D56FA1908CDA300AC0883 /* HUMAppearanceManager.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		097D56F81908968A00AC0883 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				097D57021908F81900AC0883 /* HUMFooterView.h */,
+				097D57031908F81900AC0883 /* HUMFooterView.m */,
+				097D570B19093A3F00AC0883 /* HUMButton.h */,
+				097D570C19093A3F00AC0883 /* HUMButton.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		0991A9AB181085D000881332 = {
 			isa = PBXGroup;
 			children = (
 				0991A9BD181085D000881332 /* Humon */,
 				0991A9DC181085D000881332 /* HumonTests */,
+				093FFDD01832AA720006E686 /* HumonUITests */,
 				0991A9B6181085D000881332 /* Frameworks */,
 				0991A9B5181085D000881332 /* Products */,
 				494D5B60B9C74C878D89F660 /* Pods.xcconfig */,
+				68E9FE1BF314452EA719FB0F /* Pods-HumonTests.xcconfig */,
+				A087C54C12844AC0A6C2AA0D /* Pods-HumonUITests.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -108,6 +293,7 @@
 			children = (
 				0991A9B4181085D000881332 /* Humon.app */,
 				0991A9D5181085D000881332 /* HumonTests.xctest */,
+				093FFDCB1832AA720006E686 /* HumonUITests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -121,6 +307,9 @@
 				0991A9BB181085D000881332 /* UIKit.framework */,
 				0991A9D6181085D000881332 /* XCTest.framework */,
 				D996E00A1E7349AE89853F21 /* libPods.a */,
+				9B9E902ACF20470E9806E200 /* libPods-HumonTests.a */,
+				093FFDCC1832AA720006E686 /* SenTestingKit.framework */,
+				36F6FB009F914E0BB4DE201B /* libPods-HumonUITests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -130,13 +319,12 @@
 			children = (
 				0991A9C6181085D000881332 /* HUMAppDelegate.h */,
 				0991A9C7181085D000881332 /* HUMAppDelegate.m */,
-				09C1AE241843D0040044E521 /* HUMMapViewController.h */,
-				09C1AE251843D0040044E521 /* HUMMapViewController.m */,
-				09C1AE201843D0040044E521 /* HUMAddEventViewController.h */,
-				09C1AE211843D0040044E521 /* HUMAddEventViewController.m */,
-				09C1AE221843D0040044E521 /* HUMConfirmationViewController.h */,
-				09C1AE231843D0040044E521 /* HUMConfirmationViewController.m */,
-				0991A9CF181085D000881332 /* Images.xcassets */,
+				097D567818E4509E00AC0883 /* Categories */,
+				097D567D18E4509E00AC0883 /* Cells */,
+				097D568818E4509E00AC0883 /* Clients */,
+				097D568D18E4509E00AC0883 /* Controllers */,
+				097D56F81908968A00AC0883 /* Views */,
+				097D56A018E450A900AC0883 /* Models */,
 				0991A9BE181085D000881332 /* Supporting Files */,
 			);
 			path = Humon;
@@ -145,6 +333,7 @@
 		0991A9BE181085D000881332 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0991A9CF181085D000881332 /* Images.xcassets */,
 				0991A9BF181085D000881332 /* Humon-Info.plist */,
 				0991A9C0181085D000881332 /* InfoPlist.strings */,
 				0991A9C3181085D000881332 /* main.m */,
@@ -175,6 +364,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		093FFDCA1832AA720006E686 /* HumonUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 093FFDDF1832AA730006E686 /* Build configuration list for PBXNativeTarget "HumonUITests" */;
+			buildPhases = (
+				0A71D67A297F4B849C8D1382 /* Check Pods Manifest.lock */,
+				093FFDC71832AA720006E686 /* Sources */,
+				093FFDC81832AA720006E686 /* Frameworks */,
+				093FFDC91832AA720006E686 /* Resources */,
+				ECCB639087AE48FE88F178E7 /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				093FFDDA1832AA730006E686 /* PBXTargetDependency */,
+			);
+			name = HumonUITests;
+			productName = HumonUITests;
+			productReference = 093FFDCB1832AA720006E686 /* HumonUITests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
 		0991A9B3181085D000881332 /* Humon */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0991A9E6181085D000881332 /* Build configuration list for PBXNativeTarget "Humon" */;
@@ -198,9 +407,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0991A9E9181085D000881332 /* Build configuration list for PBXNativeTarget "HumonTests" */;
 			buildPhases = (
+				8E59AEA0F0464C78B6122293 /* Check Pods Manifest.lock */,
 				0991A9D1181085D000881332 /* Sources */,
 				0991A9D2181085D000881332 /* Frameworks */,
 				0991A9D3181085D000881332 /* Resources */,
+				DF9580D48728410482359F59 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -222,6 +433,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = thoughtbot;
 				TargetAttributes = {
+					093FFDCA1832AA720006E686 = {
+						TestTargetID = 0991A9B3181085D000881332;
+					};
 					0991A9D4181085D000881332 = {
 						TestTargetID = 0991A9B3181085D000881332;
 					};
@@ -242,11 +456,20 @@
 			targets = (
 				0991A9B3181085D000881332 /* Humon */,
 				0991A9D4181085D000881332 /* HumonTests */,
+				093FFDCA1832AA720006E686 /* HumonUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		093FFDC91832AA720006E686 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				093FFDD51832AA730006E686 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0991A9B2181085D000881332 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -267,6 +490,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0A71D67A297F4B849C8D1382 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		539FA60AE2AF4DF8AB5C972D /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -297,19 +535,87 @@
 			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		8E59AEA0F0464C78B6122293 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		DF9580D48728410482359F59 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-HumonTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		ECCB639087AE48FE88F178E7 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-HumonUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		093FFDC71832AA720006E686 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				093FFDE21832AABC0006E686 /* HUMUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0991A9B0181085D000881332 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				097D570719090E8600AC0883 /* HUMTextFieldCell.m in Sources */,
+				097D57011908D0B100AC0883 /* UIImage+HUMColorImage.m in Sources */,
+				097D570D19093A3F00AC0883 /* HUMButton.m in Sources */,
+				097D56A818E450A900AC0883 /* HUMUser.m in Sources */,
+				097D569E18E4509E00AC0883 /* HUMConfirmationViewController.m in Sources */,
+				097D56FB1908CDA300AC0883 /* HUMAppearanceManager.m in Sources */,
+				097D569918E4509E00AC0883 /* HUMTimeCell.m in Sources */,
 				0991A9C4181085D000881332 /* main.m in Sources */,
 				093FFD8A1819DA4B0006E686 /* HUMDataModel.xcdatamodeld in Sources */,
-				09C1AE281843D0040044E521 /* HUMMapViewController.m in Sources */,
-				09C1AE261843D0040044E521 /* HUMAddEventViewController.m in Sources */,
+				097D569A18E4509E00AC0883 /* HUMTimePickerCell.m in Sources */,
+				097D569F18E4509E00AC0883 /* HUMMapViewController.m in Sources */,
+				097D56A718E450A900AC0883 /* HUMEvent.m in Sources */,
+				097D56F319087D0300AC0883 /* HUMLocateEventViewController.m in Sources */,
+				097D5710190946D900AC0883 /* NSObject+HUMNullCheck.m in Sources */,
+				097D569418E4509E00AC0883 /* NSDateFormatter+HUMDefaultDateFormatter.m in Sources */,
+				097D56A918E450A900AC0883 /* HUMUserSession.m in Sources */,
 				0991A9C8181085D000881332 /* HUMAppDelegate.m in Sources */,
-				09C1AE271843D0040044E521 /* HUMConfirmationViewController.m in Sources */,
+				097D569D18E4509E00AC0883 /* HUMAddEventViewController.m in Sources */,
+				097D569B18E4509E00AC0883 /* HUMRailsAFNClient.m in Sources */,
+				097D57041908F81900AC0883 /* HUMFooterView.m in Sources */,
+				097D569C18E4509E00AC0883 /* HUMRailsClient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -324,6 +630,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		093FFDDA1832AA730006E686 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0991A9B3181085D000881332 /* Humon */;
+			targetProxy = 093FFDD91832AA730006E686 /* PBXContainerItemProxy */;
+		};
 		0991A9DB181085D000881332 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 0991A9B3181085D000881332 /* Humon */;
@@ -332,6 +643,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		093FFDD31832AA730006E686 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				093FFDD41832AA730006E686 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		0991A9C0181085D000881332 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -351,6 +670,92 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		093FFDDB1832AA730006E686 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A087C54C12844AC0A6C2AA0D /* Pods-HumonUITests.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Humon.app/Humon";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "HumonUITests/HumonUITests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "HumonUITests/HumonUITests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		093FFDDC1832AA730006E686 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A087C54C12844AC0A6C2AA0D /* Pods-HumonUITests.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Humon.app/Humon";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "HumonUITests/HumonUITests-Prefix.pch";
+				INFOPLIST_FILE = "HumonUITests/HumonUITests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+		093FFDDD1832AA730006E686 /* Beta */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A087C54C12844AC0A6C2AA0D /* Pods-HumonUITests.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Humon.app/Humon";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "HumonUITests/HumonUITests-Prefix.pch";
+				INFOPLIST_FILE = "HumonUITests/HumonUITests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Beta;
+		};
+		093FFDDE1832AA730006E686 /* Alpha */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A087C54C12844AC0A6C2AA0D /* Pods-HumonUITests.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Humon.app/Humon";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "HumonUITests/HumonUITests-Prefix.pch";
+				INFOPLIST_FILE = "HumonUITests/HumonUITests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Alpha;
+		};
 		0950F1D91810A57400A78A36 /* Alpha */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -369,7 +774,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = YES;
+				COPY_PHASE_STRIP = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
@@ -380,6 +785,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -391,6 +797,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				COPY_PHASE_STRIP = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Humon/Humon-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "ROOT_URL='@\"https://humon-staging.herokuapp.com/v1/\"'";
@@ -402,14 +809,17 @@
 		};
 		0950F1DB1810A57400A78A36 /* Alpha */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 68E9FE1BF314452EA719FB0F /* Pods-HumonTests.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Humon.app/Humon";
+				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Humon/Humon-Prefix.pch";
 				INFOPLIST_FILE = "HumonTests/HumonTests-Info.plist";
@@ -437,7 +847,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = YES;
+				COPY_PHASE_STRIP = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
@@ -448,6 +858,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -459,6 +870,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				COPY_PHASE_STRIP = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Humon/Humon-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "ROOT_URL='@\"https://api.humon.io/v1/\"'";
@@ -470,14 +882,17 @@
 		};
 		0950F1DE1810A57C00A78A36 /* Beta */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 68E9FE1BF314452EA719FB0F /* Pods-HumonTests.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Humon.app/Humon";
+				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Humon/Humon-Prefix.pch";
 				INFOPLIST_FILE = "HumonTests/HumonTests-Info.plist";
@@ -568,8 +983,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Humon/Humon-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
 					"ROOT_URL='@\"https://humon-staging.herokuapp.com/v1/\"'",
+					"DEBUG=1",
 				);
 				INFOPLIST_FILE = "Humon/Humon-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -594,6 +1009,7 @@
 		};
 		0991A9EA181085D000881332 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 68E9FE1BF314452EA719FB0F /* Pods-HumonTests.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Humon.app/Humon";
@@ -617,6 +1033,7 @@
 		};
 		0991A9EB181085D000881332 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 68E9FE1BF314452EA719FB0F /* Pods-HumonTests.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Humon.app/Humon";
@@ -637,6 +1054,17 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		093FFDDF1832AA730006E686 /* Build configuration list for PBXNativeTarget "HumonUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				093FFDDB1832AA730006E686 /* Debug */,
+				093FFDDC1832AA730006E686 /* Release */,
+				093FFDDD1832AA730006E686 /* Beta */,
+				093FFDDE1832AA730006E686 /* Alpha */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		0991A9AF181085D000881332 /* Build configuration list for PBXProject "Humon" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
