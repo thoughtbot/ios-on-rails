@@ -213,6 +213,23 @@ By adding `reverse_geocoded_by`, we are telling Geocoder that this is a
 geocoded object, and consequently giving our `Event` model access to Geocoder's
 instance methods, such as `geocoded?`, and scopes, such as `near`.
 
+### View
+
+Run the test again, and our failure has changed.
+
+      Failure/Error: get "/v1/events/nearests?lat=#{lat}&lon=#{lon}&radius=#{radius}"
+      ActionView::MissingTemplate api/v1/events/nearests/index
+
+We now need to create a `nearests` directory within `app/views/api/v1/events` and
+create the following template inside of that directory:
+
+    # app/views/api/v1/events/nearests/index.json.jbuilder
+
+    json.partial! 'api/v1/events/event', collection: @events, as: :event
+
+This view is using the `_event.json.jbuilder` template we already have, and
+rendering the `@events` found in the controller.
+
 When we run our test again, and it passes! Time to address the sad path...
 
 ### It all starts with a request spec, part II
