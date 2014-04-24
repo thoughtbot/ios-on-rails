@@ -82,7 +82,7 @@ at a time to make them pass. We will use FactoryGirl, Shoulda Matchers, and
 RSpec for our unit tests. To see our full test setup, see our `spec_helper`
 [here](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/spec/spec_helper.rb).
 
-    # spec/models/event.rb
+    # spec/models/event_spec.rb
 
     require 'spec_helper'
 
