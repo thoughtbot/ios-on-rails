@@ -14,5 +14,5 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
     #import <CoreData/CoreData.h>
-    #import <MapKit/MapKit.h>
+    #import <SVProgressHUD/SVProgressHUD.h>
 #endif

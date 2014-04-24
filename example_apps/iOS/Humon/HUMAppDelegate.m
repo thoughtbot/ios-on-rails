@@ -8,22 +8,25 @@
 
 #import "HUMAppDelegate.h"
 #import "HUMMapViewController.h"
+#import "HUMAppearanceManager.h"
 
 @implementation HUMAppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+- (BOOL)application:(UIApplication *)application
+    didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [self setupRootViewController];
-    return YES;
-}
+    [HUMAppearanceManager setupDefaultAppearances];
 
-- (void)setupRootViewController
-{
-    HUMMapViewController *viewController = [[HUMMapViewController alloc] init];
-    
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = viewController;
+    self.window = [[UIWindow alloc] initWithFrame:
+                   [[UIScreen mainScreen] bounds]];
+
+    HUMMapViewController *mapViewController = [[HUMMapViewController alloc] init];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:mapViewController];
+
+    self.window.rootViewController = navigationController;
     [self.window makeKeyAndVisible];
+    
+    return YES;
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application

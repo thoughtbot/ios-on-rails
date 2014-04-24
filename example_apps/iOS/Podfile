@@ -1,4 +1,14 @@
 platform :ios, '7.0'
 
-pod 'AFNetworking', '~> 2.0'
+pod 'AFNetworking', '~> 2.2.1'
 pod 'SSKeychain', '~> 1.2.1'
+pod 'SVProgressHUD', '~> 1.0'
+
+target 'HumonTests', :exclusive => true do
+  pod 'Kiwi/XCTest', '~> 2.2.3'
+  pod 'OHHTTPStubs', '~> 3.0.2'
+end
+
+target 'HumonUITests', :exclusive => true do
+  pod 'KIF', '~> 2.0.0'
+end
