@@ -130,7 +130,7 @@ defined this route in our `routes.rb` file. Let's fix that:
     Humon::Application.routes.draw do
       scope module: :api, defaults: { format: 'json' } do
         namespace :v1 do
-          resources :events, only: [:create, :show,]
+          resources :events, only: [:create, :show]
         end
       end
     end
