@@ -158,7 +158,7 @@ api/v1/events/create`. Again, receiving a different error message is a good
 indication that the last change we made is bringing us closer to a passing test.
 
 We will get back to the view layer in the next section, but for now let's just
-create an empty file at `app/views/api/v1/event/create.json.jbuilder`, since
+create an empty file at `app/views/api/v1/events/create.json.jbuilder`, since
 that will help us get to our next error.
 
 Run the spec again, and our error has changed (hooray!) to:
