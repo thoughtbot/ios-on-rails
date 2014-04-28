@@ -131,7 +131,7 @@ end</code></pre>
 <p>At the model level, Rails applications that serve a JSON API look exactly like regular web applications built with Rails. Although the views and controllers will be versioned, we will write our migrations like standard Rails migrations and keep our models within the models directory. You can see the data migrations for our example application <a href="https://github.com/thoughtbot/ios-on-rails/tree/master/example_apps/rails/db/migrate">here</a>.</p>
 <p>At this point, let's assume our <code>User</code> model has already been created.</p>
 <p>Our <code>Event</code> model has a few validations and relations, so we will write tests for those validations. In our development process, we would write the following tests line-by-line, watching them fail, and writing the lines in our model one at a time to make them pass. We will use FactoryGirl, Shoulda Matchers, and RSpec for our unit tests. To see our full test setup, see our <code>spec_helper</code> <a href="https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/spec/spec_helper.rb">here</a>.</p>
-<pre><code># spec/models/event.rb
+<pre><code># spec/models/event_spec.rb
 
 require 'spec_helper'
 

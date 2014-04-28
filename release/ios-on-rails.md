@@ -278,7 +278,7 @@ at a time to make them pass. We will use FactoryGirl, Shoulda Matchers, and
 RSpec for our unit tests. To see our full test setup, see our `spec_helper`
 [here](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/spec/spec_helper.rb).
 
-    # spec/models/event.rb
+    # spec/models/event_spec.rb
 
     require 'spec_helper'
 
@@ -602,7 +602,7 @@ defined this route in our `routes.rb` file. Let's fix that:
     Humon::Application.routes.draw do
       scope module: :api, defaults: { format: 'json' } do
         namespace :v1 do
-          resources :events, only: [:create, :show,]
+          resources :events, only: [:create, :show]
         end
       end
     end
@@ -630,7 +630,7 @@ api/v1/events/create`. Again, receiving a different error message is a good
 indication that the last change we made is bringing us closer to a passing test.
 
 We will get back to the view layer in the next section, but for now let's just
-create an empty file at `app/views/api/v1/event/create.json.jbuilder`, since
+create an empty file at `app/views/api/v1/events/create.json.jbuilder`, since
 that will help us get to our next error.
 
 Run the spec again, and our error has changed (hooray!) to:
@@ -1254,6 +1254,23 @@ Let's exit our Rails console, add `reverse_geocoded_by :lat, :lon` back to the
 By adding `reverse_geocoded_by`, we are telling Geocoder that this is a
 geocoded object, and consequently giving our `Event` model access to Geocoder's
 instance methods, such as `geocoded?`, and scopes, such as `near`.
+
+### View
+
+Run the test again, and our failure has changed.
+
+      Failure/Error: get "/v1/events/nearests?lat=#{lat}&lon=#{lon}&radius=#{radius}"
+      ActionView::MissingTemplate api/v1/events/nearests/index
+
+We now need to create a `nearests` directory within `app/views/api/v1/events` and
+create the following template inside of that directory:
+
+    # app/views/api/v1/events/nearests/index.json.jbuilder
+
+    json.partial! 'api/v1/events/event', collection: @events, as: :event
+
+This view is using the `_event.json.jbuilder` template we already have, and
+rendering the `@events` found in the controller.
 
 When we run our test again, and it passes! Time to address the sad path...
 

@@ -65,6 +65,7 @@
 <li><a href="#it-all-starts-with-a-request-spec-3">It all starts with a request spec</a></li>
 <li><a href="#controller-4">Controller</a></li>
 <li><a href="#model-and-gemfile">Model (and Gemfile)</a></li>
+<li><a href="#view-3">View</a></li>
 <li><a href="#it-all-starts-with-a-request-spec-part-ii-2">It all starts with a request spec, part II</a></li>
 <li><a href="#controller-5">Controller</a></li>
 </ul></li>
@@ -261,7 +262,7 @@ end</code></pre>
 <p>At the model level, Rails applications that serve a JSON API look exactly like regular web applications built with Rails. Although the views and controllers will be versioned, we will write our migrations like standard Rails migrations and keep our models within the models directory. You can see the data migrations for our example application <a href="https://github.com/thoughtbot/ios-on-rails/tree/master/example_apps/rails/db/migrate">here</a>.</p>
 <p>At this point, let's assume our <code>User</code> model has already been created.</p>
 <p>Our <code>Event</code> model has a few validations and relations, so we will write tests for those validations. In our development process, we would write the following tests line-by-line, watching them fail, and writing the lines in our model one at a time to make them pass. We will use FactoryGirl, Shoulda Matchers, and RSpec for our unit tests. To see our full test setup, see our <code>spec_helper</code> <a href="https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/spec/spec_helper.rb">here</a>.</p>
-<pre><code># spec/models/event.rb
+<pre><code># spec/models/event_spec.rb
 
 require 'spec_helper'
 
@@ -468,7 +469,7 @@ end</code></pre>
 Humon::Application.routes.draw do
   scope module: :api, defaults: { format: 'json' } do
     namespace :v1 do
-      resources :events, only: [:create, :show,]
+      resources :events, only: [:create, :show]
     end
   end
 end</code></pre>
@@ -485,7 +486,7 @@ class Api::V1::EventsController &lt; ApiController
 
 end</code></pre>
 <p>Run the spec again, and our error has changed to <code>Missing template api/v1/events/create</code>. Again, receiving a different error message is a good indication that the last change we made is bringing us closer to a passing test.</p>
-<p>We will get back to the view layer in the next section, but for now let's just create an empty file at <code>app/views/api/v1/event/create.json.jbuilder</code>, since that will help us get to our next error.</p>
+<p>We will get back to the view layer in the next section, but for now let's just create an empty file at <code>app/views/api/v1/events/create.json.jbuilder</code>, since that will help us get to our next error.</p>
 <p>Run the spec again, and our error has changed (hooray!) to:</p>
 <pre><code> Failure/Error: expect(response_json).to eq({ 'id' =&gt; event.id })
    NoMethodError:
@@ -893,6 +894,17 @@ irb(main):002:0&gt; event.geocoded?
 
 =&gt; true</code></pre>
 <p>By adding <code>reverse_geocoded_by</code>, we are telling Geocoder that this is a geocoded object, and consequently giving our <code>Event</code> model access to Geocoder's instance methods, such as <code>geocoded?</code>, and scopes, such as <code>near</code>.</p>
+</section>
+<section id="view-3" class="level3">
+<h3>View</h3>
+<p>Run the test again, and our failure has changed.</p>
+<pre><code>  Failure/Error: get &quot;/v1/events/nearests?lat=#{lat}&amp;lon=#{lon}&amp;radius=#{radius}&quot;
+  ActionView::MissingTemplate api/v1/events/nearests/index</code></pre>
+<p>We now need to create a <code>nearests</code> directory within <code>app/views/api/v1/events</code> and create the following template inside of that directory:</p>
+<pre><code># app/views/api/v1/events/nearests/index.json.jbuilder
+
+json.partial! 'api/v1/events/event', collection: @events, as: :event</code></pre>
+<p>This view is using the <code>_event.json.jbuilder</code> template we already have, and rendering the <code>@events</code> found in the controller.</p>
 <p>When we run our test again, and it passes! Time to address the sad path...</p>
 </section>
 <section id="it-all-starts-with-a-request-spec-part-ii-2" class="level3">
