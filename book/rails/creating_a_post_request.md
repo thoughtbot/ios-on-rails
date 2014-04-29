@@ -284,7 +284,7 @@ POST request spec):
             "Lat can't be blank",
             "Lon can't be blank",
             "Name can't be blank",
-            "Started at can't be blank",
+            "Started at can't be blank"
           ]
         })
         expect(response.code.to_i).to eq 422
