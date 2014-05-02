@@ -1,4 +1,4 @@
-## Alpha and Beta Schemes
+# Alpha and Beta Schemes
 
 Distributing a Beta version of your app to testers before submitting to the app store is a vital part of the submittal process for medium to large scale apps. Humon may be a small app now, but we are going to set up a Alpha and Beta configuration and scheme in order to follow with best practices.
 

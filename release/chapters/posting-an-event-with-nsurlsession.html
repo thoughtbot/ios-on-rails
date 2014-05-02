@@ -4,7 +4,10 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>iOS on Rails (Beta): Introduction</title>
+  <meta name="author" content="thoughtbot" />
+  <meta name="author" content="Jessie Young" />
+  <meta name="author" content="Diana Zmuda" />
+  <title>iOS on Rails (Beta): Posting an Event With NSURLSession</title>
   <style type="text/css"><![CDATA[code{white-space: pre;}]]></style>
   <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,20 +23,78 @@
     })();
   ]]></script>
 </head>
-<body><section id="introduction" class="level1">
-<h1>Introduction</h1>
-<section id="why-this-book" class="level3">
-<h3>Why this book?</h3>
-<p>There are many ways to build the backend for an iOS application but you only need one. And depending on the complexity of the API you are going to create, different solutions work best for different applications.</p>
-<p>Just as Rails makes it possible to set up a basic web application in a matter of minutes, Rails makes it possible to set up a basic API in a matter of minutes. But deciding how to structure your API isn't easy. While experimenting with all of the options is a fun weekend project, sometimes you just want to get going. This book will help you do just that. While your API will no doubt require some tweaking while fleshing out your iOS app, the approach we will be taking is to define and build the API first, and then consume this API through our iOS app.</p>
-<p>The Rails portions of <em>iOS on Rails</em> will guide you through what we have found to be a robust, clean, flexible way of building out a JSON API with Rails. We provide code samples for GET, POST, and PATCH requests. In addition, we will explore some of the alternative approaches that we didn't choose and explain why we made the choices that we did.</p>
-<p>The iOS portion of the book will then walk, step-by-step, through creating an iOS application that works with the Rails API you just created. The iOS application will use each endpoint to post up objects and get back necessary data for the user. Our model objects in the iOS app will correspond with the model objects in the database, and be populated with response data from the API.</p>
+<body><section id="posting-an-event-with-nsurlsession" class="level1">
+<h1>Posting an Event With NSURLSession</h1>
+<p>We have already defined a <code>sharedClient</code> of our <code>HUMRailsClient</code> to use for making POST /users requests. So, we simply need to define a new method for making POST /events requests.</p>
+<section id="declaring-a-task-for-making-requests-2" class="level3">
+<h3>Declaring a Task for Making Requests</h3>
+<p>Once we complete a request to POST an event, we want to return the event that we just posted. The /events POST request will return an event ID from the rails API, so we'll set this ID on the event object before returning it.</p>
+<p>Typedef this new type of event completion block:</p>
+<pre><code>// HUMRailsClient.h
+
+typedef void(^HUMRailsClientEventCompletionBlock)(HUMEvent *event);</code></pre>
+<p>and declare the event creation method:</p>
+<pre><code>// HUMRailsClient.h
+
+- (void)createEvent:(HUMEvent *)event
+        withCompletionBlock:(HUMRailsClientEventCompletionBlock)block;</code></pre>
 </section>
-<section id="who-is-this-book-for" class="level3">
-<h3>Who is this book for?</h3>
-<p>This book is for a developer who wants to build an iOS application with a Rails backend. It's also a book for both a Rails developer and an iOS developer to share and use in concert to create an app quickly and with more flexibility to change it than a backend-as-a-service provider like StackMob or Parse.</p>
-<p>The approach shared in this book is the result of our own experiments as Rails and iOS developers working together to build an application. The Rails portions of this book assume a basic working knowledge of how to build a web application with Rails as well as the Ruby programming language. The iOS portions of this book assume experience with object oriented programming and a basic familiarity with the Objective-C programming language.</p>
-<p></p>
+<section id="creating-a-task-for-making-requests-2" class="level3">
+<h3>Creating a Task for Making Requests</h3>
+<p>This POST /events method is slightly different from the POST /users method we created before.</p>
+<ol type="1">
+<li><p>We need to serialize a JSON dictionary of event information into data so we can <code>setHTTPBody:</code> on the request.</p></li>
+<li><p>We don't need to change the headers at all. When we call <code>createEvent:withCompletionBlock:</code>, we have already set the headers to include the current user's ID with <code>createCurrentUserWithCompletionBlock:</code>.</p></li>
+</ol>
+<p>Define the event creation method as follows:</p>
+<pre><code>// HUMRailsClient.m    
+
+- (void)createEvent:(HUMEvent *)event 
+        withCompletionBlock:(HUMRailsClientEventCompletionBlock)block
+{
+    // Serialize the event's JSON dictionary into data
+    NSData *JSONdata = [NSJSONSerialization
+                        dataWithJSONObject:[event JSONDictionary]
+                        options:0
+                        error:nil];
+    
+    // Create the event POST request
+    NSString *urlString = [NSString stringWithFormat:@"%@/events", ROOT_URL];
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:JSONdata];
+    
+    // Create and start a task
+    NSURLSessionTask *task = [self.session dataTaskWithRequest:request
+                                             completionHandler:^(NSData *data,
+                                                        NSURLResponse *response,
+                                                            NSError *error) {
+        // Log the error on completion
+        NSLog(@"Post event error: %@", error);
+            
+    }];
+    
+    [task resume];
+}  }</code></pre>
+<p>Now that we've serialized the event's JSON dictionary, created a POST request, and created a task to handle that request, we can fill in the completion block. Replace the error log in <code>task</code>'s completion block with the following:</p>
+<pre><code>// HUMRailsClient.m
+
+HUMEvent *responseEvent = nil;
+                                         
+if (!error) {
+    responseEvent = event;
+    NSDictionary *responseDictionary =[NSJSONSerialization
+                                       JSONObjectWithData:data
+                                       options:kNilOptions
+                                       error:nil];
+    responseEvent.eventID = responseDictionary[@"id"];
+}
+
+dispatch_async(dispatch_get_main_queue(), ^{
+    block(responseEvent);
+});</code></pre>
+<p>If the task completes without an error, we can serialize the data we receive into a dictionary and set the event's ID from that response dictionary. If the the task completes with an error, <code>responseEvent</code> will remain nil. Either way, we want to execute the block on the main queue, since the block will be updating the UI. The completion block will return either an updated event or nil depending on whether or not the POST was successful.</p>
 </section>
 </section></body>
 </html>

@@ -1,4 +1,4 @@
-## The Add an Event View Controller
+# The Add an Event View Controller
 
 ![Table View for event details](images/ios_app_skeleton_2.png)
 

@@ -1,4 +1,4 @@
-## Posting a User With AFNetworking
+# Posting a User With AFNetworking
 
 Now that we've created a method for enqueueing a task manually, lets use the AFNetworking framework to simplify things. We'll create a method on our `HUMRailsAFNClient` to POST to /users.
 

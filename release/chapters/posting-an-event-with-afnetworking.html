@@ -4,7 +4,10 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>iOS on Rails (Beta): Introduction</title>
+  <meta name="author" content="thoughtbot" />
+  <meta name="author" content="Jessie Young" />
+  <meta name="author" content="Diana Zmuda" />
+  <title>iOS on Rails (Beta): Posting an Event With AFNetworking</title>
   <style type="text/css"><![CDATA[code{white-space: pre;}]]></style>
   <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,20 +23,91 @@
     })();
   ]]></script>
 </head>
-<body><section id="introduction" class="level1">
-<h1>Introduction</h1>
-<section id="why-this-book" class="level3">
-<h3>Why this book?</h3>
-<p>There are many ways to build the backend for an iOS application but you only need one. And depending on the complexity of the API you are going to create, different solutions work best for different applications.</p>
-<p>Just as Rails makes it possible to set up a basic web application in a matter of minutes, Rails makes it possible to set up a basic API in a matter of minutes. But deciding how to structure your API isn't easy. While experimenting with all of the options is a fun weekend project, sometimes you just want to get going. This book will help you do just that. While your API will no doubt require some tweaking while fleshing out your iOS app, the approach we will be taking is to define and build the API first, and then consume this API through our iOS app.</p>
-<p>The Rails portions of <em>iOS on Rails</em> will guide you through what we have found to be a robust, clean, flexible way of building out a JSON API with Rails. We provide code samples for GET, POST, and PATCH requests. In addition, we will explore some of the alternative approaches that we didn't choose and explain why we made the choices that we did.</p>
-<p>The iOS portion of the book will then walk, step-by-step, through creating an iOS application that works with the Rails API you just created. The iOS application will use each endpoint to post up objects and get back necessary data for the user. Our model objects in the iOS app will correspond with the model objects in the database, and be populated with response data from the API.</p>
+<body><section id="posting-an-event-with-afnetworking" class="level1">
+<h1>Posting an Event With AFNetworking</h1>
+<p>Now lets POST an event using AFNetworking. You may continue building your own HUMRailsClient if you so desire, but henceforth we will be using AFNetworking for all our networking requests.</p>
+<section id="declaring-a-task-for-making-requests-3" class="level3">
+<h3>Declaring a Task for Making Requests</h3>
+<p>Once we complete a request to POST an event, we want to return the event that we just posted. The /events POST request will return an event ID from the rails API, so we'll set this ID on the event object before returning it.</p>
+<p>Typedef this new type of event completion block:</p>
+<pre><code>// HUMRailsAFNClient.h
+
+typedef void(^HUMRailsAFNClientEventCompletionBlock)(HUMEvent *event);</code></pre>
+<p>and declare the event creation method:</p>
+<pre><code>// HUMRailsAFNClient.h
+
+- (void)createEvent:(HUMEvent *)event
+        withCompletionBlock:(HUMRailsAFNClientEventCompletionBlock)block;</code></pre>
 </section>
-<section id="who-is-this-book-for" class="level3">
-<h3>Who is this book for?</h3>
-<p>This book is for a developer who wants to build an iOS application with a Rails backend. It's also a book for both a Rails developer and an iOS developer to share and use in concert to create an app quickly and with more flexibility to change it than a backend-as-a-service provider like StackMob or Parse.</p>
-<p>The approach shared in this book is the result of our own experiments as Rails and iOS developers working together to build an application. The Rails portions of this book assume a basic working knowledge of how to build a web application with Rails as well as the Ruby programming language. The iOS portions of this book assume experience with object oriented programming and a basic familiarity with the Objective-C programming language.</p>
-<p></p>
+<section id="creating-a-task-for-making-requests-3" class="level3">
+<h3>Creating a Task for Making Requests</h3>
+<p>With AFNetworking, making a POST request with a dictionary of parameters is quite easy. We call the <code>POST:parameters:success:failure</code> method and provide the <code>@"events"</code> path, the event's JSON dictionary, and a success and failure block.</p>
+<pre><code>// HUMRailsClient.m
+
+- (void)createEvent:(HUMEvent *)event
+        withCompletionBlock:(HUMRailsAFNClientEventCompletionBlock)block
+{
+    [self POST:@"events"
+    parameters:[event JSONDictionary]
+       success:^(NSURLSessionDataTask *task, id responseObject) {
+           
+        event.eventID = responseObject[@"id"];
+        block(event);
+           
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+        block(nil);
+        
+    }];
+}</code></pre>
+<p>In the case of success, we want to change the ID number on the event object and execute the completion block with the event. If there's a failure, we execute the block with <code>nil</code>. We don't have to worry about forcing the completion block to the main thread since the success and failure blocks are fired off on the main thread.</p>
+</section>
+<section id="making-the-post-request-1" class="level3">
+<h3>Making the POST Request</h3>
+<p>All POSTs to /events will happen inside of the HUMAddEventViewController. Eventually, the user will be able to populate the tableView with event information so that tapping the "Done" cell will POST an event using their input. For now, we will just create an event with fake event data on tapping the "Add" cell.</p>
+<pre><code>// HUMAddEventViewController.m
+
+- (void)tableView:(UITableView *)tableView
+        didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // If the user didn't select the last row, we don't need to do anything
+    if (indexPath.row != 5)
+        return;
+    
+    // Create an event with fake data
+    NSDictionary *fakeEventData = @{
+                                @"name" : @"Dolores Park Picnic",
+                                @"address" : @"566 Dolores St",
+                                @"ended_at" : @"2013-09-17T00:00:00.000Z",
+                                @"started_at" : @"2013-09-16T00:00:00.000Z",
+                                @"lat" : @"37.7583",
+                                @"lon" : @"-122.4275",
+                                @"user" :
+                                @{ @"device_token" : [HUMUser currentUserID] }
+                                };
+    HUMEvent *event = [[HUMEvent alloc] initWithJSON:fakeEventData];
+    
+    // Post the event
+    [SVProgressHUD show];
+    [[HUMRailsAFNClient sharedClient] createEvent:event
+                              withCompletionBlock:^(HUMEvent *event) {
+        [SVProgressHUD dismiss];
+    }];
+}</code></pre>
+<p>Instead of simply dismissing the progress display, we should present a HUMConfirmationViewController once the POST completes successfully.</p>
+<pre><code>// HUMAddEventViewController.m
+
+if (!event) {
+    [SVProgressHUD showErrorWithStatus:@"Event creation error"];
+    return;
+}
+                          
+[SVProgressHUD dismiss];
+HUMConfirmationViewController *confirmationViewController =
+                          [[HUMConfirmationViewController alloc] init];
+[self.navigationController pushViewController:confirmationViewController
+                                     animated:YES];</code></pre>
+<p>Now you can go through the general flow of hitting the "Add Event" button, confirming with the "Done" button, and recieving confirmation by seeing the HUMConfirmationViewController.</p>
 </section>
 </section></body>
 </html>

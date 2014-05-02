@@ -1,4 +1,4 @@
-## Posting a User With NSURLSession
+# Posting a User With NSURLSession
 
 Now that we have a singleton `HUMRailsClient` object and a configured session property on that object, we can create NSURLSessionTasks that will actually make our API request. 
 

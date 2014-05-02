@@ -4,7 +4,10 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>iOS on Rails (Beta): Introduction</title>
+  <meta name="author" content="thoughtbot" />
+  <meta name="author" content="Jessie Young" />
+  <meta name="author" content="Diana Zmuda" />
+  <title>iOS on Rails (Beta): The User Object</title>
   <style type="text/css"><![CDATA[code{white-space: pre;}]]></style>
   <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,20 +23,80 @@
     })();
   ]]></script>
 </head>
-<body><section id="introduction" class="level1">
-<h1>Introduction</h1>
-<section id="why-this-book" class="level3">
-<h3>Why this book?</h3>
-<p>There are many ways to build the backend for an iOS application but you only need one. And depending on the complexity of the API you are going to create, different solutions work best for different applications.</p>
-<p>Just as Rails makes it possible to set up a basic web application in a matter of minutes, Rails makes it possible to set up a basic API in a matter of minutes. But deciding how to structure your API isn't easy. While experimenting with all of the options is a fun weekend project, sometimes you just want to get going. This book will help you do just that. While your API will no doubt require some tweaking while fleshing out your iOS app, the approach we will be taking is to define and build the API first, and then consume this API through our iOS app.</p>
-<p>The Rails portions of <em>iOS on Rails</em> will guide you through what we have found to be a robust, clean, flexible way of building out a JSON API with Rails. We provide code samples for GET, POST, and PATCH requests. In addition, we will explore some of the alternative approaches that we didn't choose and explain why we made the choices that we did.</p>
-<p>The iOS portion of the book will then walk, step-by-step, through creating an iOS application that works with the Rails API you just created. The iOS application will use each endpoint to post up objects and get back necessary data for the user. Our model objects in the iOS app will correspond with the model objects in the database, and be populated with response data from the API.</p>
+<body><section id="the-user-object" class="level1">
+<h1>The User Object</h1>
+<p>Rather than having a user create an account and log in, we're going to create a user object on the first run of the app and then consistantly sign our requests as this user. The user entity on the database has only one property: device_token. You can think of this device_token as a user ID, since our users are identified by their device rather than an email address or username.</p>
+<section id="creating-the-user-object" class="level3">
+<h3>Creating the User Object</h3>
+<p>Each user is going to have one property, which is their user ID. In our case, the user's ID will be their device token which we get back from the rails app. When we make a POST request to /users, the backend confirms that we sent the correct app secret, creates a new user account with a new device_token, and returns the account's device_token so we can use it to sign all our requests. Typically, your user entity will have a separate user_id and user_token so you can use one for publically identifying a user and the other for privately signing requests, but we will treat our device_token as a hybrid of the two.</p>
+<p>Create a new subclass of NSObject for the user and define a property and two instance methods.</p>
+<pre><code>// HUMUser.h
+
+@interface HUMUser : NSObject
+
+@property (strong, nonatomic) NSNumber *userID;
+
+- (id)initWithJSON:(NSDictionary *)JSONDictionary;
+
+@end</code></pre>
+<p>When we receive a user's JSON back from the database, we could just [[HUMUser alloc] init] and set the user's properties. However, creating a custom init method <code>initWithJSON:</code> makes instantiating a <code>HUMUser</code> much easier.</p>
+<pre><code>// HUMUser.m
+
+- (id)initWithJSON:(NSDictionary *)JSONDictionary
+{
+    self = [super init];
+
+    if (!self)
+    return nil;
+
+    _userID = JSONDictionary[@"id"];
+    
+    return self;
+}</code></pre>
+<p>The custom init method calls super's init method and sets self to the return value. If the object can't be initialized it returns nil, otherwise it just sets the <code>_userID</code> and returns self.</p>
 </section>
-<section id="who-is-this-book-for" class="level3">
-<h3>Who is this book for?</h3>
-<p>This book is for a developer who wants to build an iOS application with a Rails backend. It's also a book for both a Rails developer and an iOS developer to share and use in concert to create an app quickly and with more flexibility to change it than a backend-as-a-service provider like StackMob or Parse.</p>
-<p>The approach shared in this book is the result of our own experiments as Rails and iOS developers working together to build an application. The Rails portions of this book assume a basic working knowledge of how to build a web application with Rails as well as the Ruby programming language. The iOS portions of this book assume experience with object oriented programming and a basic familiarity with the Objective-C programming language.</p>
-<p></p>
+<section id="creating-the-user-session-object" class="level3">
+<h3>Creating the User Session Object</h3>
+<p>Create another subclass of NSObject called HUMUserSession. This object will manage our current user's session, which means it will be responsible for keeping track of the user ID that we'll be signing our requests with.</p>
+<p>The interface for our user session manager should contain 3 class methods:</p>
+<pre><code>// HUMUserSession.h
+
+@class HUMUser;
+
+@interface HUMUserSession : NSObject
+
++ (NSNumber *)userID;
++ (void)setUserID:(NSNumber *)userID;
++ (BOOL)userMatchesCurrentUserSession:(HUMUser *)user;
+
+@end</code></pre>
+<p>The first two class methods are for getting and setting the current user's ID. These methods will access the keychain to keep track of the current user's ID.</p>
+<p>Every event that we create will have a user object that it belongs to. So, we need some way of checking if an event's user is the current user. The <code>currentUserMatchesUser:</code> method will be used to check if the current user should be able to edit an event.</p>
+<p>Let's implement the two class methods for getting and setting the user's session ID.</p>
+<pre><code>// HUMUser.m
+
++ (NSNumber *)userID
+{
+    NSString *userIDString = [SSKeychain passwordForService:@"Humon"
+                                                    account:@"currentUserID"];
+    return [NSNumber numberWithInteger:userIDString.integerValue];
+}
+
++ (void)setUserID:(NSNumber *)userID
+{
+    NSString *userIDString = [NSString stringWithFormat:@"%@", userID];
+    [SSKeychain setPassword:userIDString
+                 forService:@"Humon"
+                    account:@"currentUserID"];
+}</code></pre>
+<p>We'll be using the SSKeychain framework here to save the user ID to the keychain and retrieve it, so be sure to place <code>#import &lt;SSKeychain/SSKeychain.h&gt;</code> at the top of <code>HUMUser.h</code> or in your prefix file.</p>
+<p>Finally, let's implement a method for <code>userMatchesCurrentUserSession:</code>. It's a simple check if the current user's ID matches the ID of the <code>user</code> object in question.</p>
+<pre><code>// HUMUser.m
+
++ (BOOL)userMatchesCurrentUserSession:(HUMUser *)user
+{
+    return [user.userID isEqualToNumber:[HUMUserSession userID]];
+}</code></pre>
 </section>
 </section></body>
 </html>

@@ -82,7 +82,7 @@ basic familiarity with the Objective-C programming language.
 
 \part{Building the Humon Rails App}
 
-## Creating a GET request
+# Creating a GET request
 
 ### It all starts with a request spec
 
@@ -360,7 +360,7 @@ Congratulations, you just created your first API endpoint with Rails!
 
 \part{Building the Humon iOS App}
 
-## A Rails API Client With NSURLSession
+# A Rails API Client With NSURLSession
 
 Before we go about making our first API request, we need to decide how we are going to make our networking calls. As mentioned in the Cocoapods chapter, the AFNetworking framework is a clean and reliable solution to making networking requests. We will be using AFNetworking in this book, but we'll also include examples of how to make a few API requests manually for reference. AFNetworking brings a lot more to the table than just wrapping up your network requests; but, like a programming planeteer, the choice is yours.
 
@@ -461,7 +461,7 @@ We could just use the default NSURLSessionConfiguration that is returned from NS
 
 Setting the session headers on the `sessionConfiguration` is particularly important, since sending the app secret is necessary for user creation, while the user's ID is necessary for all other requests. When we initialize the `sharedClient` singleton, we place the user ID in the header if we've already saved one in the keychain, or the app secret if there is no user ID saved in the keychain. Having the app secret in the header is only necessary for the POST to /users request, so we'll change out the app secret header one we have successfully made that request
 
-## A Rails API Client With AFNetworking
+# A Rails API Client With AFNetworking
 
 Now that we've created our own networking client, let's see how we could do this using the AFNetworking framework. We'll create another client that is a subclass of AFNetworking's session manager instead of NSObject.
 

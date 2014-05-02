@@ -1,4 +1,4 @@
-## Posting an Event With NSURLSession
+# Posting an Event With NSURLSession
 
 We have already defined a `sharedClient` of our `HUMRailsClient` to use for making POST /users requests. So, we simply need to define a new method for making POST /events requests.
 

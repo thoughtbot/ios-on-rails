@@ -1,4 +1,4 @@
-## The Mobile App's Skeleton
+# The Mobile App's Skeleton
 
 The Humon app is going to have 3 distinct view controller types, which we will create empty versions of now.
 
