@@ -1,4 +1,4 @@
-## Creating a geocoded GET request
+# Creating a geocoded GET request
 
 ### What is geocoding?
 

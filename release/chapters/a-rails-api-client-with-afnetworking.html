@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>iOS on Rails (Beta): Introduction</title>
+  <title>iOS on Rails (Beta): A Rails API Client With AFNetworking</title>
   <style type="text/css"><![CDATA[code{white-space: pre;}]]></style>
   <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,20 +20,41 @@
     })();
   ]]></script>
 </head>
-<body><section id="introduction" class="level1">
-<h1>Introduction</h1>
-<section id="why-this-book" class="level3">
-<h3>Why this book?</h3>
-<p>There are many ways to build the backend for an iOS application but you only need one. And depending on the complexity of the API you are going to create, different solutions work best for different applications.</p>
-<p>Just as Rails makes it possible to set up a basic web application in a matter of minutes, Rails makes it possible to set up a basic API in a matter of minutes. But deciding how to structure your API isn't easy. While experimenting with all of the options is a fun weekend project, sometimes you just want to get going. This book will help you do just that. While your API will no doubt require some tweaking while fleshing out your iOS app, the approach we will be taking is to define and build the API first, and then consume this API through our iOS app.</p>
-<p>The Rails portions of <em>iOS on Rails</em> will guide you through what we have found to be a robust, clean, flexible way of building out a JSON API with Rails. We provide code samples for GET, POST, and PATCH requests. In addition, we will explore some of the alternative approaches that we didn't choose and explain why we made the choices that we did.</p>
-<p>The iOS portion of the book will then walk, step-by-step, through creating an iOS application that works with the Rails API you just created. The iOS application will use each endpoint to post up objects and get back necessary data for the user. Our model objects in the iOS app will correspond with the model objects in the database, and be populated with response data from the API.</p>
+<body><section id="a-rails-api-client-with-afnetworking" class="level1">
+<h1>A Rails API Client With AFNetworking</h1>
+<p>Now that we've created our own networking client, let's see how we could do this using the AFNetworking framework. We'll create another client that is a subclass of AFNetworking's session manager instead of NSObject.</p>
+<section id="creating-a-singleton-client-object-1" class="level3">
+<h3>Creating a Singleton Client Object</h3>
+<p>Create a subclass of AFHTTPSessionManager called HUMRailsAFNClient. Declare a class method that will return a shared client singleton as we did in our other client by adding <code>+ (instancetype)sharedClient;</code> to your HUMRailsAFNClient.h file. The implementation of this method looks similar as well:</p>
+<pre><code>// HUMRailsAFNClient.m
+
++ (instancetype)sharedClient
+{
+    static HUMRailsAFNClient *_sharedClient = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&amp;onceToken, ^{
+        
+        // Create a client
+        NSURL *baseURL = [NSURL URLWithString:ROOT_URL];
+        _sharedClient = [[HUMRailsAFNClient alloc] initWithBaseURL:baseURL];
+
+        // Set the client header fields
+        if ([HUMUserSession userID])
+            [_sharedClient.requestSerializer setValue:[HUMUserSession userID]
+                                   forHTTPHeaderField:@"X-DEVICE-TOKEN"];
+        else
+            [_sharedClient.requestSerializer setValue:HUMAppSecret
+                                   forHTTPHeaderField:@"X-APP-SECRET"];
+        
+    });
+    
+    return _sharedClient;
+}</code></pre>
+<p>With AFNetworking, we don't have to manually set up the session configuration and session with our own custom init method. We simply initialize the client using <code>initWithBaseURL:</code>, which means that our paths later will be relative to this ROOT_URL.</p>
 </section>
-<section id="who-is-this-book-for" class="level3">
-<h3>Who is this book for?</h3>
-<p>This book is for a developer who wants to build an iOS application with a Rails backend. It's also a book for both a Rails developer and an iOS developer to share and use in concert to create an app quickly and with more flexibility to change it than a backend-as-a-service provider like StackMob or Parse.</p>
-<p>The approach shared in this book is the result of our own experiments as Rails and iOS developers working together to build an application. The Rails portions of this book assume a basic working knowledge of how to build a web application with Rails as well as the Ruby programming language. The iOS portions of this book assume experience with object oriented programming and a basic familiarity with the Objective-C programming language.</p>
-<p></p>
+<section id="setting-the-session-headers-1" class="level3">
+<h3>Setting the Session Headers</h3>
+<p>As before, we need to set the user's ID in the header if we have already created a user for this device. If not, we set the app secret so that we can make a POST to /users to create a user with the app secret.</p>
 </section>
 </section></body>
 </html>

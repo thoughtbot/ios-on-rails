@@ -1,4 +1,4 @@
-## Managing Dependencies
+# Managing Dependencies
 
 ### Using CococaPods
 

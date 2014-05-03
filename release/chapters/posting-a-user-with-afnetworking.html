@@ -4,7 +4,10 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>iOS on Rails (Beta): Introduction</title>
+  <meta name="author" content="thoughtbot" />
+  <meta name="author" content="Jessie Young" />
+  <meta name="author" content="Diana Zmuda" />
+  <title>iOS on Rails (Beta): Posting a User With AFNetworking</title>
   <style type="text/css"><![CDATA[code{white-space: pre;}]]></style>
   <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,20 +23,70 @@
     })();
   ]]></script>
 </head>
-<body><section id="introduction" class="level1">
-<h1>Introduction</h1>
-<section id="why-this-book" class="level3">
-<h3>Why this book?</h3>
-<p>There are many ways to build the backend for an iOS application but you only need one. And depending on the complexity of the API you are going to create, different solutions work best for different applications.</p>
-<p>Just as Rails makes it possible to set up a basic web application in a matter of minutes, Rails makes it possible to set up a basic API in a matter of minutes. But deciding how to structure your API isn't easy. While experimenting with all of the options is a fun weekend project, sometimes you just want to get going. This book will help you do just that. While your API will no doubt require some tweaking while fleshing out your iOS app, the approach we will be taking is to define and build the API first, and then consume this API through our iOS app.</p>
-<p>The Rails portions of <em>iOS on Rails</em> will guide you through what we have found to be a robust, clean, flexible way of building out a JSON API with Rails. We provide code samples for GET, POST, and PATCH requests. In addition, we will explore some of the alternative approaches that we didn't choose and explain why we made the choices that we did.</p>
-<p>The iOS portion of the book will then walk, step-by-step, through creating an iOS application that works with the Rails API you just created. The iOS application will use each endpoint to post up objects and get back necessary data for the user. Our model objects in the iOS app will correspond with the model objects in the database, and be populated with response data from the API.</p>
+<body><section id="posting-a-user-with-afnetworking" class="level1">
+<h1>Posting a User With AFNetworking</h1>
+<p>Now that we've created a method for enqueueing a task manually, lets use the AFNetworking framework to simplify things. We'll create a method on our <code>HUMRailsAFNClient</code> to POST to /users.</p>
+<section id="declaring-a-task-for-making-requests-1" class="level3">
+<h3>Declaring a Task for Making Requests</h3>
+<p>Before we declare the method for user creation, let's typedef a new name for a completion block type. This time, we'll typedef the block type <code>(void (^)(NSError *error))</code> as <code>HUMRailsAFNClientErrorCompletionBlock</code>. Place this typedef above the interface in HUMRailsAFNClient.h:</p>
+<pre><code>typedef void(^HUMRailsAFNClientErrorCompletionBlock)(NSError *error);</code></pre>
+<p>Now we can declare the <code>createCurrentUserWithCompletionBlock:</code> method in HUMRailsAFNClient.h.</p>
+<pre><code>- (void)createCurrentUserWithCompletionBlock:
+    (HUMRailsAFNClientErrorCompletionBlock)block;</code></pre>
 </section>
-<section id="who-is-this-book-for" class="level3">
-<h3>Who is this book for?</h3>
-<p>This book is for a developer who wants to build an iOS application with a Rails backend. It's also a book for both a Rails developer and an iOS developer to share and use in concert to create an app quickly and with more flexibility to change it than a backend-as-a-service provider like StackMob or Parse.</p>
-<p>The approach shared in this book is the result of our own experiments as Rails and iOS developers working together to build an application. The Rails portions of this book assume a basic working knowledge of how to build a web application with Rails as well as the Ruby programming language. The iOS portions of this book assume experience with object oriented programming and a basic familiarity with the Objective-C programming language.</p>
-<p></p>
+<section id="creating-a-task-for-making-requests-1" class="level3">
+<h3>Creating a Task for Making Requests</h3>
+<p>When defining the method <code>createCurrentUserWithCompletionBlock:</code>, we can use one of the convenient methods that we inherit from AFHTTPSessionManager to create and execute a task.</p>
+<pre><code>// HUMRailsAFNClient.m
+
+- (void)createCurrentUserWithCompletionBlock:
+    (HUMRailsAFNClientErrorCompletionBlock)block
+{
+    [self POST:@"users" parameters:@{@"device_token" : @"435353"}
+       success:^(NSURLSessionDataTask *task, id responseObject) {
+           
+        [HUMUserSession setUserID:responseObject[@"device_token"]];
+        [self.requestSerializer setValue:responseObject[@"device_token"]
+                      forHTTPHeaderField:@"X-DEVICE-TOKEN"];
+        block(nil);
+           
+       } failure:^(NSURLSessionDataTask *task, NSError *error) {
+           
+        block(error);
+           
+    }];
+}</code></pre>
+<p>The method is called <code>POST:parameters:success:failure:</code> and takes four arguments.</p>
+<ol type="1">
+<li><p>The path that we're POSTing to is <code>@"users"</code>, which will be appended to our ROOT_URL that we set when initializing the client.</p></li>
+<li><p>The parameters for this POST request are <code>nil</code>, since the HTTPHeaderField contains our HUMAppSecret. We don't need to send any additional data for this specific POST request.</p></li>
+<li><p>A completion block that will execute if the request is successful. If the request is successful we set the current user's ID to the device_token we get back from the API. We also set the device_token in the header field so we can start signing our requests as that user. Finally, we execute the completion block with <code>nil</code> as an argument since we have no error.</p></li>
+<li><p>A completion block that executes if there was an error when executing the POST task. This completion block executes the completion block we provided, with the <code>error</code> as an argument to indicate that our POST wasn't successful.</p></li>
+</ol>
+</section>
+<section id="making-the-post-request" class="level3">
+<h3>Making the POST Request</h3>
+<p>We want to make a POST request to create and save a user only once on each device. So, lets conditionally call the <code>createCurrentUserWithCompletionBlock:</code> we just created inside of HUMMapViewController's <code>viewDidAppear:</code> method.</p>
+<pre><code>- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    if (![HUMUserSession userID]) {
+    
+        [SVProgressHUD show];
+    
+        [[HUMRailsAFNClient sharedClient] 
+            createCurrentUserWithCompletionBlock:^(NSError *error) {
+        
+            [SVProgressHUD dismiss];
+        
+        }];
+    
+    }
+}</code></pre>
+<p>If there's no <code>currentUserID</code> in the keychain, then we haven't successfully made a POST request to /users. So, we can call <code>createCurrentUserWithCompletionBlock:</code> to make our POST request, save the user ID that returns from the API request, and change the request headers to include this user ID.</p>
+<p>We'll also present a heads-up-display to users to indicate that an API call is in progress. SVProgressHUD is a cocoapod that provides a clean and easy to use view for showing loading and percent completion. We simply call the SVProgressHUD class method <code>show</code> to display the HUD, and <code>dismiss</code> to remove it.</p>
+<p>If you run the app and get back a completionBlock with no error, you've officially made a successful POST request and created a user on the database!</p>
 </section>
 </section></body>
 </html>

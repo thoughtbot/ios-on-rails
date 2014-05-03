@@ -1,4 +1,4 @@
-## The Confirmation View Controller
+# The Confirmation View Controller
 
 ![View for confirming event creation](images/ios_app_skeleton_3.png)
 

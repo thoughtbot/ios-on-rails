@@ -1,4 +1,4 @@
-## Introduction to our example application and setup
+# Introduction to our example application and setup
 
 ### Example application
 

@@ -1,4 +1,4 @@
-## A Rails API Client With AFNetworking
+# A Rails API Client With AFNetworking
 
 Now that we've created our own networking client, let's see how we could do this using the AFNetworking framework. We'll create another client that is a subclass of AFNetworking's session manager instead of NSObject.
 

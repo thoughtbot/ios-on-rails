@@ -1,4 +1,4 @@
-## The Map View Controller
+# The Map View Controller
 
 ![Map View for viewing events](images/ios_app_skeleton_1.png)
 

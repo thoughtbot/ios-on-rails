@@ -1,4 +1,4 @@
-## Getting Events from the API
+# Getting Events from the API
 
 When the user runs the app, we want to display events that are near their current location. So, let's create a GET task that will return event objects that we can place on the `mapView`.
 

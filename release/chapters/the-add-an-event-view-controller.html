@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="thoughtbot" />
+  <meta name="author" content="Jessie Young" />
+  <meta name="author" content="Diana Zmuda" />
+  <title>iOS on Rails (Beta): The Add an Event View Controller</title>
+  <style type="text/css"><![CDATA[code{white-space: pre;}]]></style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="data:text/css,%2A%20%7B%0A%20%20%2Dmoz%2Dbox%2Dsizing%3A%20border%2Dbox%3B%0A%20%20%2Dwebkit%2Dbox%2Dsizing%3A%20border%2Dbox%3B%0A%20%20box%2Dsizing%3A%20border%2Dbox%3B%20%7D%0A%0Abody%20%7B%0A%20%20font%2Dsize%3A%201em%3B%0A%20%20height%3A%20100%25%3B%0A%20%20margin%3A%200%20auto%3B%0A%20%20max%2Dwidth%3A%2054em%3B%0A%20%20padding%3A%200%201em%204%2E5em%3B%20%7D%0A%20%20%40media%20screen%20and%20%28min%2Dwidth%3A%20600px%29%20%7B%0A%20%20%20%20body%20%7B%0A%20%20%20%20%20%20padding%3A%200%204em%204%2E5em%3B%20%7D%20%7D%0A%20%20%40media%20screen%20and%20%28min%2Dwidth%3A%20700px%29%20%7B%0A%20%20%20%20body%20%7B%0A%20%20%20%20%20%20font%2Dsize%3A%201%2E125em%3B%20%7D%20%7D%0A%20%20%40media%20screen%20and%20%28min%2Dwidth%3A%20800px%29%20%7B%0A%20%20%20%20body%20%7B%0A%20%20%20%20%20%20padding%3A%200%206em%204%2E5em%3B%20%7D%20%7D%0A%20%20%40media%20screen%20and%20%28min%2Dwidth%3A%20880px%29%20%7B%0A%20%20%20%20body%20%7B%0A%20%20%20%20%20%20padding%3A%200%208em%204%2E5em%3B%20%7D%20%7D%0A%20%20%40media%20screen%20and%20%28min%2Dwidth%3A%20940px%29%20%7B%0A%20%20%20%20body%20%7B%0A%20%20%20%20%20%20padding%3A%200%2010em%204%2E5em%3B%20%7D%20%7D%0A%20%20%40media%20screen%20and%20%28min%2Dwidth%3A%201800px%29%20%7B%0A%20%20%20%20body%20%7B%0A%20%20%20%20%20%20font%2Dsize%3A%201%2E375em%3B%20%7D%20%7D%0A%0Anav%20%7B%0A%20%20border%2Dbottom%3A%201px%20dashed%20%23dddddd%3B%0A%20%20border%2Dtop%3A%201px%20dashed%20%23dddddd%3B%0A%20%20padding%3A%201%2E5em%200%3B%0A%20%20margin%3A%201%2E5em%200%3B%20%7D%0A%20%20nav%20%3E%20ul%20%3E%20li%20%3E%20a%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%20%7D%0A%0Aheader%20%7B%0A%20%20padding%3A%204%2E5em%200%3B%20%7D%0A%0Abody%20%7B%0A%20%20%2Dwebkit%2Dfont%2Dsmoothing%3A%20antialiased%3B%0A%20%20color%3A%20%23444444%3B%0A%20%20font%2Dfamily%3A%20%22proxima%2Dnova%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0A%20%20line%2Dheight%3A%201%2E5em%3B%20%7D%0A%0Ah1%2C%20h2%2C%20h3%2C%20h4%2C%20h5%2C%20h6%20%7B%0A%20%20color%3A%20%23222222%3B%0A%20%20font%2Dfamily%3A%20%22proxima%2Dnova%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0A%20%20line%2Dheight%3A%201%2E25em%3B%0A%20%20margin%3A%201%2E5em%200%200%2E375em%3B%0A%20%20text%2Drendering%3A%20optimizeLegibility%3B%20%7D%0A%20%20h1%20%3E%20a%2C%20h2%20%3E%20a%2C%20h3%20%3E%20a%2C%20h4%20%3E%20a%2C%20h5%20%3E%20a%2C%20h6%20%3E%20a%20%7B%0A%20%20%20%20color%3A%20%23222222%3B%20%7D%0A%0Ah1%20%7B%0A%20%20margin%3A%203em%200%200%2E375em%3B%0A%20%20font%2Dsize%3A%201%2E75em%3B%20%7D%0A%20%20h1%20%3E%20a%20%7B%0A%20%20%20%20color%3A%20%23c32f34%3B%20%7D%0A%20%20%20%20h1%20%3E%20a%3Ahover%2C%20h1%20%3E%20a%3Afocus%20%7B%0A%20%20%20%20%20%20color%3A%20%23222222%3B%20%7D%0A%20%20h1%2Etitle%20%7B%0A%20%20%20%20font%2Dsize%3A%203em%3B%0A%20%20%20%20font%2Dweight%3A%20900%3B%0A%20%20%20%20line%2Dheight%3A%201%3B%0A%20%20%20%20margin%3A%200%200%20%2E125em%3B%20%7D%0A%20%20%20%20%40media%20screen%20and%20%28min%2Dwidth%3A%20600px%29%20%7B%0A%20%20%20%20%20%20h1%2Etitle%20%7B%0A%20%20%20%20%20%20%20%20font%2Dsize%3A%204em%3B%20%7D%20%7D%0A%0Ah2%20%7B%0A%20%20font%2Dsize%3A%201em%3B%0A%20%20letter%2Dspacing%3A%201px%3B%0A%20%20text%2Dtransform%3A%20uppercase%3B%20%7D%0A%20%20h2%2Eauthor%20%7B%0A%20%20%20%20color%3A%20%23999999%3B%0A%20%20%20%20float%3A%20left%3B%0A%20%20%20%20font%2Dsize%3A%201em%3B%0A%20%20%20%20font%2Dweight%3A%20200%3B%0A%20%20%20%20margin%3A%200%3B%0A%20%20%20%20text%2Dtransform%3A%20none%3B%20%7D%0A%20%20%20%20%40media%20screen%20and%20%28min%2Dwidth%3A%20600px%29%20%7B%0A%20%20%20%20%20%20h2%2Eauthor%20%7B%0A%20%20%20%20%20%20%20%20font%2Dsize%3A%201%2E25em%3B%20%7D%20%7D%0A%20%20%20%20h2%2Eauthor%3Anot%28%3Alast%2Dchild%29%20%7B%0A%20%20%20%20%20%20margin%2Dright%3A%201em%3B%20%7D%0A%0Ah3%20%7B%0A%20%20font%2Dsize%3A%201em%3B%20%7D%0A%0Ah4%20%7B%0A%20%20font%2Dsize%3A%201%2E5em%3B%20%7D%0A%0Ah5%20%7B%0A%20%20font%2Dsize%3A%201%2E25em%3B%20%7D%0A%0Ah6%20%7B%0A%20%20font%2Dsize%3A%201em%3B%20%7D%0A%0Ap%20%7B%0A%20%20margin%3A%200%200%200%2E75em%3B%20%7D%0A%0Aa%20%7B%0A%20%20%2Dmoz%2Dtransition%3A%20all%200%2E15s%20ease%2Dout%200%3B%0A%20%20%2Dwebkit%2Dtransition%3A%20all%200%2E15s%20ease%2Dout%200%3B%0A%20%20color%3A%20%23477dca%3B%0A%20%20text%2Ddecoration%3A%20none%3B%0A%20%20transition%3A%20all%200%2E15s%20ease%2Dout%200%3B%20%7D%0A%20%20a%3Ahover%20%7B%0A%20%20%20%20color%3A%20%232c5999%3B%20%7D%0A%20%20a%3Aactive%2C%20a%3Afocus%20%7B%0A%20%20%20%20color%3A%20%232c5999%3B%0A%20%20%20%20outline%3A%20none%3B%20%7D%0A%0Ahr%20%7B%0A%20%20border%3A%20none%3B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23dddddd%3B%0A%20%20margin%3A%201%2E5em%200%3B%20%7D%0A%0Aimg%20%7B%0A%20%20margin%3A%200%3B%0A%20%20max%2Dwidth%3A%20100%25%3B%20%7D%0A%0Acode%20%7B%0A%20%20font%2Dfamily%3A%20inconsolata%2C%20%22Bitstream%20Vera%20Sans%20Mono%22%2C%20Consolas%2C%20Courier%2C%20monospace%3B%0A%20%20font%2Dsize%3A%20%2E875em%3B%0A%20%20white%2Dspace%3A%20pre%3B%0A%20%20word%2Dwrap%3A%20break%2Dword%3B%20%7D%0A%0Apre%20%7B%0A%20%20background%3A%20%23f7f7f7%3B%0A%20%20border%3A%201px%20solid%20%23dddddd%3B%0A%20%20line%2Dheight%3A%201%2E35%3B%0A%20%20overflow%2Dx%3A%20scroll%3B%0A%20%20padding%3A%20%2E5rem%201rem%3B%0A%20%20white%2Dspace%3A%20pre%3B%0A%20%20word%2Dwrap%3A%20normal%3B%20%7D%0A%20%20pre%20code%20%7B%0A%20%20%20%20word%2Dwrap%3A%20normal%3B%20%7D%0A%0Ablockquote%20%7B%0A%20%20border%2Dleft%3A%202px%20solid%20%23dddddd%3B%0A%20%20color%3A%20%236a6a6a%3B%0A%20%20margin%3A%201%2E5em%200%3B%0A%20%20padding%2Dleft%3A%200%2E75em%3B%20%7D%0A" rel="stylesheet" />
+  <script type="text/javascript"><![CDATA[
+    (function() {
+      var config = {
+        kitId: 'bgd6ksj',
+        scriptTimeout: 3000
+      };
+      var h=document.getElementsByTagName("html")[0];h.className+=" wf-loading";var t=setTimeout(function(){h.className=h.className.replace(/(\s|^)wf-loading(\s|$)/g," ");h.className+=" wf-inactive"},config.scriptTimeout);var tk=document.createElement("script"),d=false;tk.src='//use.typekit.net/'+config.kitId+'.js';tk.type="text/javascript";tk.async="true";tk.onload=tk.onreadystatechange=function(){var a=this.readyState;if(d||a&&a!="complete"&&a!="loaded")return;d=true;clearTimeout(t);try{Typekit.load(config)}catch(b){}};var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(tk,s)
+    })();
+  ]]></script>
+</head>
+<body><section id="the-add-an-event-view-controller" class="level1">
+<h1>The Add an Event View Controller</h1>
+<figure>
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAACyCAYAAAC0hWpmAAAKymlDQ1BJQ0MgUHJvZmlsZQAASA2tlndUU8kXx+976Y0WiHRC71269BpAQapgIySBhBJCIIjYlcUVWAsqIljRFREF1wLIWhALFkRQseuCLCrquliwobIv8IPd8zu//e8358zM5935zn0zd2bOuQD0Zq5EkoEqAWSKc6VRwX7sWQmJbNIjoIIy0EEBtLi8HIlvZGQ4/Gv5cBsQ+eBNa7mvf5X97wFlviCHB4BEYsPJ/BxeJsbHsLqDJ5HmAuBiMLvRglyJnPMxVpViC8S4VM6p47xLzsnjjM3FNDFR/pjmEgCZzuVKUwFotzA7O4+XivmhvcfYTswXiQHoRhh78YRcPsZYBavMzCw5r8fYLPkfflL/wVxu8qRPLjd1ksf3gs3EfhwgypFkcBeOffw/m8wMGRavsaKLtfSc9OgwrDfBYpbP4wZGT7BQwJGf2ZhdkusXNcGiXE7MBAtlIbETLEuP9Z3g9KywSb04eUbEhJ2X44/FftxngTAmfoL5goDACZZmRU3qc/KiJ+0FQv8ZE5o0bqj8vMfWxpVi9B8WZARP/leSGzm5TnHGjMm9pEiDJjWCnL/3myuMCZnwk4tdgAlOEQVxJlgoDZm0SzLG7vTYGqSyqMk4CMSxkzHkcwMmYwsxIAQZiIEPApBCMmRBBuQCGwJABDkgwb64gB13riAfu2MA/lmShVJRqjCX7Yu9CoEVmyPm2VixHezsHUH+xuQagHessbeDsK78bctuBXArxs5Tfr3ZchUA1xDgxFMA5oe/bYZvx+/pqS6eTJo3rsPLOwL2ehVBFTRAFwzBDKzBAZzBA3wgEEIhAttJAswDHrafTGwnC2AxrIAiKIH1sBkqYSfsgf1wCI5AE5yEs3ARrkIX9MAD6IUBeAlD8AFGEAQhIQyEiWggeogxYok4IK6IFxKIhCNRSAKShKQiYkSGLEZWISVIGVKJ7EZqkV+QE8hZ5DLSjdxD+pBB5C3yBcWhdFQV1UFNUFvUFfVFw9AYdC6aimajBWghuhatQKvRg2gjeha9ivagvehLdBgHOBqOhdPHWeNccf64CFwiLgUnxS3FFePKcdW4elwLrh13E9eLe4X7jCfimXg23hrvgQ/Bx+J5+Gz8UnwpvhK/H9+IP4+/ie/DD+G/ExgEbYIlwZ3AIcwipBIWEIoI5YR9hOOEC4QewgDhA5FIZBFNiS7EEGICMY24iFhK3E5sILYSu4n9xGESiaRBsiR5kiJIXFIuqYi0lXSQdIZ0gzRA+kSmkfXIDuQgciJZTF5JLicfIJ8m3yA/I49QlCjGFHdKBIVPWUhZR9lLaaFcpwxQRqjKVFOqJzWGmkZdQa2g1lMvUB9S39FoNAOaG20mTURbTqugHaZdovXRPtNV6BZ0f/ocuoy+ll5Db6Xfo79jMBgmDB9GIiOXsZZRyzjHeMz4pMBUsFHgKPAVlilUKTQq3FB4rUhRNFb0VZynWKBYrnhU8briKyWKkomSvxJXaalSldIJpTtKw8pMZXvlCOVM5VLlA8qXlZ+rkFRMVAJV+CqFKntUzqn0M3FMQ6Y/k8dcxdzLvMAcUCWqmqpyVNNUS1QPqXaqDqmpqE1Vi1PLV6tSO6XWy8KxTFgcVgZrHesI6zbryxSdKb5TBFPWTKmfcmPKR3UtdR91gXqxeoN6j/oXDbZGoEa6xgaNJo1HmnhNC82Zmgs0d2he0HylparlocXTKtY6onVfG9W20I7SXqS9R7tDe1hHVydYR6KzVeeczitdlq6PbpruJt3TuoN6TD0vPZHeJr0zei/Yamxfdga7gn2ePaSvrR+iL9Pfrd+pP2JgahBrsNKgweCRIdXQ1TDFcJNhm+GQkZ7RdKPFRnVG940pxq7GQuMtxu3GH01MTeJNVps0mTw3VTflmBaY1pk+NGOYeZtlm1Wb3TInmruap5tvN++yQC2cLIQWVRbXLVFLZ0uR5XbLbiuClZuV2Kra6o413drXOs+6zrrPhmUTbrPSpsnmta2RbaLtBtt22+92TnYZdnvtHtir2Ifar7RvsX/rYOHAc6hyuOXIcAxyXObY7PhmquVUwdQdU+86MZ2mO612anP65uziLHWudx50MXJJctnmcsdV1TXStdT1khvBzc9tmdtJt8/uzu657kfc//Sw9kj3OODxfJrpNMG0vdP6PQ08uZ67PXu92F5JXru8er31vbne1d5PfAx9+D77fJ75mvum+R70fe1n5yf1O+730d/df4l/awAuIDigOKAzUCUwNrAy8HGQQVBqUF3QULBT8KLg1hBCSFjIhpA7HB0Oj1PLGQp1CV0Sej6MHhYdVhn2JNwiXBreMh2dHjp94/SHM4xniGc0RUAEJ2JjxKNI08jsyF9nEmdGzqya+TTKPmpxVHs0M3p+9IHoDzF+MetiHsSaxcpi2+IU4+bE1cZ9jA+IL4vvnWU7a8msqwmaCaKE5kRSYlzivsTh2YGzN88emOM0p2jO7bmmc/PnXp6nOS9j3qn5ivO5848mEZLikw4kfeVGcKu5w8mc5G3JQzx/3hbeS74PfxN/UOApKBM8S/FMKUt5nuqZujF1UOgtLBe+EvmLKkVv0kLSdqZ9TI9Ir0kfzYjPaMgkZyZlnhCriNPF57N0s/KzuiWWkiJJb7Z79ubsIWmYdF8OkjM3pzlXFUtmOmRmsh9kfXleeVV5nxbELTiar5wvzu9YaLFwzcJnBUEFPy/CL+Italusv3jF4r4lvkt2L0WWJi9tW2a4rHDZwPLg5ftXUFekr7i20m5l2cr3q+JXtRTqFC4v7P8h+Ie6IoUiadGd1R6rd/6I/1H0Y+caxzVb13wv5hdfKbErKS/5WsorvfKT/U8VP42uTVnbuc553Y71xPXi9bc3eG/YX6ZcVlDWv3H6xsZN7E3Fm95vnr/5cvnU8p1bqFtkW3orwiuatxptXb/1a6WwsqfKr6phm/a2Nds+budvv7HDZ0f9Tp2dJTu/7BLturs7eHdjtUl1+R7inrw9T/fG7W3/2fXn2n2a+0r2fasR1/Tuj9p/vtaltvaA9oF1dWidrG7w4JyDXYcCDjXXW9fvbmA1lByGw7LDL35J+uX2kbAjbUddj9YfMz627TjzeHEj0riwcahJ2NTbnNDcfSL0RFuLR8vxX21+rTmpf7LqlNqpdaeppwtPj54pODPcKml9dTb1bH/b/LYH52adu3V+5vnOC2EXLl0Muniu3bf9zCXPSycvu18+ccX1StNV56uNHU4dx685XTve6dzZeN3lenOXW1dL97Tu0ze8b5y9GXDz4i3Oras9M3q6b8fevntnzp3eu/y7z+9l3HtzP+/+yIPlDwkPix8pPSp/rP24+jfz3xp6nXtP9QX0dTyJfvKgn9f/8vec378OFD5lPC1/pves9rnD85ODQYNdL2a/GHgpeTnyqugP5T+2vTZ7fexPnz87hmYNDbyRvhl9W/pO413N+6nv24Yjhx9/yPww8rH4k8an/Z9dP7d/if/ybGTBV9LXim/m31q+h31/OJo5OirhSrljuQAOa9GUFIC3NQCMBCx36AKgKoznwGMKZDxvx1iev8urvPwXj+fJYyPOADU+ALHLAcJbAXZg1RhjOtbL07kYH0AdHScrZpGXnBRHhzFA6FIsNfk0OvpOB4DUAvBNOjo6sn109NteLFe/B9CaPZ57y9VEJYAyU5YtNaHjWs/ysfn/aP4Cyjj+y5h1M9YAAAAJcEhZcwAACxMAAAsTAQCanBgAAAGdaVRYdFhNTDpjb20uYWRvYmUueG1wAAAAAAA8eDp4bXBtZXRhIHhtbG5zOng9ImFkb2JlOm5zOm1ldGEvIiB4OnhtcHRrPSJYTVAgQ29yZSA1LjEuMiI+CiAgIDxyZGY6UkRGIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+CiAgICAgIDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PSIiCiAgICAgICAgICAgIHhtbG5zOmV4aWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20vZXhpZi8xLjAvIj4KICAgICAgICAgPGV4aWY6UGl4ZWxYRGltZW5zaW9uPjMxODwvZXhpZjpQaXhlbFhEaW1lbnNpb24+CiAgICAgICAgIDxleGlmOlBpeGVsWURpbWVuc2lvbj41NjY8L2V4aWY6UGl4ZWxZRGltZW5zaW9uPgogICAgICA8L3JkZjpEZXNjcmlwdGlvbj4KICAgPC9yZGY6UkRGPgo8L3g6eG1wbWV0YT4KT8aUsQAACv9JREFUeAHtnV1PFEsax58e3hwQUIR19SwqoPGgycYN3hliNt6sl34T70z8Jt76CYyXxts10SWbaHRDjiDvLG8HRN4GmWG2/jXUbDPdg910dfWc+O9zhqnufup5qv6/fqqna8Zur1AolD3Pk6amJsFSKpWkXC7rMv5gH16Hh4fHtsGmtbVVb0cZ9b9//161SaPQ1tam24e2NDc36xCIncvlZH9/X7cB7cA2tPng4EBaWlqkWCwea38abQvziXahndAF7TFtDrNFW7F4qiNldHB8fFx3dnh4WFeEA3QMgLa2tuT8+fNVP+ggOj43NycTExO6swMDA4JXGgvagjZ++PBBLly4IH19fbKwsKCF7uzslOXlZRkZGdHvU1NTev/Ozo7cuHFDvnz5IleuXBHYod3w5WIBDHWwy/z8vFy9elVr+erVK/n27ZvW1xxIgHX58mW5f/9+BRqOoE+fPmkjVJxSHVhZXZWOjg7Z3t7WR15XV5fuA0RBpwYHB3UnAWRyclI7QkfTAIKGAz7a8vr1a7l3754gU7D+/v17Xe7q7JKlpSX9evv2rXR3d8vY2Jg8evRIXr58KU+fPtXbXIBADGiBg+T58+e67U+ePJFVpenjx49ldnY20AwcOM+ePdNQdN6jg+vr6/o1PTMj09PT0tPTI9evX9cpD9IQPp/Py7lz56S3t1eDGR0d1UfB7u6uPHjwQB8FgJbGUYhMvX37tu7Y0NCQrKys6LZAfJTN8IkMv3v3rgYFOOiDGcYCSqS0ARpcvHhRHj58qNuFMDiwkKVhS39/v+4LbDycQ5BeEBzvqIS0wjuyBBlh0g/jHLa3t7frABgTMTRALGRRWkMCAKOTnz9/1kPW2c6zKpOndFYDyMbGhty6dUvW1tZ0m8+cOaMhmXpoG7bBh6sFBwEOZGiHUQjnOAyfRk8tvuoXtIPOOHBQ1kDQSFTCYgzR+MOyOtrVf1jQOdNB0zHYIjC2pwVDBz/6Y7IA8XEwID5e6DQ6jG263Uf70S4s6CjsXC6mXSYu2gKNTZv8bUGbzYm/CsRU9Buicr3txs7sDwtkbGy9m1hh/kxbTTv8tmZbWD2X28yBXBsT7TNtrHx2VBZmQ5hx7Tb/er16fhtb5R/F8u/3l23FT+oHmfyj5ZgFsvq0me12QPhRt/64+6tAAKJF5UubOpVg6PXDgdh+ULVljNRNleH6j6tEg7RcAzEw1r558nlJnfnVh5FmdeEOQEbs1qMy1luPoAEcbIrKfk9daJJJcqo5wIDYM6ue/OtLTlY2Pfnnb+pTixJ4VZVLan9BlZe+VspYX/xdfaoqiRwURbb2PNnc9eTf0+rjnfLjz57kzfv5PCgJ1aIO7fHFnPzt2qH80nsoX7c9Gf9vTj7MezL857JsKNF39kUudWGOSGR9x5NfzpVlecuT33dEevIine34CPrzCWi7x3rIwlDTpErbe2r4OfDkP/M5+bor8qezKjM2PDmrsP3915LMrKspAZU1//iruoBRlaZWPLnZW5Y1BQXDHMes5Hi8vb1CGeeLdZUV7ybU7KQqd3eUZW/fk+9qSMLJ+pLKhks9ZZldw3WJyJwasgYvlvX+3YLKjg6RnLK7/ZdDPYwBFpfTKaAvDCEyQAAAXt3tlXecI9TFb/XAh+hYCmqWPd8m6qq4cjLPt1a2c8iq6JDkr+9KXR3latiC6Dhh4x1HOkSuPTVgH07u6k3XARgudhSonNSVL4gPYfWpAGX41yv/zxATEucLMyypaaJq2ezn++kVaPZPMRiR4Q5Hf3WsQtm3HLPThr6dLCZSoBmzpFwaR4FmfDnFpXEU8NQ0de05u3Fa9xO2RF8Y/oT9btguE0iDoSEQAmkwBRqsOcwQAmkwBRqsOcwQAmkwBRqsOcwQAmkwBRqsOcyQBgNS/T7EtAs/qC6qb6gq0/Kc5jK6uHrn5KIrpSPG4ZAVUShXZgTiSumIcQgkolCuzAjEldIR4xBIRKFcmRGIK6UjxiGQiEK5MiMQV0pHjEMgEYVyZUYgrpSOGIdAIgrlyiwwuYjfzfG3c67kD8YJAMFMb6mk/mFIvV9aB31wi0UFONtrUUwbrngOsaGiRR8EYlFMG64IxIaKFn0QiEUxbbgiEBsqWvRBIBbFtOGKQGyoaNEHgVgU04YrArGhokUfBGJRTBuuCMSGihZ9BCYXK7dZrdwXy2IcuoqoQCgQ3OeWs70RFbRsxtley4ImdcdzSFIFLdcnEMuCJnVHIEkVtFyfQCwLmtQdgSRV0HJ9ArEsaFJ3BJJUQcv1CcSyoEndEUhSBS3XJxDLgiZ1RyBJFbRcPzC5iInFes9Kshyb7kIUCM0Q3qc0RClHmzjb60joqGFCMyRqZdrZV4BA7GuayCOBJJLPfmUCsa9pIo8Ekkg++5UJxL6miTwSSCL57FcmEPuaJvJIIInks1+ZQOxrmsgjgSSSz37lwGxvsVhUNw445KPw7GsdyWMASA5Pl1R3cfA/Gi+SJxpZUYCzvVZktOckkCH+m8/g7tb+B0/aC0tP9RQ4liHqPkAYrI7Z+u8MBDgGGIY2f/lYJa6cWoEqEIgLwQuFgszOzqr7vxfl2rVr0t6uHh3NxZkC1Y+9JhNmZmbk3bt3Gs6LFy80oIXFBVlYWNCNWl5elomJCZ0deGzr9PQ0769lEVc1Q/DDBgxD4+PjGsKdO3dkbGxMC97f3y97e3vS0dGhs6enp0eXt7a2ZG5uToaGhmR0dFSD4TknGZ1qhhg3ALO9va1XNzc3NYDh4WG5efOmfPz4UYs/MjIik5OTMj8/L4ODg3p4QwXCMCqe/r2aIeYcgqHpzZs30tnZKX19fVpwrOfzeX1OwfNFent7ZWlpSQNYXFzUkAYGBpghp+dQrVkFUt2iCsiSknq1NFc+FeMEr9SX5qYmv5kuYygDLC52FAgFYlzjYzD+N0ORySKzn+/2FQhcGCKE+cSlQajLEr2u3g0YfzMIya9G8vKJGZLcPT3EVSCQIQcHmO0t6it2PhIsrpzJ7QMZgiHIDFnJ3dNDXAUCQOI6oL1dBQIXhnbd01tcBQgkrmIp2xNIygLHdU8gcRVL2Z5AUhY4rnsCiatYyvYEkrLAcd0TSFzFUrYnkJQFjuueQOIqlrI9gaQscFz3IbO9B+o78tLRdx+c740raFL70MlFYDj+c7mkYVg/qgKhQxZhRJXPvl0oEPth6DGqAgQSVSlHdgTiSOioYQgkqlKO7AjEkdBRwxBIVKUc2RGII6GjhiGQqEo5siMQR0JHDUMgUZVyZBeYXDS/XMQPqzm16IiCL0wACGZ68dteTi/6VHJYDJ3tdRifoWoU4DmkRpCsVwkkawI18QmkRpCsVwkkawI18QmkRpCsVwkkawI18QmkRpCsVwkkawI18QmkRpCsVwkkawI18QmkRpCsVwOTi7jxDP+denZYQoHgSW2c7c0GCmd7s9G9blSeQ+pKk80OAslG97pRCaSuNNnsIJBsdK8blUDqSpPNDgLJRve6UQmkrjTZ7CCQbHSvG5VA6kqTzQ4CyUb3ulEJpK402ewITC5iYhEzvpXJRf661zWW0AxRd4pVC2G4hoF4nO3NQvUTYoZmyAn23JWyAgSSssBx3RNIXMVStieQlAWO655A4iqWsj2BpCxwXPcEElexlO0JJGWB47onkLiKpWxPICkLHNc9gcRVLGX7wGwvHiJZKh3iOZJcMlAgAAQPKK4sJJIBD872ZiH6STFNOpxkw30OFSAQh2JHCUUgUVRyaEMgDsWOEup/0hfm6eHs3FIAAAAASUVORK5CYII=" alt="Table View for event details" /><figcaption>Table View for event details</figcaption>
+</figure>
+<section id="subclassing-uitableviewcontroller" class="level3">
+<h3>Subclassing UITableViewController</h3>
+<p>Create a new subclass of UITableViewController called HUMAddEventViewController. UITableViewController is a subclass of UIViewController that has a tableView property and conforms to the <code>&lt;UITableViewDataSource&gt;</code> and <code>&lt;UITableViewDelegate&gt;</code> protocols. This means that we have to implement the <code>tableView:numberOfRowsInSection:</code> and <code>tableView:cellForRowAtIndexPath:</code> so the tableView will know how many cells to display and what these cells will look like. If we don't implement these required protocol methods, the compiler will throw an error.</p>
+<pre><code>// HUMAddEventViewController.m
+
+- (NSInteger)tableView:(UITableView *)tableView 
+    numberOfRowsInSection:(NSInteger)section
+{
+    return 6;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView
+                    dequeueReusableCellWithIdentifier:HUMAddEventCellIdentifier
+                                         forIndexPath:indexPath];
+    if (indexPath.row == 5)
+        cell.textLabel.text = NSLocalizedString(@"Done", nil);
+    
+    return cell;
+}</code></pre>
+<p>The method <code>tableView:cellForRowAtIndexPath:</code> returns a cell for every row in the tableview. Instead of instantiating and returning a new cell every time, we use <code>dequeueReusableCellWithIdentifier:forIndexPath:</code> so that we can reuse cells that have already been instantiated. The identifier argument allows you to recycle different types of cells, in case you wanted to have a <code>@"GreenCellIdentifier"</code> and a <code>@"BlueCellIdentifier"</code>.</p>
+<p>Using a static string as the identifier is suggested, since the string is constant and should only have to be instantiated once. If you place <code>static NSString *const HUMAddEventCellIdentifier = @"HUMAddEventCellIdentifier";</code> inside your HUMAddEventViewController implementation file, you can use refer to this <code>@"HUMAddEventCellIdentifier"</code> string as <code>HUMAddEventCellIdentifier</code> throughout the file.</p>
+<pre><code>// HUMAddEventViewController.m
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    [self.tableView registerClass:[UITableViewCell class]
+           forCellReuseIdentifier:HUMAddEventCellIdentifier];
+}</code></pre>
+<p>If we want to be able to reuse cells using the <code>HUMAddEventCellIdentifier</code>, we have to register a class that the tableView will create or reuse an instance of when we call <code>dequeueReusableCellWithIdentifier:forIndexPath:</code>. We do this inside of <code>viewDidLoad</code>.</p>
+</section>
+<section id="linking-the-add-button-to-the-humaddeventviewcontroller" class="level3">
+<h3>Linking the Add Button to the HUMAddEventViewController</h3>
+<p>Now that we have created a HUMAddEventViewController we can create and show the add view from the HUMMapViewController. Go back to the HUMMapViewController's implementation file and add <code>#import "HUMAddEventViewController.h"</code> below the <code>#import "HUMMapViewController.h"</code> to import the header file we created in the previous section.</p>
+<p>Now we can replace the <code>addButtonPressed</code> method to present a HUMAddEventViewController. When we press the Add button on top of the map view, we can either:</p>
+<ol type="1">
+<li><p>Push a new HUMAddEventViewController onto a navigation stack that contains both it and the HUMMapViewController</p></li>
+<li><p>Present a new HUMAddEventViewController modally.</p></li>
+</ol>
+<p>Having the HUMMapViewController present modally means that the HUMAddEventViewController will animate sliding up from the bottom. Pushing onto the navigation stack would give us the "Back" functionality for dismissing views, but in our case we actually want to present modally and use a custom "Cancel" dismissal.</p>
+<pre><code>// HUMMapViewController.m
+
+- (void)addButtonPressed
+{
+    HUMAddEventViewController *addEventViewController = [[HUMAddEventViewController alloc] init];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:addEventViewController];
+    [self presentViewController:navigationController animated:YES completion:nil];
+}</code></pre>
+<p>Since the <code>addEventViewController</code> isn't being placed on a navigation stack with the HUMMapViewController, it won't have a navigation bar by default. We'll place the <code>addEventViewController</code> inside its own navigation controller so that it will have a navigation stack and navigation bar of its own.</p>
+<p>Now we can present the <code>navigationController</code> instead of the <code>addEventViewController</code>. This presents the entire <code>navigationController</code>'s navigation stack, but right now the only view controller inside the navigation stack is the <code>addEventViewController</code>.</p>
+<p>You can run the Humon app now and press the "Add" button. However, you won't be able to cancel out of the HUMAddEventViewController, so lets handle that next.</p>
+</section>
+<section id="adding-a-cancel-button" class="level3">
+<h3>Adding a Cancel Button</h3>
+<p>Inside the HUMAddEventViewController, add a left aligned bar button item to the navigation bar. This bar button item will call the method <code>cancelButtonPressed</code> which calls a method on the view controller that presented the HUMAddEventViewController (which in this case is the HUMMapViewController) to dismiss.</p>
+<pre><code>// HUMAddEventViewController.m
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [self.tableView registerClass:[UITableViewCell class]
+           forCellReuseIdentifier:HUMAddEventCellIdentifier];
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
+                   initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                        target:self
+                                        action:@selector(cancelButtonPressed)];
+}
+
+- (void)cancelButtonPressed
+{
+    [self.presentingViewController dismissViewControllerAnimated:YES
+                                                      completion:nil];
+}</code></pre>
+<p>If you run the app now, you'll be able to summon and dismiss the HUMAddEventViewController.</p>
+</section>
+</section></body>
+</html>

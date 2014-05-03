@@ -1,4 +1,4 @@
-## Creating a GET request
+# Creating a GET request
 
 ### It all starts with a request spec
 

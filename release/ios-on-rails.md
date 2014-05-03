@@ -50,7 +50,7 @@ basic familiarity with the Objective-C programming language.
 
 \part{Building the Humon Rails App}
 
-## Introduction to our example application and setup
+# Introduction to our example application and setup
 
 ### Example application
 
@@ -194,7 +194,7 @@ suggestions:
  * [YARD](http://yardoc.org/)
 
 
-## Creating a GET request
+# Creating a GET request
 
 ### It all starts with a request spec
 
@@ -470,7 +470,7 @@ same JSON output.
 
 Congratulations, you just created your first API endpoint with Rails!
 
-## Creating a POST request
+# Creating a POST request
 
 ### Forgery protection strategy and Rails 4
 
@@ -809,7 +809,7 @@ expectations.
 
 With that, our second request spec is passing. Nice work!
 
-## Creating a PATCH request
+# Creating a PATCH request
 
 ### It all starts with a request spec
 
@@ -1040,7 +1040,7 @@ Hooray! We've now successfully implemented 3 different HTTP requests
 in our Rails API. Don't forget to update the API documentation. Next we'll
 be having some fun with geocoding!
 
-## Creating a geocoded GET request
+# Creating a geocoded GET request
 
 ### What is geocoding?
 
@@ -1327,7 +1327,7 @@ And just like that, our test is now passing.
 
 \part{Building the Humon iOS App}
 
-## Introduction
+# Introduction
 
 The iOS portion of this book will cover creating a new Xcode project, using a
 few cocoapods to help you get started, and making basic API requests to the API
@@ -1346,13 +1346,13 @@ programming is also required for the iOS portion of this book. Like Rails, iOS
 uses the Model-View-Controller design pattern, with the caveat that most of your
 controllers will instead be called ViewControllers.
 
-## A New Xcode Project
+# A New Xcode Project
 
 As with any iOS app, the first step is to create a new project in Xcode. Create a new, empty project with your own name and identifier. Running the project for the first time will yield a white screen.
 
 ![Pick an Empty Application](images/ios_new_xcode_project_1.png)
 
-## Alpha and Beta Schemes
+# Alpha and Beta Schemes
 
 Distributing a Beta version of your app to testers before submitting to the app store is a vital part of the submittal process for medium to large scale apps. Humon may be a small app now, but we are going to set up a Alpha and Beta configuration and scheme in order to follow with best practices.
 
@@ -1396,7 +1396,7 @@ Setting these manually is perfectly fine as well, but keeping separate configura
 
 	The app's name should display as HumonBeta if everything has been configured correctly. In addition, you can now use `ROOT_URL` instead of a string literal everywhere you want to conditionally use your staging or production base URL.
 
-## Managing Dependencies
+# Managing Dependencies
 
 ### Using CococaPods
 
@@ -1443,7 +1443,7 @@ We will be using the TestFlight SDK to distribute our app to Beta testers. Parse
 
 Once you've updated your podfile, go ahead and run `$ pod install`
 
-## The Mobile App's Skeleton
+# The Mobile App's Skeleton
 
 The Humon app is going to have 3 distinct view controller types, which we will create empty versions of now.
 
@@ -1456,7 +1456,7 @@ The Humon app is going to have 3 distinct view controller types, which we will c
 3. The last view will display after the user creates an event to confirm that it has been posted using our API. A button will allow users to post the event to social media sites using a standard activity view controller.
 
 
-## The Map View Controller
+# The Map View Controller
 
 ![Map View for viewing events](images/ios_app_skeleton_1.png)
 
@@ -1596,7 +1596,7 @@ The `addTarget:action:ForControlEvents:` method sets the add button up to call t
 Go ahead and run your project. If everything is set up correctly, you should see a full screen mapView and a grey button for adding events.
 
 
-## The Add an Event View Controller
+# The Add an Event View Controller
 
 ![Table View for event details](images/ios_app_skeleton_2.png)
 
@@ -1695,7 +1695,7 @@ Inside the HUMAddEventViewController, add a left aligned bar button item to the 
 If you run the app now, you'll be able to summon and dismiss the HUMAddEventViewController.
 
 
-## The Confirmation View Controller
+# The Confirmation View Controller
 
 ![View for confirming event creation](images/ios_app_skeleton_3.png)
 
@@ -1822,7 +1822,7 @@ Notice that we chose to push the `confirmationViewController` instead of present
 If you run the app, you'll be able to go through the approximate flow of creating a new event.
 
 
-## A Rails API Client With NSURLSession
+# A Rails API Client With NSURLSession
 
 Before we go about making our first API request, we need to decide how we are going to make our networking calls. As mentioned in the Cocoapods chapter, the AFNetworking framework is a clean and reliable solution to making networking requests. We will be using AFNetworking in this book, but we'll also include examples of how to make a few API requests manually for reference. AFNetworking brings a lot more to the table than just wrapping up your network requests; but, like a programming planeteer, the choice is yours.
 
@@ -1923,7 +1923,7 @@ We could just use the default NSURLSessionConfiguration that is returned from NS
 
 Setting the session headers on the `sessionConfiguration` is particularly important, since sending the app secret is necessary for user creation, while the user's ID is necessary for all other requests. When we initialize the `sharedClient` singleton, we place the user ID in the header if we've already saved one in the keychain, or the app secret if there is no user ID saved in the keychain. Having the app secret in the header is only necessary for the POST to /users request, so we'll change out the app secret header one we have successfully made that request
 
-## A Rails API Client With AFNetworking
+# A Rails API Client With AFNetworking
 
 Now that we've created our own networking client, let's see how we could do this using the AFNetworking framework. We'll create another client that is a subclass of AFNetworking's session manager instead of NSObject.
 
@@ -1962,7 +1962,7 @@ With AFNetworking, we don't have to manually set up the session configuration an
 
 As before, we need to set the user's ID in the header if we have already created a user for this device. If not, we set the app secret so that we can make a POST to /users to create a user with the app secret.
 
-## The User Object
+# The User Object
 
 Rather than having a user create an account and log in, we're going to create a user object on the first run of the app and then consistantly sign our requests as this user. The user entity on the database has only one property: device_token. You can think of this device_token as a user ID, since our users are identified by their device rather than an email address or username.
 
@@ -2052,7 +2052,7 @@ Finally, let's implement a method for `userMatchesCurrentUserSession:`. It's a s
         return [user.userID isEqualToNumber:[HUMUserSession userID]];
     }
 
-## Posting a User With NSURLSession
+# Posting a User With NSURLSession
 
 Now that we have a singleton `HUMRailsClient` object and a configured session property on that object, we can create NSURLSessionTasks that will actually make our API request. 
 
@@ -2159,7 +2159,7 @@ Since we have a new device_token that we want to start sending in we need to cre
 
 Regardless of whether or not there's an error, we want to execute the completion block we passed into the method `createCurrentUserWithCompletionBlock:`. Since we will be updating the UI in this completion block, we have to force the completion block to execute on the main thread using `dispatch_async`. Alternatively, you could use NSOperationQueue to execute the block on the main thread, but since we are just sending off a block I chose to use `dispatch_async`.
 
-## Posting a User With AFNetworking
+# Posting a User With AFNetworking
 
 Now that we've created a method for enqueueing a task manually, lets use the AFNetworking framework to simplify things. We'll create a method on our `HUMRailsAFNClient` to POST to /users.
 
@@ -2236,7 +2236,7 @@ We'll also present a heads-up-display to users to indicate that an API call is i
 
 If you run the app and get back a completionBlock with no error, you've officially made a successful POST request and created a user on the database!
 
-## The Event Object
+# The Event Object
 
 Users will be interacting with the HUMAddEventViewController to create events in the app. 
 
@@ -2390,7 +2390,7 @@ For an in-depth explanation of date formatters and using NSLocale, read into htt
 
 Be sure to add `#import NSDateFormatter+HUMDefaultDateFormatter.h` at the top of HUMEvent.m since we used the date formatter in that file, and need to know about this `RFC3339DateFormatter` method.
 
-## Posting an Event With NSURLSession
+# Posting an Event With NSURLSession
 
 We have already defined a `sharedClient` of our `HUMRailsClient` to use for making POST /users requests. So, we simply need to define a new method for making POST /events requests.
 
@@ -2474,7 +2474,7 @@ Now that we've serialized the event's JSON dictionary, created a POST request, a
 If the task completes without an error, we can serialize the data we receive into a dictionary and set the event's ID from that response dictionary. If the the task completes with an error, `responseEvent` will remain nil. Either way, we want to execute the block on the main queue, since the block will be updating the UI. The completion block will return either an updated event or nil depending on whether or not the POST was successful.
 
 
-## Posting an Event With AFNetworking
+# Posting an Event With AFNetworking
 
 Now lets POST an event using AFNetworking. You may continue building your own HUMRailsClient if you so desire, but henceforth we will be using AFNetworking for all our networking requests. 
 
@@ -2571,7 +2571,7 @@ Instead of simply dismissing the progress display, we should present a HUMConfir
 
 Now you can go through the general flow of hitting the "Add Event" button, confirming with the "Done" button, and recieving confirmation by seeing the HUMConfirmationViewController.
 
-## Getting Events from the API
+# Getting Events from the API
 
 When the user runs the app, we want to display events that are near their current location. So, let's create a GET task that will return event objects that we can place on the `mapView`.
 

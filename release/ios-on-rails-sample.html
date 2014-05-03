@@ -31,6 +31,7 @@
 <li><a href="#introduction">Introduction</a><ul>
 <li><a href="#why-this-book">Why this book?</a></li>
 <li><a href="#who-is-this-book-for">Who is this book for?</a></li>
+</ul></li>
 <li><a href="#creating-a-get-request">Creating a GET request</a><ul>
 <li><a href="#it-all-starts-with-a-request-spec">It all starts with a request spec</a></li>
 <li><a href="#model">Model</a></li>
@@ -46,7 +47,6 @@
 <li><a href="#a-rails-api-client-with-afnetworking">A Rails API Client With AFNetworking</a><ul>
 <li><a href="#creating-a-singleton-client-object-1">Creating a Singleton Client Object</a></li>
 <li><a href="#setting-the-session-headers-1">Setting the Session Headers</a></li>
-</ul></li>
 </ul></li>
 <li><a href="#closing">Closing</a></li>
 </ul>
@@ -87,8 +87,9 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
 <p>The approach shared in this book is the result of our own experiments as Rails and iOS developers working together to build an application. The Rails portions of this book assume a basic working knowledge of how to build a web application with Rails as well as the Ruby programming language. The iOS portions of this book assume experience with object oriented programming and a basic familiarity with the Objective-C programming language.</p>
 <p></p>
 </section>
-<section id="creating-a-get-request" class="level2">
-<h2>Creating a GET request</h2>
+</section>
+<section id="creating-a-get-request" class="level1">
+<h1>Creating a GET request</h1>
 <section id="it-all-starts-with-a-request-spec" class="level3">
 <h3>It all starts with a request spec</h3>
 <p>At thoughtbot, we do test-driven and Outside-in development, which means that we start work on any feature by writing a high-level test that describes user behaviors. You can read a more detailed description of Outside-in development <a href="http://rubylearning.com/blog/2010/10/05/outside-in-development/">here</a>, but the benefits can be summarized as follows:</p>
@@ -262,8 +263,8 @@ Event.create(
 <p></p>
 </section>
 </section>
-<section id="a-rails-api-client-with-nsurlsession" class="level2">
-<h2>A Rails API Client With NSURLSession</h2>
+<section id="a-rails-api-client-with-nsurlsession" class="level1">
+<h1>A Rails API Client With NSURLSession</h1>
 <p>Before we go about making our first API request, we need to decide how we are going to make our networking calls. As mentioned in the Cocoapods chapter, the AFNetworking framework is a clean and reliable solution to making networking requests. We will be using AFNetworking in this book, but we'll also include examples of how to make a few API requests manually for reference. AFNetworking brings a lot more to the table than just wrapping up your network requests; but, like a programming planeteer, the choice is yours.</p>
 <section id="creating-a-singleton-client-object" class="level3">
 <h3>Creating a Singleton Client Object</h3>
@@ -350,8 +351,8 @@ static NSString *const HUMAppSecret =
 <p>Setting the session headers on the <code>sessionConfiguration</code> is particularly important, since sending the app secret is necessary for user creation, while the user's ID is necessary for all other requests. When we initialize the <code>sharedClient</code> singleton, we place the user ID in the header if we've already saved one in the keychain, or the app secret if there is no user ID saved in the keychain. Having the app secret in the header is only necessary for the POST to /users request, so we'll change out the app secret header one we have successfully made that request</p>
 </section>
 </section>
-<section id="a-rails-api-client-with-afnetworking" class="level2">
-<h2>A Rails API Client With AFNetworking</h2>
+<section id="a-rails-api-client-with-afnetworking" class="level1">
+<h1>A Rails API Client With AFNetworking</h1>
 <p>Now that we've created our own networking client, let's see how we could do this using the AFNetworking framework. We'll create another client that is a subclass of AFNetworking's session manager instead of NSObject.</p>
 <section id="creating-a-singleton-client-object-1" class="level3">
 <h3>Creating a Singleton Client Object</h3>
@@ -385,7 +386,6 @@ static NSString *const HUMAppSecret =
 <section id="setting-the-session-headers-1" class="level3">
 <h3>Setting the Session Headers</h3>
 <p>As before, we need to set the user's ID in the header if we have already created a user for this device. If not, we set the app secret so that we can make a POST to /users to create a user with the app secret.</p>
-</section>
 </section>
 </section>
 <section id="closing" class="level1">

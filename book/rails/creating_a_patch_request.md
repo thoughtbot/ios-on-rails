@@ -1,4 +1,4 @@
-## Creating a PATCH request
+# Creating a PATCH request
 
 ### It all starts with a request spec
 

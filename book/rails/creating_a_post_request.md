@@ -1,4 +1,4 @@
-## Creating a POST request
+# Creating a POST request
 
 ### Forgery protection strategy and Rails 4
 

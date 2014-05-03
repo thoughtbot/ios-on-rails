@@ -1,4 +1,4 @@
-## The Event Object
+# The Event Object
 
 Users will be interacting with the HUMAddEventViewController to create events in the app. 
 

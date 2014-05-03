@@ -1,4 +1,4 @@
-## Posting an Event With AFNetworking
+# Posting an Event With AFNetworking
 
 Now lets POST an event using AFNetworking. You may continue building your own HUMRailsClient if you so desire, but henceforth we will be using AFNetworking for all our networking requests. 
 

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="thoughtbot" />
+  <meta name="author" content="Jessie Young" />
+  <meta name="author" content="Diana Zmuda" />
+  <title>iOS on Rails (Beta): Posting a User With NSURLSession</title>
+  <style type="text/css"><![CDATA[code{white-space: pre;}]]></style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="data:text/css,%2A%20%7B%0A%20%20%2Dmoz%2Dbox%2Dsizing%3A%20border%2Dbox%3B%0A%20%20%2Dwebkit%2Dbox%2Dsizing%3A%20border%2Dbox%3B%0A%20%20box%2Dsizing%3A%20border%2Dbox%3B%20%7D%0A%0Abody%20%7B%0A%20%20font%2Dsize%3A%201em%3B%0A%20%20height%3A%20100%25%3B%0A%20%20margin%3A%200%20auto%3B%0A%20%20max%2Dwidth%3A%2054em%3B%0A%20%20padding%3A%200%201em%204%2E5em%3B%20%7D%0A%20%20%40media%20screen%20and%20%28min%2Dwidth%3A%20600px%29%20%7B%0A%20%20%20%20body%20%7B%0A%20%20%20%20%20%20padding%3A%200%204em%204%2E5em%3B%20%7D%20%7D%0A%20%20%40media%20screen%20and%20%28min%2Dwidth%3A%20700px%29%20%7B%0A%20%20%20%20body%20%7B%0A%20%20%20%20%20%20font%2Dsize%3A%201%2E125em%3B%20%7D%20%7D%0A%20%20%40media%20screen%20and%20%28min%2Dwidth%3A%20800px%29%20%7B%0A%20%20%20%20body%20%7B%0A%20%20%20%20%20%20padding%3A%200%206em%204%2E5em%3B%20%7D%20%7D%0A%20%20%40media%20screen%20and%20%28min%2Dwidth%3A%20880px%29%20%7B%0A%20%20%20%20body%20%7B%0A%20%20%20%20%20%20padding%3A%200%208em%204%2E5em%3B%20%7D%20%7D%0A%20%20%40media%20screen%20and%20%28min%2Dwidth%3A%20940px%29%20%7B%0A%20%20%20%20body%20%7B%0A%20%20%20%20%20%20padding%3A%200%2010em%204%2E5em%3B%20%7D%20%7D%0A%20%20%40media%20screen%20and%20%28min%2Dwidth%3A%201800px%29%20%7B%0A%20%20%20%20body%20%7B%0A%20%20%20%20%20%20font%2Dsize%3A%201%2E375em%3B%20%7D%20%7D%0A%0Anav%20%7B%0A%20%20border%2Dbottom%3A%201px%20dashed%20%23dddddd%3B%0A%20%20border%2Dtop%3A%201px%20dashed%20%23dddddd%3B%0A%20%20padding%3A%201%2E5em%200%3B%0A%20%20margin%3A%201%2E5em%200%3B%20%7D%0A%20%20nav%20%3E%20ul%20%3E%20li%20%3E%20a%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%20%7D%0A%0Aheader%20%7B%0A%20%20padding%3A%204%2E5em%200%3B%20%7D%0A%0Abody%20%7B%0A%20%20%2Dwebkit%2Dfont%2Dsmoothing%3A%20antialiased%3B%0A%20%20color%3A%20%23444444%3B%0A%20%20font%2Dfamily%3A%20%22proxima%2Dnova%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0A%20%20line%2Dheight%3A%201%2E5em%3B%20%7D%0A%0Ah1%2C%20h2%2C%20h3%2C%20h4%2C%20h5%2C%20h6%20%7B%0A%20%20color%3A%20%23222222%3B%0A%20%20font%2Dfamily%3A%20%22proxima%2Dnova%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0A%20%20line%2Dheight%3A%201%2E25em%3B%0A%20%20margin%3A%201%2E5em%200%200%2E375em%3B%0A%20%20text%2Drendering%3A%20optimizeLegibility%3B%20%7D%0A%20%20h1%20%3E%20a%2C%20h2%20%3E%20a%2C%20h3%20%3E%20a%2C%20h4%20%3E%20a%2C%20h5%20%3E%20a%2C%20h6%20%3E%20a%20%7B%0A%20%20%20%20color%3A%20%23222222%3B%20%7D%0A%0Ah1%20%7B%0A%20%20margin%3A%203em%200%200%2E375em%3B%0A%20%20font%2Dsize%3A%201%2E75em%3B%20%7D%0A%20%20h1%20%3E%20a%20%7B%0A%20%20%20%20color%3A%20%23c32f34%3B%20%7D%0A%20%20%20%20h1%20%3E%20a%3Ahover%2C%20h1%20%3E%20a%3Afocus%20%7B%0A%20%20%20%20%20%20color%3A%20%23222222%3B%20%7D%0A%20%20h1%2Etitle%20%7B%0A%20%20%20%20font%2Dsize%3A%203em%3B%0A%20%20%20%20font%2Dweight%3A%20900%3B%0A%20%20%20%20line%2Dheight%3A%201%3B%0A%20%20%20%20margin%3A%200%200%20%2E125em%3B%20%7D%0A%20%20%20%20%40media%20screen%20and%20%28min%2Dwidth%3A%20600px%29%20%7B%0A%20%20%20%20%20%20h1%2Etitle%20%7B%0A%20%20%20%20%20%20%20%20font%2Dsize%3A%204em%3B%20%7D%20%7D%0A%0Ah2%20%7B%0A%20%20font%2Dsize%3A%201em%3B%0A%20%20letter%2Dspacing%3A%201px%3B%0A%20%20text%2Dtransform%3A%20uppercase%3B%20%7D%0A%20%20h2%2Eauthor%20%7B%0A%20%20%20%20color%3A%20%23999999%3B%0A%20%20%20%20float%3A%20left%3B%0A%20%20%20%20font%2Dsize%3A%201em%3B%0A%20%20%20%20font%2Dweight%3A%20200%3B%0A%20%20%20%20margin%3A%200%3B%0A%20%20%20%20text%2Dtransform%3A%20none%3B%20%7D%0A%20%20%20%20%40media%20screen%20and%20%28min%2Dwidth%3A%20600px%29%20%7B%0A%20%20%20%20%20%20h2%2Eauthor%20%7B%0A%20%20%20%20%20%20%20%20font%2Dsize%3A%201%2E25em%3B%20%7D%20%7D%0A%20%20%20%20h2%2Eauthor%3Anot%28%3Alast%2Dchild%29%20%7B%0A%20%20%20%20%20%20margin%2Dright%3A%201em%3B%20%7D%0A%0Ah3%20%7B%0A%20%20font%2Dsize%3A%201em%3B%20%7D%0A%0Ah4%20%7B%0A%20%20font%2Dsize%3A%201%2E5em%3B%20%7D%0A%0Ah5%20%7B%0A%20%20font%2Dsize%3A%201%2E25em%3B%20%7D%0A%0Ah6%20%7B%0A%20%20font%2Dsize%3A%201em%3B%20%7D%0A%0Ap%20%7B%0A%20%20margin%3A%200%200%200%2E75em%3B%20%7D%0A%0Aa%20%7B%0A%20%20%2Dmoz%2Dtransition%3A%20all%200%2E15s%20ease%2Dout%200%3B%0A%20%20%2Dwebkit%2Dtransition%3A%20all%200%2E15s%20ease%2Dout%200%3B%0A%20%20color%3A%20%23477dca%3B%0A%20%20text%2Ddecoration%3A%20none%3B%0A%20%20transition%3A%20all%200%2E15s%20ease%2Dout%200%3B%20%7D%0A%20%20a%3Ahover%20%7B%0A%20%20%20%20color%3A%20%232c5999%3B%20%7D%0A%20%20a%3Aactive%2C%20a%3Afocus%20%7B%0A%20%20%20%20color%3A%20%232c5999%3B%0A%20%20%20%20outline%3A%20none%3B%20%7D%0A%0Ahr%20%7B%0A%20%20border%3A%20none%3B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23dddddd%3B%0A%20%20margin%3A%201%2E5em%200%3B%20%7D%0A%0Aimg%20%7B%0A%20%20margin%3A%200%3B%0A%20%20max%2Dwidth%3A%20100%25%3B%20%7D%0A%0Acode%20%7B%0A%20%20font%2Dfamily%3A%20inconsolata%2C%20%22Bitstream%20Vera%20Sans%20Mono%22%2C%20Consolas%2C%20Courier%2C%20monospace%3B%0A%20%20font%2Dsize%3A%20%2E875em%3B%0A%20%20white%2Dspace%3A%20pre%3B%0A%20%20word%2Dwrap%3A%20break%2Dword%3B%20%7D%0A%0Apre%20%7B%0A%20%20background%3A%20%23f7f7f7%3B%0A%20%20border%3A%201px%20solid%20%23dddddd%3B%0A%20%20line%2Dheight%3A%201%2E35%3B%0A%20%20overflow%2Dx%3A%20scroll%3B%0A%20%20padding%3A%20%2E5rem%201rem%3B%0A%20%20white%2Dspace%3A%20pre%3B%0A%20%20word%2Dwrap%3A%20normal%3B%20%7D%0A%20%20pre%20code%20%7B%0A%20%20%20%20word%2Dwrap%3A%20normal%3B%20%7D%0A%0Ablockquote%20%7B%0A%20%20border%2Dleft%3A%202px%20solid%20%23dddddd%3B%0A%20%20color%3A%20%236a6a6a%3B%0A%20%20margin%3A%201%2E5em%200%3B%0A%20%20padding%2Dleft%3A%200%2E75em%3B%20%7D%0A" rel="stylesheet" />
+  <script type="text/javascript"><![CDATA[
+    (function() {
+      var config = {
+        kitId: 'bgd6ksj',
+        scriptTimeout: 3000
+      };
+      var h=document.getElementsByTagName("html")[0];h.className+=" wf-loading";var t=setTimeout(function(){h.className=h.className.replace(/(\s|^)wf-loading(\s|$)/g," ");h.className+=" wf-inactive"},config.scriptTimeout);var tk=document.createElement("script"),d=false;tk.src='//use.typekit.net/'+config.kitId+'.js';tk.type="text/javascript";tk.async="true";tk.onload=tk.onreadystatechange=function(){var a=this.readyState;if(d||a&&a!="complete"&&a!="loaded")return;d=true;clearTimeout(t);try{Typekit.load(config)}catch(b){}};var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(tk,s)
+    })();
+  ]]></script>
+</head>
+<body><section id="posting-a-user-with-nsurlsession" class="level1">
+<h1>Posting a User With NSURLSession</h1>
+<p>Now that we have a singleton <code>HUMRailsClient</code> object and a configured session property on that object, we can create NSURLSessionTasks that will actually make our API request.</p>
+<section id="declaring-a-task-for-making-requests" class="level3">
+<h3>Declaring a Task for Making Requests</h3>
+<p>Declare a method in our HUMRailsClient.h that creates a POST request to /users.</p>
+<pre><code>- (void)createCurrentUserWithCompletionBlock:
+    (void (^)(NSError *error))block;</code></pre>
+<p>The type of our parameter for this method is a block, which we declare here with <code>(void (^)(NSError *error))</code>. Declaring a block as our parameter type is similar to how we declare other parameter types like <code>(NSString *)</code>, where the word following the type is the name of the parameter. This block has a return type of <code>void</code> and an argument of type <code>NSError</code> so we can check if the POST completed with an error.</p>
+<p>It makes sense to typedef a new name for our completion block so that we can refer to it more easily, especially if we plan on using this block type again. Typedef-ing allows us to define a new name for an existing type, which in this case will be the new name <code>HUMRailsClientErrorCompletionBlock</code> for the block type <code>(void (^)(NSError *error))</code>. Place this typedef above the interface in HUMRailsClient.h:</p>
+<pre><code>typedef void(^HUMRailsClientErrorCompletionBlock)(NSError *error);</code></pre>
+<p>The block that we typedef is the same as the block we previously declared, so now we can declare the method <code>createCurrentUserWithCompletionBlock:</code> as so:</p>
+<pre><code>- (void)createCurrentUserWithCompletionBlock:
+    (HUMRailsClientErrorCompletionBlock)block;</code></pre>
+<p>The <a href="https://developer.apple.com/library/ios/documentation/cocoa/Conceptual/Blocks/Articles/bxDeclaringCreating.html//apple_ref/doc/uid/TP40007502-CH4-SW1.html">Apple developer library</a> has an in-depth section on declaring blocks in Objective C, for those interested.</p>
+</section>
+<section id="creating-a-task-for-making-requests" class="level3">
+<h3>Creating a Task for Making Requests</h3>
+<p>Now that we have declared <code>createCurrentUserWithCompletionBlock:</code> and typedef-ed its completion block, we can define the method.</p>
+<pre><code>// HUMRailsClient.m
+
+- (void)createCurrentUserWithCompletionBlock:
+    (HUMRailsClientCompletionBlock)block
+{
+    // Create a request for the POST to /users
+    NSString *urlString = [NSString stringWithFormat:@"%@/users", ROOT_URL];
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    [request setHTTPMethod:@"POST"];
+    
+    // Create a task to encapsulate your request and a completion block
+    NSURLSessionTask *task = [self.session dataTaskWithRequest:request
+                                            completionHandler:
+        ^void (NSData *data, NSURLResponse *response, NSError *error) {
+    
+        // Log the error on completion
+        NSLog(@"Request completed with error: %@", error);
+    
+    }];
+    
+    [task resume];
+}</code></pre>
+<p>First, we instantiate a <code>url</code> for our request, which in this case is our ROOT_URL (which we set up with a user-defined macro) with /users appended to it. Then we can instantiate a <code>request</code> using this URL and set the request method to POST.</p>
+<p>Now that we have a <code>request</code>, we can create a task for our <code>self.session</code> that will execute the request. The method <code>dataTaskWithRequest:completionHandler:</code> takes two arguments, the <code>request</code> that we created before, and a block that will be run when the request is complete.</p>
+<p>The block we pass into the method must be of a type defined by <code>dataTaskWithRequest:completionHandler:</code>, so we pass in a block of the appropriate type as an argument with the syntax:</p>
+<pre><code>^void (NSData *data, NSURLResponse *response, NSError *error) { 
+    // code to execute
+}</code></pre>
+<p>Where the block's return type is <code>void</code> and that the block's parameters are <code>data</code>, <code>response</code>, and <code>error</code>. We don't have to explicitly declare the void return type, since it can be inferred, which means we could instead use the syntax:</p>
+<pre><code>^(NSData *data, NSURLResponse *response, NSError *error) { 
+    // code to execute
+}</code></pre>
+<p>Finally, we fire off the task by calling the method resume on the task object you just created.</p>
+</section>
+<section id="responding-to-the-completion-of-the-task" class="level3">
+<h3>Responding to the Completion of the Task</h3>
+<p>Once the task has completed, the block we just defined will be invoked with the relevant <code>data</code>, <code>response</code>, and <code>error</code> as arguments. Replace the error log in the completion block with the following:</p>
+<pre><code>    if (!error) {
+        // Set the user session user ID
+        NSDictionary *responseDictionary = [NSJSONSerialization
+                                            JSONObjectWithData:data
+                                            options:kNilOptions
+                                            error:nil];
+        [HUMUserSession setUserID:responseDictionary[@"device_token"]];
+        
+        // Create a new contiguration with the user ID
+        NSURLSessionConfiguration *newConfiguration =
+            self.session.configuration;
+        [newConfiguration setHTTPAdditionalHeaders:
+            @{
+                @"Accept" : @"application/json",
+                @"Content-Type" : @"application/json",
+                @"X-DEVICE-TOKEN" : responseDictionary[@"device_token"]
+            }];
+        self.session = [NSURLSession sessionWithConfiguration:
+                        newConfiguration];
+    }
+    
+    // Execute the block regardless of the error
+    dispatch_async(dispatch_get_main_queue(), ^{
+        block(error);
+    });</code></pre>
+<p>If there is no error, we can create a dictionary using the response data from the task. This dictionary will contain a device_token that the rails app created to identify the user of this device. Now that we have a device_token from the rails app, we can save it using the <code>setUserID:</code> class method on HUMUserSession.</p>
+<p>Since we have a new device_token that we want to start sending in we need to create a <code>newConfiguration</code> that is a copy of the old configuration, place the device_token in the <code>newConfiguration</code>'s header, and set <code>self.session</code> to a new session that uses the <code>newConfiguration</code>.</p>
+<p>Regardless of whether or not there's an error, we want to execute the completion block we passed into the method <code>createCurrentUserWithCompletionBlock:</code>. Since we will be updating the UI in this completion block, we have to force the completion block to execute on the main thread using <code>dispatch_async</code>. Alternatively, you could use NSOperationQueue to execute the block on the main thread, but since we are just sending off a block I chose to use <code>dispatch_async</code>.</p>
+</section>
+</section></body>
+</html>

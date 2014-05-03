@@ -1,4 +1,4 @@
-## Introduction
+# Introduction
 
 The iOS portion of this book will cover creating a new Xcode project, using a
 few cocoapods to help you get started, and making basic API requests to the API
