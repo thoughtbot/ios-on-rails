@@ -40,3 +40,10 @@ of this book assume a basic working knowledge of how to build a web application
 with Rails as well as the Ruby programming language. The iOS portions of this
 book assume experience with object oriented programming and a
 basic familiarity with the Objective-C programming language.
+
+This book is intended to be used as a guide rather than a recipe. While our aim
+is to give you all of the tools necessary to build great Rails APIs and iOS
+clients, it does not cover the fundamentals of Ruby, Rails or Objective-C. That
+being said, if any part of the book strikes you as incomplete or confusing, we
+are always happy to receive pull requests and issue submissions on
+[GitHub](https://github.com/thoughtbot/ios-on-rails).
