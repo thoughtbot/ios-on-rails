@@ -23,12 +23,13 @@ static NSString *const HUMAFNAppSecret = @"yourOwnUniqueAppSecretThatYouShouldRa
         NSURL *baseURL = [NSURL URLWithString:ROOT_URL];
         _sharedClient = [[HUMRailsAFNClient alloc] initWithBaseURL:baseURL];
 
-        if ([HUMUserSession userID])
+        if ([HUMUserSession userID]) {
             [_sharedClient.requestSerializer setValue:[HUMUserSession userID]
                                    forHTTPHeaderField:@"X-DEVICE-TOKEN"];
-        else
+        } else {
             [_sharedClient.requestSerializer setValue:HUMAFNAppSecret
                                    forHTTPHeaderField:@"X-APP-SECRET"];
+        }
         
     });
     
@@ -54,36 +55,39 @@ static NSString *const HUMAFNAppSecret = @"yourOwnUniqueAppSecretThatYouShouldRa
 }
 
 - (void)createEvent:(HUMEvent *)event
-    withCompletionBlock:(HUMRailsAFNClientEventCompletionBlock)block
+    withCompletionBlock:(HUMRailsAFNClientEventIDCompletionBlock)block
 {
     [self POST:@"events"
     parameters:[event JSONDictionary]
        success:^(NSURLSessionDataTask *task, id responseObject) {
            
         NSLog(@"%@", responseObject);
-        event.eventID = [NSString stringWithFormat:@"%@", responseObject[@"id"]];
-        block(event);
+        NSString *eventID = [NSString stringWithFormat:@"%@",responseObject[@"id"]];
+        block(eventID, nil);
            
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
-        block(nil);
+        block(nil, error);
         
     }];
 }
 
 - (void)changeEvent:(HUMEvent *)event
-withCompletionBlock:(HUMRailsAFNClientEventCompletionBlock)block
+withCompletionBlock:(HUMRailsAFNClientEventIDCompletionBlock)block
 {
-    [self PATCH:@"events"
-    parameters:[event JSONDictionary]
-       success:^(NSURLSessionDataTask *task, id responseObject) {
-           
-           NSLog(@"%@", responseObject);
-           block(event);
+    NSString *path = [NSString stringWithFormat:@"events/%@", event.eventID];
+
+    [self PATCH:path
+     parameters:[event JSONDictionary]
+        success:^(NSURLSessionDataTask *task, id responseObject) {
+
+            NSLog(@"%@", responseObject);
+            NSString *eventID = [NSString stringWithFormat:@"%@",responseObject[@"id"]];
+            block(eventID, nil);
            
        } failure:^(NSURLSessionDataTask *task, NSError *error) {
            
-           block(nil);
+           block(nil, error);
            
        }];
 }
@@ -91,6 +95,7 @@ withCompletionBlock:(HUMRailsAFNClientEventCompletionBlock)block
 - (NSURLSessionDataTask *)fetchEventsInRegion:(MKCoordinateRegion)region
         withCompletionBlock:(HUMRailsAFNClientEventsCompletionBlock)block
 {
+    // region.span.latitudeDelta/2*111 is how we find the aproximate radius  that the screen is displaying in km.
     NSDictionary *parameters = @{
                                @"lat" : @(region.center.latitude),
                                @"lon" : @(region.center.longitude),
@@ -102,20 +107,29 @@ withCompletionBlock:(HUMRailsAFNClientEventCompletionBlock)block
              success:^(NSURLSessionDataTask *task, id responseObject) {
           
             NSArray *events;
-            if ([responseObject isKindOfClass:[NSArray class]])
+            if ([responseObject isKindOfClass:[NSArray class]]) {
                 events = [HUMEvent eventsWithJSON:responseObject];
-            block(events);
+            }
+            block(events, nil);
                  
           } failure:^(NSURLSessionDataTask *task, NSError *error) {
               
-            block(nil);
+            block(nil, error);
         
     }];
 }
 
-- (void)createAttendanceForEvent:(HUMEvent *)event withCompletionBlock:(HUMRailsAFNClientErrorCompletionBlock)block
+- (void)createAttendanceForEvent:(HUMEvent *)event
+             withCompletionBlock:(HUMRailsAFNClientErrorCompletionBlock)block
 {
-    [self POST:@"attendances" parameters:@{@"event" : @{@"id" : @5}, @"user" : @{@"device_token" : [HUMUserSession userID]}} success:^(NSURLSessionDataTask *task, id responseObject) {
+    NSDictionary *parameters = @{@"event" :
+                                    @{@"id" : event.eventID},
+                                 @"user" :
+                                    @{@"device_token" : [HUMUserSession userID]}
+                                 };
+    [self POST:@"attendances"
+    parameters:parameters
+       success:^(NSURLSessionDataTask *task, id responseObject) {
         block(nil);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         block(error);

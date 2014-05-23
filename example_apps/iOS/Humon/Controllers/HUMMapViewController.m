@@ -13,12 +13,18 @@
 #import "HUMUserSession.h"
 @import MapKit;
 #import "HUMLocateEventViewController.h"
+#import "HUMViewEventViewController.h"
+#import "HUMAnnotationView.h"
+#import "HUMEditEventViewController.h"
+#import "HUMUser.h"
 
 @interface HUMMapViewController () <MKMapViewDelegate>
 
 @property (strong, nonatomic) MKMapView *mapView;
 @property (strong, nonatomic) UIButton *addButton;
-@property (strong, nonatomic) NSURLSessionDataTask *currentEventGetTask;
+@property (strong, nonatomic) NSURLSessionTask *currentEventGetTask;
+
+@property (assign, nonatomic) BOOL hasUpdatedUserLocation;
 
 @end
 
@@ -47,11 +53,15 @@
     if (![HUMUserSession userID]) {
         
         [SVProgressHUD show];
-        
-        [[HUMRailsAFNClient sharedClient]
+
+        // We could also make this request using our AFN client.
+        // [[HUMRailsAFNClient sharedClient] createCurrentUser...
+
+        [[HUMRailsClient sharedClient]
             createCurrentUserWithCompletionBlock:^(NSError *error) {
             
             if (error) {
+                NSLog(@"App authentication error: %@", error);
                 [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"App authentication error", nil)];
             } else {
                 [SVProgressHUD dismiss];
@@ -79,13 +89,61 @@
 - (void)mapView:(MKMapView *)mapView
     didUpdateUserLocation:(MKUserLocation *)userLocation
 {
-    self.mapView.region = MKCoordinateRegionMakeWithDistance(
+    if (!self.hasUpdatedUserLocation) {
+        self.mapView.region = MKCoordinateRegionMakeWithDistance(
                             self.mapView.userLocation.coordinate, 1000, 1000);
+        self.hasUpdatedUserLocation = YES;
+    }
 }
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
 {
     [self reloadEventsOnMap];
+}
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
+{
+    if ([annotation isKindOfClass:[MKUserLocation class]]) {
+        return nil;
+    }
+
+    HUMEvent *event = annotation;
+    NSString *annotationType = [event.user isCurrentUser] ? HUMMapViewControllerAnnotationGreen : HUMMapViewControllerAnnotationGrey;
+    MKAnnotationView *annotationView = [self.mapView dequeueReusableAnnotationViewWithIdentifier:annotationType];
+
+    if (!annotationView) {
+        annotationView = [[HUMAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:annotationType];
+    }
+
+    return annotationView;
+}
+
+- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
+{
+    if ([view respondsToSelector:@selector(startAnimating)]) {
+        [(HUMAnnotationView *)view startAnimating];
+    }
+}
+
+- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view
+{
+    if ([view respondsToSelector:@selector(stopAnimating)]) {
+        [(HUMAnnotationView *)view stopAnimating];
+    }
+}
+
+- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
+{
+    if ([view.annotation isKindOfClass:[HUMEvent class]]) {
+        HUMEvent *event = view.annotation;
+
+        if ([event.user isCurrentUser]) {
+            [self.navigationController pushViewController:[[HUMEditEventViewController alloc] initWithEvent:event] animated:YES];
+        } else {
+            [self.navigationController pushViewController:[[HUMViewEventViewController alloc] initWithEvent:event] animated:YES];
+        }
+
+    }
 }
 
 #pragma mark - Map helper methods
@@ -97,10 +155,18 @@
     }
     
     [self.currentEventGetTask cancel];
-    self.currentEventGetTask = [[HUMRailsAFNClient sharedClient]
-                                fetchEventsInRegion:self.mapView.region
-                                withCompletionBlock:^(NSArray *events) {
 
+    // We could also make this request using our AFN client.
+    // [[HUMRailsAFNClient sharedClient] fetchEvents ...
+
+    self.currentEventGetTask = [[HUMRailsClient sharedClient]
+        fetchEventsInRegion:self.mapView.region
+        withCompletionBlock:^(NSArray *events, NSError *error) {
+
+        if (error && error.code != NSURLErrorCancelled) {
+            NSLog(@"Event fetch error: %@", error);
+        }
+                                    
         if (events) {
             self.currentEventGetTask = nil;
             [self updateMapViewAnnotationsWithAnnotations:events];
@@ -111,6 +177,10 @@
 
 - (void)updateMapViewAnnotationsWithAnnotations:(NSArray *)annotations
 {
+    if (!annotations.count) {
+        return;
+    }
+
     NSMutableSet *before = [NSMutableSet setWithArray:self.mapView.annotations];
     NSSet *after = [NSSet setWithArray:annotations];
     

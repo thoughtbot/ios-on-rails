@@ -10,7 +10,7 @@
 
 @implementation NSDateFormatter (HUMDefaultDateFormatter)
 
-+ (instancetype)RFC3339DateFormatter
++ (instancetype)hum_RFC3339DateFormatter
 {
     static NSDateFormatter *dateFormatter = nil;
     

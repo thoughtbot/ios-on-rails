@@ -8,6 +8,6 @@
 
 @interface UIImage (HUMColorImage)
 
-+ (UIImage *)imageOfSize:(CGSize)size color:(UIColor *)color;
++ (UIImage *)hum_imageOfSize:(CGSize)size color:(UIColor *)color;
 
 @end

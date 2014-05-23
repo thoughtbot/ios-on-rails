@@ -27,5 +27,6 @@
 + (NSArray *)eventsWithJSON:(NSArray *)JSON;
 - (instancetype)initWithJSON:(NSDictionary *)JSON;
 - (NSDictionary *)JSONDictionary;
+- (NSString *)humanReadableString;
 
 @end

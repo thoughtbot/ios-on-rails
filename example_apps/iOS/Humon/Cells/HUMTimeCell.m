@@ -19,6 +19,7 @@
     }
 
     self.textField.placeholder = NSLocalizedString(@"Pick a date", nil);
+    self.textField.userInteractionEnabled = NO;
     
     return self;
 }
@@ -31,7 +32,7 @@
 
     _date = date;
     
-    self.textField.text = [[NSDateFormatter RFC3339DateFormatter] stringFromDate:date];
+    self.textField.text = [[NSDateFormatter hum_RFC3339DateFormatter] stringFromDate:date];
 }
 
 @end

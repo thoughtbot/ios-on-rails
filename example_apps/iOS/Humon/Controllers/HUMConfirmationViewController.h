@@ -6,6 +6,10 @@
 //  Copyright (c) 2013 thoughtbot. All rights reserved.
 //
 
+@class HUMEvent;
+
 @interface HUMConfirmationViewController : UIViewController
+
+- (id)initWithEvent:(HUMEvent *)event;
 
 @end

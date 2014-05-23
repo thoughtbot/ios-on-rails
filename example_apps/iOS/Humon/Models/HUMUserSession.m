@@ -36,9 +36,4 @@
                     account:@"currentUserID"];
 }
 
-+ (BOOL)userMatchesCurrentUserSession:(HUMUser *)user
-{
-    return [user.userID isEqualToString:[HUMUserSession userID]];
-}
-
 @end

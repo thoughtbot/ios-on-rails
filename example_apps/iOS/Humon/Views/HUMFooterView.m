@@ -18,7 +18,7 @@
         return nil;
     }
 
-    HUMButton *button = [[HUMButton alloc] init];
+    HUMButton *button = [[HUMButton alloc] initWithColor:HUMButtonColorGreen];
     [self addSubview:button];
 
     [self addConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:HUMButtonHeight]];

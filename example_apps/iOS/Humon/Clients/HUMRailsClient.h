@@ -7,9 +7,11 @@
 //
 
 @class HUMEvent, HUMEvent;
+@import MapKit;
 
 typedef void(^HUMRailsClientErrorCompletionBlock)(NSError *error);
-typedef void(^HUMRailsClientEventCompletionBlock)(HUMEvent *event);
+typedef void(^HUMRailsClientEventIDCompletionBlock)(NSString *eventID, NSError *error);
+typedef void(^HUMRailsClientEventsCompletionBlock)(NSArray *events, NSError *error);
 
 @interface HUMRailsClient : NSObject
 
@@ -17,6 +19,12 @@ typedef void(^HUMRailsClientEventCompletionBlock)(HUMEvent *event);
 - (void)createCurrentUserWithCompletionBlock:
         (HUMRailsClientErrorCompletionBlock)block;
 - (void)createEvent:(HUMEvent *)event
-        withCompletionBlock:(HUMRailsClientEventCompletionBlock)block;
+        withCompletionBlock:(HUMRailsClientEventIDCompletionBlock)block;
+- (void)changeEvent:(HUMEvent *)event
+        withCompletionBlock:(HUMRailsClientEventIDCompletionBlock)block;
+- (NSURLSessionDataTask *)fetchEventsInRegion:(MKCoordinateRegion)region
+        withCompletionBlock:(HUMRailsClientEventsCompletionBlock)block;
+- (void)createAttendanceForEvent:(HUMEvent *)event
+             withCompletionBlock:(HUMRailsClientErrorCompletionBlock)block;
 
 @end

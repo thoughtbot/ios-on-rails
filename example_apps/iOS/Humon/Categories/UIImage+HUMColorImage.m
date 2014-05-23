@@ -10,7 +10,7 @@
 
 @implementation UIImage (HUMColorImage)
 
-+ (UIImage *)imageOfSize:(CGSize)size color:(UIColor *)color
++ (UIImage *)hum_imageOfSize:(CGSize)size color:(UIColor *)color
 {
     UIGraphicsBeginImageContextWithOptions(size, YES, 0.0);
 

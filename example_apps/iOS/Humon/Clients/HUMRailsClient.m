@@ -38,8 +38,9 @@ static NSString *const HUMAppSecret =
 {
     self = [super init];
     
-    if (!self)
+    if (!self) {
         return nil;
+    }
     
     NSURLSessionConfiguration *sessionConfiguration =
         [NSURLSessionConfiguration defaultSessionConfiguration];
@@ -67,19 +68,18 @@ static NSString *const HUMAppSecret =
 - (void)createCurrentUserWithCompletionBlock:
     (HUMRailsClientErrorCompletionBlock)block
 {
-    // Will be taken out later
     NSDictionary *json = @{@"device_token" : [HUMUserSession userID]};
-    NSData *JSONdata = [NSJSONSerialization dataWithJSONObject:json options:0 error:nil];
+    NSData *JSONdata = [NSJSONSerialization dataWithJSONObject:json
+                                                       options:kNilOptions
+                                                         error:nil];
     
-    NSString *urlString = [NSString stringWithFormat:@"%@/users", ROOT_URL];
+    NSString *urlString = [NSString stringWithFormat:@"%@users", ROOT_URL];
     NSURL *url = [NSURL URLWithString:urlString];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url];
     [request setHTTPMethod:@"POST"];
-
-    // Will be taken out later
     [request setHTTPBody:JSONdata];
     
-    NSURLSessionTask *task = [self.session dataTaskWithRequest:request
+    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request
                                              completionHandler:
         ^void (NSData *data, NSURLResponse *response, NSError *error) {
         
@@ -89,7 +89,7 @@ static NSString *const HUMAppSecret =
                                                 options:kNilOptions
                                                 error:nil];
             [HUMUserSession setUserID:responseDictionary[@"device_token"]];
-            
+
             NSURLSessionConfiguration *newConfiguration =
                 self.session.configuration;
             [newConfiguration setHTTPAdditionalHeaders:
@@ -98,6 +98,8 @@ static NSString *const HUMAppSecret =
                     @"Content-Type" : @"application/json",
                     @"X-DEVICE-TOKEN" : responseDictionary[@"device_token"]
                 }];
+            
+            [self.session finishTasksAndInvalidate];
             self.session = [NSURLSession sessionWithConfiguration:
                             newConfiguration];
         }
@@ -111,39 +113,135 @@ static NSString *const HUMAppSecret =
 }
 
 - (void)createEvent:(HUMEvent *)event
-        withCompletionBlock:(HUMRailsClientEventCompletionBlock)block
+        withCompletionBlock:(HUMRailsClientEventIDCompletionBlock)block
 {
     NSData *JSONdata = [NSJSONSerialization
                         dataWithJSONObject:[event JSONDictionary]
-                        options:0
+                        options:kNilOptions
                         error:nil];
     
-    NSString *urlString = [NSString stringWithFormat:@"%@/events", ROOT_URL];
+    NSString *urlString = [NSString stringWithFormat:@"%@events", ROOT_URL];
     NSURL *url = [NSURL URLWithString:urlString];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url];
     [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:JSONdata];
+    //[request setHTTPBody:JSONdata];
     
-    NSURLSessionTask *task = [self.session dataTaskWithRequest:request
-                                             completionHandler:^(NSData *data,
-                                                        NSURLResponse *response,
-                                                            NSError *error) {
-        
-        HUMEvent *responseEvent = nil;
+    NSURLSessionUploadTask *task = [self.session uploadTaskWithRequest:request fromData:JSONdata completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+
+        NSString *eventID;
                                                  
         if (!error) {
-            responseEvent = event;
             NSDictionary *responseDictionary =[NSJSONSerialization
                                                JSONObjectWithData:data
                                                options:kNilOptions
                                                error:nil];
-            responseEvent.eventID = [NSString stringWithFormat:@"%@", responseDictionary[@"id"]];
+            eventID = [NSString stringWithFormat:@"%@",
+                                     responseDictionary[@"id"]];
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            block(responseEvent);
+            block(eventID, error);
         });
         
+    }];
+    [task resume];
+}
+
+- (void)changeEvent:(HUMEvent *)event
+        withCompletionBlock:(HUMRailsClientEventIDCompletionBlock)block
+{
+    NSData *JSONdata = [NSJSONSerialization
+                        dataWithJSONObject:[event JSONDictionary]
+                        options:kNilOptions
+                        error:nil];
+
+    NSString *urlString = [NSString stringWithFormat:@"%@events/%@", ROOT_URL, event.eventID];
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url];
+    [request setHTTPMethod:@"PATCH"];
+    //[request setHTTPBody:JSONdata];
+
+    NSURLSessionUploadTask *task = [self.session uploadTaskWithRequest:request fromData:JSONdata completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+
+        NSString *eventID;
+
+        if (!error) {
+            NSDictionary *responseDictionary =[NSJSONSerialization
+                                            JSONObjectWithData:data
+                                            options:kNilOptions
+                                            error:nil];
+            eventID = [NSString stringWithFormat:@"%@",
+                                  responseDictionary[@"id"]];
+        }
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            block(eventID, error);
+        });
+
+    }];
+    [task resume];
+}
+
+- (NSURLSessionDataTask *)fetchEventsInRegion:(MKCoordinateRegion)region
+        withCompletionBlock:(HUMRailsClientEventsCompletionBlock)block
+{
+    // region.span.latitudeDelta/2*111 is how we find the aproximate radius  that the screen is displaying in km.
+    NSString *parameters = [NSString stringWithFormat:@"?lat=%@&lon=%@&radius=%@", @(region.center.latitude), @(region.center.longitude), @(region.span.latitudeDelta/2*111)];
+
+    NSString *urlString = [NSString stringWithFormat:@"%@events/nearest%@", ROOT_URL, parameters];
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url];
+    [request setHTTPMethod:@"GET"];
+
+    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+
+        NSArray *events;
+
+        if (!error) {
+            id responseJSON = [NSJSONSerialization JSONObjectWithData:data
+                                                            options:kNilOptions
+                                                            error:nil];
+
+            if ([responseJSON isKindOfClass:[NSArray class]]) {
+                events = [HUMEvent eventsWithJSON:responseJSON];
+            }
+        }
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            block(events, error);
+        });
+        
+    }];
+    [task resume];
+
+    return task;
+}
+
+- (void)createAttendanceForEvent:(HUMEvent *)event
+             withCompletionBlock:(HUMRailsClientErrorCompletionBlock)block
+{
+    NSDictionary *json = @{@"event" :
+                             @{@"id" : event.eventID},
+                         @"user" :
+                             @{@"device_token" : [HUMUserSession userID]}
+                         };
+    NSData *JSONdata = [NSJSONSerialization dataWithJSONObject:json
+                                                       options:0
+                                                         error:nil];
+
+    NSString *urlString = [NSString stringWithFormat:@"%@attendances", ROOT_URL];
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:JSONdata];
+
+    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request
+                                 completionHandler:^(NSData *data,
+                                                     NSURLResponse *response,
+                                                     NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            block(error);
+        });
     }];
     [task resume];
 }

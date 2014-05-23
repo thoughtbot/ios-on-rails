@@ -10,7 +10,7 @@
 
 @implementation NSObject (HUMNullCheck)
 
-- (BOOL)isNotNull
+- (BOOL)hum_isNotNull
 {
     if ([self isKindOfClass:[NSNull class]]) {
         return NO;

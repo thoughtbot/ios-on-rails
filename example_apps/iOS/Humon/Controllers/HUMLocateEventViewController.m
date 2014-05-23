@@ -8,6 +8,7 @@
 
 #import "HUMLocateEventViewController.h"
 #import "HUMAddEventViewController.h"
+#import "HUMEvent.h"
 
 @interface HUMLocateEventViewController ()
 
@@ -47,17 +48,18 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
                    initWithBarButtonSystemItem:UIBarButtonSystemItemStop
                                         target:self
-                                        action:@selector(backButtonPressed)];
+                                             action:@selector(cancelButtonPressed)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
-                   initWithBarButtonSystemItem:UIBarButtonSystemItemPlay
-                                        target:self
-                                        action:@selector(nextButtonPressed)];
+                    initWithImage:[UIImage imageNamed:@"HUMChevronForward"]
+                    style:UIBarButtonItemStylePlain
+                    target:self
+                    action:@selector(nextButtonPressed)];
 }
 
 - (void)addCenteredPlacemark
 {
     UIImageView *imageView = [[UIImageView alloc] initWithImage:
-                              [UIImage imageNamed:@"HUMLargePlacemark"]];
+                              [UIImage imageNamed:@"HUMPlacemarkLarge"]];
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:imageView];
 
@@ -76,18 +78,25 @@
                               toItem:self.view
                               attribute:NSLayoutAttributeCenterX
                               multiplier:1.0 constant:0.0]];
+
+//    NSArray *images = @[[UIImage imageNamed:@"HUMPlacemarkLarge"],
+//                        [UIImage imageNamed:@"HUMPlacemarkLargeTalking"]];
+//    imageView.image = [UIImage animatedImageWithImages:images duration:0.4];
+//    [imageView startAnimating];
 }
 
-- (void)backButtonPressed
+- (void)cancelButtonPressed
 {
     [self.navigationController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)nextButtonPressed
 {
+    HUMEvent *event = [[HUMEvent alloc] init];
+    event.coordinate = self.mapView.centerCoordinate;
     HUMAddEventViewController *addEventViewController =
         [[HUMAddEventViewController alloc]
-        initWithEventCoordinate:self.mapView.centerCoordinate];
+         initWithEvent:event];
     [self.navigationController pushViewController:addEventViewController
                                          animated:YES];
 }

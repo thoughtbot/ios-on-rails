@@ -6,10 +6,8 @@
 //  Copyright (c) 2013 thoughtbot. All rights reserved.
 //
 
-@import MapKit;
+#import "HUMEventViewController.h"
 
-@interface HUMAddEventViewController : UITableViewController
-
-- (instancetype)initWithEventCoordinate:(CLLocationCoordinate2D)coordinate;
+@interface HUMAddEventViewController : HUMEventViewController
 
 @end

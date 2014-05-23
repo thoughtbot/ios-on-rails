@@ -7,6 +7,7 @@
 //
 
 #import "HUMTextFieldCell.h"
+#import "HUMAppearanceManager.h"
 
 @interface HUMTextFieldCell () <UITextFieldDelegate>
 
@@ -24,6 +25,7 @@
 
     [self setupTextField];
     self.selectionStyle = UITableViewCellSelectionStyleNone;
+    self.backgroundColor = [HUMAppearanceManager humonWhite];
 
     return self;
 }
@@ -32,14 +34,15 @@
 {
     UITextField *textField = [[UITextField alloc] init];
     textField.translatesAutoresizingMaskIntoConstraints = NO;
-    [textField setPlaceholder:NSLocalizedString(@"Name your event", nil)];
-    [textField setDelegate:self];
+
+    textField.placeholder = NSLocalizedString(@"...", nil);
+    textField.delegate = self;
+
     [self.contentView addSubview:textField];
-
     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0.0]];
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:-8.0]];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:-18.0]];
 
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:4.0]];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:14.0]];
     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0]];
 
     _textField = textField;

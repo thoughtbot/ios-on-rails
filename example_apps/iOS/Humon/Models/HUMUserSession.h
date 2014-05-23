@@ -12,6 +12,5 @@
 
 + (NSString *)userID;
 + (void)setUserID:(NSString *)userID;
-+ (BOOL)userMatchesCurrentUserSession:(HUMUser *)user;
 
 @end

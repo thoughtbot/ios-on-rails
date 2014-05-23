@@ -8,6 +8,6 @@
 
 @interface NSObject (HUMNullCheck)
 
-- (BOOL)isNotNull;
+- (BOOL)hum_isNotNull;
 
 @end
