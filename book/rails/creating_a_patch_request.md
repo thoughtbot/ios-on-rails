@@ -33,7 +33,7 @@ PATCH request.
           started_at: event.started_at
         }.to_json, { 'Content-Type' => 'application/json' }
 
-        event = Event.last
+        event.reload
         expect(event.name).to eq new_name
         expect(response_json).to eq({ 'id' => event.id })
       end
@@ -170,7 +170,7 @@ and to test drive that logic we will write a request spec:
            started_at: event.started_at
          }.to_json, { 'Content-Type' => 'application/json' }
 
-         event = Event.last
+         event.reload
          expect(event.name).to_not be nil
          expect(response_json).to eq({
            'message' => 'Validation Failed',
