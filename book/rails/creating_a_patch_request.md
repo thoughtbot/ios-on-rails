@@ -156,7 +156,7 @@ and to test drive that logic we will write a request spec:
       ...
 
       it 'returns an error message when invalid' do
-         event = create(:event)
+        event = create(:event)
 
         patch "/v1/events/#{event.id}", {
            address: event.address,
@@ -175,7 +175,7 @@ and to test drive that logic we will write a request spec:
          expect(response_json).to eq({
            'message' => 'Validation Failed',
            'errors' => [
-             "Name can't be blank",
+             "Name can't be blank"
            ]
          })
          expect(response.code.to_i).to eq 422
