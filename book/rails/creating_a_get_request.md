@@ -180,7 +180,7 @@ request spec pass, we need to add a single action to our API:
 
 Our controller and routes are set up, but we still need one final piece before
 our spec will pass: a view. Our request spec is looking for a view template with
-some response JSON, but so we need to create that view.
+some response JSON, so we need to create that view.
 
 For a Rails developer, the views are where there will be the most difference
 between a standard web application and a JSON API.  As with our controllers, we
