@@ -33,7 +33,7 @@ PATCH request.
           started_at: event.started_at
         }.to_json, { 'Content-Type' => 'application/json' }
 
-        event = Event.last
+        event.reload
         expect(event.name).to eq new_name
         expect(response_json).to eq({ 'id' => event.id })
       end
@@ -156,7 +156,7 @@ and to test drive that logic we will write a request spec:
       ...
 
       it 'returns an error message when invalid' do
-         event = create(:event)
+        event = create(:event)
 
         patch "/v1/events/#{event.id}", {
            address: event.address,
@@ -170,12 +170,12 @@ and to test drive that logic we will write a request spec:
            started_at: event.started_at
          }.to_json, { 'Content-Type' => 'application/json' }
 
-         event = Event.last
+         event.reload
          expect(event.name).to_not be nil
          expect(response_json).to eq({
            'message' => 'Validation Failed',
            'errors' => [
-             "Name can't be blank",
+             "Name can't be blank"
            ]
          })
          expect(response.code.to_i).to eq 422
