@@ -200,8 +200,8 @@ and open a Rails console. Create or select an `event`:
 Does this error message look familiar? Answer: yes! This is the same type of
 error we got when we last ran our test.
 
-Let's exit our Rails console, add `reverse_geocoded_by :lat, :lon` back to the
-`Event` model, and then open a new Rails console and do the same thing:
+Let's reload our Rails console by running `reload!`, add `reverse_geocoded_by :lat,
+:lon` back to the `Event` model, and do the same thing:
 
     irb(main):001:0> event = Event.first
 
