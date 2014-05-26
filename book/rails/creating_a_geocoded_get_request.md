@@ -44,7 +44,7 @@ write a request spec for this new endpoint. Since this new endpoint will
 require a controller of its own, we will create an `events` directory within
 `spec/requests` and include this spec there:
 
-    # spec/requests/api/v2/events/nearest_spec.rb
+    # spec/requests/api/v1/events/nearest_spec.rb
 
     describe 'GET /v1/events/nearests?lat=&lon=&radius=' do
       it 'returns the events closest to the lat and lon' do
@@ -200,8 +200,8 @@ and open a Rails console. Create or select an `event`:
 Does this error message look familiar? Answer: yes! This is the same type of
 error we got when we last ran our test.
 
-Let's exit our Rails console, add `reverse_geocoded_by :lat, :lon` back to the
-`Event` model, and then open a new Rails console and do the same thing:
+Let's reload our Rails console by running `reload!`, add `reverse_geocoded_by :lat,
+:lon` back to the `Event` model, and do the same thing:
 
     irb(main):001:0> event = Event.first
 
