@@ -244,7 +244,7 @@ Let's do that through writing a test first:
 
      ...
 
-      it 'returns an error message when no event found' do
+      it 'returns an error message when no event is found' do
         lat = 37.771098
         lon = -122.430782
         radius = 1
