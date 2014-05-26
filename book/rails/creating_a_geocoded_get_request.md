@@ -44,7 +44,7 @@ write a request spec for this new endpoint. Since this new endpoint will
 require a controller of its own, we will create an `events` directory within
 `spec/requests` and include this spec there:
 
-    # spec/requests/api/v2/events/nearest_spec.rb
+    # spec/requests/api/v1/events/nearest_spec.rb
 
     describe 'GET /v1/events/nearests?lat=&lon=&radius=' do
       it 'returns the events closest to the lat and lon' do
