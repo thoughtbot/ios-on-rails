@@ -189,7 +189,7 @@ HTTP status code for a request with invalid (but not
 [malformed](http://stackoverflow.com/a/20215807/1019369)) attributes.
 
 The need for this test is apparent immediately upon running it: rather than
-returning a validation erorr or telling response code, we are getting the same
+returning a validation error or telling response code, we are getting the same
 response from a PATCH request with *invalid* parameters that we got from a PATCH
 request with *valid* parameters:
 
