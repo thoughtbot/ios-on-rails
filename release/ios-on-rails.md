@@ -756,7 +756,7 @@ POST request spec):
             "Lat can't be blank",
             "Lon can't be blank",
             "Name can't be blank",
-            "Started at can't be blank",
+            "Started at can't be blank"
           ]
         })
         expect(response.code.to_i).to eq 422
@@ -1315,7 +1315,7 @@ correct message.
 
       ...
 
-        if @events.any?
+        if @events.count(:all) > 0
           render
         else
           render json: { message: 'No Events Found' }, status: 200

@@ -203,7 +203,7 @@ class Api::V1::Events::NearestsController &lt; ApiController
 
   ...
 
-    if @events.any?
+    if @events.count(:all) &gt; 0
       render
     else
       render json: { message: 'No Events Found' }, status: 200
