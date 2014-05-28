@@ -3,6 +3,7 @@ class Event < ActiveRecord::Base
   validates :lon, presence: true
   validates :name, presence: true
   validates :started_at, presence: true
+  validates :address, presence: true
 
   has_many :attendances
   belongs_to :owner, foreign_key: 'user_id', class_name: 'User'
