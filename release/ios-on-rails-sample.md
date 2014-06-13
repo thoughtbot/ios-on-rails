@@ -80,6 +80,13 @@ with Rails as well as the Ruby programming language. The iOS portions of this
 book assume experience with object oriented programming and a
 basic familiarity with the Objective-C programming language.
 
+This book is intended to be used as a guide rather than a recipe. While our aim
+is to give you all of the tools necessary to build great Rails APIs and iOS
+clients, it does not cover the fundamentals of Ruby, Rails or Objective-C. That
+being said, if any part of the book strikes you as incomplete or confusing, we
+are always happy to receive pull requests and issue submissions on
+[GitHub](https://github.com/thoughtbot/ios-on-rails).
+
 \part{Building the Humon Rails App}
 
 # Creating a GET request
@@ -264,7 +271,7 @@ request spec pass, we need to add a single action to our API:
 
 Our controller and routes are set up, but we still need one final piece before
 our spec will pass: a view. Our request spec is looking for a view template with
-some response JSON, but so we need to create that view.
+some response JSON, so we need to create that view.
 
 For a Rails developer, the views are where there will be the most difference
 between a standard web application and a JSON API.  As with our controllers, we

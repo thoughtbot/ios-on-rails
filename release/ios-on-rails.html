@@ -159,6 +159,7 @@
 <h3>Who is this book for?</h3>
 <p>This book is for a developer who wants to build an iOS application with a Rails backend. It's also a book for both a Rails developer and an iOS developer to share and use in concert to create an app quickly and with more flexibility to change it than a backend-as-a-service provider like StackMob or Parse.</p>
 <p>The approach shared in this book is the result of our own experiments as Rails and iOS developers working together to build an application. The Rails portions of this book assume a basic working knowledge of how to build a web application with Rails as well as the Ruby programming language. The iOS portions of this book assume experience with object oriented programming and a basic familiarity with the Objective-C programming language.</p>
+<p>This book is intended to be used as a guide rather than a recipe. While our aim is to give you all of the tools necessary to build great Rails APIs and iOS clients, it does not cover the fundamentals of Ruby, Rails or Objective-C. That being said, if any part of the book strikes you as incomplete or confusing, we are always happy to receive pull requests and issue submissions on <a href="https://github.com/thoughtbot/ios-on-rails">GitHub</a>.</p>
 <p></p>
 <p></p>
 </section>
@@ -335,7 +336,7 @@ end</code></pre>
 </section>
 <section id="view" class="level3">
 <h3>View</h3>
-<p>Our controller and routes are set up, but we still need one final piece before our spec will pass: a view. Our request spec is looking for a view template with some response JSON, but so we need to create that view.</p>
+<p>Our controller and routes are set up, but we still need one final piece before our spec will pass: a view. Our request spec is looking for a view template with some response JSON, so we need to create that view.</p>
 <p>For a Rails developer, the views are where there will be the most difference between a standard web application and a JSON API. As with our controllers, we will include our views in the <code>api/v1</code> directory so that they are versioned.</p>
 <p>Just like regular view partials, Jbuilder partials minimize duplication by letting us re-use blocks of view code in many different places. JSON representations of data frequently include duplication (a collection is usually an array of the same JSON structure that would be found for a single object), so partials are especially handy when creating a JSON API. We will use Jbuilder’s DSL to tell our show view to find the event partial:</p>
 <pre><code># app/views/api/v1/events/show.json.jbuilder
@@ -631,7 +632,7 @@ describe 'PATCH /v1/events/:id' do
       started_at: event.started_at
     }.to_json, { 'Content-Type' =&gt; 'application/json' }
 
-    event = Event.last
+    event.reload
     expect(event.name).to eq new_name
     expect(response_json).to eq({ 'id' =&gt; event.id })
   end</code></pre>
@@ -708,7 +709,7 @@ describe 'PATCH /v1/events/:id' do
   ...
 
   it 'returns an error message when invalid' do
-     event = create(:event)
+    event = create(:event)
 
     patch &quot;/v1/events/#{event.id}&quot;, {
        address: event.address,
@@ -722,19 +723,19 @@ describe 'PATCH /v1/events/:id' do
        started_at: event.started_at
      }.to_json, { 'Content-Type' =&gt; 'application/json' }
 
-     event = Event.last
+     event.reload
      expect(event.name).to_not be nil
      expect(response_json).to eq({
        'message' =&gt; 'Validation Failed',
        'errors' =&gt; [
-         &quot;Name can't be blank&quot;,
+         &quot;Name can't be blank&quot;
        ]
      })
      expect(response.code.to_i).to eq 422
    end
  end</code></pre>
 <p>In our expectation above, we are hoping to see a <code>422</code> response, which is the <a href="http://www.bennadel.com/blog/2434-HTTP-Status-Codes-For-Invalid-Data-400-vs-422.htm">most appropriate</a> HTTP status code for a request with invalid (but not <a href="http://stackoverflow.com/a/20215807/1019369">malformed</a>) attributes.</p>
-<p>The need for this test is apparent immediately upon running it: rather than returning a validation erorr or telling response code, we are getting the same response from a PATCH request with <em>invalid</em> parameters that we got from a PATCH request with <em>valid</em> parameters:</p>
+<p>The need for this test is apparent immediately upon running it: rather than returning a validation error or telling response code, we are getting the same response from a PATCH request with <em>invalid</em> parameters that we got from a PATCH request with <em>valid</em> parameters:</p>
 <pre><code> Failure/Error: expect(response_json).to eq({
 
    expected: {&quot;message&quot;=&gt;&quot;Validation Failed&quot;, &quot;errors&quot;=&gt;[&quot;Name can't be blank&quot;]}
@@ -783,7 +784,7 @@ class Api::V1::EventsController &lt; ApiController
 <section id="it-all-starts-with-a-request-spec-3" class="level3">
 <h3>It all starts with a request spec</h3>
 <p>Before we jump into setting up our <code>Event</code> model with the Geocoder gem, let's write a request spec for this new endpoint. Since this new endpoint will require a controller of its own, we will create an <code>events</code> directory within <code>spec/requests</code> and include this spec there:</p>
-<pre><code># spec/requests/api/v2/events/nearest_spec.rb
+<pre><code># spec/requests/api/v1/events/nearest_spec.rb
 
 describe 'GET /v1/events/nearests?lat=&amp;lon=&amp;radius=' do
   it 'returns the events closest to the lat and lon' do
@@ -828,7 +829,7 @@ end</code></pre>
    Couldn't find Event with id=nearests</code></pre>
 <p>What's that about!? If we run <code>rake routes</code> in our shell we'll see that our app has the following GET endpoint defined:</p>
 <pre><code>GET   /v1/events/:id(.:format)  api/v1/events#show</code></pre>
-<p>Rails is matching <code>get '/v1/events/nearests'</code> to this pattern and thinks we are looking for an <code>event</code> with an <code>id</code> of <code>nearests</code>. How do we fix this? We need to tell our Rails app that a GET request at <code>events/nearests</code> is different from a GET request at <code>events/:id</code>:</p>
+<p>Rails is matching <code>get '/v1/events/nearests'</code> to this pattern and thinks we are looking for an <code>event</code> with an <code>id</code> of <code>nearests</code>. How do we fix this? We need to tell our Rails app that a GET request at <code>events/nearests</code> is different from a GET request at <code>events/:id</code> (note: we must define this route <em>before</em> the other <code>events</code> routes within the file or it will be overridden):</p>
 <pre><code># config/routes.rb
 
 Humon::Application.routes.draw do
@@ -847,8 +848,8 @@ end</code></pre>
 <pre><code>GET   /v1/events/nearests(.:format) api/v1/events/nearests#index</code></pre>
 <p>And when we run our test again, our error has changed:</p>
 <pre><code>ActionController::RoutingError:
-   uninitialized constant Api::V1::Events::NearestsController</code></pre>
-<p>Nice! Time to define that controller. In the <a href="https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/controllers/api/v1/events/nearests_controller.rb"><code>NearestsController</code></a>, we will be using the <a href="https://github.com/alexreisner/geocoder#location-aware-database-queries"><code>near</code> scope</a> (given to us by the Geocoder gem) which takes in a latitude-longitude pair, radius, and units as arguments:</p>
+   uninitialized constant Api::V1::Events</code></pre>
+<p>Nice! Our routes file now knows that we are looking for a controller within <code>Api::V1::Events</code> rather than the <code>EventsController</code>, but we haven't defined anything within that namespace. Time to define our controller. In the <a href="https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/controllers/api/v1/events/nearests_controller.rb"><code>NearestsController</code></a>, we will be using the <a href="https://github.com/alexreisner/geocoder#location-aware-database-queries"><code>near</code> scope</a> (given to us by the Geocoder gem) which takes in a latitude-longitude pair, radius, and units as arguments:</p>
 <pre><code># app/controllers/api/1/events/nearests_controller.rb
 
 class Api::V1::Events::NearestsController &lt; ApiController
@@ -888,7 +889,7 @@ irb(main):002:0&gt; event.geocoded?
 
 NoMethodError: undefined method `geocoded?' for #&lt;Event:0x007fdb4e4353b0&gt;</code></pre>
 <p>Does this error message look familiar? Answer: yes! This is the same type of error we got when we last ran our test.</p>
-<p>Let's exit our Rails console, add <code>reverse_geocoded_by :lat, :lon</code> back to the <code>Event</code> model, and then open a new Rails console and do the same thing:</p>
+<p>Let's reload our Rails console by running <code>reload!</code>, add <code>reverse_geocoded_by :lat, :lon</code> back to the <code>Event</code> model, and do the same thing:</p>
 <pre><code>irb(main):001:0&gt; event = Event.first
 
 irb(main):002:0&gt; event.geocoded?
@@ -917,7 +918,7 @@ describe 'GET /v1/events/nearest?lat=&amp;lon=&amp;radius=' do
 
  ...
 
-  it 'returns an error message when no event found' do
+  it 'returns an error message when no event is found' do
     lat = 37.771098
     lon = -122.430782
     radius = 1

@@ -85,6 +85,7 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
 <h3>Who is this book for?</h3>
 <p>This book is for a developer who wants to build an iOS application with a Rails backend. It's also a book for both a Rails developer and an iOS developer to share and use in concert to create an app quickly and with more flexibility to change it than a backend-as-a-service provider like StackMob or Parse.</p>
 <p>The approach shared in this book is the result of our own experiments as Rails and iOS developers working together to build an application. The Rails portions of this book assume a basic working knowledge of how to build a web application with Rails as well as the Ruby programming language. The iOS portions of this book assume experience with object oriented programming and a basic familiarity with the Objective-C programming language.</p>
+<p>This book is intended to be used as a guide rather than a recipe. While our aim is to give you all of the tools necessary to build great Rails APIs and iOS clients, it does not cover the fundamentals of Ruby, Rails or Objective-C. That being said, if any part of the book strikes you as incomplete or confusing, we are always happy to receive pull requests and issue submissions on <a href="https://github.com/thoughtbot/ios-on-rails">GitHub</a>.</p>
 <p></p>
 </section>
 </section>
@@ -204,7 +205,7 @@ end</code></pre>
 </section>
 <section id="view" class="level3">
 <h3>View</h3>
-<p>Our controller and routes are set up, but we still need one final piece before our spec will pass: a view. Our request spec is looking for a view template with some response JSON, but so we need to create that view.</p>
+<p>Our controller and routes are set up, but we still need one final piece before our spec will pass: a view. Our request spec is looking for a view template with some response JSON, so we need to create that view.</p>
 <p>For a Rails developer, the views are where there will be the most difference between a standard web application and a JSON API. As with our controllers, we will include our views in the <code>api/v1</code> directory so that they are versioned.</p>
 <p>Just like regular view partials, Jbuilder partials minimize duplication by letting us re-use blocks of view code in many different places. JSON representations of data frequently include duplication (a collection is usually an array of the same JSON structure that would be found for a single object), so partials are especially handy when creating a JSON API. We will use Jbuilder’s DSL to tell our show view to find the event partial:</p>
 <pre><code># app/views/api/v1/events/show.json.jbuilder

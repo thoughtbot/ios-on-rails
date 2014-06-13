@@ -46,6 +46,13 @@ with Rails as well as the Ruby programming language. The iOS portions of this
 book assume experience with object oriented programming and a
 basic familiarity with the Objective-C programming language.
 
+This book is intended to be used as a guide rather than a recipe. While our aim
+is to give you all of the tools necessary to build great Rails APIs and iOS
+clients, it does not cover the fundamentals of Ruby, Rails or Objective-C. That
+being said, if any part of the book strikes you as incomplete or confusing, we
+are always happy to receive pull requests and issue submissions on
+[GitHub](https://github.com/thoughtbot/ios-on-rails).
+
 \mainmatter
 
 \part{Building the Humon Rails App}
@@ -376,7 +383,7 @@ request spec pass, we need to add a single action to our API:
 
 Our controller and routes are set up, but we still need one final piece before
 our spec will pass: a view. Our request spec is looking for a view template with
-some response JSON, but so we need to create that view.
+some response JSON, so we need to create that view.
 
 For a Rails developer, the views are where there will be the most difference
 between a standard web application and a JSON API.  As with our controllers, we
@@ -844,7 +851,7 @@ PATCH request.
           started_at: event.started_at
         }.to_json, { 'Content-Type' => 'application/json' }
 
-        event = Event.last
+        event.reload
         expect(event.name).to eq new_name
         expect(response_json).to eq({ 'id' => event.id })
       end
@@ -967,7 +974,7 @@ and to test drive that logic we will write a request spec:
       ...
 
       it 'returns an error message when invalid' do
-         event = create(:event)
+        event = create(:event)
 
         patch "/v1/events/#{event.id}", {
            address: event.address,
@@ -981,12 +988,12 @@ and to test drive that logic we will write a request spec:
            started_at: event.started_at
          }.to_json, { 'Content-Type' => 'application/json' }
 
-         event = Event.last
+         event.reload
          expect(event.name).to_not be nil
          expect(response_json).to eq({
            'message' => 'Validation Failed',
            'errors' => [
-             "Name can't be blank",
+             "Name can't be blank"
            ]
          })
          expect(response.code.to_i).to eq 422
@@ -1000,7 +1007,7 @@ HTTP status code for a request with invalid (but not
 [malformed](http://stackoverflow.com/a/20215807/1019369)) attributes.
 
 The need for this test is apparent immediately upon running it: rather than
-returning a validation erorr or telling response code, we are getting the same
+returning a validation error or telling response code, we are getting the same
 response from a PATCH request with *invalid* parameters that we got from a PATCH
 request with *valid* parameters:
 
@@ -1086,7 +1093,7 @@ write a request spec for this new endpoint. Since this new endpoint will
 require a controller of its own, we will create an `events` directory within
 `spec/requests` and include this spec there:
 
-    # spec/requests/api/v2/events/nearest_spec.rb
+    # spec/requests/api/v1/events/nearest_spec.rb
 
     describe 'GET /v1/events/nearests?lat=&lon=&radius=' do
       it 'returns the events closest to the lat and lon' do
@@ -1139,7 +1146,8 @@ has the following GET endpoint defined:
 Rails is matching `get '/v1/events/nearests'` to this pattern and thinks we are
 looking for an `event` with an `id` of `nearests`. How do we fix this? We need
 to tell our Rails app that a GET request at `events/nearests` is different from
-a GET request at `events/:id`:
+a GET request at `events/:id` (note: we must define this route *before* the
+other `events` routes within the file or it will be overridden):
 
     # config/routes.rb
 
@@ -1164,9 +1172,11 @@ endpoint:
 And when we run our test again, our error has changed:
 
     ActionController::RoutingError:
-       uninitialized constant Api::V1::Events::NearestsController
+       uninitialized constant Api::V1::Events
 
-Nice! Time to define that controller. In the
+Nice! Our routes file now knows that we are looking for a controller within
+`Api::V1::Events` rather than the `EventsController`, but we haven't defined
+anything within that namespace. Time to define our controller.  In the
 [`NearestsController`](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/controllers/api/v1/events/nearests_controller.rb),
 we will be using the [`near`
 scope](https://github.com/alexreisner/geocoder#location-aware-database-queries)
@@ -1242,8 +1252,8 @@ and open a Rails console. Create or select an `event`:
 Does this error message look familiar? Answer: yes! This is the same type of
 error we got when we last ran our test.
 
-Let's exit our Rails console, add `reverse_geocoded_by :lat, :lon` back to the
-`Event` model, and then open a new Rails console and do the same thing:
+Let's reload our Rails console by running `reload!`, add `reverse_geocoded_by :lat,
+:lon` back to the `Event` model, and do the same thing:
 
     irb(main):001:0> event = Event.first
 
@@ -1285,7 +1295,7 @@ Let's do that through writing a test first:
 
      ...
 
-      it 'returns an error message when no event found' do
+      it 'returns an error message when no event is found' do
         lat = 37.771098
         lon = -122.430782
         radius = 1

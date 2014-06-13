@@ -44,7 +44,7 @@
 <section id="it-all-starts-with-a-request-spec-3" class="level3">
 <h3>It all starts with a request spec</h3>
 <p>Before we jump into setting up our <code>Event</code> model with the Geocoder gem, let's write a request spec for this new endpoint. Since this new endpoint will require a controller of its own, we will create an <code>events</code> directory within <code>spec/requests</code> and include this spec there:</p>
-<pre><code># spec/requests/api/v2/events/nearest_spec.rb
+<pre><code># spec/requests/api/v1/events/nearest_spec.rb
 
 describe 'GET /v1/events/nearests?lat=&amp;lon=&amp;radius=' do
   it 'returns the events closest to the lat and lon' do
@@ -89,7 +89,7 @@ end</code></pre>
    Couldn't find Event with id=nearests</code></pre>
 <p>What's that about!? If we run <code>rake routes</code> in our shell we'll see that our app has the following GET endpoint defined:</p>
 <pre><code>GET   /v1/events/:id(.:format)  api/v1/events#show</code></pre>
-<p>Rails is matching <code>get '/v1/events/nearests'</code> to this pattern and thinks we are looking for an <code>event</code> with an <code>id</code> of <code>nearests</code>. How do we fix this? We need to tell our Rails app that a GET request at <code>events/nearests</code> is different from a GET request at <code>events/:id</code>:</p>
+<p>Rails is matching <code>get '/v1/events/nearests'</code> to this pattern and thinks we are looking for an <code>event</code> with an <code>id</code> of <code>nearests</code>. How do we fix this? We need to tell our Rails app that a GET request at <code>events/nearests</code> is different from a GET request at <code>events/:id</code> (note: we must define this route <em>before</em> the other <code>events</code> routes within the file or it will be overridden):</p>
 <pre><code># config/routes.rb
 
 Humon::Application.routes.draw do
@@ -108,8 +108,8 @@ end</code></pre>
 <pre><code>GET   /v1/events/nearests(.:format) api/v1/events/nearests#index</code></pre>
 <p>And when we run our test again, our error has changed:</p>
 <pre><code>ActionController::RoutingError:
-   uninitialized constant Api::V1::Events::NearestsController</code></pre>
-<p>Nice! Time to define that controller. In the <a href="https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/controllers/api/v1/events/nearests_controller.rb"><code>NearestsController</code></a>, we will be using the <a href="https://github.com/alexreisner/geocoderlocation-aware-database-queries.html"><code>near</code> scope</a> (given to us by the Geocoder gem) which takes in a latitude-longitude pair, radius, and units as arguments:</p>
+   uninitialized constant Api::V1::Events</code></pre>
+<p>Nice! Our routes file now knows that we are looking for a controller within <code>Api::V1::Events</code> rather than the <code>EventsController</code>, but we haven't defined anything within that namespace. Time to define our controller. In the <a href="https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/controllers/api/v1/events/nearests_controller.rb"><code>NearestsController</code></a>, we will be using the <a href="https://github.com/alexreisner/geocoderlocation-aware-database-queries.html"><code>near</code> scope</a> (given to us by the Geocoder gem) which takes in a latitude-longitude pair, radius, and units as arguments:</p>
 <pre><code># app/controllers/api/1/events/nearests_controller.rb
 
 class Api::V1::Events::NearestsController &lt; ApiController
@@ -149,7 +149,7 @@ irb(main):002:0&gt; event.geocoded?
 
 NoMethodError: undefined method `geocoded?' for #&lt;Event:0x007fdb4e4353b0&gt;</code></pre>
 <p>Does this error message look familiar? Answer: yes! This is the same type of error we got when we last ran our test.</p>
-<p>Let's exit our Rails console, add <code>reverse_geocoded_by :lat, :lon</code> back to the <code>Event</code> model, and then open a new Rails console and do the same thing:</p>
+<p>Let's reload our Rails console by running <code>reload!</code>, add <code>reverse_geocoded_by :lat, :lon</code> back to the <code>Event</code> model, and do the same thing:</p>
 <pre><code>irb(main):001:0&gt; event = Event.first
 
 irb(main):002:0&gt; event.geocoded?
@@ -178,7 +178,7 @@ describe 'GET /v1/events/nearest?lat=&amp;lon=&amp;radius=' do
 
  ...
 
-  it 'returns an error message when no event found' do
+  it 'returns an error message when no event is found' do
     lat = 37.771098
     lon = -122.430782
     radius = 1

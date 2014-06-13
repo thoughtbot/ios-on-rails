@@ -48,7 +48,7 @@ describe 'PATCH /v1/events/:id' do
       started_at: event.started_at
     }.to_json, { 'Content-Type' =&gt; 'application/json' }
 
-    event = Event.last
+    event.reload
     expect(event.name).to eq new_name
     expect(response_json).to eq({ 'id' =&gt; event.id })
   end</code></pre>
@@ -125,7 +125,7 @@ describe 'PATCH /v1/events/:id' do
   ...
 
   it 'returns an error message when invalid' do
-     event = create(:event)
+    event = create(:event)
 
     patch "/v1/events/#{event.id}", {
        address: event.address,
@@ -139,19 +139,19 @@ describe 'PATCH /v1/events/:id' do
        started_at: event.started_at
      }.to_json, { 'Content-Type' =&gt; 'application/json' }
 
-     event = Event.last
+     event.reload
      expect(event.name).to_not be nil
      expect(response_json).to eq({
        'message' =&gt; 'Validation Failed',
        'errors' =&gt; [
-         "Name can't be blank",
+         "Name can't be blank"
        ]
      })
      expect(response.code.to_i).to eq 422
    end
  end</code></pre>
 <p>In our expectation above, we are hoping to see a <code>422</code> response, which is the <a href="http://www.bennadel.com/blog/2434-HTTP-Status-Codes-For-Invalid-Data-400-vs-422.htm">most appropriate</a> HTTP status code for a request with invalid (but not <a href="http://stackoverflow.com/a/20215807/1019369">malformed</a>) attributes.</p>
-<p>The need for this test is apparent immediately upon running it: rather than returning a validation erorr or telling response code, we are getting the same response from a PATCH request with <em>invalid</em> parameters that we got from a PATCH request with <em>valid</em> parameters:</p>
+<p>The need for this test is apparent immediately upon running it: rather than returning a validation error or telling response code, we are getting the same response from a PATCH request with <em>invalid</em> parameters that we got from a PATCH request with <em>valid</em> parameters:</p>
 <pre><code> Failure/Error: expect(response_json).to eq({
 
    expected: {"message"=&gt;"Validation Failed", "errors"=&gt;["Name can't be blank"]}
