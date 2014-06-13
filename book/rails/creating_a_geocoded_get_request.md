@@ -97,7 +97,8 @@ has the following GET endpoint defined:
 Rails is matching `get '/v1/events/nearests'` to this pattern and thinks we are
 looking for an `event` with an `id` of `nearests`. How do we fix this? We need
 to tell our Rails app that a GET request at `events/nearests` is different from
-a GET request at `events/:id`:
+a GET request at `events/:id` (note: make sure the route is added before the
+main event `resources` line or it will be overridden):
 
     # config/routes.rb
 
@@ -243,7 +244,7 @@ Let's do that through writing a test first:
 
      ...
 
-      it 'returns an error message when no event found' do
+      it 'returns an error message when no event is found' do
         lat = 37.771098
         lon = -122.430782
         radius = 1
