@@ -97,7 +97,8 @@ has the following GET endpoint defined:
 Rails is matching `get '/v1/events/nearests'` to this pattern and thinks we are
 looking for an `event` with an `id` of `nearests`. How do we fix this? We need
 to tell our Rails app that a GET request at `events/nearests` is different from
-a GET request at `events/:id`:
+a GET request at `events/:id` (note: we must define this route *before* the
+other `events` routes within the file or it will be overridden):
 
     # config/routes.rb
 
@@ -122,9 +123,11 @@ endpoint:
 And when we run our test again, our error has changed:
 
     ActionController::RoutingError:
-       uninitialized constant Api::V1::Events::NearestsController
+       uninitialized constant Api::V1::Events
 
-Nice! Time to define that controller. In the
+Nice! Our routes file now knows that we are looking for a controller within
+`Api::V1::Events` rather than the `EventsController`, but we haven't defined
+anything within that namespace. Time to define our controller.  In the
 [`NearestsController`](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/controllers/api/v1/events/nearests_controller.rb),
 we will be using the [`near`
 scope](https://github.com/alexreisner/geocoder#location-aware-database-queries)
@@ -243,7 +246,7 @@ Let's do that through writing a test first:
 
      ...
 
-      it 'returns an error message when no event found' do
+      it 'returns an error message when no event is found' do
         lat = 37.771098
         lon = -122.430782
         radius = 1
