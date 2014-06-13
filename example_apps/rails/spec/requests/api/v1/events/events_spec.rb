@@ -87,7 +87,7 @@ describe 'PATCH /v1/events/:id' do
       }
     }.to_json, { 'Content-Type' => 'application/json' }
 
-    event = Event.last
+    event = event.reload
     expect(event.name).to eq new_name
     expect(response_json).to eq({ 'id' => event.id })
   end
@@ -107,12 +107,12 @@ describe 'PATCH /v1/events/:id' do
       }
     }.to_json, { 'Content-Type' => 'application/json' }
 
-    event = Event.last
+    event = event.reload
     expect(event.name).to_not be nil
     expect(response_json).to eq({
       'message' => 'Validation Failed',
       'errors' => [
-        "Name can't be blank",
+        "Name can't be blank"
       ]
     })
     expect(response.code.to_i).to eq 422
