@@ -272,7 +272,7 @@ correct message.
     # app/controllers/api/v1/events/nearests_controller.rb
 
     class Api::V1::Events::NearestsController < ApiController
-      def show
+      def index
 
       ...
 
