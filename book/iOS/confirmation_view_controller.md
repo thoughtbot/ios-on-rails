@@ -69,7 +69,7 @@ We also set the activityViewController's excludedActivityTypes so that the activ
 
 ### Adding an Edit Button
 
-We'll allow the user to edit their event after creating it, to utelize the PATCH functionality we have in our rails app. Create a method that adds an edit button to the view, and call the method in `viewDidLoad`. If you want to clean your code up even more, you can create a custom subclass of UIButton for this editButton.
+We'll allow the user to edit their event after creating it, to utilize the PATCH functionality we have in our rails app. Create a method that adds an edit button to the view, and call the method in `viewDidLoad`. If you want to clean your code up even more, you can create a custom subclass of UIButton for this editButton.
 
     // HUMConfirmationViewController.m
 
