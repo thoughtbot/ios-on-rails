@@ -1,22 +1,16 @@
 class Api::V1::UsersController < ApiController
   def create
-    @user = User.find_or_initialize_by(device_token: params[:device_token])
+    authorize do |user|
+      @user = user
 
-    if @user.save
-      render
-    else
-      render json: {
-        message: 'Validation Failed',
-        errors: @user.errors.full_messages
-      }, status: 422
+      if @user.save
+        render nothing: true
+      else
+        render json: {
+          message: 'Validation Failed',
+          errors: @user.errors.full_messages
+        }, status: 422
+      end
     end
-  end
-
-  private
-
-  def user_params
-    params.permit(
-      :device_token,
-    )
   end
 end
