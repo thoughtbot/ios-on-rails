@@ -16,7 +16,7 @@ describe 'GET /v1/events/:id' do
         'name' => event.name,
         'started_at' => event.started_at.as_json,
         'owner' => {
-          'device_token' => event.owner.device_token
+          'id' => event.owner.id
         }
       }
     )
@@ -24,7 +24,7 @@ describe 'GET /v1/events/:id' do
 end
 
 describe 'POST /v1/events' do
-  it 'saves the address, lat, lon, name, and started_at date' do
+  it 'saves the address, lat, lon, name, owner, and started_at date' do
     date = Time.zone.now
     device_token = '123abcd456xyz'
     owner = create(:user, device_token: device_token)
@@ -36,10 +36,8 @@ describe 'POST /v1/events' do
       lon: 1.0,
       name: 'Fun Place!!',
       started_at: date,
-      owner: {
-        device_token: device_token
-      }
-    }.to_json, { 'Content-Type' => 'application/json' }
+    }.to_json,
+    set_headers(device_token)
 
     event = Event.last
     expect(response_json).to eq({ 'id' => event.id })
@@ -53,9 +51,11 @@ describe 'POST /v1/events' do
   end
 
   it 'returns an error message when invalid' do
+    device_token = '123abcd456xyz'
+
     post '/v1/events',
       {}.to_json,
-      { 'Content-Type' => 'application/json' }
+      set_headers(device_token)
 
     expect(response_json).to eq({
       'message' => 'Validation Failed',
@@ -83,9 +83,10 @@ describe 'PATCH /v1/events/:id' do
       name: new_name,
       started_at: event.started_at,
       owner: {
-        device_token: event.owner.device_token
+        id: event.owner.id
       }
-    }.to_json, { 'Content-Type' => 'application/json' }
+    }.to_json,
+    set_headers(event.owner.device_token)
 
     event = event.reload
     expect(event.name).to eq new_name
@@ -103,9 +104,10 @@ describe 'PATCH /v1/events/:id' do
       name: nil,
       started_at: event.started_at,
       owner: {
-        device_token: event.owner.device_token
+        id: event.owner.id
       }
-    }.to_json, { 'Content-Type' => 'application/json' }
+    }.to_json,
+    set_headers(event.owner.device_token)
 
     event = event.reload
     expect(event.name).to_not be nil

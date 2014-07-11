@@ -7,8 +7,8 @@ describe 'POST /v1/attendances' do
 
     post '/v1/attendances', {
       event: { id: event.id },
-      user: { device_token: user.device_token }
-    }
+    }.to_json,
+    set_headers(user.device_token)
 
     expect(event.reload.attendances.count).to eq 1
   end
@@ -20,8 +20,8 @@ describe 'POST /v1/attendances' do
     2.times do
       post '/v1/attendances', {
         event: { id: event.id },
-        user: { device_token: user.device_token }
-      }
+      }.to_json,
+      set_headers(user.device_token)
     end
 
     expect(event.reload.attendances.count).to eq 1

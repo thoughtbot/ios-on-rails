@@ -8,6 +8,6 @@ json.cache! event do
   json.started_at event.started_at
 
   json.owner do
-    json.device_token event.owner.device_token
+    json.id event.owner.id
   end
 end

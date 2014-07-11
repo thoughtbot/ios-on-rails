@@ -1,8 +1,10 @@
 class Api::V1::AttendancesController < ApiController
   def create
-    event = Event.find(params[:event][:id])
-    user = User.find_by(device_token: params[:user][:device_token])
+    authorize do |user|
+      event = Event.find(params[:event][:id])
+      user = user
 
-    Attendance.create(event: event, user: user)
+      Attendance.create(event: event, user: user)
+    end
   end
 end
