@@ -4,7 +4,7 @@ class Api::V1::UsersController < ApiController
       @user = user
 
       if @user.save
-        render nothing: true
+        render
       else
         render json: {
           message: 'Validation Failed',
