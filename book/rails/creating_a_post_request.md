@@ -21,18 +21,14 @@ Why this happens:
 
 > Since the authenticity token is stored in the session, the client can not know
 > its value. This prevents people from submitting forms to a Rails app
-without viewing the form within that app itself. Imagine that you are using
-service
-A, you logged into the service and everything is ok. Now imagine that you went
-to
-use service B, and you saw a picture you like, and pressed on the picture to
-view a
-larger size of it. Now, if some evil code was there at service B, it might send
-a 
-request to service A (which you are logged into), and ask to delete your
-account, by sending a request to `http://serviceA.com/close_account`. This is
-what is known as
-CSRF (Cross Site Request Forgery).
+> without viewing the form within that app itself. Imagine that you are using
+> service A, you logged into the service and everything is ok. Now imagine that
+> you went to use service B, and you saw a picture you like, and pressed on the
+> picture to view a larger size of it. Now, if some evil code was there at service
+> B, it might send a request to service A (which you are logged into), and ask to
+> delete your account, by sending a request to
+> `http://serviceA.com/close_account`. This is what is known as CSRF (Cross Site
+> Request Forgery).
 
 While protecting against CSRF attacks is a good thing, the default forgery
 protection strategy in Rails 4 is problematic for dealing with POST requests to
@@ -85,9 +81,10 @@ GET request: with a request spec.
           name: 'Fun Place!!',
           started_at: date,
           owner: {
-            device_token: device_token
+            id: owner.id
           }
-        }.to_json, { 'Content-Type' => 'application/json' }
+        }.to_json,
+        set_headers(device_token)
 
         event = Event.last
         expect(response_json).to eq({ 'id' => event.id })
@@ -99,6 +96,25 @@ GET request: with a request spec.
         expect(event.started_at.to_i).to eq date.to_i
         expect(event.owner).to eq owner
       end
+    end
+
+In this test we are using a method called `set_headers` and passing the
+`device_token` into the method. This is a helper method that we will use
+in many request specs, so let's define it outside of this spec file:
+
+    # spec/support/request_headers.rb
+
+    module RequestHeaders
+      def set_headers(device_token)
+        {
+          'tb-device-token' => device_token,
+          'Content-Type' => 'application/json'
+        }
+      end
+    end
+
+    RSpec.configure do |config|
+      config.include RequestHeaders
     end
 
 Note about the time comparisons above: the reason we are calling `to_i` on
@@ -118,14 +134,13 @@ microsecond precision, while the in-memory representation is precise to
 nanoseconds." Calling `to_i` on these dates normalizes them to use the same
 place value, which renders them equal for our test.
 
-
 #### Controller
 
 When we run the test above, our first error should be `No route matches [POST]
 "/v1/events"`. This is exactly the error we would expect, since we haven't
 defined this route in our `routes.rb` file. Let's fix that:
 
-    #config/routes.rb
+    # config/routes.rb
 
     Humon::Application.routes.draw do
       scope module: :api, defaults: { format: 'json' } do
@@ -180,10 +195,17 @@ method. Time to add some logic:
 
     class Api::V1::EventsController < ApiController
       def create
-        @event = Event.new(event_params)
+        authorize do |user|
+          @user = user
+          @event = Event.new(event_params)
 
         if @event.save
           render
+        else
+          render json: {
+            message: 'Validation Failed',
+            errors: @event.errors.full_messages
+          }, status: 422
         end
       end
 
@@ -199,18 +221,75 @@ method. Time to add some logic:
           lon: params[:lon],
           name: params[:name],
           started_at: params[:started_at],
-          owner: user
+          owner: @user
         }
       end
-
-      def user
-        User.find_or_create_by(device_token: device_token)
-      end
-
-      def device_token
-        params[:owner].try(:[], :device_token)
-      end
     end
+
+Now we get a different error:
+
+    Failure/Error: post '/v1/events', {
+      NoMethodError: undefined method `authorize'
+
+#### Checking for the auth token header
+
+Oh yes, we are using a method we haven't defined yet! What is this `authorize`
+method all about? When we are creating an `event` with our API, we want to make
+sure that the event has an owner.
+
+In Humon, we identify users by their device token, which is being sent in the
+header. In early versions of this book, we sent the device token in the
+parameters, just like `address`, `lat`, and `name`.
+
+Later on, we got feedback that it is more typical to see auth tokens sent in
+request headers. At first we thought this was because of security concerns, but
+then we found out that SSL encrypts the entire response, including the URL.
+
+The best explanation we've found for sending tokens of any kind in the header
+rather than in the URL is that it accounts for user error. As shared in [this
+StackOverflow response](http://stackoverflow.com/a/20754104/1019369), putting
+tokens in the header "Provides extra measure of security by preventing users
+from inadvertently sharing URLs with their credentials embedded in them".
+
+Another reason tokens are usually sent as headers is that it is simpler for the
+client to process auth tokens when they are sent as headers. For this reason,
+sending auth tokens in the header is common practice for APIs. Since we want to
+establish and follow design principles for APIs that can be used and re-used for
+many use cases, it make sense to go with what's popular.
+
+So, given then we are sending the `device_token` in the header, and we will be
+doing that for any action that requires us to know which user is making the
+request, it makes sense to define a method in `ApiController` that looks for
+the device token header and finds the user with that device token.
+Let's define that method now:
+
+    # app/controllers/api_controller.rb
+
+    class ApiController < ApplicationController
+      def protect_from_forgery with: :null_session
+
+      def authorize
+        if authorization_token
+          yield User.find_or_initialize_by(device_token: authorization_token)
+        else
+          render nothing: true, status: 401
+        end
+      end
+
+       private
+
+       def authorization_token
+         @authorization_token ||= authorization_header
+       end
+
+       def authorization_header
+         request.headers['tb-device-token']
+       end
+     end
+
+Note that we are using `tb-device-token` as our header key so that it does not
+clash with header keys for any other auth libraries we might implement in the
+future.
 
 Our error message has changed yet again, and now it is time for us to move to
 the final step: creating our view.
@@ -274,9 +353,9 @@ POST request spec):
     ...
 
      it 'returns an error message when invalid' do
-        post '/v1/events',
-          {}.to_json,
-          { 'Content-Type' => 'application/json' }
+        device_token = '123abcd456xyz'
+
+        post '/v1/events', {}.to_json, set_headers(device_token)
 
         expect(response_json).to eq({
           'message' => 'Validation Failed',

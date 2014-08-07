@@ -28,10 +28,11 @@ PATCH request.
           lon: event.lon,
           name: new_name,
           owner: {
-            device_token: event.owner.device_token
+            id: event.owner.id
           },
           started_at: event.started_at
-        }.to_json, { 'Content-Type' => 'application/json' }
+        }.to_json,
+        set_headers(event.owner.device_token)
 
         event.reload
         expect(event.name).to eq new_name
@@ -106,10 +107,13 @@ is to add logic to our `update` method that actually updates our `event`:
     # app/controllers/api/v1/events_controller.rb
 
     def update
-      @event = Event.find(params[:id])
+      authorize do |user|
+        @user = user
+        @event = Event.find(params[:id])
 
-      if @event.update_attributes(event_params)
-        render
+        if @event.update_attributes(event_params)
+          render
+        end
       end
     end
 
@@ -165,10 +169,11 @@ and to test drive that logic we will write a request spec:
            lon: event.lon,
            name: nil,
            owner: {
-             device_token: event.owner.device_token
+             id: event.owner.id
            },
            started_at: event.started_at
-         }.to_json, { 'Content-Type' => 'application/json' }
+         }.to_json,
+         set_headers(event.owner.device_token)
 
          event.reload
          expect(event.name).to_not be nil

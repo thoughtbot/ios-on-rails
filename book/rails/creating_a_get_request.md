@@ -52,7 +52,7 @@ which we use below and in all of our request specs that include a JSON response.
             'name' => event.name,
             'started_at' => event.started_at.as_json,
             'owner' => {
-              'device_token' => event.owner.device_token
+              'id' => event.owner.id
             }
           }
         )
@@ -212,7 +212,7 @@ the `events` directory. So we will create that partial next:
       json.started_at event.started_at
 
       json.owner do
-        json.device_token event.owner.device_token
+        json.id event.owner.id
       end
     end
 
@@ -264,7 +264,7 @@ your browser you should see something like this:
       "name":"Best event OF ALL TIME!",
       "started_at":"2013-09-16T00:00:00.000Z",
       "owner":{
-        "device_token":"234324235"
+        "id":"1"
        }
      }
 
