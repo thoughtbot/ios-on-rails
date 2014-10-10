@@ -38,8 +38,8 @@ While Suspenders is not required to follow along with this book, it does
 conveniently include all of the gems we will use to test-drive our API,
 including: [Factory Girl](https://github.com/thoughtbot/factory_girl_rails),
 [RSpec](https://github.com/rspec/rspec-rails), and [Shoulda
-Matchers](https://github.com/thoughtbot/shoulda-matchers). So if you choose not to
-use Suspenders to start your project, make sure you add those gems to your
+Matchers](https://github.com/thoughtbot/shoulda-matchers). So if you choose not
+to use Suspenders to start your project, make sure you add those gems to your
 `Gemfile`.
 
 ### Parsing incoming JSON requests
@@ -109,7 +109,9 @@ subdirectories. Our routes file looks like this:
 
     Humon::Application.routes.draw do
       scope module: :api, defaults: { format: 'json' } do
-        namespace :v1 do ## resources will be here
+        namespace :v1 do
+         ## resources will be here
+        end
       end
     end
 
@@ -141,3 +143,35 @@ suggestions:
  * [apipie-rails](https://github.com/Pajk/apipie-rails)
  * [YARD](http://yardoc.org/)
 
+### API Security
+
+APIs built for commercial use usually have some concept of a client id and/or
+client secret. These are unguessable strings that act as a username and password
+combination required for all API requests. Requiring a client id and secret
+ensures that only known users can access the API and allows the API to turn off
+access to a particular person or application if the usage violates the API terms
+of service. [This blog post on API
+security](https://stormpath.com/blog/top-six-reasons-use-api-keys-and-how/)
+explains the benefits of API keys.
+
+Humon is not an API built for commercial purposes, so we don't need to worry
+about creating a complicated permissions scheme that involves many API tokens.
+We do, however, want to make sure that not just anyone can query our API. Having
+zero security would mean that anyone could create a `curl` request to an
+endpoint and hit our database.
+
+As a security measure, we require a header of `tb-app-secret` for the POST users
+request. We ensure that only requests that send a `tb-app-secret` header with a
+value that matches the value set by the Rails app can create new users via the
+Humon API. We store the app secret in an environment variable so that it is not
+anywhere in version control.
+
+We use [`dotenv`](https://github.com/bkeepers/dotenv) so that our API can read
+environment variables from a `.env` file while in development mode. We also add
+`.env` to `.gitignore` so it is not added to our git repository. If the app
+secret sent by the client on POST users does not match the app secret in the
+API, a `404 Not Found` is returned.
+
+To see how we implemented an app secret for POST users, [see the `before_action`
+in our
+`UsersController`](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/controllers/api/v1/users_controller.rb).

@@ -27,5 +27,4 @@ class Api::V1::UsersController < ApiController
   def correct_app_secret?
     request.headers['tb-app-secret'] == ENV.fetch('TB_APP_SECRET')
   end
-
 end
