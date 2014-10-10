@@ -18,5 +18,4 @@ class ApiController < ApplicationController
   def authorization_header
     request.headers['tb-device-token']
   end
-
 end
