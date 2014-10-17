@@ -17,15 +17,18 @@
 
 @implementation HUMAnnotationView
 
-- (id)initWithAnnotation:(id<MKAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier
+- (id)initWithAnnotation:(id<MKAnnotation>)annotation
+         reuseIdentifier:(NSString *)reuseIdentifier
 {
-    self = [super initWithAnnotation:annotation reuseIdentifier:reuseIdentifier];
+    self = [super initWithAnnotation:annotation
+                     reuseIdentifier:reuseIdentifier];
     if (!self) {
         return nil;
     }
 
     UIButton *button = [[UIButton alloc] init];
-    [button setBackgroundImage:[UIImage imageNamed:@"HUMButtonQuestion"] forState:UIControlStateNormal];
+    [button setBackgroundImage:[UIImage imageNamed:@"HUMButtonQuestion"]
+                      forState:UIControlStateNormal];
     [button sizeToFit];
     self.rightCalloutAccessoryView = button;
     self.canShowCallout = YES;
@@ -65,7 +68,9 @@
         return;
     }
 
-    [self performSelector:@selector(changeToTalkingImage) withObject:nil afterDelay:0.2];
+    [self performSelector:@selector(changeToTalkingImage)
+               withObject:nil
+               afterDelay:0.2];
 }
 
 - (void)changeToTalkingImage
@@ -82,7 +87,9 @@
     }
     self.image = image;
 
-    [self performSelector:@selector(changeToNormalImage) withObject:nil afterDelay:0.2];
+    [self performSelector:@selector(changeToNormalImage)
+               withObject:nil
+               afterDelay:0.2];
 }
 
 - (void)stopAnimating

@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 thoughtbot. All rights reserved.
 //
 
-#import "HUMConfirmationViewController.h"
-#import "HUMButton.h"
 #import "HUMAppearanceManager.h"
+#import "HUMButton.h"
+#import "HUMConfirmationViewController.h"
 #import "HUMEvent.h"
 
 @interface HUMConfirmationViewController ()
@@ -40,7 +40,8 @@
 
     self.title = NSLocalizedString(@"Success!", nil);
     self.navigationItem.hidesBackButton = YES;
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"HUMSuccessImage"]];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:
+                                 [UIImage imageNamed:@"HUMSuccessImage"]];
     
     [self createShareButton];
     [self createDoneButton];
@@ -52,7 +53,8 @@
     [button addTarget:self
                action:@selector(presentActivityViewController)
      forControlEvents:UIControlEventTouchUpInside];
-    [button setTitle:NSLocalizedString(@"Share", nil) forState:UIControlStateNormal];
+    [button setTitle:NSLocalizedString(@"Share", nil)
+            forState:UIControlStateNormal];
     [self.view addSubview:button];
 
     [self.view addConstraint:[NSLayoutConstraint
@@ -95,7 +97,8 @@
     [button addTarget:self
                action:@selector(cancelButtonPressed)
      forControlEvents:UIControlEventTouchUpInside];
-    [button setTitle:NSLocalizedString(@"Done", nil) forState:UIControlStateNormal];
+    [button setTitle:NSLocalizedString(@"Done", nil)
+            forState:UIControlStateNormal];
     [self.view addSubview:button];
 
     [self.view addConstraint:[NSLayoutConstraint
@@ -148,7 +151,8 @@
 - (void)cancelButtonPressed
 {
     if (self.navigationController.presentingViewController) {
-        [self.navigationController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        [self.navigationController.presentingViewController
+            dismissViewControllerAnimated:YES completion:nil];
     } else {
         [self.navigationController popToRootViewControllerAnimated:YES];
     }

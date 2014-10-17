@@ -18,11 +18,14 @@ typedef void(^HUMRailsAFNClientEventsCompletionBlock)(NSArray *events, NSError *
 
 + (instancetype)sharedClient;
 - (void)createCurrentUserWithCompletionBlock:
-    (HUMRailsAFNClientErrorCompletionBlock)block;
-- (void)createEvent:(HUMEvent *)event withCompletionBlock:(HUMRailsAFNClientEventIDCompletionBlock)block;
-- (void)changeEvent:(HUMEvent *)event withCompletionBlock:(HUMRailsAFNClientEventIDCompletionBlock)block;
+        (HUMRailsAFNClientErrorCompletionBlock)block;
+- (void)createEvent:(HUMEvent *)event
+        withCompletionBlock:(HUMRailsAFNClientEventIDCompletionBlock)block;
+- (void)changeEvent:(HUMEvent *)event
+        withCompletionBlock:(HUMRailsAFNClientEventIDCompletionBlock)block;
 - (NSURLSessionDataTask *)fetchEventsInRegion:(MKCoordinateRegion)region
         withCompletionBlock:(HUMRailsAFNClientEventsCompletionBlock)block;
-- (void)createAttendanceForEvent:(HUMEvent *)event withCompletionBlock:(HUMRailsAFNClientErrorCompletionBlock)block;
+- (void)createAttendanceForEvent:(HUMEvent *)event
+        withCompletionBlock:(HUMRailsAFNClientErrorCompletionBlock)block;
 
 @end

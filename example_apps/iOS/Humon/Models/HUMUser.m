@@ -20,10 +20,7 @@
         return nil;
     }
 
-    // TODO: This won't be necessary once the API stops returning owners with NULL tokens
-    if ([JSONDictionary[@"device_token"] hum_isNotNull]) {
-        _userID = JSONDictionary[@"device_token"];
-    }
+    _userID = [NSString stringWithFormat:@"%@", JSONDictionary[@"id"]];
     
     return self;
 }

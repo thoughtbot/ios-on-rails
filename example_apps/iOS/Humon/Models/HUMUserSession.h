@@ -11,6 +11,9 @@
 @interface HUMUserSession : NSObject
 
 + (NSString *)userID;
-+ (void)setUserID:(NSString *)userID;
++ (NSString *)userToken;
++ (void)setUserID:(NSNumber *)userID;
++ (void)setUserToken:(NSString *)userToken;
++ (BOOL)userIsLoggedIn;
 
 @end

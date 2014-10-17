@@ -7,7 +7,6 @@
 //
 
 #import "HUMTimeCell.h"
-#import "NSDateFormatter+HUMDefaultDateFormatter.h"
 
 @implementation HUMTimeCell
 
@@ -32,7 +31,7 @@
 
     _date = date;
     
-    self.textField.text = [[NSDateFormatter hum_RFC3339DateFormatter] stringFromDate:date];
+    self.textField.text = [NSDateFormatter localizedStringFromDate:date dateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterShortStyle];
 }
 
 @end

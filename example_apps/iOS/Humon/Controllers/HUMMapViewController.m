@@ -6,17 +6,17 @@
 //  Copyright (c) 2013 thoughtbot. All rights reserved.
 //
 
+#import "HUMAnnotationView.h"
+#import "HUMEditEventViewController.h"
+#import "HUMEvent.h"
+#import "HUMLocateEventViewController.h"
 #import "HUMMapViewController.h"
 #import "HUMRailsAFNClient.h"
 #import "HUMRailsClient.h"
-#import "HUMEvent.h"
-#import "HUMUserSession.h"
-@import MapKit;
-#import "HUMLocateEventViewController.h"
-#import "HUMViewEventViewController.h"
-#import "HUMAnnotationView.h"
-#import "HUMEditEventViewController.h"
 #import "HUMUser.h"
+#import "HUMUserSession.h"
+#import "HUMViewEventViewController.h"
+@import MapKit;
 
 @interface HUMMapViewController () <MKMapViewDelegate>
 
@@ -33,41 +33,39 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
-    self.mapView = [[MKMapView alloc] initWithFrame:self.view.frame];
-    self.mapView.delegate = self;
-    self.mapView.showsUserLocation = YES;
-    [self.view addSubview:self.mapView];
 
     self.title = NSLocalizedString(@"Humon", nil);
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
                        initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                             target:self
                                             action:@selector(addButtonPressed)];
+
+    [self createMapView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
 
-    if (![HUMUserSession userID]) {
+    if (![HUMUserSession userIsLoggedIn]) {
         
-        [SVProgressHUD show];
+        [SVProgressHUD showWithStatus:
+            NSLocalizedString(@"Loading Events", nil)];
 
         // We could also make this request using our AFN client.
-        // [[HUMRailsAFNClient sharedClient] createCurrentUser...
-
+        // [[HUMRailsAFNClient sharedClient]
         [[HUMRailsClient sharedClient]
             createCurrentUserWithCompletionBlock:^(NSError *error) {
-            
+
             if (error) {
                 NSLog(@"App authentication error: %@", error);
-                [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"App authentication error", nil)];
+                [SVProgressHUD showErrorWithStatus:
+                    NSLocalizedString(@"App authentication error", nil)];
             } else {
                 [SVProgressHUD dismiss];
                 [self reloadEventsOnMap];
             }
-            
+
         }];
         
     } else {
@@ -75,13 +73,60 @@
     }
 }
 
+- (void)createMapView
+{
+    self.mapView = [[MKMapView alloc] initWithFrame:self.view.bounds];
+    self.mapView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.mapView.delegate = self;
+    self.mapView.showsUserLocation = YES;
+    [self.view addSubview:self.mapView];
+
+    [self.view addConstraint:[NSLayoutConstraint
+                              constraintWithItem:self.mapView
+                              attribute:NSLayoutAttributeHeight
+                              relatedBy:NSLayoutRelationEqual
+                              toItem:self.view
+                              attribute:NSLayoutAttributeHeight
+                              multiplier:1.0
+                              constant:0.0]];
+    [self.view addConstraint:[NSLayoutConstraint
+                              constraintWithItem:self.mapView
+                              attribute:NSLayoutAttributeWidth
+                              relatedBy:NSLayoutRelationEqual
+                              toItem:self.view
+                              attribute:NSLayoutAttributeWidth
+                              multiplier:1.0
+                              constant:0.0]];
+
+    [self.view addConstraint:[NSLayoutConstraint
+                              constraintWithItem:self.mapView
+                              attribute:NSLayoutAttributeCenterY
+                              relatedBy:NSLayoutRelationEqual
+                              toItem:self.view
+                              attribute:NSLayoutAttributeCenterY
+                              multiplier:1.0
+                              constant:0.0]];
+    [self.view addConstraint:[NSLayoutConstraint
+                              constraintWithItem:self.mapView
+                              attribute:NSLayoutAttributeCenterX
+                              relatedBy:NSLayoutRelationEqual
+                              toItem:self.view
+                              attribute:NSLayoutAttributeCenterX
+                              multiplier:1.0
+                              constant:0.0]];
+}
+
 - (void)addButtonPressed
 {
     HUMLocateEventViewController *locateEventController =
         [[HUMLocateEventViewController alloc]
          initWithVisibleRect:self.mapView.visibleMapRect];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:locateEventController];
-    [self presentViewController:navigationController animated:YES completion:nil];
+    UINavigationController *navigationController =
+        [[UINavigationController alloc]
+         initWithRootViewController:locateEventController];
+    [self presentViewController:navigationController
+                       animated:YES
+                     completion:nil];
 }
 
 #pragma mark - Map delegate methods
@@ -101,46 +146,59 @@
     [self reloadEventsOnMap];
 }
 
-- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
+- (MKAnnotationView *)mapView:(MKMapView *)mapView
+            viewForAnnotation:(id<MKAnnotation>)annotation
 {
     if ([annotation isKindOfClass:[MKUserLocation class]]) {
         return nil;
     }
 
     HUMEvent *event = annotation;
-    NSString *annotationType = [event.user isCurrentUser] ? HUMMapViewControllerAnnotationGreen : HUMMapViewControllerAnnotationGrey;
-    MKAnnotationView *annotationView = [self.mapView dequeueReusableAnnotationViewWithIdentifier:annotationType];
+    NSString *annotationType = [event.user isCurrentUser] ?
+        HUMMapViewControllerAnnotationGreen : HUMMapViewControllerAnnotationGrey;
+    MKAnnotationView *annotationView =
+        [self.mapView dequeueReusableAnnotationViewWithIdentifier:annotationType];
 
     if (!annotationView) {
-        annotationView = [[HUMAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:annotationType];
+        annotationView = [[HUMAnnotationView alloc]
+                          initWithAnnotation:annotation
+                          reuseIdentifier:annotationType];
     }
 
     return annotationView;
 }
 
-- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
+- (void)mapView:(MKMapView *)mapView
+    didSelectAnnotationView:(MKAnnotationView *)view
 {
     if ([view respondsToSelector:@selector(startAnimating)]) {
         [(HUMAnnotationView *)view startAnimating];
     }
 }
 
-- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view
+- (void)mapView:(MKMapView *)mapView
+    didDeselectAnnotationView:(MKAnnotationView *)view
 {
     if ([view respondsToSelector:@selector(stopAnimating)]) {
         [(HUMAnnotationView *)view stopAnimating];
     }
 }
 
-- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
+- (void)mapView:(MKMapView *)mapView
+    annotationView:(MKAnnotationView *)view
+    calloutAccessoryControlTapped:(UIControl *)control
 {
     if ([view.annotation isKindOfClass:[HUMEvent class]]) {
         HUMEvent *event = view.annotation;
 
         if ([event.user isCurrentUser]) {
-            [self.navigationController pushViewController:[[HUMEditEventViewController alloc] initWithEvent:event] animated:YES];
+            [self.navigationController pushViewController:
+                [[HUMEditEventViewController alloc] initWithEvent:event]
+                                                 animated:YES];
         } else {
-            [self.navigationController pushViewController:[[HUMViewEventViewController alloc] initWithEvent:event] animated:YES];
+            [self.navigationController pushViewController:
+             [[HUMViewEventViewController alloc] initWithEvent:event]
+                                                 animated:YES];
         }
 
     }
@@ -150,15 +208,14 @@
 
 - (void)reloadEventsOnMap
 {
-    if (![HUMUserSession userID]) {
+    if (![HUMUserSession userIsLoggedIn]) {
         return;
     }
     
     [self.currentEventGetTask cancel];
 
     // We could also make this request using our AFN client.
-    // [[HUMRailsAFNClient sharedClient] fetchEvents ...
-
+    // self.currentEventGetTask =  [[HUMRailsAFNClient sharedClient]
     self.currentEventGetTask = [[HUMRailsClient sharedClient]
         fetchEventsInRegion:self.mapView.region
         withCompletionBlock:^(NSArray *events, NSError *error) {

@@ -36,9 +36,13 @@
     self.layer.cornerRadius = HUMButtonHeight/2;
     self.layer.masksToBounds = YES;
 
-    [self setTitleColor:[HUMAppearanceManager humonWhite] forState:UIControlStateNormal];
-    [self setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
-    [self setBackgroundImage:[UIImage hum_imageOfSize:CGSizeMake(1, 1) color:[HUMAppearanceManager humonWhite]] forState:UIControlStateHighlighted];
+    [self setTitleColor:[HUMAppearanceManager humonWhite]
+               forState:UIControlStateNormal];
+    [self setTitleColor:[UIColor grayColor]
+               forState:UIControlStateHighlighted];
+    [self setBackgroundImage:[UIImage hum_imageOfSize:CGSizeMake(1, 1)
+                             color:[HUMAppearanceManager humonWhite]]
+                    forState:UIControlStateHighlighted];
 }
 
 - (void)setupGreenButton
@@ -46,11 +50,17 @@
     self.layer.cornerRadius = 8;
     self.layer.masksToBounds = YES;
 
-    [self setTitleColor:[HUMAppearanceManager humonWhite] forState:UIControlStateNormal];
-    [self setBackgroundImage:[UIImage hum_imageOfSize:CGSizeMake(1, 1) color:[HUMAppearanceManager humonGreen]] forState:UIControlStateNormal];
+    [self setTitleColor:[HUMAppearanceManager humonWhite]
+               forState:UIControlStateNormal];
+    [self setBackgroundImage:[UIImage hum_imageOfSize:CGSizeMake(1, 1)
+                             color:[HUMAppearanceManager humonGreen]]
+                    forState:UIControlStateNormal];
     
-    [self setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
-    [self setBackgroundImage:[UIImage hum_imageOfSize:CGSizeMake(1, 1) color:[HUMAppearanceManager humonGreenDark]] forState:UIControlStateHighlighted];
+    [self setTitleColor:[UIColor grayColor]
+               forState:UIControlStateHighlighted];
+    [self setBackgroundImage:[UIImage hum_imageOfSize:CGSizeMake(1, 1)
+                             color:[HUMAppearanceManager humonGreenDark]]
+                    forState:UIControlStateHighlighted];
 }
 
 @end

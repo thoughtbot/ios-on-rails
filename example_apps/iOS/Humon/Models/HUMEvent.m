@@ -61,7 +61,6 @@
 {
     NSMutableDictionary *JSONDictionary = [[NSMutableDictionary alloc] init];
 
-
     [JSONDictionary setObject:self.name forKey:@"name"];
     if (self.address) {
         [JSONDictionary setObject:self.address forKey:@"address"];
@@ -83,15 +82,21 @@
         [JSONDictionary setObject:end forKey:@"ended_at"];
     }
 
-    NSDictionary *user = @{@"device_token" : [HUMUserSession userID]};
-    [JSONDictionary setObject:user forKey:@"owner"];
-    
+    if (self.eventID) {
+        [JSONDictionary setObject:self.eventID forKey:@"id"];
+    }
+
     return [JSONDictionary copy];
 }
 
 - (NSString *)humanReadableString
 {
-    NSString *sharingString = [NSString stringWithFormat:@"%@ at %@, %@", self.name, self.address, self.startDate];
+    NSString *dateString = [NSDateFormatter
+                            localizedStringFromDate:self.startDate
+                            dateStyle:NSDateFormatterShortStyle
+                            timeStyle:NSDateFormatterShortStyle];
+    NSString *sharingString = [NSString stringWithFormat:@"%@ at %@, %@",
+                               self.name, self.address, dateString];
     return sharingString;
 }
 
@@ -116,19 +121,16 @@
         return YES;
     }
 
-    if (![self isKindOfClass:[object class]]) {
+    if (![self isKindOfClass:[object class]] || !object) {
         return NO;
     }
 
     HUMEvent *event = (HUMEvent *)object;
     
-    BOOL objectsHaveSameID = [self.eventID isEqualToString:event.eventID];
-    BOOL objectsHaveSameUser = [self.user.userID isEqualToString:event.user.userID];
-
-    // TODO: This won't be necessary once the API stops returning owners with NULL tokens
-    if (self.user.userID == event.user.userID) {
-        objectsHaveSameUser = YES;
-    }
+    BOOL objectsHaveSameID =
+        [self.eventID isEqualToString:event.eventID];
+    BOOL objectsHaveSameUser =
+        [self.user.userID isEqualToString:event.user.userID];
 
     return objectsHaveSameID && objectsHaveSameUser;
 }

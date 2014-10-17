@@ -10,7 +10,6 @@
 		090EF9791922DE6600998481 /* HUMAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 090EF9781922DE6600998481 /* HUMAnnotationView.m */; };
 		093FFD8A1819DA4B0006E686 /* HUMDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 093FFD881819DA4B0006E686 /* HUMDataModel.xcdatamodeld */; };
 		093FFD8C1819DAD20006E686 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 093FFD8B1819DAD20006E686 /* CoreData.framework */; };
-		093FFDCD1832AA720006E686 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 093FFDCC1832AA720006E686 /* SenTestingKit.framework */; };
 		093FFDCE1832AA720006E686 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0991A9B7181085D000881332 /* Foundation.framework */; };
 		093FFDCF1832AA720006E686 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0991A9BB181085D000881332 /* UIKit.framework */; };
 		093FFDD51832AA730006E686 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 093FFDD31832AA730006E686 /* InfoPlist.strings */; };
@@ -45,10 +44,19 @@
 		0991A9D8181085D000881332 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0991A9B7181085D000881332 /* Foundation.framework */; };
 		0991A9D9181085D000881332 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0991A9BB181085D000881332 /* UIKit.framework */; };
 		0991A9E1181085D000881332 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0991A9DF181085D000881332 /* InfoPlist.strings */; };
-		0991A9E3181085D000881332 /* HumonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0991A9E2181085D000881332 /* HumonTests.m */; };
 		09B78380191AC61A003BDA23 /* HUMEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09B7837F191AC61A003BDA23 /* HUMEventViewController.m */; };
 		09B78383191AD041003BDA23 /* HUMEditEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09B78382191AD041003BDA23 /* HUMEditEventViewController.m */; };
 		09B78386191AD126003BDA23 /* HUMViewEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09B78385191AD126003BDA23 /* HUMViewEventViewController.m */; };
+		09EFA6901947BD1100C0DA20 /* HUMUserKiwiTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 09EFA68E1947BD1000C0DA20 /* HUMUserKiwiTests.m */; };
+		09EFA6911947BD1100C0DA20 /* HUMUserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 09EFA68F1947BD1000C0DA20 /* HUMUserTests.m */; };
+		09EFA6941947BD2000C0DA20 /* HUMUserSessionKiwiTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 09EFA6921947BD2000C0DA20 /* HUMUserSessionKiwiTests.m */; };
+		09EFA6951947BD2000C0DA20 /* HUMUserSessionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 09EFA6931947BD2000C0DA20 /* HUMUserSessionTests.m */; };
+		09EFA69F1949071300C0DA20 /* HUMEventJson.json in Resources */ = {isa = PBXBuildFile; fileRef = 09EFA69E1949071300C0DA20 /* HUMEventJson.json */; };
+		09EFA6A2194907A100C0DA20 /* HUMEventKiwiTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 09EFA6A0194907A100C0DA20 /* HUMEventKiwiTests.m */; };
+		09EFA6A3194907A100C0DA20 /* HUMEventTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 09EFA6A1194907A100C0DA20 /* HUMEventTests.m */; };
+		09EFA6A81949147700C0DA20 /* HUMJSONFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 09EFA6A71949147700C0DA20 /* HUMJSONFileManager.m */; };
+		09EFA6AB194916E900C0DA20 /* HUMJSONFileManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 09EFA6AA194916E900C0DA20 /* HUMJSONFileManagerTests.m */; };
+		09EFA6AD1949182B00C0DA20 /* HUMJSONFileManagerKiwiTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 09EFA6AC1949182B00C0DA20 /* HUMJSONFileManagerKiwiTests.m */; };
 		111DB5B1CBE24A519BA10EAE /* libPods-HumonUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 36F6FB009F914E0BB4DE201B /* libPods-HumonUITests.a */; };
 		4E46F5EF9B01469D9ED70D65 /* libPods-HumonTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B9E902ACF20470E9806E200 /* libPods-HumonTests.a */; };
 		9E101084E69E42909C8457D0 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D996E00A1E7349AE89853F21 /* libPods.a */; };
@@ -76,8 +84,7 @@
 		090EF9781922DE6600998481 /* HUMAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HUMAnnotationView.m; path = Views/HUMAnnotationView.m; sourceTree = "<group>"; };
 		093FFD891819DA4B0006E686 /* HUMDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = HUMDataModel.xcdatamodel; sourceTree = "<group>"; };
 		093FFD8B1819DAD20006E686 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		093FFDCB1832AA720006E686 /* HumonUITests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HumonUITests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		093FFDCC1832AA720006E686 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		093FFDCB1832AA720006E686 /* HumonUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HumonUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		093FFDD21832AA730006E686 /* HumonUITests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HumonUITests-Info.plist"; sourceTree = "<group>"; };
 		093FFDD41832AA730006E686 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		093FFDD81832AA730006E686 /* HumonUITests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HumonUITests-Prefix.pch"; sourceTree = "<group>"; };
@@ -134,13 +141,23 @@
 		0991A9D6181085D000881332 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		0991A9DE181085D000881332 /* HumonTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HumonTests-Info.plist"; sourceTree = "<group>"; };
 		0991A9E0181085D000881332 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		0991A9E2181085D000881332 /* HumonTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HumonTests.m; sourceTree = "<group>"; };
 		09B7837E191AC61A003BDA23 /* HUMEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUMEventViewController.h; sourceTree = "<group>"; };
 		09B7837F191AC61A003BDA23 /* HUMEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMEventViewController.m; sourceTree = "<group>"; };
 		09B78381191AD041003BDA23 /* HUMEditEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUMEditEventViewController.h; sourceTree = "<group>"; };
 		09B78382191AD041003BDA23 /* HUMEditEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMEditEventViewController.m; sourceTree = "<group>"; };
 		09B78384191AD126003BDA23 /* HUMViewEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUMViewEventViewController.h; sourceTree = "<group>"; };
 		09B78385191AD126003BDA23 /* HUMViewEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMViewEventViewController.m; sourceTree = "<group>"; };
+		09EFA68E1947BD1000C0DA20 /* HUMUserKiwiTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMUserKiwiTests.m; sourceTree = "<group>"; };
+		09EFA68F1947BD1000C0DA20 /* HUMUserTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMUserTests.m; sourceTree = "<group>"; };
+		09EFA6921947BD2000C0DA20 /* HUMUserSessionKiwiTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMUserSessionKiwiTests.m; sourceTree = "<group>"; };
+		09EFA6931947BD2000C0DA20 /* HUMUserSessionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMUserSessionTests.m; sourceTree = "<group>"; };
+		09EFA69E1949071300C0DA20 /* HUMEventJson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = HUMEventJson.json; sourceTree = "<group>"; };
+		09EFA6A0194907A100C0DA20 /* HUMEventKiwiTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMEventKiwiTests.m; sourceTree = "<group>"; };
+		09EFA6A1194907A100C0DA20 /* HUMEventTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMEventTests.m; sourceTree = "<group>"; };
+		09EFA6A61949147700C0DA20 /* HUMJSONFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUMJSONFileManager.h; sourceTree = "<group>"; };
+		09EFA6A71949147700C0DA20 /* HUMJSONFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMJSONFileManager.m; sourceTree = "<group>"; };
+		09EFA6AA194916E900C0DA20 /* HUMJSONFileManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMJSONFileManagerTests.m; sourceTree = "<group>"; };
+		09EFA6AC1949182B00C0DA20 /* HUMJSONFileManagerKiwiTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMJSONFileManagerKiwiTests.m; sourceTree = "<group>"; };
 		36F6FB009F914E0BB4DE201B /* libPods-HumonUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HumonUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		494D5B60B9C74C878D89F660 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		68E9FE1BF314452EA719FB0F /* Pods-HumonTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HumonTests.xcconfig"; path = "Pods/Pods-HumonTests.xcconfig"; sourceTree = "<group>"; };
@@ -155,7 +172,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				093FFDE31832ABA40006E686 /* CoreGraphics.framework in Frameworks */,
-				093FFDCD1832AA720006E686 /* SenTestingKit.framework in Frameworks */,
 				093FFDCF1832AA720006E686 /* UIKit.framework in Frameworks */,
 				093FFDCE1832AA720006E686 /* Foundation.framework in Frameworks */,
 				111DB5B1CBE24A519BA10EAE /* libPods-HumonUITests.a in Frameworks */,
@@ -313,7 +329,7 @@
 			children = (
 				0991A9B4181085D000881332 /* Humon.app */,
 				0991A9D5181085D000881332 /* HumonTests.xctest */,
-				093FFDCB1832AA720006E686 /* HumonUITests.octest */,
+				093FFDCB1832AA720006E686 /* HumonUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -328,7 +344,6 @@
 				0991A9D6181085D000881332 /* XCTest.framework */,
 				D996E00A1E7349AE89853F21 /* libPods.a */,
 				9B9E902ACF20470E9806E200 /* libPods-HumonTests.a */,
-				093FFDCC1832AA720006E686 /* SenTestingKit.framework */,
 				36F6FB009F914E0BB4DE201B /* libPods-HumonUITests.a */,
 			);
 			name = Frameworks;
@@ -366,7 +381,14 @@
 		0991A9DC181085D000881332 /* HumonTests */ = {
 			isa = PBXGroup;
 			children = (
-				0991A9E2181085D000881332 /* HumonTests.m */,
+				09EFA68E1947BD1000C0DA20 /* HUMUserKiwiTests.m */,
+				09EFA68F1947BD1000C0DA20 /* HUMUserTests.m */,
+				09EFA6921947BD2000C0DA20 /* HUMUserSessionKiwiTests.m */,
+				09EFA6931947BD2000C0DA20 /* HUMUserSessionTests.m */,
+				09EFA6A0194907A100C0DA20 /* HUMEventKiwiTests.m */,
+				09EFA6A1194907A100C0DA20 /* HUMEventTests.m */,
+				09EFA6AC1949182B00C0DA20 /* HUMJSONFileManagerKiwiTests.m */,
+				09EFA6AA194916E900C0DA20 /* HUMJSONFileManagerTests.m */,
 				0991A9DD181085D000881332 /* Supporting Files */,
 			);
 			path = HumonTests;
@@ -377,8 +399,19 @@
 			children = (
 				0991A9DE181085D000881332 /* HumonTests-Info.plist */,
 				0991A9DF181085D000881332 /* InfoPlist.strings */,
+				09EFA6A91949147F00C0DA20 /* JSONFiles */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		09EFA6A91949147F00C0DA20 /* JSONFiles */ = {
+			isa = PBXGroup;
+			children = (
+				09EFA6A61949147700C0DA20 /* HUMJSONFileManager.h */,
+				09EFA6A71949147700C0DA20 /* HUMJSONFileManager.m */,
+				09EFA69E1949071300C0DA20 /* HUMEventJson.json */,
+			);
+			name = JSONFiles;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -401,8 +434,8 @@
 			);
 			name = HumonUITests;
 			productName = HumonUITests;
-			productReference = 093FFDCB1832AA720006E686 /* HumonUITests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productReference = 093FFDCB1832AA720006E686 /* HumonUITests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		0991A9B3181085D000881332 /* Humon */ = {
 			isa = PBXNativeTarget;
@@ -450,7 +483,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = HUM;
-				LastTestingUpgradeCheck = 0510;
+				LastTestingUpgradeCheck = 0600;
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = thoughtbot;
 				TargetAttributes = {
@@ -505,6 +538,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0991A9E1181085D000881332 /* InfoPlist.strings in Resources */,
+				09EFA69F1949071300C0DA20 /* HUMEventJson.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -648,7 +682,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0991A9E3181085D000881332 /* HumonTests.m in Sources */,
+				09EFA6941947BD2000C0DA20 /* HUMUserSessionKiwiTests.m in Sources */,
+				09EFA6911947BD1100C0DA20 /* HUMUserTests.m in Sources */,
+				09EFA6A2194907A100C0DA20 /* HUMEventKiwiTests.m in Sources */,
+				09EFA6951947BD2000C0DA20 /* HUMUserSessionTests.m in Sources */,
+				09EFA6901947BD1100C0DA20 /* HUMUserKiwiTests.m in Sources */,
+				09EFA6A3194907A100C0DA20 /* HUMEventTests.m in Sources */,
+				09EFA6AB194916E900C0DA20 /* HUMJSONFileManagerTests.m in Sources */,
+				09EFA6A81949147700C0DA20 /* HUMJSONFileManager.m in Sources */,
+				09EFA6AD1949182B00C0DA20 /* HUMJSONFileManagerKiwiTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -714,7 +756,7 @@
 				INFOPLIST_FILE = "HumonUITests/HumonUITests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
+				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
 		};
@@ -733,7 +775,7 @@
 				INFOPLIST_FILE = "HumonUITests/HumonUITests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
+				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
 		};
@@ -753,7 +795,7 @@
 				INFOPLIST_FILE = "HumonUITests/HumonUITests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
+				WRAPPER_EXTENSION = xctest;
 			};
 			name = Beta;
 		};
@@ -773,7 +815,7 @@
 				INFOPLIST_FILE = "HumonUITests/HumonUITests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
+				WRAPPER_EXTENSION = xctest;
 			};
 			name = Alpha;
 		};
@@ -995,6 +1037,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				"ENABLE_NS_ASSERTIONS[arch=*]" = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Humon/Humon-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (

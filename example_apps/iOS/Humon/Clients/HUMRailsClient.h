@@ -25,6 +25,6 @@ typedef void(^HUMRailsClientEventsCompletionBlock)(NSArray *events, NSError *err
 - (NSURLSessionDataTask *)fetchEventsInRegion:(MKCoordinateRegion)region
         withCompletionBlock:(HUMRailsClientEventsCompletionBlock)block;
 - (void)createAttendanceForEvent:(HUMEvent *)event
-             withCompletionBlock:(HUMRailsClientErrorCompletionBlock)block;
+        withCompletionBlock:(HUMRailsClientErrorCompletionBlock)block;
 
 @end

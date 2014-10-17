@@ -44,9 +44,9 @@
 + (void)setupDefaultAppearances
 {
     UIImage *whiteImage = [UIImage hum_imageOfSize:CGSizeMake(1, 1)
-                                         color:[HUMAppearanceManager humonWhite]];
+                          color:[HUMAppearanceManager humonWhite]];
     UIImage *greenImage = [UIImage hum_imageOfSize:CGSizeMake(1, 1)
-                                         color:[self humonGreen]];
+                          color:[self humonGreen]];
 
     [[UINavigationBar appearance] setBarTintColor:[self humonGreen]];
     [[UINavigationBar appearance] setBackgroundImage:greenImage

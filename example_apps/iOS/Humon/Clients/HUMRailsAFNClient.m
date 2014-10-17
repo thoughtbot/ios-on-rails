@@ -6,11 +6,12 @@
 //  Copyright (c) 2013 thoughtbot. All rights reserved.
 //
 
+#import "HUMEvent.h"
 #import "HUMRailsAFNClient.h"
 #import "HUMUserSession.h"
-#import "HUMEvent.h"
 
-static NSString *const HUMAFNAppSecret = @"yourOwnUniqueAppSecretThatYouShouldRandomlyGenerateAndKeepSecret";
+static NSString *const HUMAFNAppSecret =
+    @"yourOwnUniqueAppSecretThatYouShouldRandomlyGenerateAndKeepSecret";
 
 @implementation HUMRailsAFNClient
 
@@ -23,12 +24,17 @@ static NSString *const HUMAFNAppSecret = @"yourOwnUniqueAppSecretThatYouShouldRa
         NSURL *baseURL = [NSURL URLWithString:ROOT_URL];
         _sharedClient = [[HUMRailsAFNClient alloc] initWithBaseURL:baseURL];
 
-        if ([HUMUserSession userID]) {
-            [_sharedClient.requestSerializer setValue:[HUMUserSession userID]
-                                   forHTTPHeaderField:@"X-DEVICE-TOKEN"];
+        if ([HUMUserSession userIsLoggedIn]) {
+            [_sharedClient.requestSerializer setValue:[HUMUserSession userToken]
+                                   forHTTPHeaderField:@"tb-device-token"];
         } else {
             [_sharedClient.requestSerializer setValue:HUMAFNAppSecret
-                                   forHTTPHeaderField:@"X-APP-SECRET"];
+                                   forHTTPHeaderField:@"tb-app-secret"];
+            // Currently the backend uses a device ID the client generates
+            // as our user token. Here we set that ID.
+            // We have plans to change the backend to generate user tokens for us.
+            [_sharedClient.requestSerializer setValue:[[NSUUID UUID] UUIDString]
+                                   forHTTPHeaderField:@"tb-device-token"];
         }
         
     });
@@ -39,12 +45,13 @@ static NSString *const HUMAFNAppSecret = @"yourOwnUniqueAppSecretThatYouShouldRa
 - (void)createCurrentUserWithCompletionBlock:
     (HUMRailsAFNClientErrorCompletionBlock)block
 {
-    [self POST:@"users" parameters:@{@"device_token" : [HUMUserSession userID]}
+    [self POST:@"users" parameters:nil
        success:^(NSURLSessionDataTask *task, id responseObject) {
            
-        [HUMUserSession setUserID:responseObject[@"device_token"]];
+        [HUMUserSession setUserID:responseObject[@"id"]];
+        [HUMUserSession setUserToken:responseObject[@"device_token"]];
         [self.requestSerializer setValue:responseObject[@"device_token"]
-                      forHTTPHeaderField:@"X-DEVICE-TOKEN"];
+                         forHTTPHeaderField:@"tb-device-token"];
         block(nil);
            
        } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -62,7 +69,8 @@ static NSString *const HUMAFNAppSecret = @"yourOwnUniqueAppSecretThatYouShouldRa
        success:^(NSURLSessionDataTask *task, id responseObject) {
            
         NSLog(@"%@", responseObject);
-        NSString *eventID = [NSString stringWithFormat:@"%@",responseObject[@"id"]];
+        NSString *eventID = [NSString stringWithFormat:@"%@",
+                             responseObject[@"id"]];
         block(eventID, nil);
            
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -82,7 +90,8 @@ withCompletionBlock:(HUMRailsAFNClientEventIDCompletionBlock)block
         success:^(NSURLSessionDataTask *task, id responseObject) {
 
             NSLog(@"%@", responseObject);
-            NSString *eventID = [NSString stringWithFormat:@"%@",responseObject[@"id"]];
+            NSString *eventID = [NSString stringWithFormat:@"%@",
+                                 responseObject[@"id"]];
             block(eventID, nil);
            
        } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -95,14 +104,15 @@ withCompletionBlock:(HUMRailsAFNClientEventIDCompletionBlock)block
 - (NSURLSessionDataTask *)fetchEventsInRegion:(MKCoordinateRegion)region
         withCompletionBlock:(HUMRailsAFNClientEventsCompletionBlock)block
 {
-    // region.span.latitudeDelta/2*111 is how we find the aproximate radius  that the screen is displaying in km.
+    // region.span.latitudeDelta/2*111 is how we find the aproximate radius
+    // that the screen is displaying in km.
     NSDictionary *parameters = @{
                                @"lat" : @(region.center.latitude),
                                @"lon" : @(region.center.longitude),
                                @"radius" : @(region.span.latitudeDelta/2*111)
                                };
     
-    return [self GET:@"events/nearest"
+    return [self GET:@"events/nearests"
           parameters:parameters
              success:^(NSURLSessionDataTask *task, id responseObject) {
           
@@ -122,11 +132,7 @@ withCompletionBlock:(HUMRailsAFNClientEventIDCompletionBlock)block
 - (void)createAttendanceForEvent:(HUMEvent *)event
              withCompletionBlock:(HUMRailsAFNClientErrorCompletionBlock)block
 {
-    NSDictionary *parameters = @{@"event" :
-                                    @{@"id" : event.eventID},
-                                 @"user" :
-                                    @{@"device_token" : [HUMUserSession userID]}
-                                 };
+    NSDictionary *parameters = @{@"event" : @{@"id" : event.eventID}};
     [self POST:@"attendances"
     parameters:parameters
        success:^(NSURLSessionDataTask *task, id responseObject) {

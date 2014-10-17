@@ -43,7 +43,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "093FFDCA1832AA720006E686"
-               BuildableName = "HumonUITests.octest"
+               BuildableName = "HumonUITests.xctest"
                BlueprintName = "HumonUITests"
                ReferencedContainer = "container:Humon.xcodeproj">
             </BuildableReference>

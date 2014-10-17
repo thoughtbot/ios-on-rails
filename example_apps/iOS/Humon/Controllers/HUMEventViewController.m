@@ -6,15 +6,14 @@
 //  Copyright (c) 2014 thoughtbot. All rights reserved.
 //
 
-#import "HUMEventViewController.h"
-#import "HUMEvent.h"
-@import MapKit;
 #import "HUMAppearanceManager.h"
-
+#import "HUMEvent.h"
+#import "HUMEventViewController.h"
+#import "HUMFooterView.h"
 #import "HUMTextFieldCell.h"
 #import "HUMTimeCell.h"
 #import "HUMTimePickerCell.h"
-#import "HUMFooterView.h"
+@import MapKit;
 
 static NSInteger HUMEventHeaderHeight = 20;
 static NSInteger HUMEventFooterHeight = 88;
@@ -22,6 +21,7 @@ static NSInteger HUMEventFooterHeight = 88;
 @interface HUMEventViewController () <UITextFieldDelegate>
 
 @property (strong, nonatomic) NSIndexPath *indexCurrentlyDisplayingTimePicker;
+@property (strong, nonatomic) UIButton *actionButton;
 
 @end
 
@@ -45,7 +45,7 @@ static NSInteger HUMEventFooterHeight = 88;
     
     self.tableView.backgroundColor = [HUMAppearanceManager humonGrey];
     self.tableView.separatorColor = [HUMAppearanceManager humonWhite];
-    self.tableView.contentInset = UIEdgeInsetsMake(HUMEventHeaderHeight, 0, 0, 0);
+    self.tableView.contentInset = UIEdgeInsetsMake(HUMEventHeaderHeight,0,0,0);
 
     [self.tableView registerClass:[HUMTextFieldCell class]
            forCellReuseIdentifier:kTextFieldCellID];
@@ -116,6 +116,8 @@ static NSInteger HUMEventFooterHeight = 88;
 {
     if (section == HUMEventSectionCount - 1) {
         HUMFooterView *footer = [[HUMFooterView alloc] init];
+        self.actionButton = footer.button;
+        [self enableActionButtonIfNeeded];
         [self addActionToFooterButton:footer];
         return footer;
     } else {
@@ -183,7 +185,7 @@ static NSInteger HUMEventFooterHeight = 88;
     NSIndexPath *indexPreviouslyDisplayingTimePicker =
     [self.indexCurrentlyDisplayingTimePicker copy];
     NSIndexPath *indexOfTimePicker = [NSIndexPath indexPathForRow:1
-                                                        inSection:indexPreviouslyDisplayingTimePicker.section];
+        inSection:indexPreviouslyDisplayingTimePicker.section];
 
     self.indexCurrentlyDisplayingTimePicker = nil;
     [self.tableView deleteRowsAtIndexPaths:@[indexOfTimePicker]
@@ -237,7 +239,7 @@ static NSInteger HUMEventFooterHeight = 88;
 - (HUMTextFieldCell *)nameCell
 {
     HUMTextFieldCell *cell = [self.tableView
-                              dequeueReusableCellWithIdentifier:kTextFieldCellID];
+        dequeueReusableCellWithIdentifier:kTextFieldCellID];
     cell.textField.text = self.event.name;
     cell.textField.placeholder = NSLocalizedString(@"Required", nil);
     self.nameField = cell.textField;
@@ -247,7 +249,7 @@ static NSInteger HUMEventFooterHeight = 88;
 - (HUMTextFieldCell *)addressCell
 {
     HUMTextFieldCell *cell = [self.tableView
-                              dequeueReusableCellWithIdentifier:kTextFieldCellID];
+        dequeueReusableCellWithIdentifier:kTextFieldCellID];
     cell.textField.text = self.event.address;
     cell.textField.placeholder = NSLocalizedString(@"Optional", nil);
     self.addressField = cell.textField;
@@ -258,7 +260,7 @@ static NSInteger HUMEventFooterHeight = 88;
 - (HUMTimeCell *)startDateCell
 {
     HUMTimeCell *cell = [self.tableView
-                         dequeueReusableCellWithIdentifier:kTimeCellID];
+        dequeueReusableCellWithIdentifier:kTimeCellID];
 
     cell.textField.placeholder = NSLocalizedString(@"Required", nil);
     cell.date = self.event.startDate;
@@ -268,7 +270,7 @@ static NSInteger HUMEventFooterHeight = 88;
 - (HUMTimeCell *)endDateCell
 {
     HUMTimeCell *cell = [self.tableView
-                         dequeueReusableCellWithIdentifier:kTimeCellID];
+        dequeueReusableCellWithIdentifier:kTimeCellID];
 
     cell.textField.placeholder = NSLocalizedString(@"Optional", nil);
     cell.date = self.event.endDate;
@@ -278,11 +280,13 @@ static NSInteger HUMEventFooterHeight = 88;
 - (HUMTimePickerCell *)timePickerCell
 {
     HUMTimePickerCell *timePickerCell = [self.tableView
-                                         dequeueReusableCellWithIdentifier:kTimePickerCellID];
+        dequeueReusableCellWithIdentifier:kTimePickerCellID];
 
-    if (self.indexCurrentlyDisplayingTimePicker.section == HUMEventSectionStart) {
+    if (self.indexCurrentlyDisplayingTimePicker.section
+        == HUMEventSectionStart) {
         timePickerCell.datePicker.date = self.event.startDate ?: [NSDate date];
-    } else if (self.indexCurrentlyDisplayingTimePicker.section == HUMEventSectionEnd) {
+    } else if (self.indexCurrentlyDisplayingTimePicker.section
+               == HUMEventSectionEnd) {
         timePickerCell.datePicker.date = self.event.endDate ?: [NSDate date];
     }
 
@@ -294,19 +298,24 @@ static NSInteger HUMEventFooterHeight = 88;
 
 - (void)addActionToFooterButton:(HUMFooterView *)footer
 {
-    // To be overwritten by subclasses of HUMEventViewController so they can customize the footer button's action and title
+    // To be overwritten by subclasses of HUMEventViewController
+    // so they can customize the footer button's action and title.
 }
 
 #pragma mark - Cell selection methods
 
 - (void)updateDateCell:(UIDatePicker *)picker
 {
-    HUMTimeCell *timeCell = (HUMTimeCell *)[self.tableView cellForRowAtIndexPath:self.indexCurrentlyDisplayingTimePicker];
+    HUMTimeCell *timeCell = (HUMTimeCell *)[self.tableView
+        cellForRowAtIndexPath:self.indexCurrentlyDisplayingTimePicker];
     [timeCell setDate:picker.date];
 
-    if (self.indexCurrentlyDisplayingTimePicker.section == HUMEventSectionStart) {
+    if (self.indexCurrentlyDisplayingTimePicker.section
+        == HUMEventSectionStart) {
         self.event.startDate = picker.date;
-    } else if (self.indexCurrentlyDisplayingTimePicker.section == HUMEventSectionEnd) {
+        [self enableActionButtonIfNeeded];
+    } else if (self.indexCurrentlyDisplayingTimePicker.section
+               == HUMEventSectionEnd) {
         self.event.endDate = picker.date;
     }
 }
@@ -339,6 +348,22 @@ static NSInteger HUMEventFooterHeight = 88;
     [textField resignFirstResponder];
 
     return YES;
+}
+
+- (BOOL)textField:(UITextField *)textField
+    shouldChangeCharactersInRange:(NSRange)range
+    replacementString:(NSString *)string
+{
+    [self enableActionButtonIfNeeded];
+    return YES;
+}
+
+- (void)enableActionButtonIfNeeded
+{
+    BOOL eventFieldsAreValid = self.event.name.length &&
+                               self.event.address.length &&
+                               self.event.startDate;
+    self.actionButton.enabled = eventFieldsAreValid;
 }
 
 @end

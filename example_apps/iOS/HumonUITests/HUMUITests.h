@@ -10,7 +10,6 @@
 
 @interface HUMUITests : KIFTestCase
 
-- (void)testValidButton;
-- (void)testInvalidButton;
+- (void)testAddEventCancelling;
 
 @end

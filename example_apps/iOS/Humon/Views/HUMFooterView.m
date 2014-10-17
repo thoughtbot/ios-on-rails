@@ -21,10 +21,38 @@
     HUMButton *button = [[HUMButton alloc] initWithColor:HUMButtonColorGreen];
     [self addSubview:button];
 
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:HUMButtonHeight]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:200.0]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0]];
+    [self addConstraint:[NSLayoutConstraint
+                         constraintWithItem:button
+                         attribute:NSLayoutAttributeHeight
+                         relatedBy:NSLayoutRelationEqual
+                         toItem:nil
+                         attribute:NSLayoutAttributeNotAnAttribute
+                         multiplier:1.0
+                         constant:HUMButtonHeight]];
+    [self addConstraint:[NSLayoutConstraint
+                         constraintWithItem:button
+                         attribute:NSLayoutAttributeWidth
+                         relatedBy:NSLayoutRelationEqual
+                         toItem:nil
+                         attribute:NSLayoutAttributeNotAnAttribute
+                         multiplier:1.0
+                         constant:200.0]];
+    [self addConstraint:[NSLayoutConstraint
+                         constraintWithItem:button
+                         attribute:NSLayoutAttributeCenterX
+                         relatedBy:NSLayoutRelationEqual
+                         toItem:self
+                         attribute:NSLayoutAttributeCenterX
+                         multiplier:1.0
+                         constant:0.0]];
+    [self addConstraint:[NSLayoutConstraint
+                         constraintWithItem:button
+                         attribute:NSLayoutAttributeCenterY
+                         relatedBy:NSLayoutRelationEqual
+                         toItem:self
+                         attribute:NSLayoutAttributeCenterY
+                         multiplier:1.0
+                         constant:0.0]];
 
     self.button = button;
 

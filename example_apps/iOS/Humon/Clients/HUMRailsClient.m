@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 thoughtbot. All rights reserved.
 //
 
+#import "HUMEvent.h"
 #import "HUMRailsClient.h"
 #import "HUMUserSession.h"
-#import "HUMEvent.h"
 
 static NSString *const HUMAppSecret =
     @"yourOwnUniqueAppSecretThatYouShouldRandomlyGenerateAndKeepSecret";
@@ -46,17 +46,21 @@ static NSString *const HUMAppSecret =
         [NSURLSessionConfiguration defaultSessionConfiguration];
     sessionConfiguration.timeoutIntervalForRequest = 30.0;
     sessionConfiguration.timeoutIntervalForResource = 30.0;
-    
-    NSDictionary *headers = [HUMUserSession userID] ?
+
+    // Currently the backend uses a device ID the client generates
+    // as our user token. Here we set that ID.
+    // We have plans to change the backend to generate user tokens for us.
+    NSDictionary *headers = [HUMUserSession userIsLoggedIn] ?
         @{
           @"Accept" : @"application/json",
           @"Content-Type" : @"application/json",
-          @"X-DEVICE-TOKEN" : [HUMUserSession userID]
+          @"tb-device-token" : [HUMUserSession userToken]
           } :
         @{
           @"Accept" : @"application/json",
           @"Content-Type" : @"application/json",
-          @"X-APP-SECRET" : HUMAppSecret
+          @"tb-device-token" : [[NSUUID UUID] UUIDString],
+          @"tb-app-secret" : HUMAppSecret
           };
     [sessionConfiguration setHTTPAdditionalHeaders:headers];
     
@@ -68,16 +72,10 @@ static NSString *const HUMAppSecret =
 - (void)createCurrentUserWithCompletionBlock:
     (HUMRailsClientErrorCompletionBlock)block
 {
-    NSDictionary *json = @{@"device_token" : [HUMUserSession userID]};
-    NSData *JSONdata = [NSJSONSerialization dataWithJSONObject:json
-                                                       options:kNilOptions
-                                                         error:nil];
-    
     NSString *urlString = [NSString stringWithFormat:@"%@users", ROOT_URL];
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url];
     [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:JSONdata];
     
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request
                                              completionHandler:
@@ -88,7 +86,8 @@ static NSString *const HUMAppSecret =
                                                 JSONObjectWithData:data
                                                 options:kNilOptions
                                                 error:nil];
-            [HUMUserSession setUserID:responseDictionary[@"device_token"]];
+            [HUMUserSession setUserToken:responseDictionary[@"device_token"]];
+            [HUMUserSession setUserID:responseDictionary[@"id"]];
 
             NSURLSessionConfiguration *newConfiguration =
                 self.session.configuration;
@@ -96,7 +95,7 @@ static NSString *const HUMAppSecret =
                 @{
                     @"Accept" : @"application/json",
                     @"Content-Type" : @"application/json",
-                    @"X-DEVICE-TOKEN" : responseDictionary[@"device_token"]
+                    @"tb-device-token " : responseDictionary[@"device_token"]
                 }];
             
             [self.session finishTasksAndInvalidate];
@@ -126,7 +125,9 @@ static NSString *const HUMAppSecret =
     [request setHTTPMethod:@"POST"];
     //[request setHTTPBody:JSONdata];
     
-    NSURLSessionUploadTask *task = [self.session uploadTaskWithRequest:request fromData:JSONdata completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+    NSURLSessionUploadTask *task = [self.session uploadTaskWithRequest:request
+    fromData:JSONdata
+    completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
 
         NSString *eventID;
                                                  
@@ -155,13 +156,16 @@ static NSString *const HUMAppSecret =
                         options:kNilOptions
                         error:nil];
 
-    NSString *urlString = [NSString stringWithFormat:@"%@events/%@", ROOT_URL, event.eventID];
+    NSString *urlString = [NSString stringWithFormat:@"%@events/%@",
+                           ROOT_URL, event.eventID];
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url];
     [request setHTTPMethod:@"PATCH"];
     //[request setHTTPBody:JSONdata];
 
-    NSURLSessionUploadTask *task = [self.session uploadTaskWithRequest:request fromData:JSONdata completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+    NSURLSessionUploadTask *task = [self.session uploadTaskWithRequest:request
+    fromData:JSONdata
+    completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
 
         NSString *eventID;
 
@@ -185,15 +189,22 @@ static NSString *const HUMAppSecret =
 - (NSURLSessionDataTask *)fetchEventsInRegion:(MKCoordinateRegion)region
         withCompletionBlock:(HUMRailsClientEventsCompletionBlock)block
 {
-    // region.span.latitudeDelta/2*111 is how we find the aproximate radius  that the screen is displaying in km.
-    NSString *parameters = [NSString stringWithFormat:@"?lat=%@&lon=%@&radius=%@", @(region.center.latitude), @(region.center.longitude), @(region.span.latitudeDelta/2*111)];
+    // region.span.latitudeDelta/2*111 is how we find the aproximate radius
+    // that the screen is displaying in km.
+    NSString *parameters = [NSString stringWithFormat:
+                            @"?lat=%@&lon=%@&radius=%@",
+                            @(region.center.latitude),
+                            @(region.center.longitude),
+                            @(region.span.latitudeDelta/2*111)];
 
-    NSString *urlString = [NSString stringWithFormat:@"%@events/nearest%@", ROOT_URL, parameters];
+    NSString *urlString = [NSString stringWithFormat:@"%@events/nearests%@",
+                           ROOT_URL, parameters];
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url];
     [request setHTTPMethod:@"GET"];
 
-    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request
+    completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
 
         NSArray *events;
 
@@ -221,15 +232,12 @@ static NSString *const HUMAppSecret =
              withCompletionBlock:(HUMRailsClientErrorCompletionBlock)block
 {
     NSDictionary *json = @{@"event" :
-                             @{@"id" : event.eventID},
-                         @"user" :
-                             @{@"device_token" : [HUMUserSession userID]}
-                         };
+                             @{@"id" : event.eventID}};
     NSData *JSONdata = [NSJSONSerialization dataWithJSONObject:json
                                                        options:0
                                                          error:nil];
 
-    NSString *urlString = [NSString stringWithFormat:@"%@attendances", ROOT_URL];
+    NSString *urlString = [NSString stringWithFormat:@"%@attendances",ROOT_URL];
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url];
     [request setHTTPMethod:@"POST"];

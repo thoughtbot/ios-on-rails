@@ -10,14 +10,10 @@
 
 @implementation HUMUITests
 
-- (void)testValidButton
+- (void)testAddEventCancelling
 {
-    [tester tapViewWithAccessibilityLabel:@"Add Event"];
-}
-
-- (void)testInvalidButton
-{
-    [tester tapViewWithAccessibilityLabel:@"InvalidButtonName"];
+    [tester tapViewWithAccessibilityLabel:@"Add"];
+    [tester tapViewWithAccessibilityLabel:@"Stop"];
 }
 
 @end

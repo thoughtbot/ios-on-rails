@@ -6,12 +6,12 @@
 //  Copyright (c) 2014 thoughtbot. All rights reserved.
 //
 
-#import "HUMViewEventViewController.h"
-#import "HUMFooterView.h"
+#import "HUMConfirmationViewController.h"
 #import "HUMEvent.h"
+#import "HUMFooterView.h"
 #import "HUMRailsAFNClient.h"
 #import "HUMRailsClient.h"
-#import "HUMConfirmationViewController.h"
+#import "HUMViewEventViewController.h"
 
 @interface HUMViewEventViewController () <UITextFieldDelegate>
 
@@ -30,46 +30,48 @@
 
 - (void)addActionToFooterButton:(HUMFooterView *)footer
 {
-    [footer.button addTarget:self action:@selector(joinEvent) forControlEvents:UIControlEventTouchUpInside];
-    [footer.button setTitle:NSLocalizedString(@"Join", nil) forState:UIControlStateNormal];
+    [footer.button addTarget:self action:@selector(joinEvent:)
+            forControlEvents:UIControlEventTouchUpInside];
+    [footer.button setTitle:NSLocalizedString(@"Join", nil)
+                   forState:UIControlStateNormal];
 }
 
 #pragma mark - Cell selection methods
 
-- (void)joinEvent
+- (void)joinEvent:(id)sender
 {
-    if (!self.event.name || !self.event.startDate) {
-        return;
+    if ([sender isKindOfClass:[UIButton class]]) {
+        [sender setEnabled:NO];
     }
-
+    
     [SVProgressHUD show];
 
     // We could also make this request using our AFN client.
-    // [[HUMRailsAFNClient sharedClient] createAttendance ...
+    // [[HUMRailsAFNClient sharedClient]
+    [[HUMRailsClient sharedClient]
+        createAttendanceForEvent:self.event
+        withCompletionBlock:^(NSError *error) {
 
-    [[HUMRailsClient sharedClient] createAttendanceForEvent:self.event
-                                           withCompletionBlock:^(NSError *error) {
+        if (error) {
+            NSLog(@"Event join error: %@", error);
+            [SVProgressHUD showErrorWithStatus:
+            NSLocalizedString(@"Event join error", nil)];
+            return;
+        }
 
-                                  if (error) {
-                                      NSLog(@"Event join error: %@", error);
-                                      [SVProgressHUD showErrorWithStatus:
-                                       NSLocalizedString(@"Event join error", nil)];
-                                      return;
-                                  }
+        [SVProgressHUD dismiss];
+        HUMConfirmationViewController *confirmationViewController =
+        [[HUMConfirmationViewController alloc] initWithEvent:self.event];
+        [self.navigationController pushViewController:confirmationViewController
+                                             animated:YES];
 
-                                  [SVProgressHUD dismiss];
-                                  HUMConfirmationViewController *confirmationViewController =
-                                  [[HUMConfirmationViewController alloc] initWithEvent:self.event];
-                                  [self.navigationController pushViewController:confirmationViewController
-                                                                       animated:YES];
-                                  
-                              }];
+    }];
 }
 
 # pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView
-didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+        didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Do nothing.
 }

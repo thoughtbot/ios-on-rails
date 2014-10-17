@@ -9,12 +9,11 @@
 #import "HUMAddEventViewController.h"
 #import "HUMConfirmationViewController.h"
 #import "HUMEvent.h"
+#import "HUMFooterView.h"
 #import "HUMRailsAFNClient.h"
 #import "HUMRailsClient.h"
-@import AddressBook;
-
-#import "HUMFooterView.h"
 #import "HUMTextFieldCell.h"
+@import AddressBook;
 
 @interface HUMAddEventViewController () <UITextFieldDelegate>
 
@@ -56,23 +55,25 @@
 
 - (void)addActionToFooterButton:(HUMFooterView *)footer
 {
-    [footer.button addTarget:self action:@selector(createEvent) forControlEvents:UIControlEventTouchUpInside];
-    [footer.button setTitle:NSLocalizedString(@"Create", nil) forState:UIControlStateNormal];
+    [footer.button addTarget:self
+                      action:@selector(createEvent:)
+            forControlEvents:UIControlEventTouchUpInside];
+    [footer.button setTitle:NSLocalizedString(@"Create", nil)
+                   forState:UIControlStateNormal];
 }
 
 #pragma mark - Cell selection methods
 
-- (void)createEvent
+- (void)createEvent:(id)sender
 {
-    if (!self.event.name || !self.event.startDate) {
-        return;
+    if ([sender isKindOfClass:[UIButton class]]) {
+        [sender setEnabled:NO];
     }
 
     [SVProgressHUD show];
 
     // We could also make this request using our AFN client.
-    // [[HUMRailsAFNClient sharedClient] createEvent:self.event ...
-
+    // [[HUMRailsAFNClient sharedClient] createEvent:self.event
     [[HUMRailsClient sharedClient] createEvent:self.event
         withCompletionBlock:^(NSString *eventID, NSError *error) {
 
