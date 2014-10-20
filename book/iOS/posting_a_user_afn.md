@@ -25,9 +25,10 @@ When defining the method `createCurrentUserWithCompletionBlock:`, we can use one
         [self POST:@"users" parameters:@{@"device_token" : @"435353"}
            success:^(NSURLSessionDataTask *task, id responseObject) {
                
-            [HUMUserSession setUserID:responseObject[@"device_token"]];
-            [self.requestSerializer setValue:responseObject[@"device_token"]
-                          forHTTPHeaderField:@"X-DEVICE-TOKEN"];
+	        [HUMUserSession setUserID:responseObject[@"id"]];
+	        [HUMUserSession setUserToken:responseObject[@"device_token"]];
+	        [self.requestSerializer setValue:responseObject[@"device_token"]
+	                         forHTTPHeaderField:@"tb-device-token"];
             block(nil);
                
            } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -43,34 +44,31 @@ The method is called `POST:parameters:success:failure:` and takes four arguments
 
 2. The parameters for this POST request are `nil`, since the HTTPHeaderField contains our HUMAppSecret. We don't need to send any additional data for this specific POST request.
 
-3. A completion block that will execute if the request is successful. If the request is successful we set the current user's ID to the device_token we get back from the API. We also set the device_token in the header field so we can start signing our requests as that user. Finally, we execute the completion block with `nil` as an argument since we have no error.
+3. A completion block that will execute if the request is successful. If the request is successful we set the current user's ID and token to what we got back in the `responseObject`. We also set the device_token in the header field so we can start signing our requests as that user. Finally, we execute the completion block with `nil` as an argument since we have no error.
 
 4. A completion block that executes if there was an error when executing the POST task. This completion block executes the completion block we provided, with the `error` as an argument to indicate that our POST wasn't successful.
 
-### Making the POST Request
+### Setting the Headers Conditionally
 
-We want to make a POST request to create and save a user only once on each device. So, lets conditionally call the `createCurrentUserWithCompletionBlock:` we just created inside of HUMMapViewController's `viewDidAppear:` method.
+Now that we have a POST to users method and persist the token we recieve from this method, we can conditionally set our session's headers depending on if we have that token yet.
 
-	- (void)viewDidAppear:(BOOL)animated
-	{
-    	[super viewDidAppear:animated];
+Currently, our singleton sets a new `tb-device-token` and the `tb-app-secret` in the session's headers every time it initializes. These are the correct headers for POST to users, but we need different headers for all other reqeusts.
 
-    	if (![HUMUserSession userID]) {
-        
-        	[SVProgressHUD show];
-        
-        	[[HUMRailsAFNClient sharedClient] 
-        		createCurrentUserWithCompletionBlock:^(NSError *error) {
-            
-            	[SVProgressHUD dismiss];
-            
-        	}];
-        
-    	}
-	}
+In the `sharedClient` method of our `HUMRailsClient`, change the `dispatch_once` block to contain:
 
-If there's no `currentUserID` in the keychain, then we haven't successfully made a POST request to /users. So, we can call `createCurrentUserWithCompletionBlock:` to make our POST request, save the user ID that returns from the API request, and change the request headers to include this user ID.
+	// HUMRailsAFNClient.m
+	
+    NSURL *baseURL = [NSURL URLWithString:ROOT_URL];
+    _sharedClient = [[HUMRailsAFNClient alloc] initWithBaseURL:baseURL];
 
-We'll also present a heads-up-display to users to indicate that an API call is in progress. SVProgressHUD is a cocoapod that provides a clean and easy to use view for showing loading and percent completion. We simply call the SVProgressHUD class method `show` to display the HUD, and `dismiss` to remove it.
-
-If you run the app and get back a completionBlock with no error, you've officially made a successful POST request and created a user on the database!
+    if ([HUMUserSession userIsLoggedIn]) {
+        [_sharedClient.requestSerializer setValue:[HUMUserSession userToken]
+                               forHTTPHeaderField:@"tb-device-token"];
+    } else {
+        [_sharedClient.requestSerializer setValue:HUMAFNAppSecret
+                               forHTTPHeaderField:@"tb-app-secret"];
+        [_sharedClient.requestSerializer setValue:[[NSUUID UUID] UUIDString]
+                               forHTTPHeaderField:@"tb-device-token"];
+    }
+          
+This if statement depends on the class methods `userIsLoggedIn` and `userToken` that we defined on `HUMUserSession`, so remember to `#import "HUMUserSession.h"` at the top of the file. It sets the headers to include the saved `[HUMUserSession userToken]` if we are logged in and the app secret random device token if we aren't.

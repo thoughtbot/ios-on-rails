@@ -1,46 +1,16 @@
 # The User Object
 
-Rather than having a user create an account and log in, we're going to create a user object on the first run of the app and then consistantly sign our requests as this user. The user entity on the database has only one property: device_token. You can think of this device_token as a user ID, since our users are identified by their device rather than an email address or username.
+Our app doesn't require username/password login, instead we will create a user object on the first run of the app and then consistantly sign our requests as this user. This behavior is useful for apps that don't require login, or have some sort of guest mode.
 
-### Creating the User Object
-
-Each user is going to have one property, which is their user ID. In our case, the user's ID will be their device token which we get back from the rails app. When we make a POST request to /users, the backend confirms that we sent the correct app secret, creates a new user account with a new device_token, and returns the account's device_token so we can use it to sign all our requests. Typically, your user entity will have a separate user_id and user_token so you can use one for publically identifying a user and the other for privately signing requests, but we will treat our device_token as a hybrid of the two.
-
-Create a new subclass of NSObject for the user and define a property and two instance methods.
-
-	// HUMUser.h
-	
-	@interface HUMUser : NSObject
-	
-	@property (strong, nonatomic) NSNumber *userID;
-
-	- (id)initWithJSON:(NSDictionary *)JSONDictionary;
-
-	@end
-	
-When we receive a user's JSON back from the database, we could just [[HUMUser alloc] init] and set the user's properties. However, creating a custom init method `initWithJSON:` makes instantiating a `HUMUser` much easier.
-
-	// HUMUser.m
-
-	- (id)initWithJSON:(NSDictionary *)JSONDictionary
-	{
-    	self = [super init];
-    
-    	if (!self)
-        return nil;
-    
-    	_userID = JSONDictionary[@"id"];
-    	
-    	return self;
-	}
-
-The custom init method calls super's init method and sets self to the return value. If the object can't be initialized it returns nil, otherwise it just sets the `_userID` and returns self.
+The user entity on the database has two relevant properties: `device_token` and `id`. We will pass along the device token with our user requests, and we can use the ID to compare users. 
 
 ### Creating the User Session Object
 
-Create another subclass of NSObject called HUMUserSession. This object will manage our current user's session, which means it will be responsible for keeping track of the user ID that we'll be signing our requests with.
+When we make a POST request to /users, the backend confirms that we sent the correct app secret, creates a new user with the device_token we pass, and returns the account's ID and token. 
 
-The interface for our user session manager should contain 3 class methods:
+Create a subclass of NSObject called HUMUserSession. This object will manage the current user's session, which means it will be responsible for keeping track of one user ID and one device_token that we'll be signing our requests with.
+
+The interface for our user session manager should contain 5 class methods:
 
 	// HUMUserSession.h
 	
@@ -48,42 +18,86 @@ The interface for our user session manager should contain 3 class methods:
 
     @interface HUMUserSession : NSObject
 
-    + (NSNumber *)userID;
-    + (void)setUserID:(NSNumber *)userID;
-    + (BOOL)userMatchesCurrentUserSession:(HUMUser *)user;
+	+ (NSString *)userID;
+	+ (NSString *)userToken;
+	+ (void)setUserID:(NSNumber *)userID;
+	+ (void)setUserToken:(NSString *)userToken;
+	+ (BOOL)userIsLoggedIn;
 
     @end
 
-The first two class methods are for getting and setting the current user's ID. These methods will access the keychain to keep track of the current user's ID.
+The first four class methods are for getting and setting the current user's ID and token. These methods will access the keychain to keep track of this information. We want to use the keychain since when we are storing sensitive information, like the user's token.
 
-Every event that we create will have a user object that it belongs to. So, we need some way of checking if an event's user is the current user. The `currentUserMatchesUser:` method will be used to check if the current user should be able to edit an event.
+Since we're using SSKeychain, we'll want to create a few static strings above our `@implementation`. Don't forget to `#import <SSKeychain/SSKeychain.h>` at the top of the file as well.
 
-Let's implement the two class methods for getting and setting the user's session ID.
+	// HUMUserSession.m
 
-	// HUMUser.m
+	static NSString *const HUMService = @"Humon";
+	static NSString *const HUMUserID = @"currentUserID";
+	static NSString *const HUMUserToken = @"currentUserToken";
 
-    + (NSNumber *)userID
-    {
-        NSString *userIDString = [SSKeychain passwordForService:@"Humon"
-                                                        account:@"currentUserID"];
-        return [NSNumber numberWithInteger:userIDString.integerValue];
-    }
+Now we can use these strings as keys when querying the keychain for our `userID` and `userToken`.
 
-    + (void)setUserID:(NSNumber *)userID
-    {
-        NSString *userIDString = [NSString stringWithFormat:@"%@", userID];
-        [SSKeychain setPassword:userIDString
-                     forService:@"Humon"
-                        account:@"currentUserID"];
-    }
+	// HUMUserSession.m
 
-We'll be using the SSKeychain framework here to save the user ID to the keychain and retrieve it, so be sure to place `#import <SSKeychain/SSKeychain.h>` at the top of `HUMUser.h` or in your prefix file.
-
-Finally, let's implement a method for `userMatchesCurrentUserSession:`. It's a simple check if the current user's ID matches the ID of the `user` object in question.
-
-	// HUMUser.m
+	+ (NSString *)userID
+	{
+	    NSString *userID = [SSKeychain passwordForService:HUMService
+	                                              account:HUMUserID];
 	
-    + (BOOL)userMatchesCurrentUserSession:(HUMUser *)user
-    {
-        return [user.userID isEqualToNumber:[HUMUserSession userID]];
-    }
+	    return userID;
+	}
+	
+	+ (NSString *)userToken
+	{
+	    NSString *userToken = [SSKeychain passwordForService:HUMService
+	                                                 account:HUMUserToken];
+	
+	    return userToken;
+	}
+
+Next we'll want to implement the methods we defined for setting our ID and token.
+
+	// HUMUserSession.m
+	
+	+ (void)setUserID:(NSNumber *)userID
+	{
+	    if (!userID) {
+	        [SSKeychain deletePasswordForService:HUMService account:HUMUserID];
+	        return;
+	    }
+	
+	    NSString *IDstring = [NSString stringWithFormat:@"%@", userID];
+	    [SSKeychain setPassword:IDstring
+	                 forService:HUMService
+	                    account:HUMUserID
+	                      error:nil];
+	}
+	
+	+ (void)setUserToken:(NSString *)userToken
+	{
+	    if (!userToken) {
+	        [SSKeychain deletePasswordForService:HUMService account:HUMUserToken];
+	        return;
+	    }
+	
+	    [SSKeychain setPassword:userToken
+	                 forService:HUMService
+	                    account:HUMUserToken
+	                      error:nil];
+	}
+
+You'll notice that we created an `IDstring` with `[NSString stringWithFormat:@"%@", userID]`. This is because our `userID` returned from the API is a number, while we need a string `IDstring` password to store in the keychain.
+
+Lastly, we need to implement the method that we will use in our client singleton to determine if we currently have a valid user session. It's easiest to think of this as whether or not the user is logged in.
+
+	// HUMUserSession.m
+
+	+ (BOOL)userIsLoggedIn
+	{
+	    BOOL hasUserID = [self userID] ? YES : NO;
+	    BOOL hasUserToken = [self userToken] ? YES : NO;
+	    return hasUserID && hasUserToken;
+	}
+	
+Now we can use this `userIsLoggedIn` method to determine if we need to make a POST to users, and to determine what headers we need in our API client.

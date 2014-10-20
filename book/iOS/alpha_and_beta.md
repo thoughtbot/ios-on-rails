@@ -22,7 +22,7 @@ Setting these manually is perfectly fine as well, but keeping separate configura
 	
 	![Set the scheme's build configuration](images/ios_alpha_and_beta_3.png)
 	
-	Set this scheme's run build configuration and archive build configuration to Beta.)
+	Set this scheme's run build configuration and archive build configuration to Beta.
 
 3. **Automate the bundle identifier and display name**
 
@@ -36,7 +36,7 @@ Setting these manually is perfectly fine as well, but keeping separate configura
 
 	![Use the ROOT_URL in a pre-processor macro](images/ios_alpha_and_beta_6.png)
 	
-	Under "Build Settings", search for preprocessor macros and add `ROOT_URL='@"yourProductionURL"'` to the release and Beta configurations and `ROOT_URL='@"yourStagingURL"'` for debug and Alpha configurations.
+	Under "Build Settings", search for preprocessor macros and add `ROOT_URL='@"yourProductionURL/"'` to the release and Beta configurations and `ROOT_URL='@"yourStagingURL/"'` for debug and Alpha configurations.
 	
 5. **Build the app using the new scheme.**
 

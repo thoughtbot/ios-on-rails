@@ -28,19 +28,23 @@ Installing the CocoaPods gem and creating a podfile is covered in more detail on
 
 	platform :ios, '7.0'
 	
-	pod 'TestFlightSDK', '~> 2.0'
-	pod 'Parse', '~> 1.2.11'
-	
-	pod 'AFNetworking', '~> 2.0'
-	pod 'SSKeychain', '~> 1.2.1'
+	pod 'AFNetworking', '~> 2.4.1'
+	pod 'SSKeychain', '~> 1.2.2'
 	pod 'SVProgressHUD', '~> 1.0'
 	
-	target :HumonTests, :exclusive => true do
-		pod 'Kiwi', '~> 2.2'
+	target :HumonTests  do
+	  pod 'Kiwi', '~> 2.3.0'
+	  pod 'OHHTTPStubs', '~> 3.0.2'
+	end
+	
+	target :HumonUITests, :exclusive => true do
+	  pod 'KIF', '~> 3.0.8'
 	end
 
-The `:exclusive => true do` block ensures that the HumonTests target only links to the testing frameworks inside the block. The frameworks outside the block will still be available to HumonTests target. Since they'll be available to the Humon target, which the testing
+The `:exclusive => true do` block ensures that the HumonUITests target only links to the testing frameworks inside the block. The frameworks outside the block will still be available to HumonUITests target since they'll be available to the main Humon target.
 
-We will be using the TestFlight SDK to distribute our app to Beta testers. Parse will be used for push notifications by both the iOS app and the Rails app. AFNetworking will handle our API network requests, SSKeychain will help us save user info to the keychain, and SVProgressHUD will let us display loading views to the user.
+AFNetworking will handle our API network requests, SSKeychain will help us save user info to the keychain, and SVProgressHUD will let us display loading views to the user.
+
+Another important Pod to add is either Hockey or TestFlight to distribute our app to Beta testers. That process is outlined superbly on either of their developer support pages.
 
 Once you've updated your podfile, go ahead and run `$ pod install`

@@ -35,8 +35,6 @@
 
 <<[iOS/add_an_event_view_controller.md]
 
-<<[iOS/confirmation_view_controller.md]
-
 <<[iOS/api_client.md]
 
 <<[iOS/api_client_afn.md]
@@ -46,6 +44,8 @@
 <<[iOS/posting_a_user.md]
 
 <<[iOS/posting_a_user_afn.md]
+
+<<[iOS/making_the_post_user_request.md]
 
 <<[iOS/event_object.md]
 
