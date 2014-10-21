@@ -49,20 +49,20 @@
     [[HUMRailsClient sharedClient] changeEvent:self.event
         withCompletionBlock:^(NSString *eventID, NSError *error) {
 
-                                  if (error || ![eventID isEqualToString:self.event.eventID]) {
-                                      NSLog(@"Event edit error: %@", error);
-                                      [SVProgressHUD showErrorWithStatus:
-                                       NSLocalizedString(@"Event edit error", nil)];
-                                      return;
-                                  }
+        if (error || ![eventID isEqualToString:self.event.eventID]) {
+            NSLog(@"Event edit error: %@", error);
+            [SVProgressHUD showErrorWithStatus:
+            NSLocalizedString(@"Event edit error", nil)];
+            return;
+        }
 
-                                  [SVProgressHUD dismiss];
-                                  HUMConfirmationViewController *confirmationViewController =
-                                  [[HUMConfirmationViewController alloc] initWithEvent:self.event];
-                                  [self.navigationController pushViewController:confirmationViewController
-                                                                       animated:YES];
-                                  
-                              }];
+        [SVProgressHUD dismiss];
+        HUMConfirmationViewController *confirmationViewController =
+        [[HUMConfirmationViewController alloc] initWithEvent:self.event];
+        [self.navigationController pushViewController:confirmationViewController
+                                             animated:YES];
+
+    }];
 }
 
 @end

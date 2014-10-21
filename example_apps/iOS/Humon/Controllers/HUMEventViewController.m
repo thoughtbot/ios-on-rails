@@ -240,6 +240,7 @@ static NSInteger HUMEventFooterHeight = 88;
 {
     HUMTextFieldCell *cell = [self.tableView
         dequeueReusableCellWithIdentifier:kTextFieldCellID];
+
     cell.textField.text = self.event.name;
     cell.textField.placeholder = NSLocalizedString(@"Required", nil);
     self.nameField = cell.textField;
@@ -250,6 +251,7 @@ static NSInteger HUMEventFooterHeight = 88;
 {
     HUMTextFieldCell *cell = [self.tableView
         dequeueReusableCellWithIdentifier:kTextFieldCellID];
+
     cell.textField.text = self.event.address;
     cell.textField.placeholder = NSLocalizedString(@"Optional", nil);
     self.addressField = cell.textField;

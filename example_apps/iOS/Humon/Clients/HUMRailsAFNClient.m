@@ -67,8 +67,7 @@ static NSString *const HUMAFNAppSecret =
     [self POST:@"events"
     parameters:[event JSONDictionary]
        success:^(NSURLSessionDataTask *task, id responseObject) {
-           
-        NSLog(@"%@", responseObject);
+
         NSString *eventID = [NSString stringWithFormat:@"%@",
                              responseObject[@"id"]];
         block(eventID, nil);
@@ -89,7 +88,6 @@ withCompletionBlock:(HUMRailsAFNClientEventIDCompletionBlock)block
      parameters:[event JSONDictionary]
         success:^(NSURLSessionDataTask *task, id responseObject) {
 
-            NSLog(@"%@", responseObject);
             NSString *eventID = [NSString stringWithFormat:@"%@",
                                  responseObject[@"id"]];
             block(eventID, nil);

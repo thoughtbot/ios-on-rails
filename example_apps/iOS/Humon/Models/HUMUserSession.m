@@ -8,7 +8,6 @@
 
 #import "HUMUserSession.h"
 #import <SSKeychain/SSKeychain.h>
-#import "HUMUser.h"
 #import "NSObject+HUMNullCheck.h"
 
 static NSString *const HUMService = @"Humon";

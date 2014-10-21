@@ -12,4 +12,6 @@ static NSString *kTextFieldCellID = @"kTextFieldCellID";
 
 @property (strong, nonatomic) UITextField *textField;
 
+- (void)setDate:(NSDate *)date;
+
 @end

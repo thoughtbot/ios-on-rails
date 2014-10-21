@@ -10,9 +10,11 @@
 
 @implementation HUMTimeCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (id)initWithStyle:(UITableViewCellStyle)style
+    reuseIdentifier:(NSString *)reuseIdentifier
 {
-    self = [super initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseIdentifier];
+    self = [super initWithStyle:UITableViewCellStyleValue1
+                reuseIdentifier:reuseIdentifier];
     if (!self) {
         return nil;
     }
@@ -31,7 +33,10 @@
 
     _date = date;
     
-    self.textField.text = [NSDateFormatter localizedStringFromDate:date dateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterShortStyle];
+    self.textField.text = [NSDateFormatter
+                           localizedStringFromDate:date
+                           dateStyle:NSDateFormatterShortStyle
+                           timeStyle:NSDateFormatterShortStyle];
 }
 
 @end

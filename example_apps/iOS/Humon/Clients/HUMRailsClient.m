@@ -95,7 +95,7 @@ static NSString *const HUMAppSecret =
                 @{
                     @"Accept" : @"application/json",
                     @"Content-Type" : @"application/json",
-                    @"tb-device-token " : responseDictionary[@"device_token"]
+                    @"tb-device-token" : responseDictionary[@"device_token"]
                 }];
             
             [self.session finishTasksAndInvalidate];

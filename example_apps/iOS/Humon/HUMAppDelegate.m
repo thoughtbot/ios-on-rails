@@ -20,8 +20,11 @@
     self.window = [[UIWindow alloc] initWithFrame:
                    [[UIScreen mainScreen] bounds]];
 
-    HUMMapViewController *mapViewController = [[HUMMapViewController alloc] init];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:mapViewController];
+    HUMMapViewController *mapViewController =
+        [[HUMMapViewController alloc] init];
+    UINavigationController *navigationController =
+        [[UINavigationController alloc]
+         initWithRootViewController:mapViewController];
 
     self.window.rootViewController = navigationController;
     [self.window makeKeyAndVisible];

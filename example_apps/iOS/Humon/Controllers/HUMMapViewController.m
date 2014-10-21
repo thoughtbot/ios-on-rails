@@ -21,7 +21,6 @@
 @interface HUMMapViewController () <MKMapViewDelegate>
 
 @property (strong, nonatomic) MKMapView *mapView;
-@property (strong, nonatomic) UIButton *addButton;
 @property (strong, nonatomic) NSURLSessionTask *currentEventGetTask;
 
 @property (assign, nonatomic) BOOL hasUpdatedUserLocation;
@@ -35,10 +34,11 @@
     [super viewDidLoad];
 
     self.title = NSLocalizedString(@"Humon", nil);
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
-                       initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                            target:self
-                                            action:@selector(addButtonPressed)];
+    UIBarButtonItem *button = [[UIBarButtonItem alloc]
+        initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+        target:self
+        action:@selector(addButtonPressed)];
+    self.navigationItem.leftBarButtonItem = button;
 
     [self createMapView];
 }
@@ -58,7 +58,6 @@
             createCurrentUserWithCompletionBlock:^(NSError *error) {
 
             if (error) {
-                NSLog(@"App authentication error: %@", error);
                 [SVProgressHUD showErrorWithStatus:
                     NSLocalizedString(@"App authentication error", nil)];
             } else {
