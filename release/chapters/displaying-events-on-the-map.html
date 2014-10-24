@@ -7,7 +7,7 @@
   <meta name="author" content="thoughtbot" />
   <meta name="author" content="Jessie Young" />
   <meta name="author" content="Diana Zmuda" />
-  <title>iOS on Rails (Beta): Getting Events from the API</title>
+  <title>iOS on Rails (Beta): Displaying Events on the Map</title>
   <style type="text/css"><![CDATA[code{white-space: pre;}]]></style>
   <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -23,136 +23,41 @@
     })();
   ]]></script>
 </head>
-<body><section id="getting-events-from-the-api" class="level1">
-<h1>Getting Events from the API</h1>
-<p>When the user runs the app, we want to display events that are near their current location. So, let's create a GET task that will return event objects that we can place on the <code>mapView</code>.</p>
-<section id="making-the-event-object-a-map-view-annotation" class="level3">
-<h3>Making the Event Object a Map View Annotation</h3>
-<p>Since we now want to place event objects as pins on a MKMapView, we need to make our HUMEvent class conform to the <code>&lt;MKAnnotation&gt;</code> protocol. This protocol has three properties (coordinate, title, subtitle) that correspond to where the pin is placed and the text in the pin's callout view.</p>
-<p>Change the HUMEvent <code>@interface</code> to declare that the class conforms to this protocol like so:</p>
-<pre><code>// HUMEvent.h
-
-@interface HUMEvent : NSObject &lt;MKAnnotation&gt;</code></pre>
-<p>Since we have already declared a <code>coordinate</code> property, we just need to add the <code>title</code> and <code>subtitle</code>.</p>
-<pre><code>// HUMEvent.h
-
-// Properties used for placing the event on a map
-@property (copy, nonatomic) NSString *title;
-@property (copy, nonatomic) NSString *subtitle;
-@property (assign, nonatomic) CLLocationCoordinate2D coordinate;</code></pre>
-<p>We want the title and subtitle in an event's callout view to display the event name and address, so overwrite the getter methods for title and subtitle:</p>
-<pre><code>// HUMEvent.m
-
-- (NSString *)title
-{
-    return self.name;
-}
-
-- (NSString *)subtitle
-{
-    return self.address;
-}</code></pre>
-<p>Now, our event objects can be placed directly on our <code>mapView</code>.</p>
-</section>
-<section id="making-the-get-event-task" class="level3">
-<h3>Making the Get Event Task</h3>
-<p>To make the event GET request, typedef a completion block that will return an array of events once we receive event JSON from the API.</p>
-<pre><code>//HUMRailsAFNClient.h
-
-typedef void(^HUMRailsAFNClientEventsCompletionBlock)(NSArray *events);</code></pre>
-<p>Then declare a method for fetching events whose parameters are a map region and a completion block of this new type. The map region will be the visible map region in our HUMMapViewController, since we only want to load events within the region we're viewing. Unlike our other API client methods, we'll return an <code>NSURLSessionDataTask</code> from this method so we can cancel the task.</p>
-<pre><code>//HUMRailsAFNClient.h
-
-- (NSURLSessionDataTask *)fetchEventsInRegion:(MKCoordinateRegion)region
-        withCompletionBlock:(HUMRailsAFNClientEventsCompletionBlock)block;</code></pre>
-<p>Now we can implement this method:</p>
-<pre><code>// HUMRailsAFNClient.m
-
-- (NSURLSessionDataTask *)fetchEventsInRegion:(MKCoordinateRegion)region
-        withCompletionBlock:(HUMRailsAFNClientEventsCompletionBlock)block
-{
-    NSDictionary *parameters = @{
-                               @"lat" : @(region.center.latitude),
-                               @"lon" : @(region.center.longitude),
-                               @"radius" : @(region.span.latitudeDelta/2*111)
-                               };
-    
-    return [self GET:@"events/nearest"
-          parameters:parameters
-             success:^(NSURLSessionDataTask *task, id responseObject) {
-          
-            NSArray *events;
-            if ([responseObject isKindOfClass:[NSArray class]])
-                events = [HUMEvent eventsWithJSON:responseObject];
-            block(events);
-                 
-          } failure:^(NSURLSessionDataTask *task, NSError *error) {
-              
-            block(nil);
-        
-    }];
-}</code></pre>
-<p>The <code>parameters</code> for our GET request contain <code>lat</code>, <code>lon</code>, and <code>radius</code>. The rails app will use these values to return a list of events that are less than the <code>radius</code> (in kilometers) away from the map region's centerpoint.</p>
-<p>We want to inscribe our square <code>mapView</code> span inside of our circular API search area so that we're receiving more events than need to be displayed, rather than too few. We use half the width of the <code>mapView</code> (the <code>latitudeDelta</code> property) as our radius since the lateral span is the larger value in portrait. Multiplying by 111 is simply the conversion from latitudinal degrees to kilometers.</p>
-<p>Since our rails API returns from a successful GET request with a "No events in area" dictionary or an array of event JSON, our success block has to handle both cases. If we receive an array, we execute the completion block with an array of events, otherwise <code>events</code> will be <code>nil</code>.</p>
-<p>In our failure block, we simply execute our completion block with a <code>nil</code> argument.</p>
-</section>
+<body><section id="displaying-events-on-the-map" class="level1">
+<h1>Displaying Events on the Map</h1>
 <section id="calling-the-get-event-method" class="level3">
 <h3>Calling the Get Event Method</h3>
-<p>We'll call our new <code>fetchEventsInRegion:withCompletionBlock:</code> method from the HUMMapViewController every time the map moves. This way, we'll make an API call for and display events in the map area that the user is viewing. However, if the user moves the map to a new area before the API call completes, we want to cancel the previous task since it's for a map area that the user is no longer viewing. So, we'll make a <code>currentEventGetTask</code> property which will represent the current and only GET /events task that we are running.</p>
-<pre><code>// HUMMapViewController.m
-
-@property (strong, nonatomic) NSURLSessionDataTask *currentEventGetTask;</code></pre>
-<p>Now we can define a method for making the GET API call and updating the map.</p>
-<pre><code>// HUMMapViewController.m
-
-- (void)reloadEventsOnMap
-{
-    if (![HUMUserSession userID])
-        return;
-    
-    [self.currentEventGetTask cancel];
-    self.currentEventGetTask = [[HUMRailsAFNClient sharedClient]
-                                fetchEventsInRegion:self.mapView.region
-                                withCompletionBlock:^(NSArray *events) {
-                                    
-        self.currentEventGetTask = nil;
-        [self updateMapViewAnnotationsWithAnnotations:events];
-        
-    }];
-}</code></pre>
-<p>We can only fire off API calls if we've already created a user, since we need to sign our GET requests with a user's <code>[HUMUserSession userID]</code>.</p>
-<p>Before creating a new task with <code>fetchEventsInRegion:withCompletionBlock:</code>, we need to cancel the previous task. That way we'll limit this view controller to one in-process task for events in the current area. Any unfinished tasks for areas that are not being displayed will be cancelled.</p>
-<p>Once a GET /events task is finished, remove it from the self.currentEventGetTask property since it's not current and doesn't need to be cancelled if we move the map again.</p>
-<p>Finally, we can call <code>updateMapViewAnnotationsWithAnnotations:</code> (which we'll define later) to update the <code>mapView</code> with our new events.</p>
-<p>Let's call this <code>reloadEventsOnMap</code> method on the first appearance of the map view controller:</p>
+<p>When the user runs the app, we want to display events that are near their current location. So, we want to call our GET events method on <code>viewDidAppear</code> of the HUMMapViewController. We'll encapsulate this request inside a method called <code>reloadEventsOnMap</code>, which we will define in the next section.</p>
+<p>If we aren't logged in, we still want to call the <code>createCurrentUserWithCompletionBlock:</code> method. Once that request goes through, we can call <code>reloadEventsOnMap</code>.</p>
+<p>If we are logged in we can go ahead and just call <code>[self reloadEventsOnMap]</code>.</p>
 <pre><code>// HUMMapViewController.m
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
 
-    if (![HUMUser currentUserID]) {
+    if (![HUMUserSession userIsLoggedIn]) {
         
-        [SVProgressHUD show];
-        
-        [[HUMRailsAFNClient sharedClient]
+        [SVProgressHUD showWithStatus:
+            NSLocalizedString(@"Loading Events", nil)];
+
+        [[HUMRailsClient sharedClient]
             createCurrentUserWithCompletionBlock:^(NSError *error) {
-            
-            if (error)
-                [SVProgressHUD showErrorWithStatus:@"App authentication error"];
-            else {
+
+            if (error) {
+                [SVProgressHUD showErrorWithStatus:
+                    NSLocalizedString(@"App authentication error", nil)];
+            } else {
                 [SVProgressHUD dismiss];
                 [self reloadEventsOnMap];
             }
-            
+
         }];
-    }
-    
-    else
+        
+    } else {
         [self reloadEventsOnMap];
+    }
 }</code></pre>
-<p>As we were doing before before, we'll make a check to see if the user has already POSTed a user to the database. If they haven't, we'll call the <code>createCurrentUserWithCompletionBlock</code> method to create a user and call <code>reloadEventsOnMap</code> if user creation was successful. If the user already exists, we can simply call <code>reloadEventsOnMap</code> to make an /events GET request.</p>
 <p>We also want to make a new GET request when the user changes the map's region. The delegate method <code>mapView:regionDidChangeAnimated:</code> will be called whenever the user pans or zooms the map, so let's call the <code>reloadEventsOnMap</code> method there as well.</p>
 <pre><code>// HUMMapViewController.m
 
@@ -161,11 +66,42 @@ typedef void(^HUMRailsAFNClientEventsCompletionBlock)(NSArray *events);</code></
     [self reloadEventsOnMap];
 }</code></pre>
 </section>
+<section id="cancelling-get-event-tasks" class="level3">
+<h3>Cancelling Get Event Tasks</h3>
+<p>We call our new <code>reloadEventsOnMap</code> method from the HUMMapViewController every time the map moves. This way, we'll always display events in the map area that the user is viewing. However, if the user moves the map to a new area before the API call completes, we want to cancel the previous task since it's for a map area that the user is no longer viewing. So, we'll make a <code>currentEventGetTask</code> property which will represent the current and only GET events task that we are running.</p>
+<pre><code>// HUMMapViewController.m
+
+@property (strong, nonatomic) NSURLSessionDataTask *currentEventGetTask;</code></pre>
+<p>Now we can define the <code>reloadEventsOnMap</code> method for making the GET API call and updating the map.</p>
+<pre><code>// HUMMapViewController.m
+
+- (void)reloadEventsOnMap
+{
+    if (![HUMUserSession userIsLoggedIn]) {
+        return;
+    }
+    
+    [self.currentEventGetTask cancel];
+    self.currentEventGetTask = [[HUMRailsClient sharedClient]
+                                fetchEventsInRegion:self.mapView.region
+                                withCompletionBlock:^(NSArray *events, NSError *error) {
+                                    
+        if (events) {
+            self.currentEventGetTask = nil;
+            [self updateMapViewAnnotationsWithAnnotations:events];
+        }
+        
+    }];
+}</code></pre>
+<p>Before creating a new task with <code>fetchEventsInRegion:withCompletionBlock:</code>, we need to cancel the previous task. That way we'll limit this view controller to one in-process task for events in the current area. Any unfinished tasks for areas that are not being displayed will be cancelled.</p>
+<p>Once a task is finished, remove it from the self.currentEventGetTask property since it's not current and doesn't need to be cancelled if we move the map again.</p>
+<p>Finally, we can call <code>updateMapViewAnnotationsWithAnnotations:</code> to update the <code>mapView</code> with our new events.</p>
+</section>
 <section id="updating-the-map-with-new-events" class="level3">
 <h3>Updating the Map with New Events</h3>
 <p>Now we'll define the <code>updateMapViewAnnotationsWithAnnotations:</code> method that we called in the <code>reloadEventsOnMap</code> method.</p>
 <p>Each time we get a new array of annotations from the API, we want to remove the old annotations from our <code>mapView</code> and add the new ones. However, if an old annotations is the same as a new one, there's no sense in removing it and then placing it back on the map. Removing and adding only the annotations that are necessary reduces the amount of redrawing that's done every time the map pans, leading to a smoother scrolling experience.</p>
-<p>This method (from a recent <a href="http://robots.thoughtbot.com/how-to-handle-large-amounts-of-data-on-maps/">thoughtbot article</a> on displaying annotations on MKMapViews) handles removing, adding, and keeping annotations as necessary.</p>
+<p>This method (from a <a href="http://robots.thoughtbot.com/how-to-handle-large-amounts-of-data-on-maps/">thoughtbot blog post</a> on displaying annotations on MKMapViews) handles removing, adding, and keeping annotations as necessary.</p>
 <pre><code>// HUMMapViewController.m
 
 - (void)updateMapViewAnnotationsWithAnnotations:(NSArray *)annotations
@@ -185,7 +121,7 @@ typedef void(^HUMRailsAFNClientEventsCompletionBlock)(NSArray *events);</code></
     [self.mapView addAnnotations:[toAdd allObjects]];
     [self.mapView removeAnnotations:[toRemove allObjects]];
 }</code></pre>
-<p>Taking advantage of the <code>intersectSet:</code> and <code>minusSet:</code> methods lets us create a set of annotations <code>toAdd</code> and a set <code>toRemove</code>. For a deeper explanation of this method, please read the full article.</p>
+<p>Taking advantage of the <code>intersectSet:</code> and <code>minusSet:</code> methods lets us create a set of annotations <code>toAdd</code> and a set <code>toRemove</code>. For a deeper explanation of this method, go ahead and read the full article.</p>
 </section>
 <section id="checking-event-equality" class="level3">
 <h3>Checking Event Equality</h3>
@@ -205,7 +141,7 @@ typedef void(^HUMRailsAFNClientEventsCompletionBlock)(NSArray *events);</code></
     BOOL objectsHaveSameID =
         [self.eventID isEqualToNumber:event.eventID];
     BOOL objectsHaveSameUser =
-        [self.user.userID isEqualToString:event.user.userID];
+        [self.userID isEqualToString:event.userID];
     
     return objectsHaveSameID &amp;&amp; objectsHaveSameUser;
 }</code></pre>
@@ -222,7 +158,7 @@ typedef void(^HUMRailsAFNClientEventsCompletionBlock)(NSArray *events);</code></
     NSString *hashString = [NSString stringWithFormat:
                             @"%@%@",
                             self.eventID,
-                            self.user.userID];
+                            self.userID];
     return [hashString hash];
 }</code></pre>
 <p>If our event doesn't have an <code>eventID</code>, we can just return the normal hash returned by <code>[super hash]</code>. If it does, our hash will be based on the two properties that we are basing equality on.</p>

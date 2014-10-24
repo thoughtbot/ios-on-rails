@@ -62,7 +62,9 @@
 
 Humon::Application.routes.draw do
   scope module: :api, defaults: { format: 'json' } do
-    namespace :v1 do ## resources will be here
+    namespace :v1 do
+     ## resources will be here
+    end
   end
 end</code></pre>
 <p>The API is now scoped via the URL. For example, with our setup above, the endpoint for a single event at version 1 of the API will live at <code>#{Rails.root}/v1/event/:event_id</code>.</p>
@@ -70,13 +72,21 @@ end</code></pre>
 <section id="api-documentation" class="level3">
 <h3>API Documentation</h3>
 <p>In the early days of creating your JSON API, you will likely be changing the data returned as well as the data structure on almost a daily basis. While communication is both key and challenging on all software development teams, it can be especially challenging when working across teams that speak different programming languages. While Rails developers and iOS developers alike speak &#x201C;JSON&#x201D;, we found that asking iOS developers to stay up to date with API changes using source code on GitHub was difficult.</p>
-<p>A solution we found for keeping all developers in sync was using GitHub&#x2019;s wiki feature as a source of API documentation. While updating the wiki after each API change required a small amount of work for our Rails developers, having an place where iOS developers could find up-to-date API documentation was an invaluable resource. You can see how we structure our wiki <a href="https://github.com/thoughtbot/ios-on-rails/wiki/API-Endpoints">here</a>.</p>
+<p>A solution we found for keeping all developers in sync was using GitHub&#x2019;s wiki feature as a source of API documentation. While updating the wiki after each API change required a small amount of work for our Rails developers, having an place where iOS developers could find up-to-date API documentation was an invaluable resource. You can see how we structure our wiki <a href="https://github.com/thoughtbot/ios-on-rails/wiki">here</a>.</p>
 <p>If you are interested in exploring other documentation options, here are some suggestions:</p>
 <ul>
 <li><a href="https://github.com/square/fdoc">fdoc</a></li>
 <li><a href="https://github.com/Pajk/apipie-rails">apipie-rails</a></li>
 <li><a href="http://yardoc.org/">YARD</a></li>
 </ul>
+</section>
+<section id="api-security" class="level3">
+<h3>API Security</h3>
+<p>APIs built for commercial use usually have some concept of a client id and/or client secret. These are unguessable strings that act as a username and password combination required for all API requests. Requiring a client id and secret ensures that only known users can access the API and allows the API to turn off access to a particular person or application if the usage violates the API terms of service. <a href="https://stormpath.com/blog/top-six-reasons-use-api-keys-and-how/">This blog post on API security</a> explains the benefits of API keys.</p>
+<p>Humon is not an API built for commercial purposes, so we don't need to worry about creating a complicated permissions scheme that involves many API tokens. We do, however, want to make sure that not just anyone can query our API. Having zero security would mean that anyone could create a <code>curl</code> request to an endpoint and hit our database.</p>
+<p>As a security measure, we require a header of <code>tb-app-secret</code> for the POST users request. We ensure that only requests that send a <code>tb-app-secret</code> header with a value that matches the value set by the Rails app can create new users via the Humon API. We store the app secret in an environment variable so that it is not anywhere in version control.</p>
+<p>We use <a href="https://github.com/bkeepers/dotenv"><code>dotenv</code></a> so that our API can read environment variables from a <code>.env</code> file while in development mode. We also add <code>.env</code> to <code>.gitignore</code> so it is not added to our git repository. If the app secret sent by the client on POST users does not match the app secret in the API, a <code>404 Not Found</code> is returned.</p>
+<p>To see how we implemented an app secret for POST users, <a href="https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/controllers/api/v1/users_controller.rb">see the <code>before_action</code> in our <code>UsersController</code></a>.</p>
 </section>
 </section></body>
 </html>

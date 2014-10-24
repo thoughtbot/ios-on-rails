@@ -25,76 +25,75 @@
 </head>
 <body><section id="posting-an-event-with-nsurlsession" class="level1">
 <h1>Posting an Event With NSURLSession</h1>
-<p>We have already defined a <code>sharedClient</code> of our <code>HUMRailsClient</code> to use for making POST /users requests. So, we simply need to define a new method for making POST /events requests.</p>
+<p>Our <code>HUMRailsClient</code> is already all set up to use the appropriate headers that we need for POST to events. Namely, the token we receive back from POST to users. So, we simply need to define a new method for making a POST to events request.</p>
 <section id="declaring-a-task-for-making-requests-2" class="level3">
 <h3>Declaring a Task for Making Requests</h3>
-<p>Once we complete a request to POST an event, we want to return the event that we just posted. The /events POST request will return an event ID from the rails API, so we'll set this ID on the event object before returning it.</p>
+<p>The completion block we'll use for our create event method should return an event ID and an error. If our request is successful, the API will return the event ID for the event it created. If our request fails, we'll return the error instead.</p>
 <p>Typedef this new type of event completion block:</p>
 <pre><code>// HUMRailsClient.h
 
-typedef void(^HUMRailsClientEventCompletionBlock)(HUMEvent *event);</code></pre>
+typedef void(^HUMRailsClientEventIDCompletionBlock)(NSString *eventID, NSError *error);</code></pre>
 <p>and declare the event creation method:</p>
 <pre><code>// HUMRailsClient.h
 
 - (void)createEvent:(HUMEvent *)event
-        withCompletionBlock:(HUMRailsClientEventCompletionBlock)block;</code></pre>
+        withCompletionBlock:(HUMRailsClientEventIDCompletionBlock)block;</code></pre>
 </section>
 <section id="creating-a-task-for-making-requests-2" class="level3">
 <h3>Creating a Task for Making Requests</h3>
-<p>This POST /events method is slightly different from the POST /users method we created before.</p>
-<ol type="1">
-<li><p>We need to serialize a JSON dictionary of event information into data so we can <code>setHTTPBody:</code> on the request.</p></li>
-<li><p>We don't need to change the headers at all. When we call <code>createEvent:withCompletionBlock:</code>, we have already set the headers to include the current user's ID with <code>createCurrentUserWithCompletionBlock:</code>.</p></li>
-</ol>
 <p>Define the event creation method as follows:</p>
 <pre><code>// HUMRailsClient.m    
 
-- (void)createEvent:(HUMEvent *)event 
-        withCompletionBlock:(HUMRailsClientEventCompletionBlock)block
+- (void)createEvent:(HUMEvent *)event
+        withCompletionBlock:(HUMRailsClientEventIDCompletionBlock)block
 {
-    // Serialize the event's JSON dictionary into data
     NSData *JSONdata = [NSJSONSerialization
                         dataWithJSONObject:[event JSONDictionary]
-                        options:0
+                        options:kNilOptions
                         error:nil];
     
-    // Create the event POST request
-    NSString *urlString = [NSString stringWithFormat:@"%@/events", ROOT_URL];
+    NSString *urlString = [NSString stringWithFormat:@"%@events", ROOT_URL];
     NSURL *url = [NSURL URLWithString:urlString];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url];
     [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:JSONdata];
     
-    // Create and start a task
-    NSURLSessionTask *task = [self.session dataTaskWithRequest:request
-                                             completionHandler:^(NSData *data,
-                                                        NSURLResponse *response,
-                                                            NSError *error) {
-        // Log the error on completion
-        NSLog(@"Post event error: %@", error);
-            
+    NSURLSessionUploadTask *task = [self.session uploadTaskWithRequest:request
+    fromData:JSONdata
+    completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+    
+    // See the section 'Handle the Response'
+        
     }];
-    
     [task resume];
-}  }</code></pre>
+}</code></pre>
+<p>This POST /events method is slightly different from the POST /users method we created before.</p>
+<ol type="1">
+<li><p>We need to serialize a JSON dictionary of required event information into data so we can set that as the POST request data. This is why we created the method <code>[event JSONDictionary]</code> on our event object.</p></li>
+<li><p>We don't need to change the headers at all. When we call <code>createEvent:withCompletionBlock:</code>, we have already set the headers to include the current user's ID with <code>createCurrentUserWithCompletionBlock:</code>.</p></li>
+</ol>
+</section>
+<section id="handle-the-response" class="level3">
+<h3>Handle the Response</h3>
 <p>Now that we've serialized the event's JSON dictionary, created a POST request, and created a task to handle that request, we can fill in the completion block. Replace the error log in <code>task</code>'s completion block with the following:</p>
 <pre><code>// HUMRailsClient.m
 
-HUMEvent *responseEvent = nil;
+NSString *eventID;
                                          
 if (!error) {
-    responseEvent = event;
     NSDictionary *responseDictionary =[NSJSONSerialization
                                        JSONObjectWithData:data
                                        options:kNilOptions
                                        error:nil];
-    responseEvent.eventID = responseDictionary[@"id"];
+    eventID = [NSString stringWithFormat:@"%@",
+                             responseDictionary[@"id"]];
 }
 
 dispatch_async(dispatch_get_main_queue(), ^{
-    block(responseEvent);
+    block(eventID, error);
 });</code></pre>
-<p>If the task completes without an error, we can serialize the data we receive into a dictionary and set the event's ID from that response dictionary. If the the task completes with an error, <code>responseEvent</code> will remain nil. Either way, we want to execute the block on the main queue, since the block will be updating the UI. The completion block will return either an updated event or nil depending on whether or not the POST was successful.</p>
+<p>If the task completes without an error, we can serialize the data we receive into a dictionary and set the event's ID from that response dictionary.</p>
+<p>If the the task completes with an error, <code>eventID</code> will remain nil.</p>
+<p>Either way, we want to execute the completion block on the main queue, since the block will be updating the UI. The completion block will return either an updated event or an error depending on whether or not the POST was successful.</p>
 </section>
 </section></body>
 </html>

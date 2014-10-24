@@ -25,89 +25,44 @@
 </head>
 <body><section id="posting-an-event-with-afnetworking" class="level1">
 <h1>Posting an Event With AFNetworking</h1>
-<p>Now lets POST an event using AFNetworking. You may continue building your own HUMRailsClient if you so desire, but henceforth we will be using AFNetworking for all our networking requests.</p>
+<p>Now let's POST an event using AFNetworking.</p>
 <section id="declaring-a-task-for-making-requests-3" class="level3">
 <h3>Declaring a Task for Making Requests</h3>
-<p>Once we complete a request to POST an event, we want to return the event that we just posted. The /events POST request will return an event ID from the rails API, so we'll set this ID on the event object before returning it.</p>
+<p>The completion block we'll use for our create event method should return an event ID and an error. If our request is successful, the API will return the event ID for the event it created. If our request fails, we'll return the error instead.</p>
 <p>Typedef this new type of event completion block:</p>
 <pre><code>// HUMRailsAFNClient.h
 
-typedef void(^HUMRailsAFNClientEventCompletionBlock)(HUMEvent *event);</code></pre>
+typedef void(^HUMRailsAFNClientEventIDCompletionBlock)(NSString *eventID, NSError *error);</code></pre>
 <p>and declare the event creation method:</p>
 <pre><code>// HUMRailsAFNClient.h
 
 - (void)createEvent:(HUMEvent *)event
-        withCompletionBlock:(HUMRailsAFNClientEventCompletionBlock)block;</code></pre>
+        withCompletionBlock:(HUMRailsAFNClientEventIDCompletionBlock)block;</code></pre>
 </section>
 <section id="creating-a-task-for-making-requests-3" class="level3">
 <h3>Creating a Task for Making Requests</h3>
 <p>With AFNetworking, making a POST request with a dictionary of parameters is quite easy. We call the <code>POST:parameters:success:failure</code> method and provide the <code>@"events"</code> path, the event's JSON dictionary, and a success and failure block.</p>
+<p>Don't forget to <code>#import "HUMEvent.h"</code> since we need to use the method <code>JSONDictionary</code> we previously defined.</p>
 <pre><code>// HUMRailsClient.m
 
 - (void)createEvent:(HUMEvent *)event
-        withCompletionBlock:(HUMRailsAFNClientEventCompletionBlock)block
+    withCompletionBlock:(HUMRailsAFNClientEventIDCompletionBlock)block
 {
     [self POST:@"events"
     parameters:[event JSONDictionary]
        success:^(NSURLSessionDataTask *task, id responseObject) {
            
-        event.eventID = responseObject[@"id"];
-        block(event);
+        NSString *eventID = [NSString stringWithFormat:@"%@",
+                             responseObject[@"id"]];
+        block(eventID, nil);
            
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
-        block(nil);
+        block(nil, error);
         
     }];
 }</code></pre>
-<p>In the case of success, we want to change the ID number on the event object and execute the completion block with the event. If there's a failure, we execute the block with <code>nil</code>. We don't have to worry about forcing the completion block to the main thread since the success and failure blocks are fired off on the main thread.</p>
-</section>
-<section id="making-the-post-request-1" class="level3">
-<h3>Making the POST Request</h3>
-<p>All POSTs to /events will happen inside of the HUMAddEventViewController. Eventually, the user will be able to populate the tableView with event information so that tapping the "Done" cell will POST an event using their input. For now, we will just create an event with fake event data on tapping the "Add" cell.</p>
-<pre><code>// HUMAddEventViewController.m
-
-- (void)tableView:(UITableView *)tableView
-        didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // If the user didn't select the last row, we don't need to do anything
-    if (indexPath.row != 5)
-        return;
-    
-    // Create an event with fake data
-    NSDictionary *fakeEventData = @{
-                                @"name" : @"Dolores Park Picnic",
-                                @"address" : @"566 Dolores St",
-                                @"ended_at" : @"2013-09-17T00:00:00.000Z",
-                                @"started_at" : @"2013-09-16T00:00:00.000Z",
-                                @"lat" : @"37.7583",
-                                @"lon" : @"-122.4275",
-                                @"user" :
-                                @{ @"device_token" : [HUMUser currentUserID] }
-                                };
-    HUMEvent *event = [[HUMEvent alloc] initWithJSON:fakeEventData];
-    
-    // Post the event
-    [SVProgressHUD show];
-    [[HUMRailsAFNClient sharedClient] createEvent:event
-                              withCompletionBlock:^(HUMEvent *event) {
-        [SVProgressHUD dismiss];
-    }];
-}</code></pre>
-<p>Instead of simply dismissing the progress display, we should present a HUMConfirmationViewController once the POST completes successfully.</p>
-<pre><code>// HUMAddEventViewController.m
-
-if (!event) {
-    [SVProgressHUD showErrorWithStatus:@"Event creation error"];
-    return;
-}
-                          
-[SVProgressHUD dismiss];
-HUMConfirmationViewController *confirmationViewController =
-                          [[HUMConfirmationViewController alloc] init];
-[self.navigationController pushViewController:confirmationViewController
-                                     animated:YES];</code></pre>
-<p>Now you can go through the general flow of hitting the "Add Event" button, confirming with the "Done" button, and recieving confirmation by seeing the HUMConfirmationViewController.</p>
+<p>In the case of success, we want to return the <code>eventID</code> that we receive back from the API. If there's a failure, we execute the completion block with the <code>error</code> we receive. We don't have to worry about forcing the completion block to the main thread since the success and failure blocks are fired off on the main thread.</p>
 </section>
 </section></body>
 </html>

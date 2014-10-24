@@ -73,9 +73,10 @@ describe 'POST /v1/events' do
       name: 'Fun Place!!',
       started_at: date,
       owner: {
-        device_token: device_token
+        id: owner.id
       }
-    }.to_json, { 'Content-Type' =&gt; 'application/json' }
+    }.to_json,
+    set_headers(device_token)
 
     event = Event.last
     expect(response_json).to eq({ 'id' =&gt; event.id })
@@ -88,6 +89,21 @@ describe 'POST /v1/events' do
     expect(event.owner).to eq owner
   end
 end</code></pre>
+<p>In this test we are using a method called <code>set_headers</code> and passing the <code>device_token</code> into the method. This is a helper method that we will use in many request specs, so let's define it outside of this spec file:</p>
+<pre><code># spec/support/request_headers.rb
+
+module RequestHeaders
+  def set_headers(device_token)
+    {
+      'tb-device-token' =&gt; device_token,
+      'Content-Type' =&gt; 'application/json'
+    }
+  end
+end
+
+RSpec.configure do |config|
+  config.include RequestHeaders
+end</code></pre>
 <p>Note about the time comparisons above: the reason we are calling <code>to_i</code> on <code>event.started_at</code> and <code>event.ended_at</code> is that Ruby time (the time we are setting when we declare the <code>date</code> variable) is more precise than ActiveRecord time (the time we are getting back from <code>Event.last</code>). If you run the tests without <code>to_i</code>, you will see something like this:</p>
 <pre><code>    expected: Wed, 16 Apr 2014 17:13:47 UTC +00:00
          got: Wed, 16 Apr 2014 17:13:47 UTC +00:00</code></pre>
@@ -95,7 +111,7 @@ end</code></pre>
 <section id="controller-1" class="level4">
 <h4>Controller</h4>
 <p>When we run the test above, our first error should be <code>No route matches [POST] "/v1/events"</code>. This is exactly the error we would expect, since we haven't defined this route in our <code>routes.rb</code> file. Let's fix that:</p>
-<pre><code>#config/routes.rb
+<pre><code># config/routes.rb
 
 Humon::Application.routes.draw do
   scope module: :api, defaults: { format: 'json' } do
@@ -128,10 +144,17 @@ end</code></pre>
 
 class Api::V1::EventsController &lt; ApiController
   def create
-    @event = Event.new(event_params)
+    authorize do |user|
+      @user = user
+      @event = Event.new(event_params)
 
     if @event.save
       render
+    else
+      render json: {
+        message: 'Validation Failed',
+        errors: @event.errors.full_messages
+      }, status: 422
     end
   end
 
@@ -147,18 +170,46 @@ class Api::V1::EventsController &lt; ApiController
       lon: params[:lon],
       name: params[:name],
       started_at: params[:started_at],
-      owner: user
+      owner: @user
     }
   end
-
-  def user
-    User.find_or_create_by(device_token: device_token)
-  end
-
-  def device_token
-    params[:owner].try(:[], :device_token)
-  end
 end</code></pre>
+<p>Now we get a different error:</p>
+<pre><code>Failure/Error: post '/v1/events', {
+  NoMethodError: undefined method `authorize'</code></pre>
+</section>
+<section id="checking-for-the-auth-token-header" class="level4">
+<h4>Checking for the auth token header</h4>
+<p>Oh yes, we are using a method we haven't defined yet! What is this <code>authorize</code> method all about? When we are creating an <code>event</code> with our API, we want to make sure that the event has an owner.</p>
+<p>In Humon, we identify users by their device token, which is being sent in the header. In early versions of this book, we sent the device token in the parameters, just like <code>address</code>, <code>lat</code>, and <code>name</code>.</p>
+<p>Later on, we got feedback that it is more typical to see auth tokens sent in request headers. At first we thought this was because of security concerns, but then we found out that SSL encrypts the entire response, including the URL.</p>
+<p>The best explanation we've found for sending tokens of any kind in the header rather than in the URL is that it accounts for user error. As shared in <a href="http://stackoverflow.com/a/20754104/1019369">this StackOverflow response</a>, putting tokens in the header "Provides extra measure of security by preventing users from inadvertently sharing URLs with their credentials embedded in them".</p>
+<p>Another reason tokens are usually sent as headers is that it is simpler for the client to process auth tokens when they are sent as headers. For this reason, sending auth tokens in the header is common practice for APIs. Since we want to establish and follow design principles for APIs that can be used and re-used for many use cases, it make sense to go with what's popular.</p>
+<p>So, given then we are sending the <code>device_token</code> in the header, and we will be doing that for any action that requires us to know which user is making the request, it makes sense to define a method in <code>ApiController</code> that looks for the device token header and finds the user with that device token. Let's define that method now:</p>
+<pre><code># app/controllers/api_controller.rb
+
+class ApiController &lt; ApplicationController
+  def protect_from_forgery with: :null_session
+
+  def authorize
+    if authorization_token
+      yield User.find_or_initialize_by(device_token: authorization_token)
+    else
+      render nothing: true, status: 401
+    end
+  end
+
+   private
+
+   def authorization_token
+     @authorization_token ||= authorization_header
+   end
+
+   def authorization_header
+     request.headers['tb-device-token']
+   end
+ end</code></pre>
+<p>Note that we are using <code>tb-device-token</code> as our header key so that it does not clash with header keys for any other auth libraries we might implement in the future.</p>
 <p>Our error message has changed yet again, and now it is time for us to move to the final step: creating our view.</p>
 </section>
 <section id="view-1" class="level4">
@@ -188,9 +239,9 @@ describe 'POST /v1/events' do
 ...
 
  it 'returns an error message when invalid' do
-    post '/v1/events',
-      {}.to_json,
-      { 'Content-Type' =&gt; 'application/json' }
+    device_token = '123abcd456xyz'
+
+    post '/v1/events', {}.to_json, set_headers(device_token)
 
     expect(response_json).to eq({
       'message' =&gt; 'Validation Failed',

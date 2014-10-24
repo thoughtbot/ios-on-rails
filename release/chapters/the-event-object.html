@@ -25,12 +25,13 @@
 </head>
 <body><section id="the-event-object" class="level1">
 <h1>The Event Object</h1>
-<p>Users will be interacting with the HUMAddEventViewController to create events in the app.</p>
-<section id="creating-an-event-object" class="level3">
-<h3>Creating an Event Object</h3>
 <p>Create a subclass of NSObject called HUMEvent. This subclass will have a series of properties that define each event object.</p>
 <p>Add the following properties to your HUMEvent.h's <code>@interface</code>:</p>
 <pre><code>// HUMEvent.h
+
+@class HUMUser;
+
+@interface HUMEvent : NSObject
 
 // Properties set on creation of the event object
 @property (copy, nonatomic) NSString *name;
@@ -39,16 +40,15 @@
 @property (strong, nonatomic) NSDate *endDate;
 
 // Properties set by the rails API
-@property (strong, nonatomic) HUMUser *user;
+@property (copy, nonatomic) NSString *userID;
 @property (strong, nonatomic) NSNumber *eventID;
-@property (assign, nonatomic) NSInteger attendees;
 
 // Properties used for placing the event on a map
 @property (assign, nonatomic) CLLocationCoordinate2D coordinate;</code></pre>
-<p>We use the <code>copy</code> property attribute for the properties that are of type NSString so that if we set the property <code>name</code> to a NSMutableString and then mutate the string, the property <code>name</code> will not change with the mutation.</p>
-<p>For properties like <code>user</code>, we want to be able to mutate the object after setting it as a property, so we use the <code>strong</code> property attribute.</p>
-<p>For properties that are primitives like <code>attendees</code>, we use <code>assign</code>.</p>
-</section>
+<p>We use the <code>copy</code> property attribute for the properties that are of type NSString so that if we set the property <code>userID</code> to a NSMutableString and then mutate the string, the property <code>userID</code> will not change with the mutation.</p>
+<p>For classes that don't have mutable subclasses, like NSDate for <code>startDate</code>, we use the <code>strong</code> property attribute.</p>
+<p>For properties that are primitives like <code>coordinate</code>, we use <code>assign</code>.</p>
+<p>We want to place our event objects on our HUMMapViewController's map, so we <code>@import MapKit;</code> at the top of the file. Now we can declare that our <code>HUMEvent</code> object conforms to the <code>&lt;MKAnnotation&gt;</code> protocol. This protocol has a required property <code>coordinate</code>, which we have declared. Conforming to this property is covered further by the 'Getting Events from the API' section.</p>
 <section id="methods-for-initializing-an-event" class="level3">
 <h3>Methods for Initializing an Event</h3>
 <p>Declare three methods for intializing HUMEvent objects:</p>
@@ -57,7 +57,7 @@
 + (NSArray *)eventsWithJSON:(NSArray *)JSON;
 - (instancetype)initWithJSON:(NSDictionary *)JSON;
 - (NSDictionary *)JSONDictionary;</code></pre>
-<p><code>initWithJSON:</code> is a custom intialization method for creating a HUMEvent object with a JSON dictionary from the API. It initializes a HUMEvent object and sets its properties to corresponding values from the <code>eventJSON</code> dictionary. We haven't defined the <code>RFC3339DateFormatter</code> yet, but we will do so in the next section.</p>
+<p><code>initWithJSON:</code> is a custom intialization method for creating a HUMEvent object with a JSON dictionary from the API. It initializes a HUMEvent object and sets its properties to corresponding values from the <code>JSON</code> dictionary. We haven't defined the <code>RFC3339DateFormatter</code> yet, but we will do so in the next section.</p>
 <pre><code>// HUMEvent.m
 
 - (instancetype)initWithJSON:(NSDictionary *)JSON
@@ -79,13 +79,12 @@
     double lon = [JSON[@"lon"] doubleValue];
     _coordinate = CLLocationCoordinate2DMake(lat, lon);
     
-    _user = [[HUMUser alloc] initWithJSON:JSON[@"user"]];
-    _eventID = JSON[@"id"];
-    _attendees = [JSON[@"attendees"] integerValue];
+    _userID = [NSString stringWithFormat:@"%@", JSON[@"owner"][@"id"]];
+    _eventID = [NSString stringWithFormat:@"%@", JSON[@"id"]];
 
     return self;
 }</code></pre>
-<p><code>eventsWithJSON:</code> is a class method that takes in an array of JSON dictionaries and returns an array of HUMEvent objects.</p>
+<p><code>eventsWithJSON:</code> is a class method that takes in an array of JSON dictionaries and returns an array of HUMEvent objects. It uses the <code>initWithJSON:</code> method we just defined.</p>
 <pre><code>// HUMEvent.m
 
 + (NSArray *)eventsWithJSON:(NSArray *)JSON
@@ -152,7 +151,7 @@
 }</code></pre>
 <p>We don't want to instantiate a new RFC 3339 date formatter every time we need to translate a date from the API, so we use a singleton.</p>
 <p>First, we declare a static <code>dateFormatter</code> and instantiate it in a <code>dispatch_once</code> block. Once we set the locale, date format, and time zone to match what we're receiving from the API, we can use the date formatter to translate RFC 3339 date strings to NSDates and vice versa.</p>
-<p>For an in-depth explanation of date formatters and using NSLocale, read into https://developer.apple.com/library/ios/qa/qa1480/_index.html</p>
+<p>For an in-depth explanation of date formatters and using NSLocale, read <a href="https://developer.apple.com/library/ios/qa/qa1480/_index.html">Apple's intro.</a></p>
 <p>Be sure to add <code>#import NSDateFormatter+HUMDefaultDateFormatter.h</code> at the top of HUMEvent.m since we used the date formatter in that file, and need to know about this <code>RFC3339DateFormatter</code> method.</p>
 </section>
 </section></body>

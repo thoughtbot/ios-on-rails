@@ -7,7 +7,7 @@
   <meta name="author" content="thoughtbot" />
   <meta name="author" content="Jessie Young" />
   <meta name="author" content="Diana Zmuda" />
-  <title>iOS on Rails (Beta): The User Object</title>
+  <title>iOS on Rails (Beta): Getting Events With AFNetworking</title>
   <style type="text/css"><![CDATA[code{white-space: pre;}]]></style>
   <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -23,93 +23,57 @@
     })();
   ]]></script>
 </head>
-<body><section id="the-user-object" class="level1">
-<h1>The User Object</h1>
-<p>Our app doesn't require username/password login, instead we will create a user object on the first run of the app and then consistantly sign our requests as this user. This behavior is useful for apps that don't require login, or have some sort of guest mode.</p>
-<p>The user entity on the database has two relevant properties: <code>device_token</code> and <code>id</code>. We will pass along the device token with our user requests, and we can use the ID to compare users.</p>
-<section id="creating-the-user-session-object" class="level3">
-<h3>Creating the User Session Object</h3>
-<p>When we make a POST request to /users, the backend confirms that we sent the correct app secret, creates a new user with the device_token we pass, and returns the account's ID and token.</p>
-<p>Create a subclass of NSObject called HUMUserSession. This object will manage the current user's session, which means it will be responsible for keeping track of one user ID and one device_token that we'll be signing our requests with.</p>
-<p>The interface for our user session manager should contain 5 class methods:</p>
-<pre><code>// HUMUserSession.h
+<body><section id="getting-events-with-afnetworking" class="level1">
+<h1>Getting Events With AFNetworking</h1>
+<section id="declaring-the-get-events-method-1" class="level3">
+<h3>Declaring the Get Events Method</h3>
+<p>To make the event GET request, typedef a completion block that will return an array of events or an error once we receive event JSON from the API.</p>
+<pre><code>//HUMRailsAFNClient.h
 
-@class HUMUser;
+typedef void(^HUMRailsAFNClientEventsCompletionBlock)(NSArray *events, NSError *error);</code></pre>
+<p>Then declare a method for fetching events whose parameters are a map region and a completion block of this new type. The map region will be the visible map region in our HUMMapViewController, since we only want to load events within the region we're viewing. Unlike our other API client methods, we'll return an <code>NSURLSessionDataTask</code> from this method so we can cancel the task.</p>
+<pre><code>//HUMRailsAFNClient.h
 
-@interface HUMUserSession : NSObject
+- (NSURLSessionDataTask *)fetchEventsInRegion:(MKCoordinateRegion)region
+        withCompletionBlock:(HUMRailsAFNClientEventsCompletionBlock)block;
+        </code></pre>
+</section>
+<section id="creating-the-get-events-request-1" class="level3">
+<h3>Creating the Get Events Request</h3>
+<p>Now we can implement this method:</p>
+<pre><code>// HUMRailsAFNClient.m
 
-+ (NSString *)userID;
-+ (NSString *)userToken;
-+ (void)setUserID:(NSNumber *)userID;
-+ (void)setUserToken:(NSString *)userToken;
-+ (BOOL)userIsLoggedIn;
-
-@end</code></pre>
-<p>The first four class methods are for getting and setting the current user's ID and token. These methods will access the keychain to keep track of this information. We want to use the keychain since when we are storing sensitive information, like the user's token.</p>
-<p>Since we're using SSKeychain, we'll want to create a few static strings above our <code>@implementation</code>. Don't forget to <code>#import &lt;SSKeychain/SSKeychain.h&gt;</code> at the top of the file as well.</p>
-<pre><code>// HUMUserSession.m
-
-static NSString *const HUMService = @"Humon";
-static NSString *const HUMUserID = @"currentUserID";
-static NSString *const HUMUserToken = @"currentUserToken";</code></pre>
-<p>Now we can use these strings as keys when querying the keychain for our <code>userID</code> and <code>userToken</code>.</p>
-<pre><code>// HUMUserSession.m
-
-+ (NSString *)userID
+- (NSURLSessionDataTask *)fetchEventsInRegion:(MKCoordinateRegion)region
+        withCompletionBlock:(HUMRailsAFNClientEventsCompletionBlock)block
 {
-    NSString *userID = [SSKeychain passwordForService:HUMService
-                                              account:HUMUserID];
-
-    return userID;
-}
-
-+ (NSString *)userToken
-{
-    NSString *userToken = [SSKeychain passwordForService:HUMService
-                                                 account:HUMUserToken];
-
-    return userToken;
+    // region.span.latitudeDelta/2*111 is how we find the aproximate radius
+    // that the screen is displaying in km.
+    NSDictionary *parameters = @{
+                               @"lat" : @(region.center.latitude),
+                               @"lon" : @(region.center.longitude),
+                               @"radius" : @(region.span.latitudeDelta/2*111)
+                               };
+    
+    return [self GET:@"events/nearests"
+          parameters:parameters
+             success:^(NSURLSessionDataTask *task, id responseObject) {
+          
+            NSArray *events;
+            if ([responseObject isKindOfClass:[NSArray class]]) {
+                events = [HUMEvent eventsWithJSON:responseObject];
+            }
+            block(events, nil);
+                 
+          } failure:^(NSURLSessionDataTask *task, NSError *error) {
+              
+            block(nil, error);
+        
+    }];
 }</code></pre>
-<p>Next we'll want to implement the methods we defined for setting our ID and token.</p>
-<pre><code>// HUMUserSession.m
-
-+ (void)setUserID:(NSNumber *)userID
-{
-    if (!userID) {
-        [SSKeychain deletePasswordForService:HUMService account:HUMUserID];
-        return;
-    }
-
-    NSString *IDstring = [NSString stringWithFormat:@"%@", userID];
-    [SSKeychain setPassword:IDstring
-                 forService:HUMService
-                    account:HUMUserID
-                      error:nil];
-}
-
-+ (void)setUserToken:(NSString *)userToken
-{
-    if (!userToken) {
-        [SSKeychain deletePasswordForService:HUMService account:HUMUserToken];
-        return;
-    }
-
-    [SSKeychain setPassword:userToken
-                 forService:HUMService
-                    account:HUMUserToken
-                      error:nil];
-}</code></pre>
-<p>You'll notice that we created an <code>IDstring</code> with <code>[NSString stringWithFormat:@"%@", userID]</code>. This is because our <code>userID</code> returned from the API is a number, while we need a string <code>IDstring</code> password to store in the keychain.</p>
-<p>Lastly, we need to implement the method that we will use in our client singleton to determine if we currently have a valid user session. It's easiest to think of this as whether or not the user is logged in.</p>
-<pre><code>// HUMUserSession.m
-
-+ (BOOL)userIsLoggedIn
-{
-    BOOL hasUserID = [self userID] ? YES : NO;
-    BOOL hasUserToken = [self userToken] ? YES : NO;
-    return hasUserID &amp;&amp; hasUserToken;
-}</code></pre>
-<p>Now we can use this <code>userIsLoggedIn</code> method to determine if we need to make a POST to users, and to determine what headers we need in our API client.</p>
+<p>The <code>parameters</code> for our GET request contain <code>lat</code>, <code>lon</code>, and <code>radius</code>. The rails app will use these values to return a list of events that are less than the <code>radius</code> (in kilometers) away from the map region's centerpoint.</p>
+<p>We want to inscribe our square <code>mapView</code> span inside of our circular API search area so that we're receiving more events than need to be displayed, rather than too few. We use half the width of the <code>mapView</code> (the <code>latitudeDelta</code> property) as our radius since the lateral span is the larger value in portrait. Multiplying by 111 is simply the conversion from latitudinal degrees to kilometers.</p>
+<p>Since our rails API returns from a successful GET request with a "No events in area" dictionary or an array of event JSON, our success block has to handle both cases. If we receive an array, we execute the completion block with an array of events, otherwise <code>events</code> will be <code>nil</code>.</p>
+<p>In the case of failure, we simply execute our completion block with an error.</p>
 </section>
 </section></body>
 </html>

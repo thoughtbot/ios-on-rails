@@ -51,7 +51,7 @@ describe 'GET /v1/events/:id' do
         'name' =&gt; event.name,
         'started_at' =&gt; event.started_at.as_json,
         'owner' =&gt; {
-          'device_token' =&gt; event.owner.device_token
+          'id' =&gt; event.owner.id
         }
       }
     )
@@ -155,7 +155,7 @@ json.cache! event do
   json.started_at event.started_at
 
   json.owner do
-    json.device_token event.owner.device_token
+    json.id event.owner.id
   end
 end</code></pre>
 <section id="caching-our-view" class="level4">
@@ -187,7 +187,7 @@ Event.create(
   "name":"Best event OF ALL TIME!",
   "started_at":"2013-09-16T00:00:00.000Z",
   "owner":{
-    "device_token":"234324235"
+    "id":"1"
    }
  }</code></pre>
 <p>Alternatively, you can run a <a href="http://curl.haxx.se/docs/manpage.html">curl</a> request (<code>curl http://localhost:3000/v1/events/1</code>) from Terminal and see the same JSON output.</p>

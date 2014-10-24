@@ -25,19 +25,19 @@
 </head>
 <body><section id="posting-a-user-with-nsurlsession" class="level1">
 <h1>Posting a User With NSURLSession</h1>
-<p>Now that we have a singleton <code>HUMRailsClient</code> object and a configured session property on that object, we can create NSURLSessionTasks that will actually make our API request.</p>
+<p>Now that we have a singleton <code>HUMRailsClient</code>, a configured session property on that object, and a <code>HUMUserSession</code> object, we can create NSURLSessionTasks that will actually make our API request.</p>
 <section id="declaring-a-task-for-making-requests" class="level3">
 <h3>Declaring a Task for Making Requests</h3>
 <p>Declare a method in our HUMRailsClient.h that creates a POST request to /users.</p>
 <pre><code>- (void)createCurrentUserWithCompletionBlock:
     (void (^)(NSError *error))block;</code></pre>
-<p>The type of our parameter for this method is a block, which we declare here with <code>(void (^)(NSError *error))</code>. Declaring a block as our parameter type is similar to how we declare other parameter types like <code>(NSString *)</code>, where the word following the type is the name of the parameter. This block has a return type of <code>void</code> and an argument of type <code>NSError</code> so we can check if the POST completed with an error.</p>
+<p>The type of our parameter for this method is a block, which we declare here with <code>(void (^)(NSError *error))</code>. Declaring a block as our parameter type is similar to how we declare other parameter types like <code>(NSString *)</code>, where the word following the type is the name of the parameter. This block has a return type of <code>void</code> and one argument of type <code>NSError</code> so we can check if the POST completed with an error.</p>
 <p>It makes sense to typedef a new name for our completion block so that we can refer to it more easily, especially if we plan on using this block type again. Typedef-ing allows us to define a new name for an existing type, which in this case will be the new name <code>HUMRailsClientErrorCompletionBlock</code> for the block type <code>(void (^)(NSError *error))</code>. Place this typedef above the interface in HUMRailsClient.h:</p>
 <pre><code>typedef void(^HUMRailsClientErrorCompletionBlock)(NSError *error);</code></pre>
 <p>The block that we typedef is the same as the block we previously declared, so now we can declare the method <code>createCurrentUserWithCompletionBlock:</code> as so:</p>
 <pre><code>- (void)createCurrentUserWithCompletionBlock:
     (HUMRailsClientErrorCompletionBlock)block;</code></pre>
-<p>The <a href="https://developer.apple.com/library/ios/documentation/cocoa/Conceptual/Blocks/Articles/bxDeclaringCreating.html//apple_ref/doc/uid/TP40007502-CH4-SW1.html">Apple developer library</a> has an in-depth section on declaring blocks in Objective C, for those interested.</p>
+<p>The <a href="https://developer.apple.com/library/ios/documentation/cocoa/Conceptual/Blocks/Articles/bxDeclaringCreating.html//apple_ref/doc/uid/TP40007502-CH4-SW1.html">Apple developer library</a> has an in-depth section on declaring blocks in Objective C, for those interested. This <a href="http://goshdarnblocksyntax.com">cheat sheet</a> of different block syntaxes may also be of help, as they do vary slightly.</p>
 </section>
 <section id="creating-a-task-for-making-requests" class="level3">
 <h3>Creating a Task for Making Requests</h3>
@@ -48,7 +48,7 @@
     (HUMRailsClientCompletionBlock)block
 {
     // Create a request for the POST to /users
-    NSString *urlString = [NSString stringWithFormat:@"%@/users", ROOT_URL];
+    NSString *urlString = [NSString stringWithFormat:@"%@users", ROOT_URL];
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     [request setHTTPMethod:@"POST"];
@@ -58,14 +58,13 @@
                                             completionHandler:
         ^void (NSData *data, NSURLResponse *response, NSError *error) {
     
-        // Log the error on completion
-        NSLog(@"Request completed with error: %@", error);
+        // See 'Responding to Completion of the Task'
     
     }];
     
     [task resume];
 }</code></pre>
-<p>First, we instantiate a <code>url</code> for our request, which in this case is our ROOT_URL (which we set up with a user-defined macro) with /users appended to it. Then we can instantiate a <code>request</code> using this URL and set the request method to POST.</p>
+<p>First, we instantiate a <code>url</code> for our request, which in this case is our ROOT_URL (which we set up with a user-defined macro) with <code>@"users"</code> appended to it. Then we can instantiate a <code>request</code> using this URL and set the request method to POST.</p>
 <p>Now that we have a <code>request</code>, we can create a task for our <code>self.session</code> that will execute the request. The method <code>dataTaskWithRequest:completionHandler:</code> takes two arguments, the <code>request</code> that we created before, and a block that will be run when the request is complete.</p>
 <p>The block we pass into the method must be of a type defined by <code>dataTaskWithRequest:completionHandler:</code>, so we pass in a block of the appropriate type as an argument with the syntax:</p>
 <pre><code>^void (NSData *data, NSURLResponse *response, NSError *error) { 
@@ -79,35 +78,61 @@
 </section>
 <section id="responding-to-the-completion-of-the-task" class="level3">
 <h3>Responding to the Completion of the Task</h3>
-<p>Once the task has completed, the block we just defined will be invoked with the relevant <code>data</code>, <code>response</code>, and <code>error</code> as arguments. Replace the error log in the completion block with the following:</p>
-<pre><code>    if (!error) {
-        // Set the user session user ID
-        NSDictionary *responseDictionary = [NSJSONSerialization
-                                            JSONObjectWithData:data
-                                            options:kNilOptions
-                                            error:nil];
-        [HUMUserSession setUserID:responseDictionary[@"device_token"]];
-        
-        // Create a new contiguration with the user ID
-        NSURLSessionConfiguration *newConfiguration =
-            self.session.configuration;
-        [newConfiguration setHTTPAdditionalHeaders:
-            @{
-                @"Accept" : @"application/json",
-                @"Content-Type" : @"application/json",
-                @"X-DEVICE-TOKEN" : responseDictionary[@"device_token"]
-            }];
-        self.session = [NSURLSession sessionWithConfiguration:
-                        newConfiguration];
-    }
+<p>Once the task has completed, the block we just defined will be invoked with the relevant <code>data</code>, <code>response</code>, and <code>error</code> as arguments. Replace the comment in the completion block with the following:</p>
+<pre><code>// HUMRailsClient.m
+
+if (!error) {
+    // Set the user session properties using the response
+    NSDictionary *responseDictionary = [NSJSONSerialization
+                                        JSONObjectWithData:data
+                                        options:kNilOptions
+                                        error:nil];
+    [HUMUserSession setUserToken:responseDictionary[@"device_token"]];
+    [HUMUserSession setUserID:responseDictionary[@"id"]];
     
-    // Execute the block regardless of the error
-    dispatch_async(dispatch_get_main_queue(), ^{
-        block(error);
-    });</code></pre>
-<p>If there is no error, we can create a dictionary using the response data from the task. This dictionary will contain a device_token that the rails app created to identify the user of this device. Now that we have a device_token from the rails app, we can save it using the <code>setUserID:</code> class method on HUMUserSession.</p>
-<p>Since we have a new device_token that we want to start sending in we need to create a <code>newConfiguration</code> that is a copy of the old configuration, place the device_token in the <code>newConfiguration</code>'s header, and set <code>self.session</code> to a new session that uses the <code>newConfiguration</code>.</p>
+    // Create a new contiguration with new token
+    NSURLSessionConfiguration *newConfiguration =
+        self.session.configuration;
+    [newConfiguration setHTTPAdditionalHeaders:
+        @{
+            @"Accept" : @"application/json",
+            @"Content-Type" : @"application/json",
+            @"tb-device-token" : responseDictionary[@"device_token"]
+        }];
+    [self.session finishTasksAndInvalidate];
+    self.session = [NSURLSession sessionWithConfiguration:
+                    newConfiguration];
+}
+
+// Execute the completion block regardless of the error
+dispatch_async(dispatch_get_main_queue(), ^{
+    block(error);
+});</code></pre>
+<p>If there is no error, we can create a dictionary using the response data from the task. This dictionary will contain a <code>device_token</code> and an <code>id</code>. We can save these using the class methods we created on HUMUserSession.</p>
+<p>Now that we have a device_token that is associated with a user in the database, we want to sign all our requests with it. Create a <code>newConfiguration</code> that is a copy of the old configuration, place the device_token in the <code>newConfiguration</code>'s header, and set <code>self.session</code> to a new session that uses the <code>newConfiguration</code>.</p>
 <p>Regardless of whether or not there's an error, we want to execute the completion block we passed into the method <code>createCurrentUserWithCompletionBlock:</code>. Since we will be updating the UI in this completion block, we have to force the completion block to execute on the main thread using <code>dispatch_async</code>. Alternatively, you could use NSOperationQueue to execute the block on the main thread, but since we are just sending off a block I chose to use <code>dispatch_async</code>.</p>
+</section>
+<section id="setting-the-headers-conditionally" class="level3">
+<h3>Setting the Headers Conditionally</h3>
+<p>Now that we have a POST to users method and persist the token we recieve from this method, we can conditionally set our session's headers depending on if we have that token yet.</p>
+<p>Currently, our custom init method sets a new <code>tb-device-token</code> and <code>tb-app-secret</code> in our headers every time it initializes. These are the correct headers for POST to users, but we need different headers for all other reqeusts.</p>
+<p>In the custom init method of our <code>HUMRailsClient</code>, change the <code>headers</code> variable to a ternary.</p>
+<pre><code>// HUMRailsClient.m
+
+NSDictionary *headers = [HUMUserSession userIsLoggedIn] ?
+    @{
+      @"Accept" : @"application/json",
+      @"Content-Type" : @"application/json",
+      @"tb-device-token" : [HUMUserSession userToken]
+      } :
+    @{
+      @"Accept" : @"application/json",
+      @"Content-Type" : @"application/json",
+      @"tb-device-token" : [[NSUUID UUID] UUIDString],
+      @"tb-app-secret" : HUMAppSecret
+      };
+      </code></pre>
+<p>This ternary depends on the class methods <code>userIsLoggedIn</code> and <code>userToken</code> that we defined on <code>HUMUserSession</code>, so remember to <code>#import "HUMUserSession.h"</code> at the top of the file. It sets the headers to include the saved <code>[HUMUserSession userToken]</code> if we are logged in and the app secret random device token if we aren't.</p>
 </section>
 </section></body>
 </html>

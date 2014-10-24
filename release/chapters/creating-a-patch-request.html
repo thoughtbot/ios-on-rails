@@ -43,10 +43,11 @@ describe 'PATCH /v1/events/:id' do
       lon: event.lon,
       name: new_name,
       owner: {
-        device_token: event.owner.device_token
+        id: event.owner.id
       },
       started_at: event.started_at
-    }.to_json, { 'Content-Type' =&gt; 'application/json' }
+    }.to_json,
+    set_headers(event.owner.device_token)
 
     event.reload
     expect(event.name).to eq new_name
@@ -93,10 +94,13 @@ end</code></pre>
 <pre><code># app/controllers/api/v1/events_controller.rb
 
 def update
-  @event = Event.find(params[:id])
+  authorize do |user|
+    @user = user
+    @event = Event.find(params[:id])
 
-  if @event.update_attributes(event_params)
-    render
+    if @event.update_attributes(event_params)
+      render
+    end
   end
 end</code></pre>
 <p>If we run our request spec again, we will find that <code>event.name</code> is now updating correctly. Yay! But the test is still failing. Boo! Time to move onto our view.</p>
@@ -134,10 +138,11 @@ describe 'PATCH /v1/events/:id' do
        lon: event.lon,
        name: nil,
        owner: {
-         device_token: event.owner.device_token
+         id: event.owner.id
        },
        started_at: event.started_at
-     }.to_json, { 'Content-Type' =&gt; 'application/json' }
+     }.to_json,
+     set_headers(event.owner.device_token)
 
      event.reload
      expect(event.name).to_not be nil

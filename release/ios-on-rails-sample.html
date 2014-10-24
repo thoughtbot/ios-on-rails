@@ -45,6 +45,7 @@
 <li><a href="#setting-the-session-headers">Setting the Session Headers</a></li>
 </ul></li>
 <li><a href="#a-rails-api-client-with-afnetworking">A Rails API Client With AFNetworking</a><ul>
+<li><a href="#declare-the-app-secret">Declare the App Secret</a></li>
 <li><a href="#creating-a-singleton-client-object-1">Creating a Singleton Client Object</a></li>
 <li><a href="#setting-the-session-headers-1">Setting the Session Headers</a></li>
 </ul></li>
@@ -120,7 +121,7 @@ describe 'GET /v1/events/:id' do
         'name' =&gt; event.name,
         'started_at' =&gt; event.started_at.as_json,
         'owner' =&gt; {
-          'device_token' =&gt; event.owner.device_token
+          'id' =&gt; event.owner.id
         }
       }
     )
@@ -224,7 +225,7 @@ json.cache! event do
   json.started_at event.started_at
 
   json.owner do
-    json.device_token event.owner.device_token
+    json.id event.owner.id
   end
 end</code></pre>
 <section id="caching-our-view" class="level4">
@@ -256,7 +257,7 @@ Event.create(
   &quot;name&quot;:&quot;Best event OF ALL TIME!&quot;,
   &quot;started_at&quot;:&quot;2013-09-16T00:00:00.000Z&quot;,
   &quot;owner&quot;:{
-    &quot;device_token&quot;:&quot;234324235&quot;
+    &quot;id&quot;:&quot;1&quot;
    }
  }</code></pre>
 <p>Alternatively, you can run a <a href="http://curl.haxx.se/docs/manpage.html">curl</a> request (<code>curl http://localhost:3000/v1/events/1</code>) from Terminal and see the same JSON output.</p>
@@ -266,10 +267,11 @@ Event.create(
 </section>
 <section id="a-rails-api-client-with-nsurlsession" class="level1">
 <h1>A Rails API Client With NSURLSession</h1>
-<p>Before we go about making our first API request, we need to decide how we are going to make our networking calls. As mentioned in the Cocoapods chapter, the AFNetworking framework is a clean and reliable solution to making networking requests. We will be using AFNetworking in this book, but we'll also include examples of how to make a few API requests manually for reference. AFNetworking brings a lot more to the table than just wrapping up your network requests; but, like a programming planeteer, the choice is yours.</p>
+<p>Before we go about making our first API request, we need to decide how we are going to make our networking calls. As mentioned in the Cocoapods chapter, the AFNetworking framework is a clean and reliable solution to making networking requests. We will show examples of using AFNetworking to make your API requests as well as examples of making requests using the built in <code>NSURLSession</code>, which all networking libraries are built on top of. AFNetworking brings a lot more to the table than just wrapping up your network requests; but, like a programming planeteer, the choice is yours.</p>
 <section id="creating-a-singleton-client-object" class="level3">
 <h3>Creating a Singleton Client Object</h3>
-<p>Create a subclass of NSObject called HUMRailsClient. All of our API requests will be handled by one instance of the HUMRailsClient, so we're going to create a singleton of HUMRailsClient called sharedClient. What we will create and refer to as a singleton isn't a dictionary-definition singleton, since we aren't completely limiting the instantiation of HUMRailsClient to only one object. We are, however, limiting the instantiation of HUMRailsClient to only one object if we always use our sharedClient. Essentially, our sharedClient is a singleton if we use it consistantly but is not if we errantly decide to instantiate another instance of HUMRailsClient using [[HUMRailsClient alloc] init].</p>
+<p>Create a subclass of NSObject called HUMRailsClient. All of our API requests will be handled by one instance of the HUMRailsClient, so we're going to create a singleton of HUMRailsClient called sharedClient.</p>
+<p>What we will create and refer to as a singleton isn't a dictionary-definition singleton, since we aren't completely limiting the instantiation of HUMRailsClient to only one object. We are, however, limiting the instantiation of HUMRailsClient to only one object if we always use our sharedClient. Essentially, our sharedClient is a singleton if we use it consistantly but is not if we errantly decide to instantiate another instance of HUMRailsClient using <code>[[HUMRailsClient alloc] init]</code>.</p>
 <p>Declare a class method that will return our singleton by adding <code>+ (instancetype)sharedClient;</code> to your HUMRailsClient.h file. We use instancetype as our return type to indicate that this class method will return an instance of HUMRailsClient. The + indicates that sharedClient is a class method to be called directly on the HUMRailsClient class. Prepending your class method with &quot;shared&quot; indicates to other developers that the method returns a singleton.</p>
 <p>Now let's implement this method:</p>
 <pre><code>// HUMRailsClient.m
@@ -294,9 +296,9 @@ Event.create(
 </section>
 <section id="creating-a-session-for-handling-requests" class="level3">
 <h3>Creating a Session for Handling Requests</h3>
-<p>iOS7 introduced the NSURLSessions class, which is an object that handles groups of HTTP requests. Each API request we make in a NSURLSession is encapsulated in a NSURLSessionTask, which executes the request asynchronously and notifies you of completion by executing a block or by calling a method on its delegate.</p>
+<p>iOS7 introduced the <code>NSURLSession</code> class, which is an object that handles groups of HTTP requests. Each API request we make in a NSURLSession is encapsulated in a <code>NSURLSessionTask</code>, which executes the request asynchronously and notifies you of completion by executing a block or by calling a method on its delegate.</p>
 <p>There are three different types of NSURLSessions, including one that allows your app to continue downloading data even if your app is in the background. The type of a session is determined by its <code>sessionConfiguration</code>, but for simple API requests we only need to use the default session type.</p>
-<p>Declare a session property and a static app secret string by placing:</p>
+<p>Declare a session property and a static app secret string above your <span class="citation" data-cites="implementation">@implementation</span> inside of <code>HUMRailsClient.m</code>.</p>
 <pre><code>// HUMRailsClient.m
 
 static NSString *const HUMAppSecret =
@@ -307,54 +309,78 @@ static NSString *const HUMAppSecret =
 @property (strong, nonatomic) NSURLSession *session;
 
 @end</code></pre>
-<p>above your <span class="citation" data-cites="implementation">@implementation</span> inside of HUMRailsClient.m. We will use the <code>HUMAppSecret</code> to sign POST requests to /users so that the backend can validate that the request is coming from the mobile app.</p>
-<p>Then, overwrite the HUMRailsClient's init method to set the client's <code>session</code> when we initialize it:</p>
+<p>We will use the <code>HUMAppSecret</code> to sign POST requests to /users so that the backend can validate that the request is coming from our mobile app. The session object will handle all of our API requests.</p>
+<p>We want our HUMRailsClient to always have a session object, so we will overwrite the HUMRailsClient's <code>init</code> method to set the client's <code>session</code> property.</p>
+<p>Custom init methods all have the same general format:</p>
+<pre><code>- (instancetype)init
+{
+    self = [super init];
+    if (!self) { 
+        return nil; 
+    }
+    // Do custom init stuff.
+    return self;
+}</code></pre>
+<p>So, our HUMRailsClient's custom <code>init</code> method will look like:</p>
 <pre><code>// HUMRailsClient.m
 
 - (instancetype)init
 {
     self = [super init];
     
-    if (!self)
+    if (!self) {
         return nil;
+    }
     
-    // Create a session configuration
     NSURLSessionConfiguration *sessionConfiguration =
         [NSURLSessionConfiguration defaultSessionConfiguration];
     sessionConfiguration.timeoutIntervalForRequest = 30.0;
     sessionConfiguration.timeoutIntervalForResource = 30.0;
     
-    //Set the session headers
-    NSDictionary *headers = [HUMUserSession userID] ?
-        @{
-          @&quot;Accept&quot; : @&quot;application/json&quot;,
-          @&quot;Content-Type&quot; : @&quot;application/json&quot;,
-          @&quot;X-DEVICE-TOKEN&quot; : [HUMUserSession userID]
-          } :
-        @{
-          @&quot;Accept&quot; : @&quot;application/json&quot;,
-          @&quot;Content-Type&quot; : @&quot;application/json&quot;,
-          @&quot;X-APP-SECRET&quot; : HUMAppSecret
-          };
-    [sessionConfiguration setHTTPAdditionalHeaders:headers];
-    
-    // Create a session
     _session = [NSURLSession sessionWithConfiguration:sessionConfiguration];
     
     return self;
 }
     </code></pre>
-<p>This custom init method creates a <code>sessionConfiguration</code>, uses the <code>sessionConfiguration</code> to create an NSURLSession, and sets the session on the <code>_sharedClient</code>.</p>
-<p>We could just use the default NSURLSessionConfiguration that is returned from NSURLSessionConfiguration's class method <code>defaultSessionConfiguration</code> to create our NSURLSession. However, we also want to change our timeout properties to 30 seconds and add some HTTP headers that we will be sending and receiving JSON from our API.</p>
+<p>This custom init method first creates a <code>sessionConfiguration</code>. We could just use the default NSURLSessionConfiguration that is returned from NSURLSessionConfiguration's class method <code>defaultSessionConfiguration</code> to create our NSURLSession. However, we also want to change our timeout properties to 30 seconds and add some HTTP headers.</p>
+<p>Next, we use that <code>sessionConfiguration</code> to create an NSURLSession, and set that session as the <code>_session</code> property on our singleton.</p>
 </section>
 <section id="setting-the-session-headers" class="level3">
 <h3>Setting the Session Headers</h3>
-<p>Setting the session headers on the <code>sessionConfiguration</code> is particularly important, since sending the app secret is necessary for user creation, while the user's ID is necessary for all other requests. When we initialize the <code>sharedClient</code> singleton, we place the user ID in the header if we've already saved one in the keychain, or the app secret if there is no user ID saved in the keychain. Having the app secret in the header is only necessary for the POST to /users request, so we'll change out the app secret header one we have successfully made that request</p>
+<p>Setting the session headers on the <code>sessionConfiguration</code> is particularly important, since sending the app secret and a token is necessary for user creation, and a token is necessary for all other requests.</p>
+<pre><code>// HUMRailsClient.m
+
+- (instancetype)init
+{
+    ...
+    
+    NSDictionary *headers = @{
+          @&quot;Accept&quot; : @&quot;application/json&quot;,
+          @&quot;Content-Type&quot; : @&quot;application/json&quot;,
+          @&quot;tb-device-token&quot; : [[NSUUID UUID] UUIDString],
+          @&quot;tb-app-secret&quot; : HUMAppSecret
+          };
+    [sessionConfiguration setHTTPAdditionalHeaders:headers];
+    
+    _session = [NSURLSession sessionWithConfiguration:sessionConfiguration];
+    
+    return self;
+}</code></pre>
+<p>Our custom session headers indicate that our content type is JSON and set the token and app secret. These are the headers that we need for a POST to the users endpoint. For requests other than that we will only need the token.</p>
+<p>Currently, we are using a client generated device ID as our token, but our plan is to eventually replace that with an auth token generated by the backend.</p>
 </section>
 </section>
 <section id="a-rails-api-client-with-afnetworking" class="level1">
 <h1>A Rails API Client With AFNetworking</h1>
 <p>Now that we've created our own networking client, let's see how we could do this using the AFNetworking framework. We'll create another client that is a subclass of AFNetworking's session manager instead of NSObject.</p>
+<section id="declare-the-app-secret" class="level3">
+<h3>Declare the App Secret</h3>
+<p>As we did in our other client, declare a static string constant above your implementation that is the same app secret that your backend uses.</p>
+<pre><code>// HUMRailsAFNClient.m
+
+static NSString *const HUMAppSecret =
+    @&quot;yourOwnUniqueAppSecretThatYouShouldRandomlyGenerateAndKeepSecret&quot;;</code></pre>
+</section>
 <section id="creating-a-singleton-client-object-1" class="level3">
 <h3>Creating a Singleton Client Object</h3>
 <p>Create a subclass of AFHTTPSessionManager called HUMRailsAFNClient. Declare a class method that will return a shared client singleton as we did in our other client by adding <code>+ (instancetype)sharedClient;</code> to your HUMRailsAFNClient.h file. The implementation of this method looks similar as well:</p>
@@ -366,18 +392,14 @@ static NSString *const HUMAppSecret =
     static dispatch_once_t onceToken;
     dispatch_once(&amp;onceToken, ^{
         
-        // Create a client
         NSURL *baseURL = [NSURL URLWithString:ROOT_URL];
         _sharedClient = [[HUMRailsAFNClient alloc] initWithBaseURL:baseURL];
-
-        // Set the client header fields
-        if ([HUMUserSession userID])
-            [_sharedClient.requestSerializer setValue:[HUMUserSession userID]
-                                   forHTTPHeaderField:@&quot;X-DEVICE-TOKEN&quot;];
-        else
-            [_sharedClient.requestSerializer setValue:HUMAppSecret
-                                   forHTTPHeaderField:@&quot;X-APP-SECRET&quot;];
         
+        [_sharedClient.requestSerializer setValue:HUMAFNAppSecret
+                               forHTTPHeaderField:@&quot;tb-app-secret&quot;];
+        [_sharedClient.requestSerializer setValue:[[NSUUID UUID] UUIDString]
+                               forHTTPHeaderField:@&quot;tb-device-token&quot;];
+
     });
     
     return _sharedClient;
@@ -386,7 +408,25 @@ static NSString *const HUMAppSecret =
 </section>
 <section id="setting-the-session-headers-1" class="level3">
 <h3>Setting the Session Headers</h3>
-<p>As before, we need to set the user's ID in the header if we have already created a user for this device. If not, we set the app secret so that we can make a POST to /users to create a user with the app secret.</p>
+<p>As before, we need to set custom header fields.</p>
+<pre><code>// HUMRailsAFNClient.m
+
++ (instancetype)sharedClient
+{
+
+    ...
+
+        [_sharedClient.requestSerializer setValue:HUMAFNAppSecret
+                               forHTTPHeaderField:@&quot;tb-app-secret&quot;];
+        [_sharedClient.requestSerializer setValue:[[NSUUID UUID] UUIDString]
+                               forHTTPHeaderField:@&quot;tb-device-token&quot;];
+                               
+    });
+                               
+    return _sharedClient;
+}       
+        </code></pre>
+<p>Both these headers are necessary for a POST to users request. For subsequent requests, we'll only need the token. We'll change them once we've made a successful POST to users.</p>
 </section>
 </section>
 <section id="closing" class="level1">

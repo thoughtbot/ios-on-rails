@@ -28,7 +28,7 @@
 <section id="using-cococapods" class="level3">
 <h3>Using CococaPods</h3>
 <p>Before we create our new iOS project, lets discuss the libraries and resources we're going to be using.</p>
-<p>We'll be using CocoaPods to manage our dependencies. Cocoapods is a ruby gem and command line tool that makes makes it easy to add dependencies to your project. Alternatively, you can use git submodules, but using CocoaPods is our preference due to its ease of implementation and the wide variety of third party libraries available as pods. CocoaPods will not only download the libraries we need and link them to our project in Xcode, it will also allow us to easily manage and update what version of each library we want to use we want to use.</p>
+<p>We'll be using CocoaPods to manage our dependencies. Cocoapods is a ruby gem and command line tool that makes it easy to add dependencies to your project. Alternatively, you can use git submodules, but using CocoaPods is our preference due to its ease of implementation and the wide variety of third party libraries available as pods. CocoaPods will not only download the libraries we need and link them to our project in Xcode, it will also allow us to easily manage and update what version of each library we want to use.</p>
 <p>With a background in ruby, it may help to think of CocoaPod "pods" as gems, meaning that podfiles function similarly to gemfiles and podspecs are similar to gemspecs. <code>$ pod install</code> can be thought of as running <code>$ bundle install</code>, except for the fact that a pod install inserts the actual libraries into your project's pod directory.</p>
 </section>
 <section id="cocoapods-setup" class="level3">
@@ -47,18 +47,21 @@
 <p>Installing the CocoaPods gem and creating a podfile is covered in more detail on their website. Below is the podfile we're going to use for this project, which indicates what libraries we'll be using.</p>
 <pre><code>platform :ios, '7.0'
 
-pod 'TestFlightSDK', '~&gt; 2.0'
-pod 'Parse', '~&gt; 1.2.11'
-
-pod 'AFNetworking', '~&gt; 2.0'
-pod 'SSKeychain', '~&gt; 1.2.1'
+pod 'AFNetworking', '~&gt; 2.4.1'
+pod 'SSKeychain', '~&gt; 1.2.2'
 pod 'SVProgressHUD', '~&gt; 1.0'
 
-target :HumonTests, :exclusive =&gt; true do
-    pod 'Kiwi', '~&gt; 2.2'
+target :HumonTests  do
+  pod 'Kiwi', '~&gt; 2.3.0'
+  pod 'OHHTTPStubs', '~&gt; 3.0.2'
+end
+
+target :HumonUITests, :exclusive =&gt; true do
+  pod 'KIF', '~&gt; 3.0.8'
 end</code></pre>
-<p>The <code>:exclusive =&gt; true do</code> block ensures that the HumonTests target only links to the testing frameworks inside the block. The frameworks outside the block will still be available to HumonTests target. Since they'll be available to the Humon target, which the testing</p>
-<p>We will be using the TestFlight SDK to distribute our app to Beta testers. Parse will be used for push notifications by both the iOS app and the Rails app. AFNetworking will handle our API network requests, SSKeychain will help us save user info to the keychain, and SVProgressHUD will let us display loading views to the user.</p>
+<p>The <code>:exclusive =&gt; true do</code> block ensures that the HumonUITests target only links to the testing frameworks inside the block. The frameworks outside the block will still be available to HumonUITests target since they'll be available to the main Humon target.</p>
+<p>AFNetworking will handle our API network requests, SSKeychain will help us save user info to the keychain, and SVProgressHUD will let us display loading views to the user.</p>
+<p>Another important Pod to add is either Hockey or TestFlight to distribute our app to Beta testers. That process is outlined superbly on either of their developer support pages.</p>
 <p>Once you've updated your podfile, go ahead and run <code>$ pod install</code></p>
 </section>
 </section></body>
