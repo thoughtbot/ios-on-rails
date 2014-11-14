@@ -13,7 +13,7 @@ As we did in our other client, declare a static string constant above your imple
 
 ### Creating a Singleton Client Object
 
-Create a subclass of AFHTTPSessionManager called HUMRailsAFNClient. Declare a class method that will return a shared client singleton as we did in our other client by adding `+ (instancetype)sharedClient;` to your HUMRailsAFNClient.h file. The implementation of this method looks similar as well:
+Create a subclass of `AFHTTPSessionManager` called `HUMRailsAFNClient`. Declare a class method that will return a shared client singleton as we did in our other client by adding `+ (instancetype)sharedClient;` to your `HUMRailsAFNClient.h` file. The implementation of this method looks similar as well:
 
 	// HUMRailsAFNClient.m
 	
@@ -36,7 +36,7 @@ Create a subclass of AFHTTPSessionManager called HUMRailsAFNClient. Declare a cl
         return _sharedClient;
     }
 
-With AFNetworking, we don't have to manually set up the session configuration and session with our own custom init method. We simply initialize the client using `initWithBaseURL:`, which means that our paths later will be relative to this ROOT_URL.
+With AFNetworking, we don't have to manually set up the session configuration and session with our own custom init method. We simply initialize the client using `-initWithBaseURL:`, which means that our paths later will be relative to this `ROOT_URL`.
 
 ### Setting the Session Headers
 

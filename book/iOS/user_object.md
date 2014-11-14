@@ -8,7 +8,7 @@ The user entity on the database has two relevant properties: `device_token` and 
 
 When we make a POST request to /users, the backend confirms that we sent the correct app secret, creates a new user with the device_token we pass, and returns the account's ID and token. 
 
-Create a subclass of NSObject called HUMUserSession. This object will manage the current user's session, which means it will be responsible for keeping track of one user ID and one device_token that we'll be signing our requests with.
+Create a subclass of `NSObject` called `HUMUserSession`. This object will manage the current user's session, which means it will be responsible for keeping track of one user ID and one `device_token` that we'll be signing our requests with.
 
 The interface for our user session manager should contain 5 class methods:
 
@@ -67,8 +67,8 @@ Next we'll want to implement the methods we defined for setting our ID and token
 	        return;
 	    }
 	
-	    NSString *IDstring = [NSString stringWithFormat:@"%@", userID];
-	    [SSKeychain setPassword:IDstring
+	    NSString *IDString = [NSString stringWithFormat:@"%@", userID];
+	    [SSKeychain setPassword:IDString
 	                 forService:HUMService
 	                    account:HUMUserID
 	                      error:nil];
@@ -87,7 +87,7 @@ Next we'll want to implement the methods we defined for setting our ID and token
 	                      error:nil];
 	}
 
-You'll notice that we created an `IDstring` with `[NSString stringWithFormat:@"%@", userID]`. This is because our `userID` returned from the API is a number, while we need a string `IDstring` password to store in the keychain.
+You'll notice that we created an `IDString` with `[NSString stringWithFormat:@"%@", userID]`. This is because our `userID` returned from the API is a number, while we need a string `IDString` password to store in the keychain.
 
 Lastly, we need to implement the method that we will use in our client singleton to determine if we currently have a valid user session. It's easiest to think of this as whether or not the user is logged in.
 

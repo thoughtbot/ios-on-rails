@@ -8,7 +8,7 @@ To make the event GET request, typedef a completion block that will return an ar
 	
 	typedef void(^HUMRailsAFNClientEventsCompletionBlock)(NSArray *events, NSError *error);
 	
-Then declare a method for fetching events whose parameters are a map region and a completion block of this new type. The map region will be the visible map region in our HUMMapViewController, since we only want to load events within the region we're viewing. Unlike our other API client methods, we'll return an `NSURLSessionDataTask` from this method so we can cancel the task.
+Then declare a method for fetching events whose parameters are a map region and a completion block of this new type. The map region will be the visible map region in our `HUMMapViewController`, since we only want to load events within the region we're viewing. Unlike our other API client methods, we'll return an `NSURLSessionDataTask` from this method so we can cancel the task.
 
 	//HUMRailsAFNClient.h
 	

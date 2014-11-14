@@ -21,7 +21,7 @@ and declare the event creation method:
 
 ### Creating a Task for Making Requests
 
-With AFNetworking, making a POST request with a dictionary of parameters is quite easy. We call the `POST:parameters:success:failure` method and provide the `@"events"` path, the event's JSON dictionary, and a success and failure block. 
+With AFNetworking, making a POST request with a dictionary of parameters is quite easy. We call the `-POST:parameters:success:failure` method and provide the `@"events"` path, the event's JSON dictionary, and a success and failure block. 
 
 Don't forget to `#import "HUMEvent.h"` since we need to use the method `JSONDictionary` we previously defined.
 

@@ -6,11 +6,11 @@
 
 ![Creating a new view controller](images/ios_app_skeleton_6.png)
 
-Create a new view controller subclass called HUMMapViewController by selecting file>new>file. This will create a header (.h) and implementation (.m) file.
+Create a new view controller subclass called `HUMMapViewController` by selecting File > New > File. This will create a header (.h) and implementation (.m) file.
 
 ### Set the Root View Controller
 
-Now that we have a view controller subclass that will serve as our initial view controller in the app, we can show this view controller on launch. The app delegate has a method for exactly this purpose, called `application:didFinishLaunchingWithOptions:`, which we will overwrite.
+Now that we have a view controller subclass that will serve as our initial view controller in the app, we can show this view controller on launch. The app delegate has a method for exactly this purpose, called `-application:didFinishLaunchingWithOptions:`, which we will overwrite.
 
 	// HUMAppDelegate.m
 
@@ -47,9 +47,9 @@ Run the app and you'll see an instance of your `HUMMapViewController`!
 
 ### Create the MapView
 
-Inside your implementation file, create a new property called mapView. Alternatively, you can place this property in the header file, but keeping properties private by placing them in the hidden interface located in the implementation file is preferable if possible. 
+Inside your implementation file, create a new property called `mapView`. Alternatively, you can place this property in the header file, but keeping properties private by placing them in the hidden interface located in the implementation file is preferable if possible. 
 
-Also, declare that the HUMMapViewController conforms to the MKMapViewDelegate protocol by adding `<MKMapViewDelegate>`. This allows the HUMMapViewController to respond to delegate messages that the mapView sends.
+Also, declare that the `HUMMapViewController` conforms to the `MKMapViewDelegate` protocol by adding `<MKMapViewDelegate>`. This allows the `HUMMapViewController` to respond to delegate messages that the `mapView` sends.
 
 	// HUMMapViewController.m
 	
@@ -59,9 +59,9 @@ Also, declare that the HUMMapViewController conforms to the MKMapViewDelegate pr
 	
 	@end
 
-Now we want to fill the entirety of the HUMMapViewController's view with a mapView. Inside of your viewDidLoad method, instantiate a map view and add it as a subview of the main view. 
+Now we want to fill the entirety of the `HUMMapViewController`'s view with a `mapView`. Inside of your `-viewDidLoad` method, instantiate a map view and add it as a subview of the main view. 
 
-Remember to set HUMMapView as the delegate of self.mapview so it can respond to delegate messages like mapView:regionDidChangeAnimated:.
+Remember to set `HUMMapView` as the delegate of `self.mapview` so it can respond to delegate messages like `-mapView:regionDidChangeAnimated:`.
 
 	// HUMMapViewController.m
 	
@@ -83,13 +83,13 @@ Remember to set HUMMapView as the delegate of self.mapview so it can respond to 
 	
 	@end
 	
-Also, we set the title of this view controller to the name of our app, `@"Humon"`. For more information on why we used an NSLocalizedString here instead of a `@"plain old string literal"`, please visit the [Apple developer library.](https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html#//apple_ref/doc/uid/10000051i-CH6) The short explanation is that we use localized strings for all text that will be displayed to a user. That way we can easily translate our app from English to other languages.
+Also, we set the title of this view controller to the name of our app, `@"Humon"`. For more information on why we used an `NSLocalizedString` here instead of a `@"plain old string literal"`, please visit the [Apple Developer Library](https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html#//apple_ref/doc/uid/10000051i-CH6). The short explanation is that we use localized strings for all text that will be displayed to a user. That way we can easily translate our app from English to other languages.
 	
 Go ahead and run the app to see the big beautiful map you just created.
 
 ### Create the Add Button
 
-Now we'll create an add button and add it to the navigation bar at the top of our the screen.
+Now we'll create an "Add" button and add it to the navigation bar at the top of our the screen.
 
 	// HUMMapViewController.m
 	
@@ -105,7 +105,7 @@ Now we'll create an add button and add it to the navigation bar at the top of ou
 	    self.navigationItem.leftBarButtonItem = button;
     }
     
-We want our add button to be on our navigation bar, so create an instance of `UIBarButtonItem`. The `target:action:` portion of the `UIBarButtonItem` init method sets the button up to call the `addButtonPressed` method when the button is tapped.
+We want our add button to be on our navigation bar, so create an instance of `UIBarButtonItem`. The `target:action:` portion of the `UIBarButtonItem` initializer method sets the button up to call the `-addButtonPressed` method when the button is tapped.
 
 In order to see the `button` on the navigation bar, set it as the `leftBarButtonItem` on the view controller's `navigationItem`.
 

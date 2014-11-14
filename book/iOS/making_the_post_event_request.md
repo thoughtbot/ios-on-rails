@@ -2,7 +2,7 @@
 
 ### Creating a New Init Method
 
-Our POST to events will happen in the HUMEventViewController. This view controller will be used for creating a new event as well as viewing other people's events, so we'll create an init method that encompasses both these cases.
+Our POST to events will happen in the `HUMEventViewController`. This view controller will be used for creating a new event as well as viewing other people's events, so we'll create an init method that encompasses both these cases.
 
 	// HUMEventViewController.h
 	
@@ -44,7 +44,7 @@ This method implementation references two properties we don't have yet, so place
 	
 ### Adding a Submit Event Method
 
-Lets take a step back and remember what this view controller is supposed to look like. The HUMEventViewController will have 4 cells for each property of our event (name, address, startDate, endDate) and a submit cell. Instead of referring to these by their indexes, lets define these cell indexes in an enum at the top of `HUMEventViewController.h`. This enum starts at HUMEventCellName = 0 and goes to HUMEventCellCount = 5.
+Lets take a step back and remember what this view controller is supposed to look like. The `HUMEventViewController` will have 4 cells for each property of our event (`name`, `address`, `startDate`, `endDate`) and a submit cell. Instead of referring to these by their indexes, lets define these cell indexes in an enum at the top of `HUMEventViewController.h`. This enum starts at `HUMEventCellName = 0` and goes to `HUMEventCellCount = 5`.
 
 	// HUMEventViewController.h
 	
@@ -57,9 +57,9 @@ Lets take a step back and remember what this view controller is supposed to look
 	    HUMEventCellCount
 	};
 	
-Now we can change the `tableView:numberOfRowsInSection:` to `return HUMEventCellCount;` instead of `return 5;`
+Now we can change the `-tableView:numberOfRowsInSection:` to `return HUMEventCellCount;` instead of `return 5;`
 
-We can also use this new enum when we declare `tableView:didSelectRowAtIndexPath:`to determine (in a user readable fashion) which cell was selected.
+We can also use this new enum when we declare `-tableView:didSelectRowAtIndexPath:`to determine (in a user readable fashion) which cell was selected.
 	
 	// HUMEventViewController.m
 	
@@ -90,7 +90,7 @@ We can also use this new enum when we declare `tableView:didSelectRowAtIndexPath
 
 ### Using the New Init Method
 
-Now we just have to use this new init method in the `HUMMapViewController`. Change the `addButtonPressed` method to use this new init method and be sure to `#import "HUMEvent.h"`.
+Now we just have to use this new init method in the `HUMMapViewController`. Change the `-addButtonPressed` method to use this new initializer and be sure to `#import "HUMEvent.h"`.
 
 	// HUMMapViewController.m
 

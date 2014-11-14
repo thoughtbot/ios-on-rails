@@ -4,7 +4,7 @@ Now that we've created an app that can interact with our API using the POST and 
 
 These features are currently implemented in the sample app, so feel free to reference the code there if you choose to try any of these.
 
-1) Use autolayout on all the views in the app so the app can be used in landscape.
+1) Use [Auto Layout](https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/AutolayoutPG/Introduction/Introduction.html) on all the views in the app so the app can be used in landscape.
 
 2) Add a confirmation view controller that pushes onto the nav stack after you POST to users, with a button that lets you share your event to Facebook and Twitter.
 
@@ -14,7 +14,7 @@ These features are currently implemented in the sample app, so feel free to refe
 
 5) Add custom map pin images and pick a tint color for your app.
 
-6) Insert a date picker into the table view, rather than having it pop up from the bottom as the textView's inputView.
+6) Insert a date picker into the table view, rather than having it pop up from the bottom as the `textView`'s `-inputView`.
 
 7) Prevent the user from attempting to POST an event if they haven't filled out the required fields. Ignore option fields when you're determining validity.
 

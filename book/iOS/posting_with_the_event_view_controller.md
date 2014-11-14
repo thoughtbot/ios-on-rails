@@ -16,7 +16,7 @@ Create a new subclass of UITableViewCell called HUMTextFieldCell. Define a prope
 	
 	@end
 
-Now we'll want to initialize that `textView` and add it as a subview of our cell in a custom init method. We'll also set the `selectionStyle` to none since we don't want any response if the user selects the cell.
+Now we'll want to initialize that `textView` and add it as a subview of our cell in a custom init method. We'll also set the `selectionStyle` to `UITableViewCellSelectionStyleNone` since we don't want any visual response when the user selects the cell.
 
 	// HUMTextFieldCell.m
 	
@@ -38,7 +38,7 @@ Now we'll want to initialize that `textView` and add it as a subview of our cell
 	    return self;
 	}
 
-We want the user to be able to return out of the text field, so implement the delegate method `textFieldShouldReturn:`.
+We want the user to be able to return out of the text field, so implement the delegate method `-textFieldShouldReturn:`.
 
 	// HUMTextFieldCell.m
 	
@@ -65,7 +65,7 @@ So, lets create a method for setting a date on the cell. We'll use this method o
 	    self.textField.inputView = picker;
 	}
 
-We're using a `UIDatePicker` as the `textField`'s input view to let the user pick a new date after we set the initial date on the picker. When they pick a new date, the method `changeTextField:` will fire, as we defined with `addTarget:action:forControlEvents:`. Don't forget to `#import "NSDateFormatter+HUMDefaultDateFormatter.h"`.
+We're using a `UIDatePicker` as the `textField`'s input view to let the user pick a new date after we set the initial date on the picker. When they pick a new date, the method `-changeTextField:` will fire, as we defined with `-addTarget:action:forControlEvents:`. Don't forget to `#import "NSDateFormatter+HUMDefaultDateFormatter.h"`.
 
 	// HUMTextFieldCell.m
 
@@ -77,7 +77,7 @@ We're using a `UIDatePicker` as the `textField`'s input view to let the user pic
 
 ### Using a Custom Cell
 
-Back in the HUMEventViewController.m, we can use this new custom cell by adding `#import "HUMTextFieldCell.h"` to the top of the file and then registering our new custom cell class with the `tableView`. We'll use the constant string `kTextFieldCellID` that we just defined.   
+Back in the `HUMEventViewController.m`, we can use this new custom cell by adding `#import "HUMTextFieldCell.h"` to the top of the file and then registering our new custom cell class with the `tableView`. We'll use the constant string `kTextFieldCellID` that we just defined.   
 
 	// HUMEventViewController.m
 	
@@ -102,7 +102,7 @@ Then, define four new properties in our hidden interface.
 	@property (strong, nonatomic) HUMTextFieldCell *startCell;
 	@property (strong, nonatomic) HUMTextFieldCell *endCell;
 
-Now we can use these properties and the `kTextFieldCellID` identifier in the `tableView:cellForRowAtIndexPath:` method. After we dequeue a new cell with our identifier, we set whether the user can edit the `textField`. We also reset the input view, in case it was previously a UIDatePicker but should now use the keyboard for input.
+Now we can use these properties and the `kTextFieldCellID` identifier in the `-tableView:cellForRowAtIndexPath:` method. After we dequeue a new cell with our identifier, we set whether the user can edit the `textField`. We also reset the input view, in case it was previously a UIDatePicker but should now use the keyboard for input.
 
 	// HUMEventViewController.m
 	
@@ -157,15 +157,15 @@ Now that all of our cell properties are set, we can run the app and see what it 
 
 ### Reflecting Cell Input
 
-We have our new cell properties, but we are still relying on the fake event data we set in the HUMMapViewController.m.
+We have our new cell properties, but we are still relying on the fake event data we set in the `HUMMapViewController.m`.
 
 To make a POST to events with user input, we need to:
 
-1) Remove the fake data we placed in HUMMapViewController.m.
+1) Remove the fake data we placed in `HUMMapViewController.m`.
 
-Go back to the `addButtonPressed` method in `HUMMapViewController.m` and remove the assignment of the properties `event.name` `event.address` `event.startDate` `event.endDate`. Do not remove the assignment of `event.coordinate`, since we still need that to be set by the HUMMapViewController.
+Go back to the `-addButtonPressed` method in `HUMMapViewController.m` and remove the assignment of the properties `event.name` `event.address` `event.startDate` `event.endDate`. Do not remove the assignment of `event.coordinate`, since we still need that to be set by the HUMMapViewController.
 
-2) Assign our user inputted properties to the event on HUMEventViewController.
+2) Assign our user inputted properties to the event on `HUMEventViewController`.
 
 	// HUMEventViewController.m
 
@@ -184,4 +184,4 @@ Go back to the `addButtonPressed` method in `HUMMapViewController.m` and remove 
 	    ...
 	}
 	
-Now, go ahead and run the app. The event object that gets posted by the HUMEventViewController now reflects user input.
+Now, go ahead and run the app. The event object that gets posted by the `HUMEventViewController` now reflects user input.

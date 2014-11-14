@@ -1,8 +1,8 @@
 # The Event Object
 
-Create a subclass of NSObject called HUMEvent. This subclass will have a series of properties that define each event object.
+Create a subclass of `NSObject` called `HUMEvent`. This subclass will have a series of properties that define each event object.
 
-Add the following properties to your HUMEvent.h's `@interface`:
+Add the following properties to your `HUMEvent.h`'s `@interface`:
 
 	// HUMEvent.h
 	
@@ -23,17 +23,17 @@ Add the following properties to your HUMEvent.h's `@interface`:
 	// Properties used for placing the event on a map
 	@property (assign, nonatomic) CLLocationCoordinate2D coordinate;
 	
-We use the `copy` property attribute for the properties that are of type NSString so that if we set the property `userID` to a NSMutableString and then mutate the string, the property `userID` will not change with the mutation.
+We use the `copy` property attribute for the properties that are of type `NSString` so that if we set the property `userID` to a `NSMutableString` and then mutate the string, the property `userID` will not change with the mutation.
 
 For classes that don't have mutable subclasses, like NSDate for `startDate`, we use the `strong` property attribute.
 
 For properties that are primitives like `coordinate`, we use `assign`.
 
-We want to place our event objects on our HUMMapViewController's map, so we `@import MapKit;` at the top of the file. Now we can declare that our `HUMEvent` object conforms to the `<MKAnnotation>` protocol. This protocol has a required property `coordinate`, which we have declared. Conforming to this property is covered further by the 'Getting Events from the API' section.
+We want to place our event objects on our `HUMMapViewController`'s map, so we `@import MapKit;` at the top of the file. Now we can declare that our `HUMEvent` object conforms to the `<MKAnnotation>` protocol. This protocol has a required property `coordinate`, which we have declared. Conforming to this property is covered further by the 'Getting Events from the API' section.
 
 ### Methods for Initializing an Event
 
-Declare three methods for intializing HUMEvent objects:
+Declare three methods for intializing `HUMEvent` objects:
 
 	// HUMEvent.h
 
@@ -41,7 +41,7 @@ Declare three methods for intializing HUMEvent objects:
 	- (instancetype)initWithJSON:(NSDictionary *)JSON;
 	- (NSDictionary *)JSONDictionary;
 
-`initWithJSON:` is a custom intialization method for creating a HUMEvent object with a JSON dictionary from the API. It initializes a HUMEvent object and sets its properties to corresponding values from the `JSON` dictionary. We haven't defined the `RFC3339DateFormatter` yet, but we will do so in the next section.
+`initWithJSON:` is a custom intialization method for creating a `HUMEvent` object with a JSON dictionary from the API. It initializes a `HUMEvent` object and sets its properties to corresponding values from the `JSON` dictionary. We haven't defined the `RFC3339DateFormatter` yet, but we will do so in the next section.
 
 	// HUMEvent.m
 	
@@ -70,7 +70,7 @@ Declare three methods for intializing HUMEvent objects:
     	return self;
 	}
 
-`eventsWithJSON:` is a class method that takes in an array of JSON dictionaries and returns an array of HUMEvent objects. It uses the `initWithJSON:` method we just defined.
+`+eventsWithJSON:` is a class method that takes in an array of JSON dictionaries and returns an array of `HUMEvent` objects. It uses the `-initWithJSON:` method we just defined.
 
 	// HUMEvent.m
 	
@@ -148,6 +148,6 @@ We don't want to instantiate a new RFC 3339 date formatter every time we need to
 
 First, we declare a static `dateFormatter` and instantiate it in a `dispatch_once` block. Once we set the locale, date format, and time zone to match what we're receiving from the API, we can use the date formatter to translate RFC 3339 date strings to NSDates and vice versa.
 	
-For an in-depth explanation of date formatters and using NSLocale, read [Apple's intro.](https://developer.apple.com/library/ios/qa/qa1480/_index.html)
+For an in-depth explanation of date formatters and using NSLocale, read [Apple's Technical Q&A QA1480.](https://developer.apple.com/library/ios/qa/qa1480/_index.html)
 
-Be sure to add `#import NSDateFormatter+HUMDefaultDateFormatter.h` at the top of HUMEvent.m since we used the date formatter in that file, and need to know about this `RFC3339DateFormatter` method.
+Be sure to add `#import NSDateFormatter+HUMDefaultDateFormatter.h` at the top of `HUMEvent.m` since we used the date formatter in that file, and need to know about this `RFC3339DateFormatter` method.

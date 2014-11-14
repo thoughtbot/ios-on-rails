@@ -52,7 +52,7 @@ This POST /events method is slightly different from the POST /users method we cr
 
 1. We need to serialize a JSON dictionary of required event information into data so we can set that as the POST request data. This is why we created the method `[event JSONDictionary]` on our event object.
 
-2. We don't need to change the headers at all. When we call `createEvent:withCompletionBlock:`, we have already set the headers to include the current user's ID with `createCurrentUserWithCompletionBlock:`.
+2. We don't need to change the headers at all. When we call `-createEvent:withCompletionBlock:`, we have already set the headers to include the current user's ID with `-createCurrentUserWithCompletionBlock:`.
     
 ### Handle the Response
 
