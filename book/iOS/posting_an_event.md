@@ -1,10 +1,10 @@
 # Posting an Event With NSURLSession
 
-Our `HUMRailsClient` is already all set up to use the appropriate headers that we need for POST to events. Namely, the token we receive back from POST to users. So, we simply need to define a new method for making a POST to events request.
+Our `HUMRailsClient` is already all set up to use the appropriate headers that we need for POST to events: namely, the token we receive back from POST to users. So we simply need to define a new method for making a POST to events request.
 
 ### Declaring a Task for Making Requests
 
-The completion block we'll use for our create event method should return an event ID and an error. If our request is successful, the API will return the event ID for the event it created. If our request fails, we'll return the error instead.
+The completion block we'll use for our create event method should return an event ID and an error. If our request is successful, the API will return the event ID for the event it created and a nil error. If our request fails, we'll return a nil event ID and the error.
 
 Typedef this new type of event completion block:
 
@@ -79,5 +79,5 @@ If the task completes without an error, we can serialize the data we receive int
 
 If the the task completes with an error, `eventID` will remain nil. 
 
-Either way, we want to execute the completion block on the main queue, since the block will be updating the UI. The completion block will return either an updated event or an error depending on whether or not the POST was successful.
+Either way, we want to execute the completion block with whatever the `eventID` and the `error` are. We also need to execute the completion block on the main queue, since the block will be updating the UI.
 

@@ -11,7 +11,7 @@ Declare a method in our `HUMRailsClient.h` that creates a POST request to /users
 
 The type of our parameter for this method is a block, which we declare here with `(void (^)(NSError *error))`. Declaring a block as our parameter type is similar to how we declare other parameter types like `(NSString *)`, where the word following the type is the name of the parameter. This block has a return type of `void` and one argument of type `NSError` so we can check if the POST completed with an error.
 
-It makes sense to typedef a new name for our completion block so that we can refer to it more easily, especially if we plan on using this block type again. Typedef-ing allows us to define a new name for an existing type, which in this case will be the new name `HUMRailsClientErrorCompletionBlock` for the block type `(void (^)(NSError *error))`. Place this typedef above the interface in HUMRailsClient.h:
+It makes sense to typedef a new name for our completion block so we can refer to it more easily, especially if we plan on using this block type again. Using typedef allows us to define a new name for an existing type, which in this case will be the new name `HUMRailsClientErrorCompletionBlock` for the block type `(void (^)(NSError *error))`. Place this typedef above the interface in HUMRailsClient.h:
 
 	typedef void(^HUMRailsClientErrorCompletionBlock)(NSError *error);
 	
@@ -51,15 +51,15 @@ Now that we have declared `-createCurrentUserWithCompletionBlock:` and typedef-e
 	
 First, we instantiate a `url` for our request, which in this case is our ROOT_URL (which we set up with a user-defined macro) with `@"users"` appended to it. Then we can instantiate a `request` using this URL and set the request method to POST.
 
-Now that we have a `request`, we can create a task for our `self.session` that will execute the request. The method `-dataTaskWithRequest:completionHandler:` takes two arguments, the `request` that we created before, and a block that will be run when the request is complete.
+Now that we have a `request`, we can create a task for our `self.session` that will execute the request. The method `-dataTaskWithRequest:completionHandler:` takes two arguments: the `request` that we created and a block that will be run when the request is complete.
 
-The block we pass into the method must be of a type defined by `-dataTaskWithRequest:completionHandler:`, so we pass in a block of the appropriate type as an argument with the syntax:
+The block we pass into the method must be of a type defined by `-dataTaskWithRequest:completionHandler:`, so we pass in a block of the appropriate type as an argument with this syntax:
 
 	^void (NSData *data, NSURLResponse *response, NSError *error) { 
 		// code to execute
 	}
 
-Where the block's return type is `void` and that the block's parameters are `data`, `response`, and `error`. We don't have to explicitly declare the void return type, since it can be inferred, which means we could instead use the syntax:
+Where the block's return type is `void` and the block's parameters are `data`, `response`, and `error`. We don't have to explicitly declare the void return type, since it can be inferred, which means we could instead use the syntax:
 
 	^(NSData *data, NSURLResponse *response, NSError *error) { 
 		// code to execute
@@ -82,7 +82,7 @@ Once the task has completed, the block we just defined will be invoked with the 
         [HUMUserSession setUserToken:responseDictionary[@"device_token"]];
         [HUMUserSession setUserID:responseDictionary[@"id"]];
         
-        // Create a new contiguration with new token
+        // Create a new configuration with new token
         NSURLSessionConfiguration *newConfiguration =
             self.session.configuration;
         [newConfiguration setHTTPAdditionalHeaders:
@@ -109,9 +109,9 @@ Regardless of whether or not there's an error, we want to execute the completion
 
 ### Setting the Headers Conditionally
 
-Now that we have a POST to users method and persist the token we recieve from this method, we can conditionally set our session's headers depending on if we have that token yet.
+Now that we have a POST to users method and persist the token we recieve from this method, we can conditionally set our session's headers depending on whether we have that token yet.
 
-Currently, our custom init method sets a new `tb-device-token` and `tb-app-secret` in our headers every time it initializes. These are the correct headers for POST to users, but we need different headers for all other reqeusts.
+Currently, our custom init method sets a new `tb-device-token` and `tb-app-secret` in our headers every time it initializes. These are the correct headers for POST to users, but we need different headers for all other requests.
 
 In the custom init method of our `HUMRailsClient`, change the `headers` variable to a ternary.
 
@@ -130,4 +130,6 @@ In the custom init method of our `HUMRailsClient`, change the `headers` variable
           @"tb-app-secret" : HUMAppSecret
           };
           
-This ternary depends on the class methods `userIsLoggedIn` and `userToken` that we defined on `HUMUserSession`, so remember to `#import "HUMUserSession.h"` at the top of the file. It sets the headers to include the saved `[HUMUserSession userToken]` if we are logged in and the app secret random device token if we aren't.
+This ternary depends on the class methods `+userIsLoggedIn` and `+userToken` that we defined on `HUMUserSession`, so remember to `#import "HUMUserSession.h"` at the top of the file. It sets the headers to include the saved `+[HUMUserSession userToken]` if we are logged in. 
+
+If we aren't logged in, we need to send a random device token `[[NSUUID UUID] UUIDString]`. We also send the app secret so the backend will accept our POST request to create a new user.

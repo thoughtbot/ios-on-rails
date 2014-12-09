@@ -23,13 +23,13 @@ Add the following properties to your `HUMEvent.h`'s `@interface`:
 	// Properties used for placing the event on a map
 	@property (assign, nonatomic) CLLocationCoordinate2D coordinate;
 	
-We use the `copy` property attribute for the properties that are of type `NSString` so that if we set the property `userID` to a `NSMutableString` and then mutate the string, the property `userID` will not change with the mutation.
+We use the `copy` property attribute for the properties that are of type `NSString` so that if we set the property `userID` to an `NSMutableString` and then mutate the string, the property `userID` will not change with the mutation.
 
 For classes that don't have mutable subclasses, like NSDate for `startDate`, we use the `strong` property attribute.
 
 For properties that are primitives like `coordinate`, we use `assign`.
 
-We want to place our event objects on our `HUMMapViewController`'s map, so we `@import MapKit;` at the top of the file. Now we can declare that our `HUMEvent` object conforms to the `<MKAnnotation>` protocol. This protocol has a required property `coordinate`, which we have declared. Conforming to this property is covered further by the 'Getting Events from the API' section.
+We want to place our event objects on our `HUMMapViewController`'s map, so we `@import MapKit;` at the top of the file. Now we can declare that our `HUMEvent` object conforms to the `<MKAnnotation>` protocol. This protocol has a required property `coordinate`, which we have declared. Conforming to this property is covered further by the "Getting Events from the API" section.
 
 ### Methods for Initializing an Event
 
@@ -86,7 +86,7 @@ Declare three methods for intializing `HUMEvent` objects:
     	return [events copy];
 	}
 
-`JSONDictionary` is a method that returns a JSON formatted dictionary of all the properties on an event. This method will be used when we need JSON data to POST an event to the API. We haven't defined the `RFC3339DateFormatter` yet, but we will do so in the next section.
+`JSONDictionary` is a method that returns a JSON formatted dictionary of all the properties on an event. This method will be used when we need JSON data to POST an event to the API. The method `+ RFC3339DateFormatter` is currently undefined, but we will address that in the next section.
 
 	// HUMEvent.m
 	

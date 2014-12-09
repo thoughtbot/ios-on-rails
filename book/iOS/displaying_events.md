@@ -2,7 +2,7 @@
 
 ### Calling the Get Event Method
 
-When the user runs the app, we want to display events that are near their current location. So, we want to call our GET events method on `-viewDidAppear:` of the `HUMMapViewController`. We'll encapsulate this request inside a method called `-reloadEventsOnMap`, which we will define in the next section.
+When the user runs the app, we want to display events that are near the user's current location. So we want to call our GET events method on `-viewDidAppear:` of the `HUMMapViewController`. We'll encapsulate this request inside a method called `-reloadEventsOnMap`, which we will define in the next section.
 
 If we aren't logged in, we still want to call the `-createCurrentUserWithCompletionBlock:` method. Once that request goes through, we can call `-reloadEventsOnMap`.
 
@@ -48,7 +48,7 @@ We also want to make a new GET request when the user changes the map's region. T
 
 ### Cancelling Get Event Tasks
 
-We call our new `-reloadEventsOnMap` method from the HUMMapViewController every time the map moves. This way, we'll always display events in the map area that the user is viewing. However, if the user moves the map to a new area before the API call completes, we want to cancel the previous task since it's for a map area that the user is no longer viewing. So, we'll make a `currentEventGetTask` property which will represent the current and only GET events task that we are running.
+We call our new `-reloadEventsOnMap` method from the HUMMapViewController every time the map moves. This way, we'll always display events in the map area that the user is viewing. However, if the user moves the map to a new area before the API call completes, we want to cancel the previous task since it's for a map area that the user is no longer viewing. So we'll make a `currentEventGetTask` property, which will represent the current and only GET events task that we are running.
 
 	// HUMMapViewController.m
 	
@@ -87,7 +87,7 @@ Finally, we can call `-updateMapViewAnnotationsWithAnnotations:` to update the `
 
 Now we'll define the `-updateMapViewAnnotationsWithAnnotations:` method that we called in the `-reloadEventsOnMap` method.
 
-Each time we get a new array of annotations from the API, we want to remove the old annotations from our `mapView` and add the new ones. However, if an old annotations is the same as a new one, there's no sense in removing it and then placing it back on the map. Removing and adding only the annotations that are necessary reduces the amount of redrawing that's done every time the map pans, leading to a smoother scrolling experience.
+Each time we get a new array of annotations from the API, we want to remove the old annotations from our `mapView` and add the new ones. However, if an old annotation is the same as a new one, there's no sense in removing it and then placing it back on the map. Removing and adding only the annotations that are necessary reduces the amount of redrawing that's done every time the map pans, leading to a smoother scrolling experience.
 
 This method (from a [thoughtbot blog post](http://robots.thoughtbot.com/how-to-handle-large-amounts-of-data-on-maps/) on displaying annotations on MKMapViews) handles removing, adding, and keeping annotations as necessary.
     
@@ -115,7 +115,7 @@ Taking advantage of the `-intersectSet:` and `-minusSet:` methods lets us create
     
 ### Checking Event Equality
 
-The set methods `-intersectSet:` and `-minusSet:` call the method `-isEqual:` on each NSObject in the set. So, we need to overwrite this method on `HUMEvent`.
+The set methods `-intersectSet:` and `-minusSet:` call the method `-isEqual:` on each NSObject in the set. So we need to overwrite this method on `HUMEvent`.
 
 	// HUMEvent.m
 
