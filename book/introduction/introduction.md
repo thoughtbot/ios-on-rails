@@ -1,6 +1,6 @@
 # Introduction
 
-### Why this book?
+#### Why this book?
 
 There are many ways to build the backend for an iOS application but you only
 need one. And depending on the complexity of the API you are going to create,
