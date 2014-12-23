@@ -11,6 +11,8 @@ event has geolocation information (latitude and longitude), which allows us to
 plot it on a map. A user has and belongs to many events through attendances. A
 user can only have one attendance per event.
 
+**jhm: test question**
+
 ![Humon database representation](images/humon-database-representation.png)
 
 The Humon application does not ask for a username or password. Instead, we will
