@@ -12,6 +12,7 @@ gem 'rack-timeout'
 gem 'rails'
 gem 'recipient_interceptor'
 gem 'unicorn'
+gem 'faker'
 
 group :development do
   gem 'better_errors'
