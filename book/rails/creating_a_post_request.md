@@ -12,22 +12,22 @@ explanation](http://stackoverflow.com/a/1571900/1019369) of authenticity tokens
 in Rails:
 
 > When the user views a form to create, update, or destroy a resource, the Rails
-> app  would create a random `authenticity_token`, store this token in the
+> app would create a random "authenticity_token," store this token in the
 > session, and place it in a hidden field in the form. When the user submits the
-> form, Rails would look for the `authenticity_token`, compare it to the one
+> form, Rails would look for the "authenticity_token," compare it to the one
 > stored in the session, and if they match the request is allowed to continue.
 
 Why this happens:
 
-> Since the authenticity token is stored in the session, the client can not know
+> Since the authenticity token is stored in the session, the client cannot know
 > its value. This prevents people from submitting forms to a Rails app
 > without viewing the form within that app itself. Imagine that you are using
-> service A, you logged into the service and everything is ok. Now imagine that
+> service A, you logged into the service and everything is OK. Now imagine that
 > you went to use service B, and you saw a picture you like, and pressed on the
 > picture to view a larger size of it. Now, if some evil code was there at service
 > B, it might send a request to service A (which you are logged into), and ask to
 > delete your account, by sending a request to
-> `http://serviceA.com/close_account`. This is what is known as CSRF (Cross Site
+> "http://serviceA.com/close_account." This is what is known as CSRF (Cross Site
 > Request Forgery).
 
 While protecting against CSRF attacks is a good thing, the default forgery
@@ -38,10 +38,10 @@ standard web form to create a record), you will see the following error:
     ActionController::InvalidAuthenticityToken
 
 Rails lets us choose between forgery protection strategies. The default in Rails
-4 is `:exception`, which we are seeing in action above. Rails recommends the
-`:null_session` strategy for APIs, which empties the session rather than raising
+4 is ":exception," which we are seeing in action above. Rails recommends the
+":null_session" strategy for APIs, which empties the session rather than raising
 an exception. Since we want this strategy for all API endpoints but not
-necessarily all endpoints, we will create an `ApiController` that all of our API
+necessarily all endpoints, we will create an "ApiController" that all our API
 controllers will inherit from and set the forgery protection strategy there:
 
     # app/controllers/api_controller.rb
@@ -98,8 +98,8 @@ GET request: with a request spec.
       end
     end
 
-In this test we are using a method called `set_headers` and passing the
-`device_token` into the method. This is a helper method that we will use
+In this test we are using a method called "set_headers" and passing the
+"device_token" into the method. This is a helper method that we will use
 in many request specs, so let's define it outside of this spec file:
 
     # spec/support/request_headers.rb
@@ -117,11 +117,11 @@ in many request specs, so let's define it outside of this spec file:
       config.include RequestHeaders
     end
 
-Note about the time comparisons above: the reason we are calling `to_i` on
-`event.started_at` and `event.ended_at` is that Ruby time (the time we are
-setting when we declare the `date` variable) is more precise than ActiveRecord
-time (the time we are getting back from `Event.last`). If you run the tests
-without `to_i`, you will see something like this:
+Note about the time comparisons above: the reason we are calling "to_i" on
+"event.started_at" and "event.ended_at" is that Ruby time (the time we are
+setting when we declare the "date" variable) is more precise than ActiveRecord
+time (the time we are getting back from "Event.last"). If you run the tests
+without "to_i," you will see something like this:
 
         expected: Wed, 16 Apr 2014 17:13:47 UTC +00:00
              got: Wed, 16 Apr 2014 17:13:47 UTC +00:00
@@ -131,14 +131,14 @@ comparisons in Rails
 notes](http://blog.tddium.com/2011/08/07/rails-time-comparisons-devil-details-etc/),
 "When the value is read back from the database, it's only preserved to
 microsecond precision, while the in-memory representation is precise to
-nanoseconds." Calling `to_i` on these dates normalizes them to use the same
+nanoseconds." Calling "to_i" on these dates normalizes them to use the same
 place value, which renders them equal for our test.
 
 #### Controller
 
-When we run the test above, our first error should be `No route matches [POST]
-"/v1/events"`. This is exactly the error we would expect, since we haven't
-defined this route in our `routes.rb` file. Let's fix that:
+When we run the test above, our first error should be "No route matches [POST]
+'/v1/events'." This is exactly the error we would expect, since we haven't
+defined this route in our "routes.rb" file. Let's fix that:
 
     # config/routes.rb
 
@@ -152,11 +152,11 @@ defined this route in our `routes.rb` file. Let's fix that:
 
 When we run the spec again, our error has changed to
 
-    The action 'create' could not be found for Api::V1::EventsController
+    The action "create" could not be found for Api::V1::EventsController
 
 This is good; it means the route we
-added is working, but we still need to add a `create` method to our
-`EventsController`. So let's do that:
+added is working, but we still need to add a "create" method to our
+"EventsController." So let's do that:
 
     # app/controllers/api/v1/events_controller.rb
 
@@ -168,27 +168,27 @@ added is working, but we still need to add a `create` method to our
 
     end
 
-Run the spec again, and our error has changed to `Missing template
-api/v1/events/create`. Again, receiving a different error message is a good
+Run the spec again, and our error has changed to "Missing template
+api/v1/events/create." Again, receiving a different error message is a good
 indication that the last change we made is bringing us closer to a passing test.
 
 We will get back to the view layer in the next section, but for now let's just
-create an empty file at `app/views/api/v1/events/create.json.jbuilder`, since
+create an empty file at "app/views/api/v1/events/create.json.jbuilder," since
 that will help us get to our next error.
 
 Run the spec again, and our error has changed (hooray!) to:
 
      Failure/Error: expect(response_json).to eq({ 'id' => event.id })
        NoMethodError:
-         undefined method `id' for nil:NilClass
+         undefined method 'id' for nil:NilClass
 
-If we look back at our spec, we can see that `id` is being called on `event`,
-which is the variable name we assigned to `Event.last`. By saying that `id` is
-an undefined method for `nil`, our error is telling us that `Event.last` is
-`nil`.
+If we look back at our spec, we can see that "id" is being called on "event,"
+which is the variable name we assigned to "Event.last." By saying that "id" is
+an undefined method for "nil," our error is telling us that "Event.last" is
+"nil."
 
 And of course it is! We haven't added any logic into our controller that would
-create an instance of `Event`; at the moment, all we have is an empty `create`
+create an instance of "Event"; at the moment, all we have is an empty "create"
 method. Time to add some logic:
 
     # app/controllers/api/v1/events_controller.rb
@@ -233,13 +233,13 @@ Now we get a different error:
 
 #### Checking for the auth token header
 
-Oh yes, we are using a method we haven't defined yet! What is this `authorize`
-method all about? When we are creating an `event` with our API, we want to make
+Oh yes, we are using a method we haven't defined yet! What is this "authorize"
+method all about? When we are creating an "event" with our API, we want to make
 sure that the event has an owner.
 
 In Humon, we identify users by their device token, which is being sent in the
 header. In early versions of this book, we sent the device token in the
-parameters, just like `address`, `lat`, and `name`.
+parameters, just like "address," "lat," and "name."
 
 Later on, we got feedback that it is more typical to see auth tokens sent in
 request headers. At first we thought this was because of security concerns, but
@@ -249,7 +249,7 @@ The best explanation we've found for sending tokens of any kind in the header
 rather than in the URL is that it accounts for user error. As shared in [this
 StackOverflow response](http://stackoverflow.com/a/20754104/1019369), putting
 tokens in the header "Provides extra measure of security by preventing users
-from inadvertently sharing URLs with their credentials embedded in them".
+from inadvertently sharing URLs with their credentials embedded in them."
 
 Another reason tokens are usually sent as headers is that it is simpler for the
 client to process auth tokens when they are sent as headers. For this reason,
@@ -257,9 +257,9 @@ sending auth tokens in the header is common practice for APIs. Since we want to
 establish and follow design principles for APIs that can be used and re-used for
 many use cases, it make sense to go with what's popular.
 
-So, given then we are sending the `device_token` in the header, and we will be
+So, given then we are sending the "device_token" in the header, and we will be
 doing that for any action that requires us to know which user is making the
-request, it makes sense to define a method in `ApiController` that looks for
+request, it makes sense to define a method in "ApiController" that looks for
 the device token header and finds the user with that device token.
 Let's define that method now:
 
@@ -287,7 +287,7 @@ Let's define that method now:
        end
      end
 
-Note that we are using `tb-device-token` as our header key so that it does not
+Note that we are using "tb-device-token" as our header key so it does not
 clash with header keys for any other auth libraries we might implement in the
 future.
 
@@ -297,9 +297,9 @@ the final step: creating our view.
 #### View
 
 Our
-[`EventsController`](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/controllers/api/v1/events_controller.rb)
-is creating an `event`, but we are still getting an error when we run our spec
-(note: your expectation might have a different `id` number depending on how many
+["EventsController"](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/controllers/api/v1/events_controller.rb)
+is creating an "event." but we are still getting an error when we run our spec
+(note: your expectation might have a different "id" number depending on how many
 time's you've run your test; that's fine):
 
 
@@ -320,30 +320,30 @@ forget our second POST spec.
 ### It all starts with a request spec, part II
 
 Our first spec covered the "happy path," which
-[Wikipedia](http://en.wikipedia.org/wiki/Happy_path) defines as the "a
+[Wikipedia](http://en.wikipedia.org/wiki/Happy_path) defines as "a
 well-defined test case using known input, which executes without exception and
 produces an expected output." Our second test will show the "sad path," which
-means that it will cover validation and error handling.
+means it will cover validation and error handling.
 
-You might remember that our GET request section only contained a single test.
+You might remember that our GET request section contained only a single test.
 While these decisions are rarely black and white, it was our judgment that only
 a "happy path" test was required for that endpoint. The "sad path" for a GET
-request would occur when the `id` in the URL does not correspond to an existing
-`event`. In that case, the application would return a [`404 Not
-Found`](http://en.wikipedia.org/wiki/HTTP_404) response code, which is the
+request would occur when the "id" in the URL does not correspond to an existing
+"event." In that case, the application would return a ["404 Not
+Found"](http://en.wikipedia.org/wiki/HTTP_404) response code, which is the
 default behavior and therefore does not need to be tested.
 
 By default, passing invalid attributes to our POST request would not create the
-`event` and would return a response body without helpful error messages and a
-misleading response code of [`200
-OK`](http://en.wikipedia.org/wiki/HTTP_200#2xx_Success).
+"event" and would return a response body without helpful error messages and a
+misleading response code of ["200
+OK"](http://en.wikipedia.org/wiki/HTTP_200#2xx_Success).
 
 Because we want to change both the response body and the response code returned
 when invalid attributes are used in a POST request, writing a test for that
 scenario makes sense.
 
 Let's move on to our "sad path" request spec and cover a POST request with
-invalid attributes (it will go inside the same `describe` block as our first
+invalid attributes (it will go inside the same "describe" block as our first
 POST request spec):
 
     # spec/requests/api/v1/events/events_spec.rb
@@ -370,18 +370,18 @@ POST request spec):
       end
     end
 
-Creating an `event` without attributes does not work because of the validations
+Creating an "event" without attributes does not work because of the validations
 we set up in the GET request section of this book. If you need a refresher,
 check out the validations on
-[`Event`](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/models/event.rb).
+["Event"](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/models/event.rb).
 
 Right now, rather than our response JSON containing the message and errors we
-want to see, we get `{"id"=>nil}`. Time to look at the `EventsController`.
+want to see, we get "{"id"=>nil}." Time to look at the "EventsController."
 
 ##### Controller
 
 Right now, our controller doesn't contain any instructions for what to do in the
-case that an `event` does not save properly, which is why we do not see the
+case that an "event" does not save properly, which is why we do not see the
 message or errors included in our spec. So let's add those:
 
     # app/controllers/api/v1/events_controller.rb
@@ -406,8 +406,8 @@ message or errors included in our spec. So let's add those:
 
 With this change, our spec should be passing.
 
-To manually test that this is working, make sure you are running `rails server`
-and try a `curl` request in another Terminal window:
+To manually test that this is working, make sure you are running "rails server"
+and try a "curl" request in another Terminal window:
 
     $ curl --data "{}" http://localhost:3000/v1/events
 
