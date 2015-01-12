@@ -1191,7 +1191,7 @@ without turning that text into a set of coordinates.
 
 There are many approaches to geocoding with Rails. If you're interested in
 learning more, thoughbot's [*Geocoding on
-Rails*](https://learn.thoughtbot.com/products/22-geocoding-on-rails) provides a
+Rails*](http://geocodingonrails.com) provides a
 thorough analysis and discussion of the various options.
 
 ### Geocoding in Humon: choosing a library

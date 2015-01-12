@@ -18,7 +18,7 @@ creating your API client from scratch or with AFNetworking.
 If you enjoy the sample, you can get access to the entire book and sample
 application at:
 
-<https://learn.thoughtbot.com/products/25-ios-on-rails>
+<http://iosonrails.net>
 
 The eBook covers intermediate to advanced topics on creating iOS client and Ruby
 on Rails server applications.
@@ -55,4 +55,4 @@ Thanks for checking out the sample of our iOS on Rails eBook.  If you’d
 like to get access to the full content, the example applications, ongoing
 updates, you can pick it up on our website:
 
-<https://learn.thoughtbot.com/products/25-ios-on-rails>
+<http://iosonrails.net>
