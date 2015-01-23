@@ -30,7 +30,7 @@
 <section id="creating-the-user-session-object" class="level3">
 <h3>Creating the User Session Object</h3>
 <p>When we make a POST request to /users, the backend confirms that we sent the correct app secret, creates a new user with the device_token we pass, and returns the account's ID and token.</p>
-<p>Create a subclass of NSObject called HUMUserSession. This object will manage the current user's session, which means it will be responsible for keeping track of one user ID and one device_token that we'll be signing our requests with.</p>
+<p>Create a subclass of <code>NSObject</code> called <code>HUMUserSession</code>. This object will manage the current user's session, which means it will be responsible for keeping track of one user ID and one <code>device_token</code> that we'll be signing our requests with.</p>
 <p>The interface for our user session manager should contain 5 class methods:</p>
 <pre><code>// HUMUserSession.h
 
@@ -80,8 +80,8 @@ static NSString *const HUMUserToken = @"currentUserToken";</code></pre>
         return;
     }
 
-    NSString *IDstring = [NSString stringWithFormat:@"%@", userID];
-    [SSKeychain setPassword:IDstring
+    NSString *IDString = [NSString stringWithFormat:@"%@", userID];
+    [SSKeychain setPassword:IDString
                  forService:HUMService
                     account:HUMUserID
                       error:nil];
@@ -99,7 +99,7 @@ static NSString *const HUMUserToken = @"currentUserToken";</code></pre>
                     account:HUMUserToken
                       error:nil];
 }</code></pre>
-<p>You'll notice that we created an <code>IDstring</code> with <code>[NSString stringWithFormat:@"%@", userID]</code>. This is because our <code>userID</code> returned from the API is a number, while we need a string <code>IDstring</code> password to store in the keychain.</p>
+<p>You'll notice that we created an <code>IDString</code> with <code>[NSString stringWithFormat:@"%@", userID]</code>. This is because our <code>userID</code> returned from the API is a number, while we need a string <code>IDString</code> password to store in the keychain.</p>
 <p>Lastly, we need to implement the method that we will use in our client singleton to determine if we currently have a valid user session. It's easiest to think of this as whether or not the user is logged in.</p>
 <pre><code>// HUMUserSession.m
 

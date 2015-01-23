@@ -373,11 +373,11 @@ Before we go about making our first API request, we need to decide how we are go
 
 ### Creating a Singleton Client Object
 
-Create a subclass of NSObject called HUMRailsClient. All of our API requests will be handled by one instance of the HUMRailsClient, so we're going to create a singleton of HUMRailsClient called sharedClient. 
+Create a subclass of `NSObject` called `HUMRailsClient`. All of our API requests will be handled by one instance of the `HUMRailsClient`, so we're going to create a singleton of `HUMRailsClient`. 
 
-What we will create and refer to as a singleton isn't a dictionary-definition singleton, since we aren't completely limiting the instantiation of HUMRailsClient to only one object. We are, however, limiting the instantiation of HUMRailsClient to only one object if we always use our sharedClient. Essentially, our sharedClient is a singleton if we use it consistantly but is not if we errantly decide to instantiate another instance of HUMRailsClient using `[[HUMRailsClient alloc] init]`.
+What we will create and refer to as a singleton isn't a dictionary-definition singleton, since we aren't completely limiting the instantiation of `HUMRailsClient` to only one object. We are, however, limiting the instantiation of `HUMRailsClient` to only one object if we always obtain the instance via the `+sharedClient` class method. Essentially, our sharedClient is a singleton if we use it consistantly but is not if we errantly decide to instantiate another instance of `HUMRailsClient` using `[[HUMRailsClient alloc] init]`.
 
-Declare a class method that will return our singleton by adding `+ (instancetype)sharedClient;` to your HUMRailsClient.h file. We use instancetype as our return type to indicate that this class method will return an instance of HUMRailsClient. The + indicates that sharedClient is a class method to be called directly on the HUMRailsClient class. Prepending your class method with "shared" indicates to other developers that the method returns a singleton.
+Declare a class method that will return our singleton by adding `+ (instancetype)sharedClient;` to your `HUMRailsClient.h` file. We use `instancetype` as our return type to indicate that this class method will return an instance of `HUMRailsClient`. The + indicates that `sharedClient` is a class method to be called directly on the `HUMRailsClient` class. Prepending your class method with "shared" indicates to other developers that the method returns a singleton.
 
 Now let's implement this method:
 	
@@ -398,19 +398,19 @@ Now let's implement this method:
     	return _sharedClient;
 	}
 
-First, we declare a static variable of type HUMRailsClient. Since it's a static variable, _sharedClient will last for the life of the program.
+First, we declare a static variable of type `HUMRailsClient`. Since it's a static variable, `_sharedClient` will last for the life of the program.
 
-Then, we use Grand Central Dispatch to execute a block of code once and only once. If you are using XCode and begin typing dispatch_once, you can even use autocomplete to find and insert the entire dispatch_once code snippet. dispatch_once takes a reference to a static variable of type dispatch_once_t and a block of code to execute. dispatch_once_t is a long variable type that indicates whether or not the block of code has been executed already. On the first call of dispatch_once, the onceToken is set and the block executed, but on every subsequent call the block is not executed because the onceToken has already been set.
+Then, we use Grand Central Dispatch to execute a block of code once and only once. If you are using Xcode and begin typing `dispatch_once`, you can even use autocomplete to find and insert the entire `dispatch_once` code snippet. `dispatch_once` takes a reference to a static variable of type `dispatch_once_t` and a block of code to execute. `dispatch_once_t` is a long variable type that indicates whether or not the block of code has been executed already. On the first call of `dispatch_once`, the `onceToken` is set and the block executed, but on every subsequent call the block is not executed because the onceToken has already been set.
 
-Inside the block we instantiate a HUMRailsClient and set it as the value of the static variable _sharedClient. Once that is done, we simply need to return our singleton _sharedClient.
+Inside the block we instantiate a `HUMRailsClient` and set it as the value of the static variable `_sharedClient`. Once that is done, we simply need to return our singleton `_sharedClient`.
 
 ### Creating a Session for Handling Requests
 
-iOS7 introduced the `NSURLSession` class, which is an object that handles groups of HTTP requests. Each API request we make in a NSURLSession is encapsulated in a `NSURLSessionTask`, which executes the request asynchronously and notifies you of completion by executing a block or by calling a method on its delegate.
+iOS 7 introduced the `NSURLSession` class, which is an object that handles groups of HTTP requests. Each API request we make in a NSURLSession is encapsulated in a `NSURLSessionTask`, which executes the request asynchronously and notifies you of completion by executing a block or by calling a method on its delegate.
 
-There are three different types of NSURLSessions, including one that allows your app to continue downloading data even if your app is in the background. The type of a session is determined by its `sessionConfiguration`, but for simple API requests we only need to use the default session type.
+There are three different types of `NSURLSession` objects, including one that allows your app to continue downloading data even if your app is in the background. The type of a session is determined by its `sessionConfiguration`, but for simple API requests we only need to use the default session type.
 
-Declare a session property and a static app secret string above your @implementation inside of `HUMRailsClient.m`.
+Declare a session property and a static app secret string above your `@implementation` inside of `HUMRailsClient.m`.
 
 	// HUMRailsClient.m
 	
@@ -425,7 +425,7 @@ Declare a session property and a static app secret string above your @implementa
 
 We will use the `HUMAppSecret` to sign POST requests to /users so that the backend can validate that the request is coming from our mobile app. The session object will handle all of our API requests.
 
-We want our HUMRailsClient to always have a session object, so we will overwrite the HUMRailsClient's `init` method to set the client's `session` property.
+We want our `HUMRailsClient` to always have a session object, so we will overwrite the `HUMRailsClient`'s `-init` method to set the client's `session` property.
 
 Custom init methods all have the same general format:
 
@@ -439,7 +439,7 @@ Custom init methods all have the same general format:
 	    return self;
     }
     
-So, our HUMRailsClient's custom `init` method will look like:
+So, our `HUMRailsClient`'s custom `-init` method will look like:
 
 	// HUMRailsClient.m
 	
@@ -461,9 +461,9 @@ So, our HUMRailsClient's custom `init` method will look like:
 	    return self;
 	}
         
-This custom init method first creates a `sessionConfiguration`. We could just use the default NSURLSessionConfiguration that is returned from NSURLSessionConfiguration's class method `defaultSessionConfiguration` to create our NSURLSession. However, we also want to change our timeout properties to 30 seconds and add some HTTP headers.
+This custom `-init` method first creates a `sessionConfiguration`. We could just use the default `NSURLSessionConfiguration` that is returned from `NSURLSessionConfiguration`'s class method `defaultSessionConfiguration` to create our `NSURLSession`. However, we also want to change our timeout properties to 30 seconds and add some HTTP headers.
 
-Next, we use that `sessionConfiguration` to create an NSURLSession, and set that session as the `_session` property on our singleton.
+Next, we use that `sessionConfiguration` to create an `NSURLSession`, and set that session as the `_session` property on our singleton.
 
 ### Setting the Session Headers
 
@@ -507,7 +507,7 @@ As we did in our other client, declare a static string constant above your imple
 
 ### Creating a Singleton Client Object
 
-Create a subclass of AFHTTPSessionManager called HUMRailsAFNClient. Declare a class method that will return a shared client singleton as we did in our other client by adding `+ (instancetype)sharedClient;` to your HUMRailsAFNClient.h file. The implementation of this method looks similar as well:
+Create a subclass of `AFHTTPSessionManager` called `HUMRailsAFNClient`. Declare a class method that will return a shared client singleton as we did in our other client by adding `+ (instancetype)sharedClient;` to your `HUMRailsAFNClient.h` file. The implementation of this method looks similar as well:
 
 	// HUMRailsAFNClient.m
 	
@@ -530,7 +530,7 @@ Create a subclass of AFHTTPSessionManager called HUMRailsAFNClient. Declare a cl
         return _sharedClient;
     }
 
-With AFNetworking, we don't have to manually set up the session configuration and session with our own custom init method. We simply initialize the client using `initWithBaseURL:`, which means that our paths later will be relative to this ROOT_URL.
+With AFNetworking, we don't have to manually set up the session configuration and session with our own custom init method. We simply initialize the client using `-initWithBaseURL:`, which means that our paths later will be relative to this `ROOT_URL`.
 
 ### Setting the Session Headers
 

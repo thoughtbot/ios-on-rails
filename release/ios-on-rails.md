@@ -1476,7 +1476,7 @@ controllers will instead be called ViewControllers.
 
 # A New Xcode Project
 
-As with any iOS app, the first step is to create a new project in Xcode. Create a new, empty project with your own name and identifier. Running the project for the first time will yield a white screen.
+As with any iOS app, the first step is to create a new project in Xcode. Create a new, "Single View Project" with your own name and identifier. Running the project for the first time will yield a white screen.
 
 ![Pick an Empty Application](images/ios_new_xcode_project_1.png)
 
@@ -1594,11 +1594,11 @@ The Humon app is going to have 2 view controllers, which we will create empty ve
 
 ![Creating a new view controller](images/ios_app_skeleton_6.png)
 
-Create a new view controller subclass called HUMMapViewController by selecting file>new>file. This will create a header (.h) and implementation (.m) file.
+Create a new view controller subclass called `HUMMapViewController` by selecting File > New > File. This will create a header (.h) and implementation (.m) file.
 
 ### Set the Root View Controller
 
-Now that we have a view controller subclass that will serve as our initial view controller in the app, we can show this view controller on launch. The app delegate has a method for exactly this purpose, called `application:didFinishLaunchingWithOptions:`, which we will overwrite.
+Now that we have a view controller subclass that will serve as our initial view controller in the app, we can show this view controller on launch. The app delegate has a method for exactly this purpose, called `-application:didFinishLaunchingWithOptions:`, which we will overwrite.
 
 	// HUMAppDelegate.m
 
@@ -1635,9 +1635,9 @@ Run the app and you'll see an instance of your `HUMMapViewController`!
 
 ### Create the MapView
 
-Inside your implementation file, create a new property called mapView. Alternatively, you can place this property in the header file, but keeping properties private by placing them in the hidden interface located in the implementation file is preferable if possible. 
+Inside your implementation file, create a new property called `mapView`. Alternatively, you can place this property in the header file, but keeping properties private by placing them in the hidden interface located in the implementation file is preferable if possible. 
 
-Also, declare that the HUMMapViewController conforms to the MKMapViewDelegate protocol by adding `<MKMapViewDelegate>`. This allows the HUMMapViewController to respond to delegate messages that the mapView sends.
+Also, declare that the `HUMMapViewController` conforms to the `MKMapViewDelegate` protocol by adding `<MKMapViewDelegate>`. This allows the `HUMMapViewController` to respond to delegate messages that the `mapView` sends.
 
 	// HUMMapViewController.m
 	
@@ -1647,9 +1647,9 @@ Also, declare that the HUMMapViewController conforms to the MKMapViewDelegate pr
 	
 	@end
 
-Now we want to fill the entirety of the HUMMapViewController's view with a mapView. Inside of your viewDidLoad method, instantiate a map view and add it as a subview of the main view. 
+Now we want to fill the entirety of the `HUMMapViewController`'s view with a `mapView`. Inside of your `-viewDidLoad` method, instantiate a map view and add it as a subview of the main view. 
 
-Remember to set HUMMapView as the delegate of self.mapview so it can respond to delegate messages like mapView:regionDidChangeAnimated:.
+Remember to set `HUMMapView` as the delegate of `self.mapview` so it can respond to delegate messages like `-mapView:regionDidChangeAnimated:`.
 
 	// HUMMapViewController.m
 	
@@ -1671,13 +1671,13 @@ Remember to set HUMMapView as the delegate of self.mapview so it can respond to 
 	
 	@end
 	
-Also, we set the title of this view controller to the name of our app, `@"Humon"`. For more information on why we used an NSLocalizedString here instead of a `@"plain old string literal"`, please visit the [Apple developer library.](https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html#//apple_ref/doc/uid/10000051i-CH6) The short explanation is that we use localized strings for all text that will be displayed to a user. That way we can easily translate our app from English to other languages.
+Also, we set the title of this view controller to the name of our app, `@"Humon"`. For more information on why we used an `NSLocalizedString` here instead of a `@"plain old string literal"`, please visit the [Apple Developer Library](https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html#//apple_ref/doc/uid/10000051i-CH6). The short explanation is that we use localized strings for all text that will be displayed to a user. That way we can easily translate our app from English to other languages.
 	
 Go ahead and run the app to see the big beautiful map you just created.
 
 ### Create the Add Button
 
-Now we'll create an add button and add it to the navigation bar at the top of our the screen.
+Now we'll create an "Add" button and add it to the navigation bar at the top of our the screen.
 
 	// HUMMapViewController.m
 	
@@ -1693,7 +1693,7 @@ Now we'll create an add button and add it to the navigation bar at the top of ou
 	    self.navigationItem.leftBarButtonItem = button;
     }
     
-We want our add button to be on our navigation bar, so create an instance of `UIBarButtonItem`. The `target:action:` portion of the `UIBarButtonItem` init method sets the button up to call the `addButtonPressed` method when the button is tapped.
+We want our add button to be on our navigation bar, so create an instance of `UIBarButtonItem`. The `target:action:` portion of the `UIBarButtonItem` initializer method sets the button up to call the `-addButtonPressed` method when the button is tapped.
 
 In order to see the `button` on the navigation bar, set it as the `leftBarButtonItem` on the view controller's `navigationItem`.
 
@@ -1715,7 +1715,7 @@ Go ahead and run your project. If everything is set up correctly, you should see
 
 ### Subclassing UITableViewController
 
-Create a new subclass of UITableViewController called HUMEventViewController. UITableViewController is a subclass of UIViewController that has a tableView property and conforms to the `<UITableViewDataSource>` and `<UITableViewDelegate>` protocols. This means that we have to implement the `tableView:numberOfRowsInSection:` and `tableView:cellForRowAtIndexPath:` so the tableView will know how many cells to display and what these cells will look like. You can remove any other `tableView:` methods you see in the implementation file.
+Create a new subclass of `UITableViewController` called `HUMEventViewController`. `UITableViewController` is a subclass of `UIViewController` that has a `tableView` property and conforms to the `<UITableViewDataSource>` and `<UITableViewDelegate>` protocols. This means that we have to implement the `tableView:numberOfRowsInSection:` and `tableView:cellForRowAtIndexPath:` so the `tableView` will know how many cells to display and what these cells will look like. You can remove any other `-tableView:...` methods you see in the implementation file.
 
 	// HUMEventViewController.m
 	
@@ -1735,11 +1735,11 @@ Create a new subclass of UITableViewController called HUMEventViewController. UI
         return cell;
     }
 
-The method `tableView:cellForRowAtIndexPath:` returns a cell for every row in the tableview. Instead of instantiating and returning a new cell every time, we use `dequeueReusableCellWithIdentifier:forIndexPath:` so that we can reuse cells that have already been instantiated. The identifier argument allows you to recycle different types of cells, in case you wanted to have a `@"GreenCellIdentifier"` and a `@"BlueCellIdentifier"`.
+The method `-tableView:cellForRowAtIndexPath:` returns a cell for every row in the tableview. Instead of instantiating and returning a new cell every time, we use `-dequeueReusableCellWithIdentifier:forIndexPath:` so that we can reuse cells that have already been instantiated. The identifier argument allows you to recycle different types of cells, in case you wanted to have a `@"GreenCellIdentifier"` and a `@"BlueCellIdentifier"`.
 
 We use static strings as cell identifiers, since there's no need to create a new instance of the identifier every time we want to use it. This is why we are using `HUMEventCellIdentifier` here instead of a string literal like `@"cell"`.
 
-To create a static string, place `static NSString *const HUMEventCellIdentifier = @"HUMEventCellIdentifier";` inside your HUMEventViewController implementation file. Now you can refer to this `@"HUMEventCellIdentifier"` string as `HUMEventCellIdentifier` throughout the file.
+To create a static string, place `static NSString *const HUMEventCellIdentifier = @"HUMEventCellIdentifier";` inside your `HUMEventViewController` implementation file. Now you can refer to this `@"HUMEventCellIdentifier"` string as `HUMEventCellIdentifier` throughout the file.
 
 	// HUMEventViewController.m
 	
@@ -1751,23 +1751,23 @@ To create a static string, place `static NSString *const HUMEventCellIdentifier 
            	   forCellReuseIdentifier:HUMEventCellIdentifier];
 	}
 
-If we want to be able to reuse cells using the `HUMEventCellIdentifier`, we have to register a class that the tableView will create or reuse an instance of when we call `dequeueReusableCellWithIdentifier:forIndexPath:`. We do this inside of `viewDidLoad`.
+If we want to be able to reuse cells using the `HUMEventCellIdentifier`, we have to register a class that the `tableView` will create or reuse an instance of when we call `dequeueReusableCellWithIdentifier:forIndexPath:`. We do this inside of `viewDidLoad`.
 
 ### Linking the Add Button to the HUMAddEventViewController
 
-Now that we have created a HUMAddEventViewController we can create and show the add view from the HUMMapViewController. Go back to the HUMMapViewController's implementation file and add `#import "HUMEventViewController.h"` below the `#import "HUMMapViewController.h"` to import the header file we created in the previous section.
+Now that we have created a `HUMAddEventViewController` we can create and show the add view from the `HUMMapViewController`. Go back to the `HUMMapViewController`'s implementation file and add `#import "HUMEventViewController.h"` below the `#import "HUMMapViewController.h"` to import the header file we created in the previous section.
 
-Now we can replace the `addButtonPressed` method to present a HUMEventViewController. When we press the Add button on top of the map view, we can either:
+Now we can replace the `-addButtonPressed` method to present a `HUMEventViewController`. When we press the "Add" button on top of the map view, we can either:
 
-1. Push a new HUMEventViewController onto the navigation stack managed by the UINavigationController we created in the AppDelegate.m.
+1. Push a new `HUMEventViewController` onto the navigation stack managed by the `UINavigationController` we created in the `AppDelegate.m`.
 	
-2. Present a new HUMAddEventViewController modally.
+2. Present a new `HUMAddEventViewController` modally.
 	
-Having the HUMMapViewController present modally means that the HUMEventViewController would animate sliding up from the bottom. 
+Having the `HUMMapViewController` present modally means that the `HUMEventViewController` would animate sliding up from the bottom. 
 
-Pushing onto the navigation stack means that the UINavigationController we created in the AppDelegate.m would then contain a HUMMapViewController at the bottom, and a HUMEventViewController on the top. The topmost view controller will be visible, aka the HUMEventViewController.
+Pushing onto the navigation stack means that the `UINavigationController` we created in the `AppDelegate.m` would then contain a `HUMMapViewController` at the bottom, and a `HUMEventViewController` on the top. The topmost view controller will be visible, aka the `HUMEventViewController`.
 
-This is what we're going to do, and it will also give us the "Back" functionality for dismissing the HUMEventViewController.
+This is what we're going to do, and it will also give us the "Back" functionality for dismissing the `HUMEventViewController`.
 
 	// HUMMapViewController.m
 	
@@ -1786,11 +1786,11 @@ Before we go about making our first API request, we need to decide how we are go
 
 ### Creating a Singleton Client Object
 
-Create a subclass of NSObject called HUMRailsClient. All of our API requests will be handled by one instance of the HUMRailsClient, so we're going to create a singleton of HUMRailsClient called sharedClient. 
+Create a subclass of `NSObject` called `HUMRailsClient`. All of our API requests will be handled by one instance of the `HUMRailsClient`, so we're going to create a singleton of `HUMRailsClient`. 
 
-What we will create and refer to as a singleton isn't a dictionary-definition singleton, since we aren't completely limiting the instantiation of HUMRailsClient to only one object. We are, however, limiting the instantiation of HUMRailsClient to only one object if we always use our sharedClient. Essentially, our sharedClient is a singleton if we use it consistantly but is not if we errantly decide to instantiate another instance of HUMRailsClient using `[[HUMRailsClient alloc] init]`.
+What we will create and refer to as a singleton isn't a dictionary-definition singleton, since we aren't completely limiting the instantiation of `HUMRailsClient` to only one object. We are, however, limiting the instantiation of `HUMRailsClient` to only one object if we always obtain the instance via the `+sharedClient` class method. Essentially, our sharedClient is a singleton if we use it consistantly but is not if we errantly decide to instantiate another instance of `HUMRailsClient` using `[[HUMRailsClient alloc] init]`.
 
-Declare a class method that will return our singleton by adding `+ (instancetype)sharedClient;` to your HUMRailsClient.h file. We use instancetype as our return type to indicate that this class method will return an instance of HUMRailsClient. The + indicates that sharedClient is a class method to be called directly on the HUMRailsClient class. Prepending your class method with "shared" indicates to other developers that the method returns a singleton.
+Declare a class method that will return our singleton by adding `+ (instancetype)sharedClient;` to your `HUMRailsClient.h` file. We use `instancetype` as our return type to indicate that this class method will return an instance of `HUMRailsClient`. The + indicates that `sharedClient` is a class method to be called directly on the `HUMRailsClient` class. Prepending your class method with "shared" indicates to other developers that the method returns a singleton.
 
 Now let's implement this method:
 	
@@ -1811,19 +1811,19 @@ Now let's implement this method:
     	return _sharedClient;
 	}
 
-First, we declare a static variable of type HUMRailsClient. Since it's a static variable, _sharedClient will last for the life of the program.
+First, we declare a static variable of type `HUMRailsClient`. Since it's a static variable, `_sharedClient` will last for the life of the program.
 
-Then, we use Grand Central Dispatch to execute a block of code once and only once. If you are using XCode and begin typing dispatch_once, you can even use autocomplete to find and insert the entire dispatch_once code snippet. dispatch_once takes a reference to a static variable of type dispatch_once_t and a block of code to execute. dispatch_once_t is a long variable type that indicates whether or not the block of code has been executed already. On the first call of dispatch_once, the onceToken is set and the block executed, but on every subsequent call the block is not executed because the onceToken has already been set.
+Then, we use Grand Central Dispatch to execute a block of code once and only once. If you are using Xcode and begin typing `dispatch_once`, you can even use autocomplete to find and insert the entire `dispatch_once` code snippet. `dispatch_once` takes a reference to a static variable of type `dispatch_once_t` and a block of code to execute. `dispatch_once_t` is a long variable type that indicates whether or not the block of code has been executed already. On the first call of `dispatch_once`, the `onceToken` is set and the block executed, but on every subsequent call the block is not executed because the onceToken has already been set.
 
-Inside the block we instantiate a HUMRailsClient and set it as the value of the static variable _sharedClient. Once that is done, we simply need to return our singleton _sharedClient.
+Inside the block we instantiate a `HUMRailsClient` and set it as the value of the static variable `_sharedClient`. Once that is done, we simply need to return our singleton `_sharedClient`.
 
 ### Creating a Session for Handling Requests
 
-iOS7 introduced the `NSURLSession` class, which is an object that handles groups of HTTP requests. Each API request we make in a NSURLSession is encapsulated in a `NSURLSessionTask`, which executes the request asynchronously and notifies you of completion by executing a block or by calling a method on its delegate.
+iOS 7 introduced the `NSURLSession` class, which is an object that handles groups of HTTP requests. Each API request we make in a NSURLSession is encapsulated in a `NSURLSessionTask`, which executes the request asynchronously and notifies you of completion by executing a block or by calling a method on its delegate.
 
-There are three different types of NSURLSessions, including one that allows your app to continue downloading data even if your app is in the background. The type of a session is determined by its `sessionConfiguration`, but for simple API requests we only need to use the default session type.
+There are three different types of `NSURLSession` objects, including one that allows your app to continue downloading data even if your app is in the background. The type of a session is determined by its `sessionConfiguration`, but for simple API requests we only need to use the default session type.
 
-Declare a session property and a static app secret string above your @implementation inside of `HUMRailsClient.m`.
+Declare a session property and a static app secret string above your `@implementation` inside of `HUMRailsClient.m`.
 
 	// HUMRailsClient.m
 	
@@ -1838,7 +1838,7 @@ Declare a session property and a static app secret string above your @implementa
 
 We will use the `HUMAppSecret` to sign POST requests to /users so that the backend can validate that the request is coming from our mobile app. The session object will handle all of our API requests.
 
-We want our HUMRailsClient to always have a session object, so we will overwrite the HUMRailsClient's `init` method to set the client's `session` property.
+We want our `HUMRailsClient` to always have a session object, so we will overwrite the `HUMRailsClient`'s `-init` method to set the client's `session` property.
 
 Custom init methods all have the same general format:
 
@@ -1852,7 +1852,7 @@ Custom init methods all have the same general format:
 	    return self;
     }
     
-So, our HUMRailsClient's custom `init` method will look like:
+So, our `HUMRailsClient`'s custom `-init` method will look like:
 
 	// HUMRailsClient.m
 	
@@ -1874,9 +1874,9 @@ So, our HUMRailsClient's custom `init` method will look like:
 	    return self;
 	}
         
-This custom init method first creates a `sessionConfiguration`. We could just use the default NSURLSessionConfiguration that is returned from NSURLSessionConfiguration's class method `defaultSessionConfiguration` to create our NSURLSession. However, we also want to change our timeout properties to 30 seconds and add some HTTP headers.
+This custom `-init` method first creates a `sessionConfiguration`. We could just use the default `NSURLSessionConfiguration` that is returned from `NSURLSessionConfiguration`'s class method `defaultSessionConfiguration` to create our `NSURLSession`. However, we also want to change our timeout properties to 30 seconds and add some HTTP headers.
 
-Next, we use that `sessionConfiguration` to create an NSURLSession, and set that session as the `_session` property on our singleton.
+Next, we use that `sessionConfiguration` to create an `NSURLSession`, and set that session as the `_session` property on our singleton.
 
 ### Setting the Session Headers
 
@@ -1920,7 +1920,7 @@ As we did in our other client, declare a static string constant above your imple
 
 ### Creating a Singleton Client Object
 
-Create a subclass of AFHTTPSessionManager called HUMRailsAFNClient. Declare a class method that will return a shared client singleton as we did in our other client by adding `+ (instancetype)sharedClient;` to your HUMRailsAFNClient.h file. The implementation of this method looks similar as well:
+Create a subclass of `AFHTTPSessionManager` called `HUMRailsAFNClient`. Declare a class method that will return a shared client singleton as we did in our other client by adding `+ (instancetype)sharedClient;` to your `HUMRailsAFNClient.h` file. The implementation of this method looks similar as well:
 
 	// HUMRailsAFNClient.m
 	
@@ -1943,7 +1943,7 @@ Create a subclass of AFHTTPSessionManager called HUMRailsAFNClient. Declare a cl
         return _sharedClient;
     }
 
-With AFNetworking, we don't have to manually set up the session configuration and session with our own custom init method. We simply initialize the client using `initWithBaseURL:`, which means that our paths later will be relative to this ROOT_URL.
+With AFNetworking, we don't have to manually set up the session configuration and session with our own custom init method. We simply initialize the client using `-initWithBaseURL:`, which means that our paths later will be relative to this `ROOT_URL`.
 
 ### Setting the Session Headers
 
@@ -1978,7 +1978,7 @@ The user entity on the database has two relevant properties: `device_token` and 
 
 When we make a POST request to /users, the backend confirms that we sent the correct app secret, creates a new user with the device_token we pass, and returns the account's ID and token. 
 
-Create a subclass of NSObject called HUMUserSession. This object will manage the current user's session, which means it will be responsible for keeping track of one user ID and one device_token that we'll be signing our requests with.
+Create a subclass of `NSObject` called `HUMUserSession`. This object will manage the current user's session, which means it will be responsible for keeping track of one user ID and one `device_token` that we'll be signing our requests with.
 
 The interface for our user session manager should contain 5 class methods:
 
@@ -2037,8 +2037,8 @@ Next we'll want to implement the methods we defined for setting our ID and token
 	        return;
 	    }
 	
-	    NSString *IDstring = [NSString stringWithFormat:@"%@", userID];
-	    [SSKeychain setPassword:IDstring
+	    NSString *IDString = [NSString stringWithFormat:@"%@", userID];
+	    [SSKeychain setPassword:IDString
 	                 forService:HUMService
 	                    account:HUMUserID
 	                      error:nil];
@@ -2057,7 +2057,7 @@ Next we'll want to implement the methods we defined for setting our ID and token
 	                      error:nil];
 	}
 
-You'll notice that we created an `IDstring` with `[NSString stringWithFormat:@"%@", userID]`. This is because our `userID` returned from the API is a number, while we need a string `IDstring` password to store in the keychain.
+You'll notice that we created an `IDString` with `[NSString stringWithFormat:@"%@", userID]`. This is because our `userID` returned from the API is a number, while we need a string `IDString` password to store in the keychain.
 
 Lastly, we need to implement the method that we will use in our client singleton to determine if we currently have a valid user session. It's easiest to think of this as whether or not the user is logged in.
 
@@ -2074,11 +2074,11 @@ Now we can use this `userIsLoggedIn` method to determine if we need to make a PO
 
 # Posting a User With NSURLSession
 
-Now that we have a singleton `HUMRailsClient`, a configured session property on that object, and a `HUMUserSession` object, we can create NSURLSessionTasks that will actually make our API request. 
+Now that we have a singleton `HUMRailsClient`, a configured session property on that object, and a `HUMUserSession` object, we can create instances of `NSURLSessionTask` that will actually make our API request. 
 
 ### Declaring a Task for Making Requests
 
-Declare a method in our HUMRailsClient.h that creates a POST request to /users.
+Declare a method in our `HUMRailsClient.h` that creates a POST request to /users.
 
 	- (void)createCurrentUserWithCompletionBlock:
 		(void (^)(NSError *error))block;
@@ -2089,16 +2089,16 @@ It makes sense to typedef a new name for our completion block so that we can ref
 
 	typedef void(^HUMRailsClientErrorCompletionBlock)(NSError *error);
 	
-The block that we typedef is the same as the block we previously declared, so now we can declare the method `createCurrentUserWithCompletionBlock:` as so:
+The block that we typedef is the same as the block we previously declared, so now we can declare the method `-createCurrentUserWithCompletionBlock:` as so:
 
 	- (void)createCurrentUserWithCompletionBlock:
 		(HUMRailsClientErrorCompletionBlock)block;
 
-The [Apple developer library](https://developer.apple.com/library/ios/documentation/cocoa/Conceptual/Blocks/Articles/bxDeclaringCreating.html#//apple_ref/doc/uid/TP40007502-CH4-SW1) has an in-depth section on declaring blocks in Objective C, for those interested. This [cheat sheet](http://goshdarnblocksyntax.com) of different block syntaxes may also be of help, as they do vary slightly.
+The [Apple Developer Library](https://developer.apple.com/library/ios/documentation/cocoa/Conceptual/Blocks/Articles/bxDeclaringCreating.html#//apple_ref/doc/uid/TP40007502-CH4-SW1) has an in-depth section on declaring blocks in Objective C, for those interested. This [cheat sheet](http://goshdarnblocksyntax.com) of different block syntaxes may also be of help, as they do vary slightly.
 
 ### Creating a Task for Making Requests
 
-Now that we have declared `createCurrentUserWithCompletionBlock:` and typedef-ed its completion block, we can define the method.
+Now that we have declared `-createCurrentUserWithCompletionBlock:` and typedef-ed its completion block, we can define the method.
 
 	// HUMRailsClient.m
 	
@@ -2125,9 +2125,9 @@ Now that we have declared `createCurrentUserWithCompletionBlock:` and typedef-ed
 	
 First, we instantiate a `url` for our request, which in this case is our ROOT_URL (which we set up with a user-defined macro) with `@"users"` appended to it. Then we can instantiate a `request` using this URL and set the request method to POST.
 
-Now that we have a `request`, we can create a task for our `self.session` that will execute the request. The method `dataTaskWithRequest:completionHandler:` takes two arguments, the `request` that we created before, and a block that will be run when the request is complete.
+Now that we have a `request`, we can create a task for our `self.session` that will execute the request. The method `-dataTaskWithRequest:completionHandler:` takes two arguments, the `request` that we created before, and a block that will be run when the request is complete.
 
-The block we pass into the method must be of a type defined by `dataTaskWithRequest:completionHandler:`, so we pass in a block of the appropriate type as an argument with the syntax:
+The block we pass into the method must be of a type defined by `-dataTaskWithRequest:completionHandler:`, so we pass in a block of the appropriate type as an argument with the syntax:
 
 	^void (NSData *data, NSURLResponse *response, NSError *error) { 
 		// code to execute
@@ -2175,11 +2175,11 @@ Once the task has completed, the block we just defined will be invoked with the 
         block(error);
     });
 
-If there is no error, we can create a dictionary using the response data from the task. This dictionary will contain a `device_token` and an `id`. We can save these using the class methods we created on HUMUserSession.
+If there is no error, we can create a dictionary using the response data from the task. This dictionary will contain a `device_token` and an `id`. We can save these using the class methods we created on `HUMUserSession`.
 
-Now that we have a device_token that is associated with a user in the database, we want to sign all our requests with it. Create a `newConfiguration` that is a copy of the old configuration, place the device_token in the `newConfiguration`'s header, and set `self.session` to a new session that uses the `newConfiguration`.
+Now that we have a `device_token` that is associated with a user in the database, we want to sign all our requests with it. Create a `newConfiguration` that is a copy of the old configuration, place the `device_token` in the `newConfiguration`'s header, and set `self.session` to a new session that uses the `newConfiguration`.
 
-Regardless of whether or not there's an error, we want to execute the completion block we passed into the method `createCurrentUserWithCompletionBlock:`. Since we will be updating the UI in this completion block, we have to force the completion block to execute on the main thread using `dispatch_async`. Alternatively, you could use NSOperationQueue to execute the block on the main thread, but since we are just sending off a block I chose to use `dispatch_async`.
+Regardless of whether or not there's an error, we want to execute the completion block we passed into the method `-createCurrentUserWithCompletionBlock:`. Since we will be updating the UI in this completion block, we have to force the completion block to execute on the main thread using `dispatch_async`. Alternatively, you could use `NSOperationQueue` to execute the block on the main thread, but since we are just sending off a block I chose to use `dispatch_async`.
 
 ### Setting the Headers Conditionally
 
@@ -2212,18 +2212,18 @@ Now that we've created a method for enqueueing a task manually, lets use the AFN
 
 ### Declaring a Task for Making Requests
 
-Before we declare the method for user creation, let's typedef a new name for a completion block type. This time, we'll typedef the block type `(void (^)(NSError *error))` as `HUMRailsAFNClientErrorCompletionBlock`. Place this typedef above the interface in HUMRailsAFNClient.h:
+Before we declare the method for user creation, let's typedef a new name for a completion block type. This time, we'll typedef the block type `(void (^)(NSError *error))` as `HUMRailsAFNClientErrorCompletionBlock`. Place this typedef above the interface in `HUMRailsAFNClient.h`:
 
 	typedef void(^HUMRailsAFNClientErrorCompletionBlock)(NSError *error);
 	
-Now we can declare the `createCurrentUserWithCompletionBlock:` method in HUMRailsAFNClient.h.
+Now we can declare the `createCurrentUserWithCompletionBlock:` method in `HUMRailsAFNClient.h`.
 
 	- (void)createCurrentUserWithCompletionBlock:
 		(HUMRailsAFNClientErrorCompletionBlock)block;
 
 ### Creating a Task for Making Requests
 
-When defining the method `createCurrentUserWithCompletionBlock:`, we can use one of the convenient methods that we inherit from AFHTTPSessionManager to create and execute a task.
+When defining the method `-createCurrentUserWithCompletionBlock:`, we can use one of the convenient methods that we inherit from `AFHTTPSessionManager` to create and execute a task.
 
 	// HUMRailsAFNClient.m
 
@@ -2246,11 +2246,11 @@ When defining the method `createCurrentUserWithCompletionBlock:`, we can use one
         }];
     }
 
-The method is called `POST:parameters:success:failure:` and takes four arguments.
+The method is called `-POST:parameters:success:failure:` and takes four arguments.
 
-1. The path that we're POSTing to is `@"users"`, which will be appended to our ROOT_URL that we set when initializing the client.
+1. The path that we're POSTing to is `@"users"`, which will be appended to our `ROOT_URL` that we set when initializing the client.
 
-2. The parameters for this POST request are `nil`, since the HTTPHeaderField contains our HUMAppSecret. We don't need to send any additional data for this specific POST request.
+2. The parameters for this POST request are `nil`, since the `HTTPHeaderField` contains our `HUMAppSecret`. We don't need to send any additional data for this specific POST request.
 
 3. A completion block that will execute if the request is successful. If the request is successful we set the current user's ID and token to what we got back in the `responseObject`. We also set the device_token in the header field so we can start signing our requests as that user. Finally, we execute the completion block with `nil` as an argument since we have no error.
 
@@ -2262,7 +2262,7 @@ Now that we have a POST to users method and persist the token we recieve from th
 
 Currently, our singleton sets a new `tb-device-token` and the `tb-app-secret` in the session's headers every time it initializes. These are the correct headers for POST to users, but we need different headers for all other reqeusts.
 
-In the `sharedClient` method of our `HUMRailsClient`, change the `dispatch_once` block to contain:
+In the `+sharedClient` method of our `HUMRailsClient`, change the `dispatch_once` block to contain:
 
 	// HUMRailsAFNClient.m
 	
@@ -2279,11 +2279,11 @@ In the `sharedClient` method of our `HUMRailsClient`, change the `dispatch_once`
                                forHTTPHeaderField:@"tb-device-token"];
     }
           
-This if statement depends on the class methods `userIsLoggedIn` and `userToken` that we defined on `HUMUserSession`, so remember to `#import "HUMUserSession.h"` at the top of the file. It sets the headers to include the saved `[HUMUserSession userToken]` if we are logged in and the app secret random device token if we aren't.
+This if statement depends on the class methods `+userIsLoggedIn` and `+userToken` that we defined on `HUMUserSession`, so remember to `#import "HUMUserSession.h"` at the top of the file. It sets the headers to include the saved `+[HUMUserSession userToken]` if we are logged in and the app secret random device token if we aren't.
 
 # Making the POST User Request
 
-We want to make a POST request to create and save a user only once on each device. So, lets conditionally call the `createCurrentUserWithCompletionBlock:` we just created inside of HUMMapViewController's `viewDidAppear:` method. Remember to `#import "HUMRailsClient.h"` or `#import "HUMRailsAFNClient.h"`, whichever one you choose to use.
+We want to make a POST request to create and save a user only once on each device. So, lets conditionally call the `-createCurrentUserWithCompletionBlock:` we just created inside of `HUMMapViewController`'s `-viewDidAppear:` method. Remember to `#import "HUMRailsClient.h"` or `#import "HUMRailsAFNClient.h"`, whichever one you choose to use.
 
 	// HUMMapViewController.m
 
@@ -2312,17 +2312,17 @@ We want to make a POST request to create and save a user only once on each devic
     	}
 	}
 
-If `[HUMUserSession userIsLoggedIn]` returns `NO`, then we haven't successfully made a POST request to /users. So, we can call `createCurrentUserWithCompletionBlock:` to make our POST request, which saves the user ID that returns from the API request and changes the request headers to include this user ID.
+If `+[HUMUserSession userIsLoggedIn]` returns `NO`, then we haven't successfully made a POST request to /users. So, we can call `-createCurrentUserWithCompletionBlock:` to make our POST request, which saves the user ID that returns from the API request and changes the request headers to include this user ID.
 
-We'll also present a heads-up-display to users to indicate that an API call is in progress. SVProgressHUD is a cocoapod that provides a clean and easy to use view for showing loading and percent completion. We simply call the SVProgressHUD class method `show` to display the HUD, and `dismiss` to remove it. Remember to `#import <SVProgressHUD/SVProgressHUD.h>` since we're using it in this file.
+We'll also present a heads-up-display to users to indicate that an API call is in progress. SVProgressHUD is a CocoaPod that provides a clean and easy to use view for showing loading and percent completion. We simply call the SVProgressHUD class method `show` to display the HUD, and `+dismiss` to remove it. Remember to `#import <SVProgressHUD/SVProgressHUD.h>` since we're using it in this file.
 
 If you run the app and get back a completionBlock with no error, you've officially made a successful POST request and created a user on the database!
 
 # The Event Object
 
-Create a subclass of NSObject called HUMEvent. This subclass will have a series of properties that define each event object.
+Create a subclass of `NSObject` called `HUMEvent`. This subclass will have a series of properties that define each event object.
 
-Add the following properties to your HUMEvent.h's `@interface`:
+Add the following properties to your `HUMEvent.h`'s `@interface`:
 
 	// HUMEvent.h
 	
@@ -2343,17 +2343,17 @@ Add the following properties to your HUMEvent.h's `@interface`:
 	// Properties used for placing the event on a map
 	@property (assign, nonatomic) CLLocationCoordinate2D coordinate;
 	
-We use the `copy` property attribute for the properties that are of type NSString so that if we set the property `userID` to a NSMutableString and then mutate the string, the property `userID` will not change with the mutation.
+We use the `copy` property attribute for the properties that are of type `NSString` so that if we set the property `userID` to a `NSMutableString` and then mutate the string, the property `userID` will not change with the mutation.
 
 For classes that don't have mutable subclasses, like NSDate for `startDate`, we use the `strong` property attribute.
 
 For properties that are primitives like `coordinate`, we use `assign`.
 
-We want to place our event objects on our HUMMapViewController's map, so we `@import MapKit;` at the top of the file. Now we can declare that our `HUMEvent` object conforms to the `<MKAnnotation>` protocol. This protocol has a required property `coordinate`, which we have declared. Conforming to this property is covered further by the 'Getting Events from the API' section.
+We want to place our event objects on our `HUMMapViewController`'s map, so we `@import MapKit;` at the top of the file. Now we can declare that our `HUMEvent` object conforms to the `<MKAnnotation>` protocol. This protocol has a required property `coordinate`, which we have declared. Conforming to this property is covered further by the 'Getting Events from the API' section.
 
 ### Methods for Initializing an Event
 
-Declare three methods for intializing HUMEvent objects:
+Declare three methods for intializing `HUMEvent` objects:
 
 	// HUMEvent.h
 
@@ -2361,7 +2361,7 @@ Declare three methods for intializing HUMEvent objects:
 	- (instancetype)initWithJSON:(NSDictionary *)JSON;
 	- (NSDictionary *)JSONDictionary;
 
-`initWithJSON:` is a custom intialization method for creating a HUMEvent object with a JSON dictionary from the API. It initializes a HUMEvent object and sets its properties to corresponding values from the `JSON` dictionary. We haven't defined the `RFC3339DateFormatter` yet, but we will do so in the next section.
+`initWithJSON:` is a custom intialization method for creating a `HUMEvent` object with a JSON dictionary from the API. It initializes a `HUMEvent` object and sets its properties to corresponding values from the `JSON` dictionary. We haven't defined the `RFC3339DateFormatter` yet, but we will do so in the next section.
 
 	// HUMEvent.m
 	
@@ -2390,7 +2390,7 @@ Declare three methods for intializing HUMEvent objects:
     	return self;
 	}
 
-`eventsWithJSON:` is a class method that takes in an array of JSON dictionaries and returns an array of HUMEvent objects. It uses the `initWithJSON:` method we just defined.
+`+eventsWithJSON:` is a class method that takes in an array of JSON dictionaries and returns an array of `HUMEvent` objects. It uses the `-initWithJSON:` method we just defined.
 
 	// HUMEvent.m
 	
@@ -2468,9 +2468,9 @@ We don't want to instantiate a new RFC 3339 date formatter every time we need to
 
 First, we declare a static `dateFormatter` and instantiate it in a `dispatch_once` block. Once we set the locale, date format, and time zone to match what we're receiving from the API, we can use the date formatter to translate RFC 3339 date strings to NSDates and vice versa.
 	
-For an in-depth explanation of date formatters and using NSLocale, read [Apple's intro.](https://developer.apple.com/library/ios/qa/qa1480/_index.html)
+For an in-depth explanation of date formatters and using NSLocale, read [Apple's Technical Q&A QA1480.](https://developer.apple.com/library/ios/qa/qa1480/_index.html)
 
-Be sure to add `#import NSDateFormatter+HUMDefaultDateFormatter.h` at the top of HUMEvent.m since we used the date formatter in that file, and need to know about this `RFC3339DateFormatter` method.
+Be sure to add `#import NSDateFormatter+HUMDefaultDateFormatter.h` at the top of `HUMEvent.m` since we used the date formatter in that file, and need to know about this `RFC3339DateFormatter` method.
 
 # Posting an Event With NSURLSession
 
@@ -2526,7 +2526,7 @@ This POST /events method is slightly different from the POST /users method we cr
 
 1. We need to serialize a JSON dictionary of required event information into data so we can set that as the POST request data. This is why we created the method `[event JSONDictionary]` on our event object.
 
-2. We don't need to change the headers at all. When we call `createEvent:withCompletionBlock:`, we have already set the headers to include the current user's ID with `createCurrentUserWithCompletionBlock:`.
+2. We don't need to change the headers at all. When we call `-createEvent:withCompletionBlock:`, we have already set the headers to include the current user's ID with `-createCurrentUserWithCompletionBlock:`.
     
 ### Handle the Response
 
@@ -2579,7 +2579,7 @@ and declare the event creation method:
 
 ### Creating a Task for Making Requests
 
-With AFNetworking, making a POST request with a dictionary of parameters is quite easy. We call the `POST:parameters:success:failure` method and provide the `@"events"` path, the event's JSON dictionary, and a success and failure block. 
+With AFNetworking, making a POST request with a dictionary of parameters is quite easy. We call the `-POST:parameters:success:failure` method and provide the `@"events"` path, the event's JSON dictionary, and a success and failure block. 
 
 Don't forget to `#import "HUMEvent.h"` since we need to use the method `JSONDictionary` we previously defined.
 
@@ -2610,7 +2610,7 @@ In the case of success, we want to return the `eventID` that we receive back fro
 
 ### Creating a New Init Method
 
-Our POST to events will happen in the HUMEventViewController. This view controller will be used for creating a new event as well as viewing other people's events, so we'll create an init method that encompasses both these cases.
+Our POST to events will happen in the `HUMEventViewController`. This view controller will be used for creating a new event as well as viewing other people's events, so we'll create an init method that encompasses both these cases.
 
 	// HUMEventViewController.h
 	
@@ -2652,7 +2652,7 @@ This method implementation references two properties we don't have yet, so place
 	
 ### Adding a Submit Event Method
 
-Lets take a step back and remember what this view controller is supposed to look like. The HUMEventViewController will have 4 cells for each property of our event (name, address, startDate, endDate) and a submit cell. Instead of referring to these by their indexes, lets define these cell indexes in an enum at the top of `HUMEventViewController.h`. This enum starts at HUMEventCellName = 0 and goes to HUMEventCellCount = 5.
+Lets take a step back and remember what this view controller is supposed to look like. The `HUMEventViewController` will have 4 cells for each property of our event (`name`, `address`, `startDate`, `endDate`) and a submit cell. Instead of referring to these by their indexes, lets define these cell indexes in an enum at the top of `HUMEventViewController.h`. This enum starts at `HUMEventCellName = 0` and goes to `HUMEventCellCount = 5`.
 
 	// HUMEventViewController.h
 	
@@ -2665,9 +2665,9 @@ Lets take a step back and remember what this view controller is supposed to look
 	    HUMEventCellCount
 	};
 	
-Now we can change the `tableView:numberOfRowsInSection:` to `return HUMEventCellCount;` instead of `return 5;`
+Now we can change the `-tableView:numberOfRowsInSection:` to `return HUMEventCellCount;` instead of `return 5;`
 
-We can also use this new enum when we declare `tableView:didSelectRowAtIndexPath:`to determine (in a user readable fashion) which cell was selected.
+We can also use this new enum when we declare `-tableView:didSelectRowAtIndexPath:`to determine (in a user readable fashion) which cell was selected.
 	
 	// HUMEventViewController.m
 	
@@ -2698,7 +2698,7 @@ We can also use this new enum when we declare `tableView:didSelectRowAtIndexPath
 
 ### Using the New Init Method
 
-Now we just have to use this new init method in the `HUMMapViewController`. Change the `addButtonPressed` method to use this new init method and be sure to `#import "HUMEvent.h"`.
+Now we just have to use this new init method in the `HUMMapViewController`. Change the `-addButtonPressed` method to use this new initializer and be sure to `#import "HUMEvent.h"`.
 
 	// HUMMapViewController.m
 
@@ -2739,7 +2739,7 @@ Create a new subclass of UITableViewCell called HUMTextFieldCell. Define a prope
 	
 	@end
 
-Now we'll want to initialize that `textView` and add it as a subview of our cell in a custom init method. We'll also set the `selectionStyle` to none since we don't want any response if the user selects the cell.
+Now we'll want to initialize that `textView` and add it as a subview of our cell in a custom init method. We'll also set the `selectionStyle` to `UITableViewCellSelectionStyleNone` since we don't want any visual response when the user selects the cell.
 
 	// HUMTextFieldCell.m
 	
@@ -2761,7 +2761,7 @@ Now we'll want to initialize that `textView` and add it as a subview of our cell
 	    return self;
 	}
 
-We want the user to be able to return out of the text field, so implement the delegate method `textFieldShouldReturn:`.
+We want the user to be able to return out of the text field, so implement the delegate method `-textFieldShouldReturn:`.
 
 	// HUMTextFieldCell.m
 	
@@ -2788,7 +2788,7 @@ So, lets create a method for setting a date on the cell. We'll use this method o
 	    self.textField.inputView = picker;
 	}
 
-We're using a `UIDatePicker` as the `textField`'s input view to let the user pick a new date after we set the initial date on the picker. When they pick a new date, the method `changeTextField:` will fire, as we defined with `addTarget:action:forControlEvents:`. Don't forget to `#import "NSDateFormatter+HUMDefaultDateFormatter.h"`.
+We're using a `UIDatePicker` as the `textField`'s input view to let the user pick a new date after we set the initial date on the picker. When they pick a new date, the method `-changeTextField:` will fire, as we defined with `-addTarget:action:forControlEvents:`. Don't forget to `#import "NSDateFormatter+HUMDefaultDateFormatter.h"`.
 
 	// HUMTextFieldCell.m
 
@@ -2800,7 +2800,7 @@ We're using a `UIDatePicker` as the `textField`'s input view to let the user pic
 
 ### Using a Custom Cell
 
-Back in the HUMEventViewController.m, we can use this new custom cell by adding `#import "HUMTextFieldCell.h"` to the top of the file and then registering our new custom cell class with the `tableView`. We'll use the constant string `kTextFieldCellID` that we just defined.   
+Back in the `HUMEventViewController.m`, we can use this new custom cell by adding `#import "HUMTextFieldCell.h"` to the top of the file and then registering our new custom cell class with the `tableView`. We'll use the constant string `kTextFieldCellID` that we just defined.   
 
 	// HUMEventViewController.m
 	
@@ -2825,7 +2825,7 @@ Then, define four new properties in our hidden interface.
 	@property (strong, nonatomic) HUMTextFieldCell *startCell;
 	@property (strong, nonatomic) HUMTextFieldCell *endCell;
 
-Now we can use these properties and the `kTextFieldCellID` identifier in the `tableView:cellForRowAtIndexPath:` method. After we dequeue a new cell with our identifier, we set whether the user can edit the `textField`. We also reset the input view, in case it was previously a UIDatePicker but should now use the keyboard for input.
+Now we can use these properties and the `kTextFieldCellID` identifier in the `-tableView:cellForRowAtIndexPath:` method. After we dequeue a new cell with our identifier, we set whether the user can edit the `textField`. We also reset the input view, in case it was previously a UIDatePicker but should now use the keyboard for input.
 
 	// HUMEventViewController.m
 	
@@ -2880,15 +2880,15 @@ Now that all of our cell properties are set, we can run the app and see what it 
 
 ### Reflecting Cell Input
 
-We have our new cell properties, but we are still relying on the fake event data we set in the HUMMapViewController.m.
+We have our new cell properties, but we are still relying on the fake event data we set in the `HUMMapViewController.m`.
 
 To make a POST to events with user input, we need to:
 
-1) Remove the fake data we placed in HUMMapViewController.m.
+1) Remove the fake data we placed in `HUMMapViewController.m`.
 
-Go back to the `addButtonPressed` method in `HUMMapViewController.m` and remove the assignment of the properties `event.name` `event.address` `event.startDate` `event.endDate`. Do not remove the assignment of `event.coordinate`, since we still need that to be set by the HUMMapViewController.
+Go back to the `-addButtonPressed` method in `HUMMapViewController.m` and remove the assignment of the properties `event.name` `event.address` `event.startDate` `event.endDate`. Do not remove the assignment of `event.coordinate`, since we still need that to be set by the HUMMapViewController.
 
-2) Assign our user inputted properties to the event on HUMEventViewController.
+2) Assign our user inputted properties to the event on `HUMEventViewController`.
 
 	// HUMEventViewController.m
 
@@ -2907,7 +2907,7 @@ Go back to the `addButtonPressed` method in `HUMMapViewController.m` and remove 
 	    ...
 	}
 	
-Now, go ahead and run the app. The event object that gets posted by the HUMEventViewController now reflects user input.
+Now, go ahead and run the app. The event object that gets posted by the `HUMEventViewController` now reflects user input.
 
 # Getting Events With NSURLSession
 
@@ -3008,7 +3008,7 @@ To make the event GET request, typedef a completion block that will return an ar
 	
 	typedef void(^HUMRailsAFNClientEventsCompletionBlock)(NSArray *events, NSError *error);
 	
-Then declare a method for fetching events whose parameters are a map region and a completion block of this new type. The map region will be the visible map region in our HUMMapViewController, since we only want to load events within the region we're viewing. Unlike our other API client methods, we'll return an `NSURLSessionDataTask` from this method so we can cancel the task.
+Then declare a method for fetching events whose parameters are a map region and a completion block of this new type. The map region will be the visible map region in our `HUMMapViewController`, since we only want to load events within the region we're viewing. Unlike our other API client methods, we'll return an `NSURLSessionDataTask` from this method so we can cancel the task.
 
 	//HUMRailsAFNClient.h
 	
@@ -3062,9 +3062,9 @@ In the case of failure, we simply execute our completion block with an error.
 
 ### Calling the Get Event Method
 
-When the user runs the app, we want to display events that are near their current location. So, we want to call our GET events method on `viewDidAppear` of the HUMMapViewController. We'll encapsulate this request inside a method called `reloadEventsOnMap`, which we will define in the next section.
+When the user runs the app, we want to display events that are near their current location. So, we want to call our GET events method on `-viewDidAppear:` of the `HUMMapViewController`. We'll encapsulate this request inside a method called `-reloadEventsOnMap`, which we will define in the next section.
 
-If we aren't logged in, we still want to call the `createCurrentUserWithCompletionBlock:` method. Once that request goes through, we can call `reloadEventsOnMap`.
+If we aren't logged in, we still want to call the `-createCurrentUserWithCompletionBlock:` method. Once that request goes through, we can call `-reloadEventsOnMap`.
 
 If we are logged in we can go ahead and just call `[self reloadEventsOnMap]`.
 
@@ -3097,7 +3097,7 @@ If we are logged in we can go ahead and just call `[self reloadEventsOnMap]`.
 	    }
 	}
 	
-We also want to make a new GET request when the user changes the map's region. The delegate method `mapView:regionDidChangeAnimated:` will be called whenever the user pans or zooms the map, so let's call the `reloadEventsOnMap` method there as well.
+We also want to make a new GET request when the user changes the map's region. The delegate method `-mapView:regionDidChangeAnimated:` will be called whenever the user pans or zooms the map, so let's call the `-reloadEventsOnMap` method there as well.
 
 	// HUMMapViewController.m
 
@@ -3108,13 +3108,13 @@ We also want to make a new GET request when the user changes the map's region. T
 
 ### Cancelling Get Event Tasks
 
-We call our new `reloadEventsOnMap` method from the HUMMapViewController every time the map moves. This way, we'll always display events in the map area that the user is viewing. However, if the user moves the map to a new area before the API call completes, we want to cancel the previous task since it's for a map area that the user is no longer viewing. So, we'll make a `currentEventGetTask` property which will represent the current and only GET events task that we are running.
+We call our new `-reloadEventsOnMap` method from the HUMMapViewController every time the map moves. This way, we'll always display events in the map area that the user is viewing. However, if the user moves the map to a new area before the API call completes, we want to cancel the previous task since it's for a map area that the user is no longer viewing. So, we'll make a `currentEventGetTask` property which will represent the current and only GET events task that we are running.
 
 	// HUMMapViewController.m
 	
 	@property (strong, nonatomic) NSURLSessionDataTask *currentEventGetTask;
 	
-Now we can define the `reloadEventsOnMap` method for making the GET API call and updating the map.
+Now we can define the `-reloadEventsOnMap` method for making the GET API call and updating the map.
 
 	// HUMMapViewController.m
 
@@ -3137,15 +3137,15 @@ Now we can define the `reloadEventsOnMap` method for making the GET API call and
         }];
     }
 
-Before creating a new task with `fetchEventsInRegion:withCompletionBlock:`, we need to cancel the previous task. That way we'll limit this view controller to one in-process task for events in the current area. Any unfinished tasks for areas that are not being displayed will be cancelled.
+Before creating a new task with `-fetchEventsInRegion:withCompletionBlock:`, we need to cancel the previous task. That way we'll limit this view controller to one in-process task for events in the current area. Any unfinished tasks for areas that are not being displayed will be cancelled.
 
-Once a task is finished, remove it from the self.currentEventGetTask property since it's not current and doesn't need to be cancelled if we move the map again. 
+Once a task is finished, remove it from the `self.currentEventGetTask` property since it's not current and doesn't need to be cancelled if we move the map again. 
 
-Finally, we can call `updateMapViewAnnotationsWithAnnotations:` to update the `mapView` with our new events.
+Finally, we can call `-updateMapViewAnnotationsWithAnnotations:` to update the `mapView` with our new events.
 
 ### Updating the Map with New Events
 
-Now we'll define the `updateMapViewAnnotationsWithAnnotations:` method that we called in the `reloadEventsOnMap` method.
+Now we'll define the `-updateMapViewAnnotationsWithAnnotations:` method that we called in the `-reloadEventsOnMap` method.
 
 Each time we get a new array of annotations from the API, we want to remove the old annotations from our `mapView` and add the new ones. However, if an old annotations is the same as a new one, there's no sense in removing it and then placing it back on the map. Removing and adding only the annotations that are necessary reduces the amount of redrawing that's done every time the map pans, leading to a smoother scrolling experience.
 
@@ -3171,11 +3171,11 @@ This method (from a [thoughtbot blog post](http://robots.thoughtbot.com/how-to-h
         [self.mapView removeAnnotations:[toRemove allObjects]];
     }
     
-Taking advantage of the `intersectSet:` and `minusSet:` methods lets us create a set of annotations `toAdd` and a set `toRemove`. For a deeper explanation of this method, go ahead and read the full article.
+Taking advantage of the `-intersectSet:` and `-minusSet:` methods lets us create a set of annotations `toAdd` and a set `toRemove`. For a deeper explanation of this method, go ahead and read the full article.
     
 ### Checking Event Equality
 
-The set methods `intersectSet:` and `minusSet:` call the method `isEqual` on each NSObject in the set. So, we need to overwrite this method on HUMEvent.
+The set methods `-intersectSet:` and `-minusSet:` call the method `-isEqual:` on each NSObject in the set. So, we need to overwrite this method on `HUMEvent`.
 
 	// HUMEvent.m
 
@@ -3197,11 +3197,11 @@ The set methods `intersectSet:` and `minusSet:` call the method `isEqual` on eac
         return objectsHaveSameID && objectsHaveSameUser;
     }
 
-If an `object` and `self` (which is an object of type HUMEvent) are both pointing to the same object, they are definitely equal. If `object` and `self` are not of the same class, then they are definitely not equal.
+If an `object` and `self` (which is an object of type `HUMEvent`) are both pointing to the same object, they are definitely equal. If `object` and `self` are not of the same class, then they are definitely not equal.
 
-Two HUMEvent objects are the same if they have the same `eventID` from the server and the same `userID` from the user who created the event. We're basing equality on these properties because these are the only event properties that never change.
+Two `HUMEvent` objects are the same if they have the same `eventID` from the server and the same `userID` from the user who created the event. We're basing equality on these properties because these are the only event properties that never change.
 
-Since we overwrote `isEqual:`, we must overwrite `hash` on HUMEvent. This is straight from the documentation, since two objects that are equal must have the same hash.
+Since we overwrote `-isEqual:`, we must overwrite `-hash` on `HUMEvent`. This is straight from the documentation, since two objects that are equal must have the same hash.
 
 	// HUMEvent.m
 
@@ -3219,15 +3219,15 @@ Since we overwrote `isEqual:`, we must overwrite `hash` on HUMEvent. This is str
 
 If our event doesn't have an `eventID`, we can just return the normal hash returned by `[super hash]`. If it does, our hash will be based on the two properties that we are basing equality on.
 
-With these two methods implemented on HUMEvent, we can run the application in the simulator and the map will display any events that we have already created.
+With these two methods implemented on `HUMEvent`, we can run the application in the simulator and the map will display any events that we have already created.
 
 # Viewing Individual Events
 
 ### Showing a Callout for an Event
 
-Since we want to place event objects as pins on a MKMapView, we need to make sure our HUMEvent class conform to the `<MKAnnotation>` protocol. We already declared the required property, `coordinate`, which corresponds to where the pin is placed. Now we can set the text in the pin's callout view.
+Since we want to place event objects as pins on a `MKMapView`, we need to make sure our `HUMEvent` class conform to the `<MKAnnotation>` protocol. We already declared the required property, `coordinate`, which corresponds to where the pin is placed. Now we can set the text in the pin's callout view.
 
-Check the HUMEvent `@interface` to confirm that it conforms to this protocol.
+Check the `HUMEvent` `@interface` to confirm that it conforms to this protocol.
 
 	// HUMEvent.h
 	
@@ -3244,7 +3244,7 @@ Since we already declared a `coordinate` property, we just need to add the `titl
 	@property (copy, nonatomic) NSString *subtitle;
 	@property (assign, nonatomic) CLLocationCoordinate2D coordinate;
 	
-We want the title and subtitle in an event's callout view to display the event name and address, so overwrite the getter methods for title and subtitle:
+We want the title and subtitle in an event's callout view to display the event name and address, so overwrite the getter methods for `-title` and `-subtitle`.
 
 	// HUMEvent.m
 
@@ -3262,9 +3262,9 @@ Now, when we place our event objects on our `mapView`, they'll display their eve
 
 ### Pushing an Event View Controller
 
-In addition, we want to present a read-only HUMEventViewController when we tap on a pin. So, we'll see the event view controller come on screen when we tap an annotation, and when we hit the back button we'll see the annotation callout reminding us which annotation we tapped.
+In addition, we want to present a read-only `HUMEventViewController` when we tap on a pin. So, we'll see the event view controller come on screen when we tap an annotation, and when we hit the back button we'll see the annotation callout reminding us which annotation we tapped.
 
-Presenting the HUMEventViewController means responding to the mapView delegate method `mapView:didSelectAnnotationView:`. As long as the annotation is a HUMEvent object, we want to push a new view controller with that object.
+Presenting the `HUMEventViewController` means responding to the mapView delegate method `-mapView:didSelectAnnotationView:`. As long as the annotation is a `HUMEvent` object, we want to push a new view controller with that object.
 
 	// HUMMapViewController.m
 
@@ -3282,7 +3282,7 @@ Presenting the HUMEventViewController means responding to the mapView delegate m
 
 ### Removing the Submit Button when Viewing
 
-In order to prevent users from interacting with the Submit button on the HUMEventViewController, we simply need to change the method that determines the number of rows in the table view. If our view controller is meant to be editable, return the number of cells that includes the Submit button. Otherwise, return one less than that.
+In order to prevent users from interacting with the "Submit" button on the `HUMEventViewController`, we simply need to change the method that determines the number of rows in the table view. If our view controller is meant to be editable, return the number of cells that includes the "Submit" button. Otherwise, return one less than that.
 
 	// HUMEventViewController.m
 
@@ -3302,7 +3302,7 @@ Now that we've created an app that can interact with our API using the POST and 
 
 These features are currently implemented in the sample app, so feel free to reference the code there if you choose to try any of these.
 
-1) Use autolayout on all the views in the app so the app can be used in landscape.
+1) Use [Auto Layout](https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/AutolayoutPG/Introduction/Introduction.html) on all the views in the app so the app can be used in landscape.
 
 2) Add a confirmation view controller that pushes onto the nav stack after you POST to users, with a button that lets you share your event to Facebook and Twitter.
 
@@ -3312,7 +3312,7 @@ These features are currently implemented in the sample app, so feel free to refe
 
 5) Add custom map pin images and pick a tint color for your app.
 
-6) Insert a date picker into the table view, rather than having it pop up from the bottom as the textView's inputView.
+6) Insert a date picker into the table view, rather than having it pop up from the bottom as the `textView`'s `-inputView`.
 
 7) Prevent the user from attempting to POST an event if they haven't filled out the required fields. Ignore option fields when you're determining validity.
 

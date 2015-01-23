@@ -69,7 +69,7 @@ typedef void(^HUMRailsClientEventIDCompletionBlock)(NSString *eventID, NSError *
 <p>This POST /events method is slightly different from the POST /users method we created before.</p>
 <ol type="1">
 <li><p>We need to serialize a JSON dictionary of required event information into data so we can set that as the POST request data. This is why we created the method <code>[event JSONDictionary]</code> on our event object.</p></li>
-<li><p>We don't need to change the headers at all. When we call <code>createEvent:withCompletionBlock:</code>, we have already set the headers to include the current user's ID with <code>createCurrentUserWithCompletionBlock:</code>.</p></li>
+<li><p>We don't need to change the headers at all. When we call <code>-createEvent:withCompletionBlock:</code>, we have already set the headers to include the current user's ID with <code>-createCurrentUserWithCompletionBlock:</code>.</p></li>
 </ol>
 </section>
 <section id="handle-the-response" class="level3">

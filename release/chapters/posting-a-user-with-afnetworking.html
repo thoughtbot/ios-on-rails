@@ -28,15 +28,15 @@
 <p>Now that we've created a method for enqueueing a task manually, lets use the AFNetworking framework to simplify things. We'll create a method on our <code>HUMRailsAFNClient</code> to POST to /users.</p>
 <section id="declaring-a-task-for-making-requests-1" class="level3">
 <h3>Declaring a Task for Making Requests</h3>
-<p>Before we declare the method for user creation, let's typedef a new name for a completion block type. This time, we'll typedef the block type <code>(void (^)(NSError *error))</code> as <code>HUMRailsAFNClientErrorCompletionBlock</code>. Place this typedef above the interface in HUMRailsAFNClient.h:</p>
+<p>Before we declare the method for user creation, let's typedef a new name for a completion block type. This time, we'll typedef the block type <code>(void (^)(NSError *error))</code> as <code>HUMRailsAFNClientErrorCompletionBlock</code>. Place this typedef above the interface in <code>HUMRailsAFNClient.h</code>:</p>
 <pre><code>typedef void(^HUMRailsAFNClientErrorCompletionBlock)(NSError *error);</code></pre>
-<p>Now we can declare the <code>createCurrentUserWithCompletionBlock:</code> method in HUMRailsAFNClient.h.</p>
+<p>Now we can declare the <code>createCurrentUserWithCompletionBlock:</code> method in <code>HUMRailsAFNClient.h</code>.</p>
 <pre><code>- (void)createCurrentUserWithCompletionBlock:
     (HUMRailsAFNClientErrorCompletionBlock)block;</code></pre>
 </section>
 <section id="creating-a-task-for-making-requests-1" class="level3">
 <h3>Creating a Task for Making Requests</h3>
-<p>When defining the method <code>createCurrentUserWithCompletionBlock:</code>, we can use one of the convenient methods that we inherit from AFHTTPSessionManager to create and execute a task.</p>
+<p>When defining the method <code>-createCurrentUserWithCompletionBlock:</code>, we can use one of the convenient methods that we inherit from <code>AFHTTPSessionManager</code> to create and execute a task.</p>
 <pre><code>// HUMRailsAFNClient.m
 
 - (void)createCurrentUserWithCompletionBlock:
@@ -57,10 +57,10 @@
            
     }];
 }</code></pre>
-<p>The method is called <code>POST:parameters:success:failure:</code> and takes four arguments.</p>
+<p>The method is called <code>-POST:parameters:success:failure:</code> and takes four arguments.</p>
 <ol type="1">
-<li><p>The path that we're POSTing to is <code>@"users"</code>, which will be appended to our ROOT_URL that we set when initializing the client.</p></li>
-<li><p>The parameters for this POST request are <code>nil</code>, since the HTTPHeaderField contains our HUMAppSecret. We don't need to send any additional data for this specific POST request.</p></li>
+<li><p>The path that we're POSTing to is <code>@"users"</code>, which will be appended to our <code>ROOT_URL</code> that we set when initializing the client.</p></li>
+<li><p>The parameters for this POST request are <code>nil</code>, since the <code>HTTPHeaderField</code> contains our <code>HUMAppSecret</code>. We don't need to send any additional data for this specific POST request.</p></li>
 <li><p>A completion block that will execute if the request is successful. If the request is successful we set the current user's ID and token to what we got back in the <code>responseObject</code>. We also set the device_token in the header field so we can start signing our requests as that user. Finally, we execute the completion block with <code>nil</code> as an argument since we have no error.</p></li>
 <li><p>A completion block that executes if there was an error when executing the POST task. This completion block executes the completion block we provided, with the <code>error</code> as an argument to indicate that our POST wasn't successful.</p></li>
 </ol>
@@ -69,7 +69,7 @@
 <h3>Setting the Headers Conditionally</h3>
 <p>Now that we have a POST to users method and persist the token we recieve from this method, we can conditionally set our session's headers depending on if we have that token yet.</p>
 <p>Currently, our singleton sets a new <code>tb-device-token</code> and the <code>tb-app-secret</code> in the session's headers every time it initializes. These are the correct headers for POST to users, but we need different headers for all other reqeusts.</p>
-<p>In the <code>sharedClient</code> method of our <code>HUMRailsClient</code>, change the <code>dispatch_once</code> block to contain:</p>
+<p>In the <code>+sharedClient</code> method of our <code>HUMRailsClient</code>, change the <code>dispatch_once</code> block to contain:</p>
 <pre><code>// HUMRailsAFNClient.m
 
 NSURL *baseURL = [NSURL URLWithString:ROOT_URL];
@@ -85,7 +85,7 @@ if ([HUMUserSession userIsLoggedIn]) {
                            forHTTPHeaderField:@"tb-device-token"];
 }
       </code></pre>
-<p>This if statement depends on the class methods <code>userIsLoggedIn</code> and <code>userToken</code> that we defined on <code>HUMUserSession</code>, so remember to <code>#import "HUMUserSession.h"</code> at the top of the file. It sets the headers to include the saved <code>[HUMUserSession userToken]</code> if we are logged in and the app secret random device token if we aren't.</p>
+<p>This if statement depends on the class methods <code>+userIsLoggedIn</code> and <code>+userToken</code> that we defined on <code>HUMUserSession</code>, so remember to <code>#import "HUMUserSession.h"</code> at the top of the file. It sets the headers to include the saved <code>+[HUMUserSession userToken]</code> if we are logged in and the app secret random device token if we aren't.</p>
 </section>
 </section></body>
 </html>

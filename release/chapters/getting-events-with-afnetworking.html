@@ -31,7 +31,7 @@
 <pre><code>//HUMRailsAFNClient.h
 
 typedef void(^HUMRailsAFNClientEventsCompletionBlock)(NSArray *events, NSError *error);</code></pre>
-<p>Then declare a method for fetching events whose parameters are a map region and a completion block of this new type. The map region will be the visible map region in our HUMMapViewController, since we only want to load events within the region we're viewing. Unlike our other API client methods, we'll return an <code>NSURLSessionDataTask</code> from this method so we can cancel the task.</p>
+<p>Then declare a method for fetching events whose parameters are a map region and a completion block of this new type. The map region will be the visible map region in our <code>HUMMapViewController</code>, since we only want to load events within the region we're viewing. Unlike our other API client methods, we'll return an <code>NSURLSessionDataTask</code> from this method so we can cancel the task.</p>
 <pre><code>//HUMRailsAFNClient.h
 
 - (NSURLSessionDataTask *)fetchEventsInRegion:(MKCoordinateRegion)region

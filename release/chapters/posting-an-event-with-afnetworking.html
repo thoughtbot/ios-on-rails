@@ -41,7 +41,7 @@ typedef void(^HUMRailsAFNClientEventIDCompletionBlock)(NSString *eventID, NSErro
 </section>
 <section id="creating-a-task-for-making-requests-3" class="level3">
 <h3>Creating a Task for Making Requests</h3>
-<p>With AFNetworking, making a POST request with a dictionary of parameters is quite easy. We call the <code>POST:parameters:success:failure</code> method and provide the <code>@"events"</code> path, the event's JSON dictionary, and a success and failure block.</p>
+<p>With AFNetworking, making a POST request with a dictionary of parameters is quite easy. We call the <code>-POST:parameters:success:failure</code> method and provide the <code>@"events"</code> path, the event's JSON dictionary, and a success and failure block.</p>
 <p>Don't forget to <code>#import "HUMEvent.h"</code> since we need to use the method <code>JSONDictionary</code> we previously defined.</p>
 <pre><code>// HUMRailsClient.m
 

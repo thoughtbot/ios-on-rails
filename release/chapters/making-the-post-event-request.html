@@ -27,7 +27,7 @@
 <h1>Making the POST Event Request</h1>
 <section id="creating-a-new-init-method" class="level3">
 <h3>Creating a New Init Method</h3>
-<p>Our POST to events will happen in the HUMEventViewController. This view controller will be used for creating a new event as well as viewing other people's events, so we'll create an init method that encompasses both these cases.</p>
+<p>Our POST to events will happen in the <code>HUMEventViewController</code>. This view controller will be used for creating a new event as well as viewing other people's events, so we'll create an init method that encompasses both these cases.</p>
 <pre><code>// HUMEventViewController.h
 
 @class HUMEvent;
@@ -64,7 +64,7 @@
 </section>
 <section id="adding-a-submit-event-method" class="level3">
 <h3>Adding a Submit Event Method</h3>
-<p>Lets take a step back and remember what this view controller is supposed to look like. The HUMEventViewController will have 4 cells for each property of our event (name, address, startDate, endDate) and a submit cell. Instead of referring to these by their indexes, lets define these cell indexes in an enum at the top of <code>HUMEventViewController.h</code>. This enum starts at HUMEventCellName = 0 and goes to HUMEventCellCount = 5.</p>
+<p>Lets take a step back and remember what this view controller is supposed to look like. The <code>HUMEventViewController</code> will have 4 cells for each property of our event (<code>name</code>, <code>address</code>, <code>startDate</code>, <code>endDate</code>) and a submit cell. Instead of referring to these by their indexes, lets define these cell indexes in an enum at the top of <code>HUMEventViewController.h</code>. This enum starts at <code>HUMEventCellName = 0</code> and goes to <code>HUMEventCellCount = 5</code>.</p>
 <pre><code>// HUMEventViewController.h
 
 typedef NS_ENUM(NSUInteger, HUMEventCell) {
@@ -75,8 +75,8 @@ typedef NS_ENUM(NSUInteger, HUMEventCell) {
     HUMEventCellSubmit,
     HUMEventCellCount
 };</code></pre>
-<p>Now we can change the <code>tableView:numberOfRowsInSection:</code> to <code>return HUMEventCellCount;</code> instead of <code>return 5;</code></p>
-<p>We can also use this new enum when we declare <code>tableView:didSelectRowAtIndexPath:</code>to determine (in a user readable fashion) which cell was selected.</p>
+<p>Now we can change the <code>-tableView:numberOfRowsInSection:</code> to <code>return HUMEventCellCount;</code> instead of <code>return 5;</code></p>
+<p>We can also use this new enum when we declare <code>-tableView:didSelectRowAtIndexPath:</code>to determine (in a user readable fashion) which cell was selected.</p>
 <pre><code>// HUMEventViewController.m
 
 - (void)tableView:(UITableView *)tableView
@@ -106,7 +106,7 @@ typedef NS_ENUM(NSUInteger, HUMEventCell) {
 </section>
 <section id="using-the-new-init-method" class="level3">
 <h3>Using the New Init Method</h3>
-<p>Now we just have to use this new init method in the <code>HUMMapViewController</code>. Change the <code>addButtonPressed</code> method to use this new init method and be sure to <code>#import "HUMEvent.h"</code>.</p>
+<p>Now we just have to use this new init method in the <code>HUMMapViewController</code>. Change the <code>-addButtonPressed</code> method to use this new initializer and be sure to <code>#import "HUMEvent.h"</code>.</p>
 <pre><code>// HUMMapViewController.m
 
 - (void)addButtonPressed

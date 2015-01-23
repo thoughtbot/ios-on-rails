@@ -33,7 +33,7 @@ static NSString *const HUMAppSecret =
 </section>
 <section id="creating-a-singleton-client-object-1" class="level3">
 <h3>Creating a Singleton Client Object</h3>
-<p>Create a subclass of AFHTTPSessionManager called HUMRailsAFNClient. Declare a class method that will return a shared client singleton as we did in our other client by adding <code>+ (instancetype)sharedClient;</code> to your HUMRailsAFNClient.h file. The implementation of this method looks similar as well:</p>
+<p>Create a subclass of <code>AFHTTPSessionManager</code> called <code>HUMRailsAFNClient</code>. Declare a class method that will return a shared client singleton as we did in our other client by adding <code>+ (instancetype)sharedClient;</code> to your <code>HUMRailsAFNClient.h</code> file. The implementation of this method looks similar as well:</p>
 <pre><code>// HUMRailsAFNClient.m
 
 + (instancetype)sharedClient
@@ -54,7 +54,7 @@ static NSString *const HUMAppSecret =
     
     return _sharedClient;
 }</code></pre>
-<p>With AFNetworking, we don't have to manually set up the session configuration and session with our own custom init method. We simply initialize the client using <code>initWithBaseURL:</code>, which means that our paths later will be relative to this ROOT_URL.</p>
+<p>With AFNetworking, we don't have to manually set up the session configuration and session with our own custom init method. We simply initialize the client using <code>-initWithBaseURL:</code>, which means that our paths later will be relative to this <code>ROOT_URL</code>.</p>
 </section>
 <section id="setting-the-session-headers-1" class="level3">
 <h3>Setting the Session Headers</h3>

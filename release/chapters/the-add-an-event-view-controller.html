@@ -30,7 +30,7 @@
 </figure>
 <section id="subclassing-uitableviewcontroller" class="level3">
 <h3>Subclassing UITableViewController</h3>
-<p>Create a new subclass of UITableViewController called HUMEventViewController. UITableViewController is a subclass of UIViewController that has a tableView property and conforms to the <code>&lt;UITableViewDataSource&gt;</code> and <code>&lt;UITableViewDelegate&gt;</code> protocols. This means that we have to implement the <code>tableView:numberOfRowsInSection:</code> and <code>tableView:cellForRowAtIndexPath:</code> so the tableView will know how many cells to display and what these cells will look like. You can remove any other <code>tableView:</code> methods you see in the implementation file.</p>
+<p>Create a new subclass of <code>UITableViewController</code> called <code>HUMEventViewController</code>. <code>UITableViewController</code> is a subclass of <code>UIViewController</code> that has a <code>tableView</code> property and conforms to the <code>&lt;UITableViewDataSource&gt;</code> and <code>&lt;UITableViewDelegate&gt;</code> protocols. This means that we have to implement the <code>tableView:numberOfRowsInSection:</code> and <code>tableView:cellForRowAtIndexPath:</code> so the <code>tableView</code> will know how many cells to display and what these cells will look like. You can remove any other <code>-tableView:...</code> methods you see in the implementation file.</p>
 <pre><code>// HUMEventViewController.m
 
 - (NSInteger)tableView:(UITableView *)tableView 
@@ -48,9 +48,9 @@
     
     return cell;
 }</code></pre>
-<p>The method <code>tableView:cellForRowAtIndexPath:</code> returns a cell for every row in the tableview. Instead of instantiating and returning a new cell every time, we use <code>dequeueReusableCellWithIdentifier:forIndexPath:</code> so that we can reuse cells that have already been instantiated. The identifier argument allows you to recycle different types of cells, in case you wanted to have a <code>@"GreenCellIdentifier"</code> and a <code>@"BlueCellIdentifier"</code>.</p>
+<p>The method <code>-tableView:cellForRowAtIndexPath:</code> returns a cell for every row in the tableview. Instead of instantiating and returning a new cell every time, we use <code>-dequeueReusableCellWithIdentifier:forIndexPath:</code> so that we can reuse cells that have already been instantiated. The identifier argument allows you to recycle different types of cells, in case you wanted to have a <code>@"GreenCellIdentifier"</code> and a <code>@"BlueCellIdentifier"</code>.</p>
 <p>We use static strings as cell identifiers, since there's no need to create a new instance of the identifier every time we want to use it. This is why we are using <code>HUMEventCellIdentifier</code> here instead of a string literal like <code>@"cell"</code>.</p>
-<p>To create a static string, place <code>static NSString *const HUMEventCellIdentifier = @"HUMEventCellIdentifier";</code> inside your HUMEventViewController implementation file. Now you can refer to this <code>@"HUMEventCellIdentifier"</code> string as <code>HUMEventCellIdentifier</code> throughout the file.</p>
+<p>To create a static string, place <code>static NSString *const HUMEventCellIdentifier = @"HUMEventCellIdentifier";</code> inside your <code>HUMEventViewController</code> implementation file. Now you can refer to this <code>@"HUMEventCellIdentifier"</code> string as <code>HUMEventCellIdentifier</code> throughout the file.</p>
 <pre><code>// HUMEventViewController.m
 
 - (void)viewDidLoad
@@ -60,19 +60,19 @@
     [self.tableView registerClass:[UITableViewCell class]
            forCellReuseIdentifier:HUMEventCellIdentifier];
 }</code></pre>
-<p>If we want to be able to reuse cells using the <code>HUMEventCellIdentifier</code>, we have to register a class that the tableView will create or reuse an instance of when we call <code>dequeueReusableCellWithIdentifier:forIndexPath:</code>. We do this inside of <code>viewDidLoad</code>.</p>
+<p>If we want to be able to reuse cells using the <code>HUMEventCellIdentifier</code>, we have to register a class that the <code>tableView</code> will create or reuse an instance of when we call <code>dequeueReusableCellWithIdentifier:forIndexPath:</code>. We do this inside of <code>viewDidLoad</code>.</p>
 </section>
 <section id="linking-the-add-button-to-the-humaddeventviewcontroller" class="level3">
 <h3>Linking the Add Button to the HUMAddEventViewController</h3>
-<p>Now that we have created a HUMAddEventViewController we can create and show the add view from the HUMMapViewController. Go back to the HUMMapViewController's implementation file and add <code>#import "HUMEventViewController.h"</code> below the <code>#import "HUMMapViewController.h"</code> to import the header file we created in the previous section.</p>
-<p>Now we can replace the <code>addButtonPressed</code> method to present a HUMEventViewController. When we press the Add button on top of the map view, we can either:</p>
+<p>Now that we have created a <code>HUMAddEventViewController</code> we can create and show the add view from the <code>HUMMapViewController</code>. Go back to the <code>HUMMapViewController</code>'s implementation file and add <code>#import "HUMEventViewController.h"</code> below the <code>#import "HUMMapViewController.h"</code> to import the header file we created in the previous section.</p>
+<p>Now we can replace the <code>-addButtonPressed</code> method to present a <code>HUMEventViewController</code>. When we press the "Add" button on top of the map view, we can either:</p>
 <ol type="1">
-<li><p>Push a new HUMEventViewController onto the navigation stack managed by the UINavigationController we created in the AppDelegate.m.</p></li>
-<li><p>Present a new HUMAddEventViewController modally.</p></li>
+<li><p>Push a new <code>HUMEventViewController</code> onto the navigation stack managed by the <code>UINavigationController</code> we created in the <code>AppDelegate.m</code>.</p></li>
+<li><p>Present a new <code>HUMAddEventViewController</code> modally.</p></li>
 </ol>
-<p>Having the HUMMapViewController present modally means that the HUMEventViewController would animate sliding up from the bottom.</p>
-<p>Pushing onto the navigation stack means that the UINavigationController we created in the AppDelegate.m would then contain a HUMMapViewController at the bottom, and a HUMEventViewController on the top. The topmost view controller will be visible, aka the HUMEventViewController.</p>
-<p>This is what we're going to do, and it will also give us the "Back" functionality for dismissing the HUMEventViewController.</p>
+<p>Having the <code>HUMMapViewController</code> present modally means that the <code>HUMEventViewController</code> would animate sliding up from the bottom.</p>
+<p>Pushing onto the navigation stack means that the <code>UINavigationController</code> we created in the <code>AppDelegate.m</code> would then contain a <code>HUMMapViewController</code> at the bottom, and a <code>HUMEventViewController</code> on the top. The topmost view controller will be visible, aka the <code>HUMEventViewController</code>.</p>
+<p>This is what we're going to do, and it will also give us the "Back" functionality for dismissing the <code>HUMEventViewController</code>.</p>
 <pre><code>// HUMMapViewController.m
 
 - (void)addButtonPressed
