@@ -19,7 +19,7 @@ in Rails:
 
 Why this happens:
 
-> Since the authenticity token is stored in the session, the client can not know
+> Since the authenticity token is stored in the session, the client cannot know
 > its value. This prevents people from submitting forms to a Rails app
 > without viewing the form within that app itself. Imagine that you are using
 > service A, you logged into the service and everything is ok. Now imagine that
@@ -287,9 +287,8 @@ Let's define that method now:
        end
      end
 
-Note that we are using `tb-device-token` as our header key so that it does not
-clash with header keys for any other auth libraries we might implement in the
-future.
+Note that we are using `tb-device-token` as our header key so it does not clash
+with header keys for any other auth libraries we might implement in the future.
 
 Our error message has changed yet again, and now it is time for us to move to
 the final step: creating our view.
@@ -300,7 +299,7 @@ Our
 [`EventsController`](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/controllers/api/v1/events_controller.rb)
 is creating an `event`, but we are still getting an error when we run our spec
 (note: your expectation might have a different `id` number depending on how many
-time's you've run your test; that's fine):
+times you've run your test; that's fine):
 
 
     expect(response_json).to eq({ 'id' => event.id })

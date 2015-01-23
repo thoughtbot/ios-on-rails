@@ -23,7 +23,7 @@ with Capybara. It wasn't designed for it."
 Instead, we will use [request
 specs](https://www.relishapp.com/rspec/rspec-rails/docs/request-specs/request-spec).
 RSpec request specs, like feature specs, are a great way to ensure the entire
-stack is working together properly but via HTTP verbs, response codes, and
+stack is working together properly, but via HTTP verbs, response codes, and
 responses rather than browser interactions.
 
 When writing our request specs, we found that we were calling
@@ -62,9 +62,9 @@ which we use below and in all of our request specs that include a JSON response.
 ### Model
 
 This first error we will get for the request spec above is that our app does not
-have a factory named `event`. FactoryGirl guesses the class of the object based
-on the factory name, so creating the `event` factory is a good opportunity to
-set up our `Event` model.
+have a factory named `event`. FactoryGirl guesses the object's class based on
+the factory name, so creating the `event` factory is a good opportunity to set
+up our `Event` model.
 
 At the model level, Rails applications that serve a JSON API look exactly like
 regular web applications built with Rails. Although the views and controllers
@@ -77,7 +77,7 @@ At this point, let's assume our `User` model has already been created.
 
 Our `Event` model has a few validations and relations, so we will write tests
 for those validations. In our development process, we would write the following
-tests line-by-line, watching them fail, and writing the lines in our model one
+tests line by line, watching them fail, and writing the lines in our model one
 at a time to make them pass. We will use FactoryGirl, Shoulda Matchers, and
 RSpec for our unit tests. To see our full test setup, see our `spec_helper`
 [here](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/spec/spec_helper.rb).
@@ -147,8 +147,8 @@ up for the path we are using in our test's GET request (`get
 configure our `routes.rb` file.
 
 As we discussed in the versioning section of our introduction, we will add
-controllers within `api/v1` directory so that we may release future versions of
-our API without breaking older versions of our application.
+controllers within `api/v1` directory so we may release future versions of our
+API without breaking older versions of our application.
 
 Because our `routes.rb` file tells our controllers to look for the JSON format
 by default, we do not need to tell our individual controllers to render JSON
@@ -182,7 +182,7 @@ Our controller and routes are set up, but we still need one final piece before
 our spec will pass: a view. Our request spec is looking for a view template with
 some response JSON, so we need to create that view.
 
-For a Rails developer, the views are where there will be the most difference
+For a Rails developer, the views are where the most difference will occur
 between a standard web application and a JSON API.  As with our controllers, we
 will include our views in the `api/v1` directory so that they are versioned.
 
@@ -226,7 +226,7 @@ and you tell your app to cache a block of view code by wrapping it in a
 to be teeny tiny, adding fragment caching is simple and a good habit to get into
 for apps that are likely to expand over time.
 
-If you're interested in learning more about fragment caching, there is a great
+If you're interested in learning more about fragment caching, here is a great
 [Railscast](http://railscasts.com/episodes/90-fragment-caching-revised) (paid)
 on the topic.
 
@@ -237,7 +237,7 @@ request spec should pass!
 
 But let's test it manually just to make sure. Our iOS app isn't up and running
 yet, so we will have to create records in Rails console. Make sure you are in
-your project directory in Terminal, run `rails console` and the enter the
+your project directory in Terminal, run `rails console` and then enter the
 following:
 
     User.create(device_token: '12345')

@@ -86,9 +86,9 @@ the `update` method below my other controller methods, right above the
     end
 
 Run the spec again, and, our error has changed to `Missing template
-api/v1/events/update`. Like we covered in the last section, receiving a
-different error message is a good indication that the last change we made is
-bringing us closer to a passing test.
+api/v1/events/update`. As we covered in the last section, receiving a different
+error message is a good indication that the last change we made is bringing us
+closer to a passing test.
 
 We will address the view layer in the next section, but for now let's just
 create an empty file at `app/views/api/v1/event/update.json.jbuilder`.
@@ -99,7 +99,7 @@ Run the spec again, and our error has changed (woot!) to:
 
        expected: "New name" got: "Old name"
 
-See how handy the semantic variable naming in our test is?
+See how handy the semantic variable naming is in our test?
 
 Our route, controller method, and view template are in place. All that's left
 is to add logic to our `update` method that actually updates our `event`:
@@ -124,7 +124,7 @@ our view.
 #### View
 
 Our spec error now looks like this (note: your expectation might have a
-different `id` number depending on how many time's you've run your test; that's
+different `id` number depending on how many times you've run your test; that's
 fine):
 
      Failure/Error: expect(response_json).to eq({ 'id' => event.id })

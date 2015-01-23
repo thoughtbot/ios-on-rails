@@ -29,9 +29,9 @@ thorough analysis and discussion of the various options.
 
 ### Geocoding in Humon: choosing a library
 
-For Humon, we aren't going to be transforming one type of geographic data to
+For Humon, we aren't going to be transforming one type of geographic data into
 another. What we want is to be able to receive a latitude and longitude from
-the iOS application and return the closest events to those coordinates.
+the iOS application and return the events closest to those coordinates.
 
 After consulting *Geocoding on Rails*, we chose the
 [Geocoder](https://github.com/alexreisner/geocoder) gem for Humon. It supports
@@ -131,7 +131,7 @@ anything within that namespace. Time to define our controller.  In the
 [`NearestsController`](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/controllers/api/v1/events/nearests_controller.rb),
 we will be using the [`near`
 scope](https://github.com/alexreisner/geocoder#location-aware-database-queries)
-(given to us by the Geocoder gem) which takes in a latitude-longitude pair,
+(given to us by the Geocoder gem). This takes in a latitude-longitude pair,
 radius, and units as arguments:
 
     # app/controllers/api/1/events/nearests_controller.rb
@@ -146,10 +146,10 @@ radius, and units as arguments:
       end
     end
 
-Run the test again, and again, our test is failing:
+Run the test again, and again our test is failing:
 
      NoMethodError:
-       undefined method `near' for #<Class:0x007ffba8583468>
+       undefined method `near` for #<Class:0x007ffba8583468>
 
 Oh yeah! We forgot to actually add the Geocoder gem. Let's do that now.
 
@@ -161,11 +161,11 @@ and running `bundle install`.
 
 We already have the `lat` and `lon` attributes on our `Event` model, so no need
 for a database migration. If we run our test again, however, we will get the
-same `undefined method` error that we got before.
+same `undefined method` error we got before.
 
 According to the [Geocoder
 README](https://github.com/alexreisner/geocoder#object-geocoding), "your model
-must tell Geocoder which method returns your object's geocodable address".
+must tell Geocoder which method returns your object's geocodable address."
 Since our model is *already* geocoded (meaning: it already has the latitude and
 longitude set) we need to tell Geocoder which attributes store latitude and
 longitude:
@@ -198,7 +198,7 @@ and open a Rails console. Create or select an `event`:
 
     irb(main):002:0> event.geocoded?
 
-    NoMethodError: undefined method `geocoded?' for #<Event:0x007fdb4e4353b0>
+    NoMethodError: undefined method `geocoded?` for #<Event:0x007fdb4e4353b0>
 
 Does this error message look familiar? Answer: yes! This is the same type of
 error we got when we last ran our test.
@@ -237,7 +237,7 @@ When we run our test again, and it passes! Time to address the sad path...
 
 ### It all starts with a request spec, part II
 
-We want to explicitly define what happens when there are no events nearby.
+We want to explicitly define what happens when no events are nearby.
 Let's do that through writing a test first:
 
     # spec/requests/api/v1/events/nearest_spec.rb
