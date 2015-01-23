@@ -9,11 +9,11 @@
 -- [Wikipedia](http://en.wikipedia.org/wiki/Geocoding).
 
 Geocoding gives us the power to take location information from humans and turn
-it into something that a computer can understand and reason about.
+it into something a computer can understand and reason about.
 
 [Yelp](http://www.yelp.com), for example, does not ask businesses to add their
-latitude and longitude when creating a profile. Instead, they ask for the
-street address and zipcode, which the Yelp application transforms into a
+latitude and longitude when creating a profile. Instead, it asks for the
+street address and zip code, which the Yelp application transforms into a
 latitude and longitude that can be plotted on a map.
 
 This is important because humans don't think in the decimal precision terms of
@@ -266,7 +266,7 @@ Let's do that through writing a test first:
 
 ### Controller
 
-Time to add some branching in our controller so that we're returning the
+Time to add some branching in our controller so we're returning the
 correct message.
 
     # app/controllers/api/v1/events/nearests_controller.rb

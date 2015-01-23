@@ -86,24 +86,23 @@ chapters.
 Before we get started with building out our API, we must think about how we are
 going to handle versioning. While web developers can deploy as often as they
 want and users see the newly deployed code with every browser page refresh, iOS
-developers have both a lag time before Apple approves the new version of an app
-and a lag time before users update to the newest application version available.
+developers have both a lag time before Apple approves an app's new version 
+and a lag time before users update to the newest available application version.
 iOS applications reference the same API endpoints until a new release of the
 application has been downloaded. If you want to continue to support users with
 older versions of the iOS application you are building, you must maintain the
 same general JSON data structures on the backend for those users.
 
-You will of course discover new and better ways of structuring your JSON
+You will, of course, discover new and better ways of structuring your JSON
 responses as time goes on and your application grows. Once that happens, the
-easiest way to support old versions of the application and allow newer versions
+easiest way both to support old versions of the application and to allow newer versions
 to use different JSON structures is to release a new API version.
 
-Releasing multiple versions of an API is outside the scope of this book, but
+Releasing multiple versions of an API is outside this book's scope, but
 Ryan Bates has an excellent
 [RailsCast](http://railscasts.com/episodes/350-rest-api-versioning) on this
-topic. For now, we will future proof our API by including our views and
-controllers within the api/v1
-subdirectories. Our routes file looks like this:
+topic. For now, we will future-proof our API by including our views and
+controllers within the api/v1 subdirectories. Our routes file looks like this:
 
     # config/routes.rb
 
@@ -126,12 +125,12 @@ data returned as well as the data structure on almost a daily basis. While
 communication is both key and challenging on all software development teams, it
 can be especially challenging when working across teams that speak different
 programming languages. While Rails developers and iOS developers alike speak
-“JSON”, we found that asking iOS developers to stay up to date with API changes
-using source code on GitHub was difficult.
+"JSON", we found it difficult to ask iOS developers to stay up to date with API
+changes using source code on GitHub.
 
 A solution we found for keeping all developers in sync was using GitHub’s wiki
 feature as a source of API documentation. While updating the wiki after each API
-change required a small amount of work for our Rails developers, having an place
+change required a small amount of work for our Rails developers, a place
 where iOS developers could find up-to-date API documentation was an invaluable
 resource. You can see how we structure our wiki
 [here](https://github.com/thoughtbot/ios-on-rails/wiki).

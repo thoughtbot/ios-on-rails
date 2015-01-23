@@ -249,7 +249,7 @@ The best explanation we've found for sending tokens of any kind in the header
 rather than in the URL is that it accounts for user error. As shared in [this
 StackOverflow response](http://stackoverflow.com/a/20754104/1019369), putting
 tokens in the header "Provides extra measure of security by preventing users
-from inadvertently sharing URLs with their credentials embedded in them".
+from inadvertently sharing URLs with their credentials embedded in them."
 
 Another reason tokens are usually sent as headers is that it is simpler for the
 client to process auth tokens when they are sent as headers. For this reason,

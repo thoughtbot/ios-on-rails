@@ -132,7 +132,7 @@ fine):
        expected: {"id"=>21} got: {}
 
 Our view template exists, but is rendering an empty JSON object. And of course
-it is, all we did was create an empty view template! Let's add the JSON our
+it is. All we did was to create an empty view template! Let's add the JSON our
 test is expecting:
 
     # app/views/api/v1/events/update.json.jbuilder
@@ -148,9 +148,9 @@ thing we've found when creating APIs with Rails is that it's just as important
 to return consistent, logical error messages and response codes as it is to
 create endpoints and responses for valid requests.
 
-Like our POST request, a PATCH request has as "sad path" where the parameters
-passed are invalid. We need to create logic in our controller for that case,
-and to test drive that logic we will write a request spec:
+Like our POST request, a PATCH request has a "sad path" where the parameters
+passed are invalid. We need to create logic in our controller for that case.
+To test drive that logic we will write a request spec:
 
 
     # spec/requests/api/v1/events/events_spec.rb

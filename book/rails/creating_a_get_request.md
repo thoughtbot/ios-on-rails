@@ -2,13 +2,13 @@
 
 ### It all starts with a request spec
 
-At thoughtbot, we do test-driven and Outside-in development, which means that we
+At thoughtbot, we do test-driven and outside-in development, which means we
 start work on any feature by writing a high-level test that describes user
-behaviors. You can read a more detailed description of Outside-in development
+behaviors. You can read a more detailed description of outside-in development
 [here](http://rubylearning.com/blog/2010/10/05/outside-in-development/), but the
 benefits can be summarized as follows:
 
->  Outside-in along with the test-driven process helps you write just the
+>  Outside-in, along with the test-driven process, helps you write just the
 >  minimum amount of code that provides value to stakeholders, and not a line
 >  more.
 
