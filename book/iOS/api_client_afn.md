@@ -36,7 +36,7 @@ Create a subclass of AFHTTPSessionManager called HUMRailsAFNClient. Declare a cl
         return _sharedClient;
     }
 
-With AFNetworking, we don't have to manually set up the session configuration and session with our own custom init method. We simply initialize the client using `initWithBaseURL:`, which means that our paths later will be relative to this ROOT_URL.
+With AFNetworking, we don't have to manually set up the session configuration and session with our own custom init method. We simply initialize the client using `initWithBaseURL:`, which means our paths later will be relative to this ROOT_URL.
 
 ### Setting the Session Headers
 
