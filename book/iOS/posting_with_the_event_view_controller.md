@@ -2,7 +2,7 @@
 
 ### Creating a Custom Cell
 
-We just implemented posting a pre-made event to our API, but what we really want is to post an event based on user input. So, we need to create some custom cells for our HUMEventViewController.
+We just implemented posting a pre-made event to our API, but what we really want is to post an event based on user input. So we need to create some custom cells for our HUMEventViewController.
 
 Create a new subclass of UITableViewCell called HUMTextFieldCell. Define a property called `textField` in the header file. We'll also want to define a static string that we can use as this cell's reuse identifier.
 
@@ -50,7 +50,7 @@ We want the user to be able to return out of the text field, so implement the de
 
 This text field will receive and display text for the name and address properties, but will receive a date object and display text for the start and end dates.
 
-So, lets create a method for setting a date on the cell. We'll use this method on the start and end date cells. Declare it as `- (void)setDate:(NSDate *)date` in HUMTextFieldCell.h and definite it as follows:
+So, let's create a method for setting a date on the cell. We'll use this method on the start and end date cells. Declare it as `- (void)setDate:(NSDate *)date` in HUMTextFieldCell.h and define it as follows:
 
 	// HUMTextFieldCell.m
 
@@ -65,7 +65,7 @@ So, lets create a method for setting a date on the cell. We'll use this method o
 	    self.textField.inputView = picker;
 	}
 
-We're using a `UIDatePicker` as the `textField`'s input view to let the user pick a new date after we set the initial date on the picker. When they pick a new date, the method `changeTextField:` will fire, as we defined with `addTarget:action:forControlEvents:`. Don't forget to `#import "NSDateFormatter+HUMDefaultDateFormatter.h"`.
+We're using a `UIDatePicker` as the `textField`'s input view to let the user pick a new date after we set the initial date on the picker. When the user picks a new date, the method `changeTextField:` will fire, as we defined with `addTarget:action:forControlEvents:`. Don't forget to `#import "NSDateFormatter+HUMDefaultDateFormatter.h"`.
 
 	// HUMTextFieldCell.m
 
@@ -165,7 +165,7 @@ To make a POST to events with user input, we need to:
 
 Go back to the `addButtonPressed` method in `HUMMapViewController.m` and remove the assignment of the properties `event.name` `event.address` `event.startDate` `event.endDate`. Do not remove the assignment of `event.coordinate`, since we still need that to be set by the HUMMapViewController.
 
-2) Assign our user inputted properties to the event on HUMEventViewController.
+2) Assign our user-entered properties to the event on HUMEventViewController.
 
 	// HUMEventViewController.m
 
