@@ -24,7 +24,7 @@ Create a new subclass of UITableViewController called HUMEventViewController. UI
         return cell;
     }
 
-The method `tableView:cellForRowAtIndexPath:` returns a cell for every row in the tableview. Instead of instantiating and returning a new cell every time, we use `dequeueReusableCellWithIdentifier:forIndexPath:` so that we can reuse cells that have already been instantiated. The identifier argument allows you to recycle different types of cells, in case you wanted to have a `@"GreenCellIdentifier"` and a `@"BlueCellIdentifier"`.
+The method `tableView:cellForRowAtIndexPath:` returns a cell for every row in the tableview. Instead of instantiating and returning a new cell every time, we use `dequeueReusableCellWithIdentifier:forIndexPath:` so we can reuse cells that have already been instantiated. The identifier argument allows you to recycle different types of cells, in case you wanted to have a `@"GreenCellIdentifier"` and a `@"BlueCellIdentifier"`.
 
 We use static strings as cell identifiers, since there's no need to create a new instance of the identifier every time we want to use it. This is why we are using `HUMEventCellIdentifier` here instead of a string literal like `@"cell"`.
 
@@ -52,9 +52,9 @@ Now we can replace the `addButtonPressed` method to present a HUMEventViewContro
 	
 2. Present a new HUMAddEventViewController modally.
 	
-Having the HUMMapViewController present modally means that the HUMEventViewController would animate sliding up from the bottom. 
+Having the HUMMapViewController present modally means the HUMEventViewController would animate sliding up from the bottom. 
 
-Pushing onto the navigation stack means that the UINavigationController we created in the AppDelegate.m would then contain a HUMMapViewController at the bottom, and a HUMEventViewController on the top. The topmost view controller will be visible, aka the HUMEventViewController.
+Pushing onto the navigation stack means the UINavigationController we created in the AppDelegate.m would then contain a HUMMapViewController at the bottom, and a HUMEventViewController on the top. That topmost view controller, aka the HUMEventViewController, will be visible.
 
 This is what we're going to do, and it will also give us the "Back" functionality for dismissing the HUMEventViewController.
 
