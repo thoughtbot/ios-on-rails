@@ -8,9 +8,9 @@ These features are currently implemented in the sample app, so feel free to refe
 
 2) Add a confirmation view controller that pushes onto the nav stack after you POST to users, with a button that lets you share your event to Facebook and Twitter.
 
-3) Add a user object and set it on each Event object. Then you can let the user PATCH and event if they are the owner.
+3) Add a user object and set it on each Event object. Then you can let the user PATCH an event if they are the owner.
 
-4) Implement a POST to attendences method to let a user indicate they're going to attend an event.
+4) Implement a POST to attendences method to let a user indicate they plan to attend an event.
 
 5) Add custom map pin images and pick a tint color for your app.
 
@@ -20,5 +20,5 @@ These features are currently implemented in the sample app, so feel free to refe
 
 8) Let the user pick any location, not just their current location. Use geocoding to automatically fill out the address for that location.
 
-9) Use a different date formatter to format all the user facing dates in a human readable format.
+9) Use a different date formatter to format all the user-facing dates in a human-readable format.
 
