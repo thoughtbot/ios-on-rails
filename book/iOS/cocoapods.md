@@ -2,11 +2,11 @@
 
 ### Using CococaPods
 
-Before we create our new iOS project, lets discuss the libraries and resources we're going to be using.
+Before we create our new iOS project, lets discuss the libraries and resources we will use.
 
-We'll be using CocoaPods to manage our dependencies. Cocoapods is a ruby gem and command line tool that makes it easy to add dependencies to your project. Alternatively, you can use git submodules, but using CocoaPods is our preference due to its ease of implementation and the wide variety of third party libraries available as pods. CocoaPods will not only download the libraries we need and link them to our project in Xcode, it will also allow us to easily manage and update what version of each library we want to use.
+We'll be using CocoaPods to manage our dependencies. Cocoapods is a Ruby gem and command line tool that makes it easy to add dependencies to your project. Alternatively, you can use Git submodules, but using CocoaPods is our preference due to its ease of implementation and the wide variety of third-party libraries available as pods. CocoaPods will not only download the libraries we need and link them to our project in Xcode, it will also allow us to easily manage and update which version of each library we want to use.
 
-With a background in ruby, it may help to think of CocoaPod "pods" as gems, meaning that podfiles function similarly to gemfiles and podspecs are similar to gemspecs. `$ pod install` can be thought of as running `$ bundle install`, except for the fact that a pod install inserts the actual libraries into your project's pod directory.
+With a background in Ruby, it may help to think of CocoaPod "pods" as gems, meaning that podfiles function similarly to gemfiles and podspecs are similar to gemspecs. `$ pod install` can be thought of as running `$ bundle install`, except for the fact that a pod install inserts the actual libraries into your project's pod directory.
 
 ### CocoaPods Setup
 
@@ -20,7 +20,7 @@ What follows is a succinct version of the instructions on the [CocoaPods](http:/
 
 4. If you have your iOS project open in Xcode, close it and reopen the workspace that Cocoapods generated for you.
 
-5. When using CocoaPods in conjunction with git, you may choose to ignore the Pods directory so that the libraries that CocoaPods downloads are not under version control. If you want to do this, add `Pods` your .gitignore. Anyone who clones your project will have the Podfile and can `$ pod install` to retrieve the libraries and versions that the project requires.
+5. When using CocoaPods in conjunction with Git, you may choose to ignore the Pods directory so the libraries that CocoaPods downloads are not under version control. If you want to do this, add `Pods` your .gitignore. Anyone who clones your project will have the Podfile and can `$ pod install` to retrieve the libraries and versions that the project requires.
 
 ### Humon's Podfile
 
@@ -41,7 +41,7 @@ Installing the CocoaPods gem and creating a podfile is covered in more detail on
 	  pod 'KIF', '~> 3.0.8'
 	end
 
-The `:exclusive => true do` block ensures that the HumonUITests target only links to the testing frameworks inside the block. The frameworks outside the block will still be available to HumonUITests target since they'll be available to the main Humon target.
+The `:exclusive => true do` block ensures that the HumonUITests target links only to the testing frameworks inside the block. The frameworks outside the block will still be available to HumonUITests target since they'll be available to the main Humon target.
 
 AFNetworking will handle our API network requests, SSKeychain will help us save user info to the keychain, and SVProgressHUD will let us display loading views to the user.
 
