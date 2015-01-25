@@ -1,6 +1,6 @@
 # The User Object
 
-Our app doesn't require username/password login, instead we will create a user object on the first run of the app and then consistantly sign our requests as this user. This behavior is useful for apps that don't require login, or have some sort of guest mode.
+Our app doesn't require username/password login. Instead, we will create a user object on the app's first run and then consistantly sign our requests as this user. This behavior is useful for apps that don't require login, or have some sort of guest mode.
 
 The user entity on the database has two relevant properties: `device_token` and `id`. We will pass along the device token with our user requests, and we can use the ID to compare users. 
 
@@ -8,7 +8,7 @@ The user entity on the database has two relevant properties: `device_token` and 
 
 When we make a POST request to /users, the backend confirms that we sent the correct app secret, creates a new user with the device_token we pass, and returns the account's ID and token. 
 
-Create a subclass of NSObject called HUMUserSession. This object will manage the current user's session, which means it will be responsible for keeping track of one user ID and one device_token that we'll be signing our requests with.
+Create a subclass of NSObject called HUMUserSession. This object will manage the current user's session. That means it will be responsible for keeping track of one user ID and one device_token that we'll be signing our requests with.
 
 The interface for our user session manager should contain 5 class methods:
 
@@ -26,7 +26,7 @@ The interface for our user session manager should contain 5 class methods:
 
     @end
 
-The first four class methods are for getting and setting the current user's ID and token. These methods will access the keychain to keep track of this information. We want to use the keychain since when we are storing sensitive information, like the user's token.
+The first four class methods are for getting and setting the current user's ID and token. These methods will access the keychain to keep track of this information. We want to use the keychain whenever we are storing sensitive information, like the user's token.
 
 Since we're using SSKeychain, we'll want to create a few static strings above our `@implementation`. Don't forget to `#import <SSKeychain/SSKeychain.h>` at the top of the file as well.
 
@@ -89,7 +89,7 @@ Next we'll want to implement the methods we defined for setting our ID and token
 
 You'll notice that we created an `IDstring` with `[NSString stringWithFormat:@"%@", userID]`. This is because our `userID` returned from the API is a number, while we need a string `IDstring` password to store in the keychain.
 
-Lastly, we need to implement the method that we will use in our client singleton to determine if we currently have a valid user session. It's easiest to think of this as whether or not the user is logged in.
+Finally, we need to implement the method that we will use in our client singleton to determine if we currently have a valid user session. It's easiest to think of this as whether the user is logged in.
 
 	// HUMUserSession.m
 
