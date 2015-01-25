@@ -1,6 +1,6 @@
 # Posting a User With AFNetworking
 
-Now that we've created a method for enqueueing a task manually, lets use the AFNetworking framework to simplify things. We'll create a method on our `HUMRailsAFNClient` to POST to /users.
+Now that we've created a method for enqueueing a task manually, let's use the AFNetworking framework to simplify things. We'll create a method on our `HUMRailsAFNClient` to POST to /users.
 
 ### Declaring a Task for Making Requests
 
@@ -50,7 +50,7 @@ The method is called `POST:parameters:success:failure:` and takes four arguments
 
 ### Setting the Headers Conditionally
 
-Now that we have a POST to users method and persist the token we recieve from this method, we can conditionally set our session's headers depending on if we have that token yet.
+Now that we have a POST to users method and persist the token we recieve from this method, we can conditionally set our session's headers depending on whether we have that token yet.
 
 Currently, our singleton sets a new `tb-device-token` and the `tb-app-secret` in the session's headers every time it initializes. These are the correct headers for POST to users, but we need different headers for all other reqeusts.
 
@@ -71,4 +71,4 @@ In the `sharedClient` method of our `HUMRailsClient`, change the `dispatch_once`
                                forHTTPHeaderField:@"tb-device-token"];
     }
           
-This if statement depends on the class methods `userIsLoggedIn` and `userToken` that we defined on `HUMUserSession`, so remember to `#import "HUMUserSession.h"` at the top of the file. It sets the headers to include the saved `[HUMUserSession userToken]` if we are logged in and the app secret random device token if we aren't.
+This if statement depends on the class methods `userIsLoggedIn` and `userToken` that we defined on `HUMUserSession`, so remember to `#import "HUMUserSession.h"` at the top of the file. It sets the headers to include the saved `[HUMUserSession userToken]` if we are logged in. If we aren't logged in, it setsthe app secret random device token.
