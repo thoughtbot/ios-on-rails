@@ -44,7 +44,7 @@ This method implementation references two properties we don't have yet, so place
 	
 ### Adding a Submit Event Method
 
-Lets take a step back and remember what this view controller is supposed to look like. The HUMEventViewController will have 4 cells for each property of our event (name, address, startDate, endDate) and a submit cell. Instead of referring to these by their indexes, lets define these cell indexes in an enum at the top of `HUMEventViewController.h`. This enum starts at HUMEventCellName = 0 and goes to HUMEventCellCount = 5.
+Let's take a step back and remember what this view controller is supposed to look like. The HUMEventViewController will have four cells, one for each property of our event (name, address, startDate, endDate), and a submit cell. Instead of referring to these by their indexes, let's define these cell indexes in an enum at the top of `HUMEventViewController.h`. This enum starts at HUMEventCellName = 0 and goes to HUMEventCellCount = 5.
 
 	// HUMEventViewController.h
 	
@@ -59,7 +59,7 @@ Lets take a step back and remember what this view controller is supposed to look
 	
 Now we can change the `tableView:numberOfRowsInSection:` to `return HUMEventCellCount;` instead of `return 5;`
 
-We can also use this new enum when we declare `tableView:didSelectRowAtIndexPath:`to determine (in a user readable fashion) which cell was selected.
+We can also use this new enum when we declare `tableView:didSelectRowAtIndexPath:`to determine, in a user-readable fashion, which cell was selected.
 	
 	// HUMEventViewController.m
 	
@@ -111,4 +111,4 @@ Now we just have to use this new init method in the `HUMMapViewController`. Chan
 	                                         animated:YES];
 	}
 
-Now if you run the app you should be able to press the add button, tap the 5th cell in the event table view, and make a successful POST to events.
+Now, if you run the app, you should be able to press the add button, tap the 5th cell in the event table view, and make a successful POST to events.
