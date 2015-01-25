@@ -4,7 +4,7 @@ Now let's POST an event using AFNetworking.
 
 ### Declaring a Task for Making Requests
 
-The completion block we'll use for our create event method should return an event ID and an error. If our request is successful, the API will return the event ID for the event it created. If our request fails, we'll return the error instead.
+The completion block we'll use for our create event method should return an event ID or an error. If our request is successful, the API will return the event ID for the event it created. If our request fails, we'll return the error instead.
 
 Typedef this new type of event completion block:
 
@@ -21,9 +21,9 @@ and declare the event creation method:
 
 ### Creating a Task for Making Requests
 
-With AFNetworking, making a POST request with a dictionary of parameters is quite easy. We call the `POST:parameters:success:failure` method and provide the `@"events"` path, the event's JSON dictionary, and a success and failure block. 
+With AFNetworking, making a POST request with a dictionary of parameters is quite easy. We call the `POST:parameters:success:failure` method and provide the `@"events"` path, the event's JSON dictionary, and a success or failure block. 
 
-Don't forget to `#import "HUMEvent.h"` since we need to use the method `JSONDictionary` we previously defined.
+Don't forget to `#import "HUMEvent.h"` since we need to use the method `JSONDictionary` that we previously defined.
 
 	// HUMRailsClient.m
 	
