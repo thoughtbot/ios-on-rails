@@ -45,10 +45,10 @@
 
 // Properties used for placing the event on a map
 @property (assign, nonatomic) CLLocationCoordinate2D coordinate;</code></pre>
-<p>We use the <code>copy</code> property attribute for the properties that are of type <code>NSString</code> so that if we set the property <code>userID</code> to a <code>NSMutableString</code> and then mutate the string, the property <code>userID</code> will not change with the mutation.</p>
+<p>We use the <code>copy</code> property attribute for the properties that are of type <code>NSString</code> so that if we set the property <code>userID</code> to an <code>NSMutableString</code> and then mutate the string, the property <code>userID</code> will not change with the mutation.</p>
 <p>For classes that don't have mutable subclasses, like NSDate for <code>startDate</code>, we use the <code>strong</code> property attribute.</p>
 <p>For properties that are primitives like <code>coordinate</code>, we use <code>assign</code>.</p>
-<p>We want to place our event objects on our <code>HUMMapViewController</code>'s map, so we <code>@import MapKit;</code> at the top of the file. Now we can declare that our <code>HUMEvent</code> object conforms to the <code>&lt;MKAnnotation&gt;</code> protocol. This protocol has a required property <code>coordinate</code>, which we have declared. Conforming to this property is covered further by the 'Getting Events from the API' section.</p>
+<p>We want to place our event objects on our <code>HUMMapViewController</code>'s map, so we <code>@import MapKit;</code> at the top of the file. Now we can declare that our <code>HUMEvent</code> object conforms to the <code>&lt;MKAnnotation&gt;</code> protocol. This protocol has a required property <code>coordinate</code>, which we have declared. Conforming to this property is covered further by the "Getting Events from the API" section.</p>
 <section id="methods-for-initializing-an-event" class="level3">
 <h3>Methods for Initializing an Event</h3>
 <p>Declare three methods for intializing <code>HUMEvent</code> objects:</p>
@@ -98,7 +98,7 @@
 
     return [events copy];
 }</code></pre>
-<p><code>JSONDictionary</code> is a method that returns a JSON formatted dictionary of all the properties on an event. This method will be used when we need JSON data to POST an event to the API. We haven't defined the <code>RFC3339DateFormatter</code> yet, but we will do so in the next section.</p>
+<p><code>JSONDictionary</code> is a method that returns a JSON formatted dictionary of all the properties on an event. This method will be used when we need JSON data to POST an event to the API. The method <code>+ RFC3339DateFormatter</code> is currently undefined, but we will address that in the next section.</p>
 <pre><code>// HUMEvent.m
 
 - (NSDictionary *)JSONDictionary

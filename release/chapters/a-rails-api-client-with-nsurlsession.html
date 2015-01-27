@@ -22,11 +22,11 @@
 </head>
 <body><section id="a-rails-api-client-with-nsurlsession" class="level1">
 <h1>A Rails API Client With NSURLSession</h1>
-<p>Before we go about making our first API request, we need to decide how we are going to make our networking calls. As mentioned in the Cocoapods chapter, the AFNetworking framework is a clean and reliable solution to making networking requests. We will show examples of using AFNetworking to make your API requests as well as examples of making requests using the built in <code>NSURLSession</code>, which all networking libraries are built on top of. AFNetworking brings a lot more to the table than just wrapping up your network requests; but, like a programming planeteer, the choice is yours.</p>
+<p>Before we go about making our first API request, we need to decide how we are going to make our networking calls. As mentioned in the Cocoapods chapter, the AFNetworking framework is a clean and reliable solution to making networking requests. We will show examples of using AFNetworking to make your API requests as well as examples of making requests using the built-in <code>NSURLSession</code>, which all networking libraries are built on top of. AFNetworking brings a lot more to the table than just wrapping up your network requests; but, like a programming planeteer, the choice is yours.</p>
 <section id="creating-a-singleton-client-object" class="level3">
 <h3>Creating a Singleton Client Object</h3>
 <p>Create a subclass of <code>NSObject</code> called <code>HUMRailsClient</code>. All of our API requests will be handled by one instance of the <code>HUMRailsClient</code>, so we're going to create a singleton of <code>HUMRailsClient</code>.</p>
-<p>What we will create and refer to as a singleton isn't a dictionary-definition singleton, since we aren't completely limiting the instantiation of <code>HUMRailsClient</code> to only one object. We are, however, limiting the instantiation of <code>HUMRailsClient</code> to only one object if we always obtain the instance via the <code>+sharedClient</code> class method. Essentially, our sharedClient is a singleton if we use it consistantly but is not if we errantly decide to instantiate another instance of <code>HUMRailsClient</code> using <code>[[HUMRailsClient alloc] init]</code>.</p>
+<p>What we will create and refer to as a singleton isn't a dictionary-definition singleton, since we aren't completely limiting the instantiation of HUMRailsClient to only one object. We are, however, limiting the instantiation of HUMRailsClient to only one object if we always use our sharedClient. Essentially, our sharedClient is a singleton if we use it consistently but it is not if we errantly decide to instantiate another instance of HUMRailsClient using <code>[[HUMRailsClient alloc] init]</code>.</p>
 <p>Declare a class method that will return our singleton by adding <code>+ (instancetype)sharedClient;</code> to your <code>HUMRailsClient.h</code> file. We use <code>instancetype</code> as our return type to indicate that this class method will return an instance of <code>HUMRailsClient</code>. The + indicates that <code>sharedClient</code> is a class method to be called directly on the <code>HUMRailsClient</code> class. Prepending your class method with "shared" indicates to other developers that the method returns a singleton.</p>
 <p>Now let's implement this method:</p>
 <pre><code>// HUMRailsClient.m
@@ -46,14 +46,14 @@
     return _sharedClient;
 }</code></pre>
 <p>First, we declare a static variable of type <code>HUMRailsClient</code>. Since it's a static variable, <code>_sharedClient</code> will last for the life of the program.</p>
-<p>Then, we use Grand Central Dispatch to execute a block of code once and only once. If you are using Xcode and begin typing <code>dispatch_once</code>, you can even use autocomplete to find and insert the entire <code>dispatch_once</code> code snippet. <code>dispatch_once</code> takes a reference to a static variable of type <code>dispatch_once_t</code> and a block of code to execute. <code>dispatch_once_t</code> is a long variable type that indicates whether or not the block of code has been executed already. On the first call of <code>dispatch_once</code>, the <code>onceToken</code> is set and the block executed, but on every subsequent call the block is not executed because the onceToken has already been set.</p>
+<p>Then, we use Grand Central Dispatch to execute a block of code once and only once. If you are using Xcode and begin typing <code>dispatch_once</code>, you can even use autocomplete to find and insert the entire <code>dispatch_once</code> code snippet. <code>dispatch_once</code> takes a reference to a static variable of type <code>dispatch_once_t</code> and a block of code to execute. <code>dispatch_once_t</code> is a long variable type that indicates whether the block of code has already been executed. On the first call of <code>dispatch_once</code>, the <code>onceToken</code> is set and the block executed, but on every subsequent call the block is not executed because the onceToken has already been set.</p>
 <p>Inside the block we instantiate a <code>HUMRailsClient</code> and set it as the value of the static variable <code>_sharedClient</code>. Once that is done, we simply need to return our singleton <code>_sharedClient</code>.</p>
 </section>
 <section id="creating-a-session-for-handling-requests" class="level3">
 <h3>Creating a Session for Handling Requests</h3>
 <p>iOS 7 introduced the <code>NSURLSession</code> class, which is an object that handles groups of HTTP requests. Each API request we make in a NSURLSession is encapsulated in a <code>NSURLSessionTask</code>, which executes the request asynchronously and notifies you of completion by executing a block or by calling a method on its delegate.</p>
-<p>There are three different types of <code>NSURLSession</code> objects, including one that allows your app to continue downloading data even if your app is in the background. The type of a session is determined by its <code>sessionConfiguration</code>, but for simple API requests we only need to use the default session type.</p>
-<p>Declare a session property and a static app secret string above your <code>@implementation</code> inside of <code>HUMRailsClient.m</code>.</p>
+<p>There are three different types of <code>NSURLSession</code> objects, including one that allows your app to continue downloading data even if the app is in the background. The type of a session is determined by its <code>sessionConfiguration</code>, but for simple API requests we only need to use the default session type.</p>
+<p>Declare a session property and a static app secret string above your <code>@implementation</code> inside <code>HUMRailsClient.m</code>.</p>
 <pre><code>// HUMRailsClient.m
 
 static NSString *const HUMAppSecret =
@@ -64,7 +64,7 @@ static NSString *const HUMAppSecret =
 @property (strong, nonatomic) NSURLSession *session;
 
 @end</code></pre>
-<p>We will use the <code>HUMAppSecret</code> to sign POST requests to /users so that the backend can validate that the request is coming from our mobile app. The session object will handle all of our API requests.</p>
+<p>We will use the <code>HUMAppSecret</code> to sign POST requests to /users so the backend can validate that the request is coming from our mobile app. The session object will handle all of our API requests.</p>
 <p>We want our <code>HUMRailsClient</code> to always have a session object, so we will overwrite the <code>HUMRailsClient</code>'s <code>-init</code> method to set the client's <code>session</code> property.</p>
 <p>Custom init methods all have the same general format:</p>
 <pre><code>- (instancetype)init

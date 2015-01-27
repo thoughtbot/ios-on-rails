@@ -48,7 +48,7 @@
     
     return cell;
 }</code></pre>
-<p>The method <code>-tableView:cellForRowAtIndexPath:</code> returns a cell for every row in the tableview. Instead of instantiating and returning a new cell every time, we use <code>-dequeueReusableCellWithIdentifier:forIndexPath:</code> so that we can reuse cells that have already been instantiated. The identifier argument allows you to recycle different types of cells, in case you wanted to have a <code>@"GreenCellIdentifier"</code> and a <code>@"BlueCellIdentifier"</code>.</p>
+<p>The method <code>-tableView:cellForRowAtIndexPath:</code> returns a cell for every row in the tableview. Instead of instantiating and returning a new cell every time, we use <code>-dequeueReusableCellWithIdentifier:forIndexPath:</code> so we can reuse cells that have already been instantiated. The identifier argument allows you to recycle different types of cells, in case you wanted to have a <code>@"GreenCellIdentifier"</code> and a <code>@"BlueCellIdentifier"</code>.</p>
 <p>We use static strings as cell identifiers, since there's no need to create a new instance of the identifier every time we want to use it. This is why we are using <code>HUMEventCellIdentifier</code> here instead of a string literal like <code>@"cell"</code>.</p>
 <p>To create a static string, place <code>static NSString *const HUMEventCellIdentifier = @"HUMEventCellIdentifier";</code> inside your <code>HUMEventViewController</code> implementation file. Now you can refer to this <code>@"HUMEventCellIdentifier"</code> string as <code>HUMEventCellIdentifier</code> throughout the file.</p>
 <pre><code>// HUMEventViewController.m
@@ -70,8 +70,8 @@
 <li><p>Push a new <code>HUMEventViewController</code> onto the navigation stack managed by the <code>UINavigationController</code> we created in the <code>AppDelegate.m</code>.</p></li>
 <li><p>Present a new <code>HUMAddEventViewController</code> modally.</p></li>
 </ol>
-<p>Having the <code>HUMMapViewController</code> present modally means that the <code>HUMEventViewController</code> would animate sliding up from the bottom.</p>
-<p>Pushing onto the navigation stack means that the <code>UINavigationController</code> we created in the <code>AppDelegate.m</code> would then contain a <code>HUMMapViewController</code> at the bottom, and a <code>HUMEventViewController</code> on the top. The topmost view controller will be visible, aka the <code>HUMEventViewController</code>.</p>
+<p>Having the <code>HUMMapViewController</code> present modally means the <code>HUMEventViewController</code> would animate sliding up from the bottom.</p>
+<p>Pushing onto the navigation stack means the <code>UINavigationController</code> we created in the <code>AppDelegate.m</code> would contain a <code>HUMMapViewController</code> at the bottom, and a <code>HUMEventViewController</code> on the top. That topmost view controller, the <code>HUMEventViewController</code>. will be visible.</p>
 <p>This is what we're going to do, and it will also give us the "Back" functionality for dismissing the <code>HUMEventViewController</code>.</p>
 <pre><code>// HUMMapViewController.m
 

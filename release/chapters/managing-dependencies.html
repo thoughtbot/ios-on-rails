@@ -27,9 +27,9 @@
 <h1>Managing Dependencies</h1>
 <section id="using-cococapods" class="level3">
 <h3>Using CococaPods</h3>
-<p>Before we create our new iOS project, lets discuss the libraries and resources we're going to be using.</p>
-<p>We'll be using CocoaPods to manage our dependencies. Cocoapods is a ruby gem and command line tool that makes it easy to add dependencies to your project. Alternatively, you can use git submodules, but using CocoaPods is our preference due to its ease of implementation and the wide variety of third party libraries available as pods. CocoaPods will not only download the libraries we need and link them to our project in Xcode, it will also allow us to easily manage and update what version of each library we want to use.</p>
-<p>With a background in ruby, it may help to think of CocoaPod "pods" as gems, meaning that podfiles function similarly to gemfiles and podspecs are similar to gemspecs. <code>$ pod install</code> can be thought of as running <code>$ bundle install</code>, except for the fact that a pod install inserts the actual libraries into your project's pod directory.</p>
+<p>Before we create our new iOS project, lets discuss the libraries and resources we will use.</p>
+<p>We'll be using CocoaPods to manage our dependencies. Cocoapods is a Ruby gem and command line tool that makes it easy to add dependencies to your project. Alternatively, you can use Git submodules, but using CocoaPods is our preference due to its ease of implementation and the wide variety of third-party libraries available as pods. CocoaPods will not only download the libraries we need and link them to our project in Xcode, it will also allow us to easily manage and update which version of each library we want to use.</p>
+<p>With a background in Ruby, it may help to think of CocoaPod "pods" as gems, meaning that podfiles function similarly to gemfiles and podspecs are similar to gemspecs. <code>$ pod install</code> can be thought of as running <code>$ bundle install</code>, except for the fact that a pod install inserts the actual libraries into your project's pod directory.</p>
 </section>
 <section id="cocoapods-setup" class="level3">
 <h3>CocoaPods Setup</h3>
@@ -39,7 +39,7 @@
 <li><p>Create a podfile text file in your iOS project's root directory using your editor of choice.</p></li>
 <li><p><code>$ pod install</code></p></li>
 <li><p>If you have your iOS project open in Xcode, close it and reopen the workspace that Cocoapods generated for you.</p></li>
-<li><p>When using CocoaPods in conjunction with git, you may choose to ignore the Pods directory so that the libraries that CocoaPods downloads are not under version control. If you want to do this, add <code>Pods</code> your .gitignore. Anyone who clones your project will have the Podfile and can <code>$ pod install</code> to retrieve the libraries and versions that the project requires.</p></li>
+<li><p>When using CocoaPods in conjunction with Git, you may choose to ignore the Pods directory so the libraries that CocoaPods downloads are not under version control. If you want to do this, add <code>Pods</code> your .gitignore. Anyone who clones your project will have the Podfile and can <code>$ pod install</code> to retrieve the libraries and versions that the project requires.</p></li>
 </ol>
 </section>
 <section id="humons-podfile" class="level3">

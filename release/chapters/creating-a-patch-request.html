@@ -83,13 +83,13 @@ class Api::V1::EventsController &lt; ApiController
   ...
 
 end</code></pre>
-<p>Run the spec again, and, our error has changed to <code>Missing template api/v1/events/update</code>. Like we covered in the last section, receiving a different error message is a good indication that the last change we made is bringing us closer to a passing test.</p>
+<p>Run the spec again, and, our error has changed to <code>Missing template api/v1/events/update</code>. As we covered in the last section, receiving a different error message is a good indication that the last change we made is bringing us closer to a passing test.</p>
 <p>We will address the view layer in the next section, but for now let's just create an empty file at <code>app/views/api/v1/event/update.json.jbuilder</code>.</p>
 <p>Run the spec again, and our error has changed (woot!) to:</p>
 <pre><code>Failure/Error: expect(event.name).to eq new_name
 
    expected: "New name" got: "Old name"</code></pre>
-<p>See how handy the semantic variable naming in our test is?</p>
+<p>See how handy the semantic variable naming is in our test?</p>
 <p>Our route, controller method, and view template are in place. All that's left is to add logic to our <code>update</code> method that actually updates our <code>event</code>:</p>
 <pre><code># app/controllers/api/v1/events_controller.rb
 
@@ -107,11 +107,11 @@ end</code></pre>
 </section>
 <section id="view-2" class="level4">
 <h4>View</h4>
-<p>Our spec error now looks like this (note: your expectation might have a different <code>id</code> number depending on how many time's you've run your test; that's fine):</p>
+<p>Our spec error now looks like this (note: your expectation might have a different <code>id</code> number depending on how many times you've run your test; that's fine):</p>
 <pre><code> Failure/Error: expect(response_json).to eq({ 'id' =&gt; event.id })
 
    expected: {"id"=&gt;21} got: {}</code></pre>
-<p>Our view template exists, but is rendering an empty JSON object. And of course it is, all we did was create an empty view template! Let's add the JSON our test is expecting:</p>
+<p>Our view template exists, but is rendering an empty JSON object. And of course it is. All we did was to create an empty view template! Let's add the JSON our test is expecting:</p>
 <pre><code># app/views/api/v1/events/update.json.jbuilder
 
 json.id @event.id</code></pre>
@@ -121,7 +121,7 @@ json.id @event.id</code></pre>
 <section id="it-all-starts-with-a-request-spec-part-ii-1" class="level3">
 <h3>It all starts with a request spec, part II</h3>
 <p>If you guessed that our PATCH request requires two specs, you'd be right! One thing we've found when creating APIs with Rails is that it's just as important to return consistent, logical error messages and response codes as it is to create endpoints and responses for valid requests.</p>
-<p>Like our POST request, a PATCH request has as "sad path" where the parameters passed are invalid. We need to create logic in our controller for that case, and to test drive that logic we will write a request spec:</p>
+<p>Like our POST request, a PATCH request has a "sad path" where the parameters passed are invalid. We need to create logic in our controller for that case. To test drive that logic we will write a request spec:</p>
 <pre><code># spec/requests/api/v1/events/events_spec.rb
 
 describe 'PATCH /v1/events/:id' do

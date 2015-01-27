@@ -31,7 +31,7 @@
 <pre><code>//HUMRailsClient.h
 
 typedef void(^HUMRailsClientEventsCompletionBlock)(NSArray *events, NSError *error);</code></pre>
-<p>Then declare a method for fetching events whose parameters are a map region and a completion block of this new type. The map region will be the visible map region in our HUMMapViewController, since we only want to load events within the region we're viewing. Unlike our other API client methods, we'll return an <code>NSURLSessionDataTask</code> from this method so we can cancel the task.</p>
+<p>Then declare a method for fetching events whose parameters are a map region and a completion block of this new type. The <code>region</code> will be the visible map region in our HUMMapViewController, since we only want to load events within the region we're viewing. Unlike our other API client methods, we'll return an <code>NSURLSessionDataTask</code> from this method so we can cancel the task.</p>
 <pre><code>//HUMRailsClient.h
 
 - (NSURLSessionDataTask *)fetchEventsInRegion:(MKCoordinateRegion)region
@@ -62,8 +62,8 @@ typedef void(^HUMRailsClientEventsCompletionBlock)(NSArray *events, NSError *err
 
     return nil;
 }</code></pre>
-<p>The <code>parameters</code> for our GET request contain <code>lat</code>, <code>lon</code>, and <code>radius</code>. The rails app will use these values to return a list of events that are less than the <code>radius</code> (in kilometers) away from the map region's centerpoint.</p>
-<p>We want to inscribe our square <code>mapView</code> span inside of our circular API search area so that we're receiving more events than need to be displayed, rather than too few. We use half the width of the <code>mapView</code> (the <code>latitudeDelta</code> property) as our radius since the lateral span is the larger value in portrait. Multiplying by 111 is simply the conversion from latitudinal degrees to kilometers.</p>
+<p>The <code>parameters</code> for our GET request contain <code>lat</code>, <code>lon</code>, and <code>radius</code>. The Rails app will use these values to return a list of events that are less than the <code>radius</code> (in kilometers) away from the map region's centerpoint.</p>
+<p>We want to inscribe our square <code>mapView</code> span inside our circular API search area so we receive more events than need to be displayed, rather than too few. We use half the width of the <code>mapView</code> (the <code>latitudeDelta</code> property) as our radius since the lateral span is the larger value in portrait mode. Multiplying by 111 is simply the conversion from degrees of latitude to kilometers.</p>
 </section>
 <section id="creating-the-get-events-task" class="level3">
 <h3>Creating the Get Events Task</h3>
@@ -100,7 +100,7 @@ typedef void(^HUMRailsClientEventsCompletionBlock)(NSArray *events, NSError *err
             
     return task;
 }</code></pre>
-<p>Since our rails API returns from a successful GET request with a "No events in area" dictionary or an array of event JSON, our success block has to handle both cases. If we receive an array, we execute the completion block with an array of events, otherwise <code>events</code> will be <code>nil</code>.</p>
+<p>Since our rails API returns from a successful GET request with either a "No events in area" dictionary or an array of event JSON, our success block has to handle both cases. If we receive an array, we execute the completion block with an array of events. Otherwise, <code>events</code> will be <code>nil</code>.</p>
 <p>In the case of failure, we simply execute our completion block with an error.</p>
 </section>
 </section></body>

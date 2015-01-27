@@ -25,7 +25,7 @@
 </head>
 <body><section id="making-the-post-user-request" class="level1">
 <h1>Making the POST User Request</h1>
-<p>We want to make a POST request to create and save a user only once on each device. So, lets conditionally call the <code>-createCurrentUserWithCompletionBlock:</code> we just created inside of <code>HUMMapViewController</code>'s <code>-viewDidAppear:</code> method. Remember to <code>#import "HUMRailsClient.h"</code> or <code>#import "HUMRailsAFNClient.h"</code>, whichever one you choose to use.</p>
+<p>We want to make a POST request to create and save a user only once on each device. So let's conditionally call the <code>-createCurrentUserWithCompletionBlock:</code> we just created inside <code>HUMMapViewController</code>'s <code>-viewDidAppear:</code> method. Remember to <code>#import "HUMRailsClient.h"</code> or <code>#import "HUMRailsAFNClient.h"</code>, whichever one you choose to use.</p>
 <pre><code>// HUMMapViewController.m
 
 - (void)viewDidAppear:(BOOL)animated
@@ -52,8 +52,8 @@
     
     }
 }</code></pre>
-<p>If <code>+[HUMUserSession userIsLoggedIn]</code> returns <code>NO</code>, then we haven't successfully made a POST request to /users. So, we can call <code>-createCurrentUserWithCompletionBlock:</code> to make our POST request, which saves the user ID that returns from the API request and changes the request headers to include this user ID.</p>
-<p>We'll also present a heads-up-display to users to indicate that an API call is in progress. SVProgressHUD is a CocoaPod that provides a clean and easy to use view for showing loading and percent completion. We simply call the SVProgressHUD class method <code>show</code> to display the HUD, and <code>+dismiss</code> to remove it. Remember to <code>#import &lt;SVProgressHUD/SVProgressHUD.h&gt;</code> since we're using it in this file.</p>
+<p>If <code>+[HUMUserSession userIsLoggedIn]</code> returns <code>NO</code>, then we haven't successfully made a POST request to /users. So we can call <code>-createCurrentUserWithCompletionBlock:</code> to make our POST request. That method saves the user ID that returns from the API request and changes the request headers to include this user ID.</p>
+<p>We'll also present a heads-up-display to users to indicate that an API call is in progress. SVProgressHUD is a CocoaPod that provides a clean and easy-to-use view for showing loading and percent completion. We simply call the SVProgressHUD class method <code>show</code> to display the HUD, and <code>+dismiss</code> to remove it. Remember to <code>#import &lt;SVProgressHUD/SVProgressHUD.h&gt;</code> since we're using it in this file.</p>
 <p>If you run the app and get back a completionBlock with no error, you've officially made a successful POST request and created a user on the database!</p>
 </section></body>
 </html>

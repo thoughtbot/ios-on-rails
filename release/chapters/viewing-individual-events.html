@@ -27,7 +27,7 @@
 <h1>Viewing Individual Events</h1>
 <section id="showing-a-callout-for-an-event" class="level3">
 <h3>Showing a Callout for an Event</h3>
-<p>Since we want to place event objects as pins on a <code>MKMapView</code>, we need to make sure our <code>HUMEvent</code> class conform to the <code>&lt;MKAnnotation&gt;</code> protocol. We already declared the required property, <code>coordinate</code>, which corresponds to where the pin is placed. Now we can set the text in the pin's callout view.</p>
+<p>Since we want to place event objects as pins on a <code>MKMapView</code>, we need to make sure our <code>HUMEvent</code> class conforms to the <code>&lt;MKAnnotation&gt;</code> protocol. We already declared the required property, <code>coordinate</code>, which corresponds to where the pin is placed. Now we can set the text in the pin's callout view.</p>
 <p>Check the <code>HUMEvent</code> <code>@interface</code> to confirm that it conforms to this protocol.</p>
 <pre><code>// HUMEvent.h
 
@@ -41,7 +41,7 @@
 @property (copy, nonatomic) NSString *title;
 @property (copy, nonatomic) NSString *subtitle;
 @property (assign, nonatomic) CLLocationCoordinate2D coordinate;</code></pre>
-<p>We want the title and subtitle in an event's callout view to display the event name and address, so overwrite the getter methods for <code>-title</code> and <code>-subtitle</code>.</p>
+<p>We want the title and subtitle in an event's callout view to display the event's name and address, so overwrite the getter methods for <code>-title</code> and <code>-subtitle</code>.</p>
 <pre><code>// HUMEvent.m
 
 - (NSString *)title
@@ -53,11 +53,11 @@
 {
     return self.address;
 }</code></pre>
-<p>Now, when we place our event objects on our <code>mapView</code>, they'll display their event information when we tap on the annotation.</p>
+<p>Now, once we place our event objects on our <code>mapView</code>, they'll display their event information when we tap on the annotation.</p>
 </section>
 <section id="pushing-an-event-view-controller" class="level3">
 <h3>Pushing an Event View Controller</h3>
-<p>In addition, we want to present a read-only <code>HUMEventViewController</code> when we tap on a pin. So, we'll see the event view controller come on screen when we tap an annotation, and when we hit the back button we'll see the annotation callout reminding us which annotation we tapped.</p>
+<p>In addition, we want to present a read-only <code>HUMEventViewController</code> when we tap on a pin. So we'll see the event view controller come on screen when we tap an annotation. And when we hit the back button, we'll see the annotation callout reminding us which annotation we tapped.</p>
 <p>Presenting the <code>HUMEventViewController</code> means responding to the mapView delegate method <code>-mapView:didSelectAnnotationView:</code>. As long as the annotation is a <code>HUMEvent</code> object, we want to push a new view controller with that object.</p>
 <pre><code>// HUMMapViewController.m
 

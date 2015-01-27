@@ -25,12 +25,12 @@
 </head>
 <body><section id="the-user-object" class="level1">
 <h1>The User Object</h1>
-<p>Our app doesn't require username/password login, instead we will create a user object on the first run of the app and then consistantly sign our requests as this user. This behavior is useful for apps that don't require login, or have some sort of guest mode.</p>
-<p>The user entity on the database has two relevant properties: <code>device_token</code> and <code>id</code>. We will pass along the device token with our user requests, and we can use the ID to compare users.</p>
+<p>Our app doesn't require username/password login. Instead, we will create a user object on the app's first run and then consistantly sign our requests as this user. This behavior is useful for apps that don't require login, or have some sort of guest mode.</p>
+<p>The user entity on the database has two relevant properties: <code>device_token</code> and <code>id</code>. We will pass along the device token with our user requests, and we will use the ID to compare users.</p>
 <section id="creating-the-user-session-object" class="level3">
 <h3>Creating the User Session Object</h3>
 <p>When we make a POST request to /users, the backend confirms that we sent the correct app secret, creates a new user with the device_token we pass, and returns the account's ID and token.</p>
-<p>Create a subclass of <code>NSObject</code> called <code>HUMUserSession</code>. This object will manage the current user's session, which means it will be responsible for keeping track of one user ID and one <code>device_token</code> that we'll be signing our requests with.</p>
+<p>Create a subclass of <code>NSObject</code> called <code>HUMUserSession</code>. This object will manage the current user's session. That means it will be responsible for keeping track of one user ID and one <code>device_token</code> that we'll be signing our requests with.</p>
 <p>The interface for our user session manager should contain 5 class methods:</p>
 <pre><code>// HUMUserSession.h
 
@@ -45,7 +45,7 @@
 + (BOOL)userIsLoggedIn;
 
 @end</code></pre>
-<p>The first four class methods are for getting and setting the current user's ID and token. These methods will access the keychain to keep track of this information. We want to use the keychain since when we are storing sensitive information, like the user's token.</p>
+<p>The first four class methods are for getting and setting the current user's ID and token. These methods will access the keychain to keep track of this information. We want to use the keychain whenever we are storing sensitive information, like the user's token.</p>
 <p>Since we're using SSKeychain, we'll want to create a few static strings above our <code>@implementation</code>. Don't forget to <code>#import &lt;SSKeychain/SSKeychain.h&gt;</code> at the top of the file as well.</p>
 <pre><code>// HUMUserSession.m
 
@@ -100,7 +100,7 @@ static NSString *const HUMUserToken = @"currentUserToken";</code></pre>
                       error:nil];
 }</code></pre>
 <p>You'll notice that we created an <code>IDString</code> with <code>[NSString stringWithFormat:@"%@", userID]</code>. This is because our <code>userID</code> returned from the API is a number, while we need a string <code>IDString</code> password to store in the keychain.</p>
-<p>Lastly, we need to implement the method that we will use in our client singleton to determine if we currently have a valid user session. It's easiest to think of this as whether or not the user is logged in.</p>
+<p>Finally, we need to implement the method that we will use in our client singleton to determine if we currently have a valid user session. It's easiest to think of this as whether the user is logged in.</p>
 <pre><code>// HUMUserSession.m
 
 + (BOOL)userIsLoggedIn

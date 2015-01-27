@@ -14,9 +14,9 @@ different solutions work best for different applications.
 Just as Rails makes it possible to set up a basic web application in a matter of
 minutes, Rails makes it possible to set up a basic API in a matter of minutes.
 But deciding how to structure your API isn't easy. While experimenting with all
-of the options is a fun weekend project, sometimes you just want to get going.
+the options is a fun weekend project, sometimes you just want to get going.
 This book will help you do just that. While your API will no doubt require some
-tweaking while fleshing out your iOS app, the approach we will be taking is to
+tweaking while you flesh out your iOS app, the approach we will be taking is to
 define and build the API first, and then consume this API through our iOS app.
 
 The Rails portions of *iOS on Rails* will guide you through what we have found
@@ -36,18 +36,19 @@ API.
 
 This book is for a developer who wants to build an iOS application with a Rails
 backend. It's also a book for both a Rails developer and an iOS developer to
-share and use in concert to create an app quickly and with more flexibility to
-change it than a backend-as-a-service provider like StackMob or Parse.
+share and use in concert. This will permit them to create an app quickly and
+with more flexibility to change it than a backend-as-a-service provider like
+StackMob or Parse.
 
 The approach shared in this book is the result of our own experiments as Rails
 and iOS developers working together to build an application. The Rails portions
 of this book assume a basic working knowledge of how to build a web application
-with Rails as well as the Ruby programming language. The iOS portions of this
-book assume experience with object oriented programming and a
+with Rails as well as familiarity with the Ruby programming language. The iOS
+portions of this book assume experience with object oriented programming and a
 basic familiarity with the Objective-C programming language.
 
 This book is intended to be used as a guide rather than a recipe. While our aim
-is to give you all of the tools necessary to build great Rails APIs and iOS
+is to give you all the tools necessary to build great Rails APIs and iOS
 clients, it does not cover the fundamentals of Ruby, Rails or Objective-C. That
 being said, if any part of the book strikes you as incomplete or confusing, we
 are always happy to receive pull requests and issue submissions on
@@ -68,7 +69,7 @@ events.
 In the Humon application, a user can have many events as an event owner. An
 event has geolocation information (latitude and longitude), which allows us to
 plot it on a map. A user has and belongs to many events through attendances. A
-user can only have one attendance per event.
+user can have only one attendance per event.
 
 ![Humon database representation](images/humon-database-representation.png)
 
@@ -76,10 +77,10 @@ The Humon application does not ask for a username or password. Instead, we will
 use an ID unique to the device ('device token') to track unique users. The iOS
 portion of the book will discuss where this token comes from. For now, all you
 need to know is that users are identified by their devices. This approach does
-not allow for multiple users per device or a single account across devices, but
-it does enable users to start using the application immediately. Our desire to
-create the simplest application possible led us to choose immediate usability
-over a more complex authentication system.
+not allow for multiple users per device or a single account across mutliple
+devices, but it does enable users to start using the application immediately.
+Our desire to create the simplest application possible led us to choose
+immediate usability over a more complex authentication system.
 
 We will provide code snippets in context, but you can also view the entire
 [example application in
@@ -90,7 +91,7 @@ to see how it is structured.
 
 We used [Suspenders](https://github.com/thoughtbot/suspenders), a Rails 4
 template with thoughtbot's standard defaults, to start our project. Starting a
-Rails app with Suspenders is simple, just follow the instructions in the
+Rails app with Suspenders is simple. Just follow the instructions in the
 `README`.
 
 While Suspenders is not required to follow along with this book, it does
@@ -132,7 +133,7 @@ under the Rails organization) and the consistency of its view logic to other
 kinds of Rails views such as Haml, ERB, and Builder.
 
 With Jbuilder, we render the JSON from Rails controllers like any other view.
-We're able to use partials like any other Rails view template to compose JSON.
+We're able to use partials as with any other Rails view template to compose JSON.
 There's also a `cache!` method that has the same method signature as
 [`ActionView::Helpers::CacheHelper`](http://api.rubyonrails.org/classes/ActionView/Helpers/CacheHelper.html)
 and uses
@@ -145,24 +146,23 @@ chapters.
 Before we get started with building out our API, we must think about how we are
 going to handle versioning. While web developers can deploy as often as they
 want and users see the newly deployed code with every browser page refresh, iOS
-developers have both a lag time before Apple approves the new version of an app
-and a lag time before users update to the newest application version available.
+developers have both a lag time before Apple approves an app's new version 
+and a lag time before users update to the newest available application version.
 iOS applications reference the same API endpoints until a new release of the
 application has been downloaded. If you want to continue to support users with
 older versions of the iOS application you are building, you must maintain the
 same general JSON data structures on the backend for those users.
 
-You will of course discover new and better ways of structuring your JSON
+You will, of course, discover new and better ways of structuring your JSON
 responses as time goes on and your application grows. Once that happens, the
-easiest way to support old versions of the application and allow newer versions
+easiest way both to support old versions of the application and to allow newer versions
 to use different JSON structures is to release a new API version.
 
-Releasing multiple versions of an API is outside the scope of this book, but
+Releasing multiple versions of an API is outside this book's scope, but
 Ryan Bates has an excellent
 [RailsCast](http://railscasts.com/episodes/350-rest-api-versioning) on this
-topic. For now, we will future proof our API by including our views and
-controllers within the api/v1
-subdirectories. Our routes file looks like this:
+topic. For now, we will future-proof our API by including our views and
+controllers within the api/v1 subdirectories. Our routes file looks like this:
 
     # config/routes.rb
 
@@ -185,12 +185,12 @@ data returned as well as the data structure on almost a daily basis. While
 communication is both key and challenging on all software development teams, it
 can be especially challenging when working across teams that speak different
 programming languages. While Rails developers and iOS developers alike speak
-“JSON”, we found that asking iOS developers to stay up to date with API changes
-using source code on GitHub was difficult.
+"JSON", we found it difficult to ask iOS developers to stay up to date with API
+changes using source code on GitHub.
 
 A solution we found for keeping all developers in sync was using GitHub’s wiki
 feature as a source of API documentation. While updating the wiki after each API
-change required a small amount of work for our Rails developers, having an place
+change required a small amount of work for our Rails developers, a place
 where iOS developers could find up-to-date API documentation was an invaluable
 resource. You can see how we structure our wiki
 [here](https://github.com/thoughtbot/ios-on-rails/wiki).
@@ -207,9 +207,9 @@ suggestions:
 APIs built for commercial use usually have some concept of a client id and/or
 client secret. These are unguessable strings that act as a username and password
 combination required for all API requests. Requiring a client id and secret
-ensures that only known users can access the API and allows the API to turn off
-access to a particular person or application if the usage violates the API terms
-of service. [This blog post on API
+ensures that only known users can access the API. This also allows the API to
+turn off access to a particular person or application if the usage violates the
+API terms of service. [This blog post on API
 security](https://stormpath.com/blog/top-six-reasons-use-api-keys-and-how/)
 explains the benefits of API keys.
 
@@ -221,8 +221,8 @@ endpoint and hit our database.
 
 As a security measure, we require a header of `tb-app-secret` for the POST users
 request. We ensure that only requests that send a `tb-app-secret` header with a
-value that matches the value set by the Rails app can create new users via the
-Humon API. We store the app secret in an environment variable so that it is not
+value matching the value set by the Rails app can create new users via the Humon
+API. We store the app secret in an environment variable so that it is not
 anywhere in version control.
 
 We use [`dotenv`](https://github.com/bkeepers/dotenv) so that our API can read
@@ -239,13 +239,13 @@ in our
 
 ### It all starts with a request spec
 
-At thoughtbot, we do test-driven and Outside-in development, which means that we
+At thoughtbot, we do test-driven and outside-in development, which means we
 start work on any feature by writing a high-level test that describes user
-behaviors. You can read a more detailed description of Outside-in development
+behaviors. You can read a more detailed description of outside-in development
 [here](http://rubylearning.com/blog/2010/10/05/outside-in-development/), but the
 benefits can be summarized as follows:
 
->  Outside-in along with the test-driven process helps you write just the
+>  Outside-in, along with the test-driven process, helps you write just the
 >  minimum amount of code that provides value to stakeholders, and not a line
 >  more.
 
@@ -260,7 +260,7 @@ with Capybara. It wasn't designed for it."
 Instead, we will use [request
 specs](https://www.relishapp.com/rspec/rspec-rails/docs/request-specs/request-spec).
 RSpec request specs, like feature specs, are a great way to ensure the entire
-stack is working together properly but via HTTP verbs, response codes, and
+stack is working together properly, but via HTTP verbs, response codes, and
 responses rather than browser interactions.
 
 When writing our request specs, we found that we were calling
@@ -299,9 +299,9 @@ which we use below and in all of our request specs that include a JSON response.
 ### Model
 
 This first error we will get for the request spec above is that our app does not
-have a factory named `event`. FactoryGirl guesses the class of the object based
-on the factory name, so creating the `event` factory is a good opportunity to
-set up our `Event` model.
+have a factory named `event`. FactoryGirl guesses the object's class based on
+the factory name, so creating the `event` factory is a good opportunity to set
+up our `Event` model.
 
 At the model level, Rails applications that serve a JSON API look exactly like
 regular web applications built with Rails. Although the views and controllers
@@ -314,7 +314,7 @@ At this point, let's assume our `User` model has already been created.
 
 Our `Event` model has a few validations and relations, so we will write tests
 for those validations. In our development process, we would write the following
-tests line-by-line, watching them fail, and writing the lines in our model one
+tests line by line, watching them fail, and writing the lines in our model one
 at a time to make them pass. We will use FactoryGirl, Shoulda Matchers, and
 RSpec for our unit tests. To see our full test setup, see our `spec_helper`
 [here](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/spec/spec_helper.rb).
@@ -384,8 +384,8 @@ up for the path we are using in our test's GET request (`get
 configure our `routes.rb` file.
 
 As we discussed in the versioning section of our introduction, we will add
-controllers within `api/v1` directory so that we may release future versions of
-our API without breaking older versions of our application.
+controllers within `api/v1` directory so we may release future versions of our
+API without breaking older versions of our application.
 
 Because our `routes.rb` file tells our controllers to look for the JSON format
 by default, we do not need to tell our individual controllers to render JSON
@@ -419,7 +419,7 @@ Our controller and routes are set up, but we still need one final piece before
 our spec will pass: a view. Our request spec is looking for a view template with
 some response JSON, so we need to create that view.
 
-For a Rails developer, the views are where there will be the most difference
+For a Rails developer, the views are where the most difference will occur
 between a standard web application and a JSON API.  As with our controllers, we
 will include our views in the `api/v1` directory so that they are versioned.
 
@@ -463,7 +463,7 @@ and you tell your app to cache a block of view code by wrapping it in a
 to be teeny tiny, adding fragment caching is simple and a good habit to get into
 for apps that are likely to expand over time.
 
-If you're interested in learning more about fragment caching, there is a great
+If you're interested in learning more about fragment caching, here is a great
 [Railscast](http://railscasts.com/episodes/90-fragment-caching-revised) (paid)
 on the topic.
 
@@ -474,7 +474,7 @@ request spec should pass!
 
 But let's test it manually just to make sure. Our iOS app isn't up and running
 yet, so we will have to create records in Rails console. Make sure you are in
-your project directory in Terminal, run `rails console` and the enter the
+your project directory in Terminal, run `rails console` and then enter the
 following:
 
     User.create(device_token: '12345')
@@ -532,7 +532,7 @@ in Rails:
 
 Why this happens:
 
-> Since the authenticity token is stored in the session, the client can not know
+> Since the authenticity token is stored in the session, the client cannot know
 > its value. This prevents people from submitting forms to a Rails app
 > without viewing the form within that app itself. Imagine that you are using
 > service A, you logged into the service and everything is ok. Now imagine that
@@ -762,7 +762,7 @@ The best explanation we've found for sending tokens of any kind in the header
 rather than in the URL is that it accounts for user error. As shared in [this
 StackOverflow response](http://stackoverflow.com/a/20754104/1019369), putting
 tokens in the header "Provides extra measure of security by preventing users
-from inadvertently sharing URLs with their credentials embedded in them".
+from inadvertently sharing URLs with their credentials embedded in them."
 
 Another reason tokens are usually sent as headers is that it is simpler for the
 client to process auth tokens when they are sent as headers. For this reason,
@@ -800,9 +800,8 @@ Let's define that method now:
        end
      end
 
-Note that we are using `tb-device-token` as our header key so that it does not
-clash with header keys for any other auth libraries we might implement in the
-future.
+Note that we are using `tb-device-token` as our header key so it does not clash
+with header keys for any other auth libraries we might implement in the future.
 
 Our error message has changed yet again, and now it is time for us to move to
 the final step: creating our view.
@@ -813,7 +812,7 @@ Our
 [`EventsController`](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/controllers/api/v1/events_controller.rb)
 is creating an `event`, but we are still getting an error when we run our spec
 (note: your expectation might have a different `id` number depending on how many
-time's you've run your test; that's fine):
+times you've run your test; that's fine):
 
 
     expect(response_json).to eq({ 'id' => event.id })
@@ -1017,9 +1016,9 @@ the `update` method below my other controller methods, right above the
     end
 
 Run the spec again, and, our error has changed to `Missing template
-api/v1/events/update`. Like we covered in the last section, receiving a
-different error message is a good indication that the last change we made is
-bringing us closer to a passing test.
+api/v1/events/update`. As we covered in the last section, receiving a different
+error message is a good indication that the last change we made is bringing us
+closer to a passing test.
 
 We will address the view layer in the next section, but for now let's just
 create an empty file at `app/views/api/v1/event/update.json.jbuilder`.
@@ -1030,7 +1029,7 @@ Run the spec again, and our error has changed (woot!) to:
 
        expected: "New name" got: "Old name"
 
-See how handy the semantic variable naming in our test is?
+See how handy the semantic variable naming is in our test?
 
 Our route, controller method, and view template are in place. All that's left
 is to add logic to our `update` method that actually updates our `event`:
@@ -1055,7 +1054,7 @@ our view.
 #### View
 
 Our spec error now looks like this (note: your expectation might have a
-different `id` number depending on how many time's you've run your test; that's
+different `id` number depending on how many times you've run your test; that's
 fine):
 
      Failure/Error: expect(response_json).to eq({ 'id' => event.id })
@@ -1063,7 +1062,7 @@ fine):
        expected: {"id"=>21} got: {}
 
 Our view template exists, but is rendering an empty JSON object. And of course
-it is, all we did was create an empty view template! Let's add the JSON our
+it is. All we did was to create an empty view template! Let's add the JSON our
 test is expecting:
 
     # app/views/api/v1/events/update.json.jbuilder
@@ -1079,9 +1078,9 @@ thing we've found when creating APIs with Rails is that it's just as important
 to return consistent, logical error messages and response codes as it is to
 create endpoints and responses for valid requests.
 
-Like our POST request, a PATCH request has as "sad path" where the parameters
-passed are invalid. We need to create logic in our controller for that case,
-and to test drive that logic we will write a request spec:
+Like our POST request, a PATCH request has a "sad path" where the parameters
+passed are invalid. We need to create logic in our controller for that case.
+To test drive that logic we will write a request spec:
 
 
     # spec/requests/api/v1/events/events_spec.rb
@@ -1176,11 +1175,11 @@ be having some fun with geocoding!
 -- [Wikipedia](http://en.wikipedia.org/wiki/Geocoding).
 
 Geocoding gives us the power to take location information from humans and turn
-it into something that a computer can understand and reason about.
+it into something a computer can understand and reason about.
 
 [Yelp](http://www.yelp.com), for example, does not ask businesses to add their
-latitude and longitude when creating a profile. Instead, they ask for the
-street address and zipcode, which the Yelp application transforms into a
+latitude and longitude when creating a profile. Instead, it asks for the
+street address and zip code, which the Yelp application transforms into a
 latitude and longitude that can be plotted on a map.
 
 This is important because humans don't think in the decimal precision terms of
@@ -1196,9 +1195,9 @@ thorough analysis and discussion of the various options.
 
 ### Geocoding in Humon: choosing a library
 
-For Humon, we aren't going to be transforming one type of geographic data to
+For Humon, we aren't going to be transforming one type of geographic data into
 another. What we want is to be able to receive a latitude and longitude from
-the iOS application and return the closest events to those coordinates.
+the iOS application and return the events closest to those coordinates.
 
 After consulting *Geocoding on Rails*, we chose the
 [Geocoder](https://github.com/alexreisner/geocoder) gem for Humon. It supports
@@ -1298,7 +1297,7 @@ anything within that namespace. Time to define our controller.  In the
 [`NearestsController`](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/controllers/api/v1/events/nearests_controller.rb),
 we will be using the [`near`
 scope](https://github.com/alexreisner/geocoder#location-aware-database-queries)
-(given to us by the Geocoder gem) which takes in a latitude-longitude pair,
+(given to us by the Geocoder gem). This takes in a latitude-longitude pair,
 radius, and units as arguments:
 
     # app/controllers/api/1/events/nearests_controller.rb
@@ -1313,10 +1312,10 @@ radius, and units as arguments:
       end
     end
 
-Run the test again, and again, our test is failing:
+Run the test again, and again our test is failing:
 
      NoMethodError:
-       undefined method `near' for #<Class:0x007ffba8583468>
+       undefined method `near` for #<Class:0x007ffba8583468>
 
 Oh yeah! We forgot to actually add the Geocoder gem. Let's do that now.
 
@@ -1328,11 +1327,11 @@ and running `bundle install`.
 
 We already have the `lat` and `lon` attributes on our `Event` model, so no need
 for a database migration. If we run our test again, however, we will get the
-same `undefined method` error that we got before.
+same `undefined method` error we got before.
 
 According to the [Geocoder
 README](https://github.com/alexreisner/geocoder#object-geocoding), "your model
-must tell Geocoder which method returns your object's geocodable address".
+must tell Geocoder which method returns your object's geocodable address."
 Since our model is *already* geocoded (meaning: it already has the latitude and
 longitude set) we need to tell Geocoder which attributes store latitude and
 longitude:
@@ -1365,7 +1364,7 @@ and open a Rails console. Create or select an `event`:
 
     irb(main):002:0> event.geocoded?
 
-    NoMethodError: undefined method `geocoded?' for #<Event:0x007fdb4e4353b0>
+    NoMethodError: undefined method `geocoded?` for #<Event:0x007fdb4e4353b0>
 
 Does this error message look familiar? Answer: yes! This is the same type of
 error we got when we last ran our test.
@@ -1404,7 +1403,7 @@ When we run our test again, and it passes! Time to address the sad path...
 
 ### It all starts with a request spec, part II
 
-We want to explicitly define what happens when there are no events nearby.
+We want to explicitly define what happens when no events are nearby.
 Let's do that through writing a test first:
 
     # spec/requests/api/v1/events/nearest_spec.rb
@@ -1433,7 +1432,7 @@ Let's do that through writing a test first:
 
 ### Controller
 
-Time to add some branching in our controller so that we're returning the
+Time to add some branching in our controller so we're returning the
 correct message.
 
     # app/controllers/api/v1/events/nearests_controller.rb
@@ -1458,17 +1457,17 @@ And just like that, our test is now passing.
 # Introduction
 
 The iOS portion of this book will cover creating a new Xcode project, using a
-few cocoapods to help you get started, and making basic API requests to the API
+few Cocoapods to help you get started, and making basic API requests to the API
 you just created.
 
-If you haven't created a project with Xcode before, there are images included to
+If you haven't created a project with Xcode before, images are included to
 help you navigate the wilds that are Apple's dev tools. Xcode is an
 exciting editor that may take a bit of getting used to, so if you would like a
-primer please visit [Apple's Xcode
+primer, please visit [Apple's Xcode
 Overview.]("https://developer.apple.com/library/mac/documentation/ToolsLanguages/Conceptual/Xcode_Overview/About_Xcode/about.html")
 
-Rails developers will find that cocoapods feels quite familiar given that the
-dependency manager is written in Ruby and allows you to use iOS libraries
+Rails developers will find that Cocoapods feels quite familiar given that the
+dependency manager is written in Ruby and allows you to use iOS libraries,
 similar to how you use Ruby gems. A good understanding of object oriented
 programming is also required for the iOS portion of this book. Like Rails, iOS
 uses the Model-View-Controller design pattern, with the small caveat that most of your
@@ -1476,17 +1475,17 @@ controllers will instead be called ViewControllers.
 
 # A New Xcode Project
 
-As with any iOS app, the first step is to create a new project in Xcode. Create a new, "Single View Project" with your own name and identifier. Running the project for the first time will yield a white screen.
+As with any iOS app, the first step is to create a new project in Xcode. Create a new "Single View Project" with your own name and identifier. Running the project for the first time will yield a white screen.
 
 ![Pick an Empty Application](images/ios_new_xcode_project_1.png)
 
 # Alpha and Beta Schemes
 
-Distributing a Beta version of your app to testers before submitting to the app store is a vital part of the submittal process for medium to large scale apps. Humon may be a small app now, but we are going to set up a Alpha and Beta configuration and scheme in order to follow with best practices.
+Distributing a Beta version of your app to testers before submitting to the app store is a vital part of the submittal process for medium- to large-scale apps. Humon may be a small app now, but we are going to set up an Alpha and Beta configuration and scheme so as to follow best practices.
 
-Every time you want to distribute a new build to Beta testers, you'll archive it and save it for ad hoc distribution. So, what we're going to do is create a Beta scheme that we'll use every time we archive a Beta version of the app. We'll use the default Humon scheme for archiving the actual production version of the app. The only differences between the new schemes will be the API endpoint (staging or production) we're hitting, the app name on the home screen, and the app's bundle ID.
+Every time you want to distribute a new build to Beta testers, you'll archive it and save it for ad hoc distribution. So what we're going to do is create a Beta scheme that we'll use every time we archive a Beta version of the app. We'll use the default Humon scheme for archiving the app's actual production version. The only differences between the new schemes will be the API endpoint (staging or production) we're hitting, the app name on the home screen, and the app's bundle ID.
 
-Setting these manually is perfectly fine as well, but keeping separate configurations for Alpha, Beta, and production ensures that we never forget something important, like switching out the staging endpoint. The following steps will refer to creating the Beta scheme and are exactly the same for creating an Alpha scheme.
+Setting these manually is perfectly fine as well, but keeping separate configurations for Alpha, Beta, and production ensures that we never forget something important, like switching out the staging endpoint. The following steps will refer to creating the Beta scheme. They are exactly the same for creating an Alpha scheme.
 
 ### Setting Up the New Schemes
 
@@ -1528,11 +1527,11 @@ Setting these manually is perfectly fine as well, but keeping separate configura
 
 ### Using CococaPods
 
-Before we create our new iOS project, lets discuss the libraries and resources we're going to be using.
+Before we create our new iOS project, lets discuss the libraries and resources we will use.
 
-We'll be using CocoaPods to manage our dependencies. Cocoapods is a ruby gem and command line tool that makes it easy to add dependencies to your project. Alternatively, you can use git submodules, but using CocoaPods is our preference due to its ease of implementation and the wide variety of third party libraries available as pods. CocoaPods will not only download the libraries we need and link them to our project in Xcode, it will also allow us to easily manage and update what version of each library we want to use.
+We'll be using CocoaPods to manage our dependencies. Cocoapods is a Ruby gem and command line tool that makes it easy to add dependencies to your project. Alternatively, you can use Git submodules, but using CocoaPods is our preference due to its ease of implementation and the wide variety of third-party libraries available as pods. CocoaPods will not only download the libraries we need and link them to our project in Xcode, it will also allow us to easily manage and update which version of each library we want to use.
 
-With a background in ruby, it may help to think of CocoaPod "pods" as gems, meaning that podfiles function similarly to gemfiles and podspecs are similar to gemspecs. `$ pod install` can be thought of as running `$ bundle install`, except for the fact that a pod install inserts the actual libraries into your project's pod directory.
+With a background in Ruby, it may help to think of CocoaPod "pods" as gems, meaning that podfiles function similarly to gemfiles and podspecs are similar to gemspecs. `$ pod install` can be thought of as running `$ bundle install`, except for the fact that a pod install inserts the actual libraries into your project's pod directory.
 
 ### CocoaPods Setup
 
@@ -1546,7 +1545,7 @@ What follows is a succinct version of the instructions on the [CocoaPods](http:/
 
 4. If you have your iOS project open in Xcode, close it and reopen the workspace that Cocoapods generated for you.
 
-5. When using CocoaPods in conjunction with git, you may choose to ignore the Pods directory so that the libraries that CocoaPods downloads are not under version control. If you want to do this, add `Pods` your .gitignore. Anyone who clones your project will have the Podfile and can `$ pod install` to retrieve the libraries and versions that the project requires.
+5. When using CocoaPods in conjunction with Git, you may choose to ignore the Pods directory so the libraries that CocoaPods downloads are not under version control. If you want to do this, add `Pods` your .gitignore. Anyone who clones your project will have the Podfile and can `$ pod install` to retrieve the libraries and versions that the project requires.
 
 ### Humon's Podfile
 
@@ -1577,13 +1576,13 @@ Once you've updated your podfile, go ahead and run `$ pod install`
 
 # The Mobile App's Skeleton
 
-The Humon app is going to have 2 view controllers, which we will create empty versions of now.
+The Humon app is going to have two view controllers. We will create empty versions of these now.
 
 1. The initial view will contain a large map with pins for events that are near you, events you've created, and events you are tracking. It will also contain a button for adding a new event.
 
 2. The views for creating and viewing an event will be very similar. The entire view will be filled with a table which has space for the address, name, and time of an event.
 
-	Creating and viewing will be handled by distinct view controller classes but each of these will be a subclass of and overarching event view controller class.
+	Creating and viewing will be handled by distinct view controller classes but each of these will be a subclass of an overarching event view controller class.
 
 
 # The Map View Controller
@@ -1594,7 +1593,7 @@ The Humon app is going to have 2 view controllers, which we will create empty ve
 
 ![Creating a new view controller](images/ios_app_skeleton_6.png)
 
-Create a new view controller subclass called `HUMMapViewController` by selecting File > New > File. This will create a header (.h) and implementation (.m) file.
+Create a new view controller subclass called `HUMMapViewController` by selecting File > New > File. This will create a header (.h) file and implementation (.m) file.
 
 ### Set the Root View Controller
 
@@ -1620,22 +1619,22 @@ Now that we have a view controller subclass that will serve as our initial view 
 	    return YES;
 	}
 
-The `UIWindow` class handles presenting views onto the screen of the device. In the app delegate, the method should already set `self.window` to an instance of `UIWindow`.
+The `UIWindow` class handles the task of presenting views onto the device's screen. In the app delegate, the method should already set `self.window` to an instance of `UIWindow`.
 
-To set an instance of `HUMMapViewController` as the initial view controller that we see, we need to add `#import "HUMMapViewController.h"` near the top of the `HUMAppDelegate.m`. If we don't, the compiler will throw an error since the app delegate needs to be aware of a class before instantiating an instance of it.
+To set an instance of `HUMMapViewController` as the initial view controller that we see, we need to add `#import "HUMMapViewController.h"` near the top of the `HUMAppDelegate.m`. If we don't, the compiler will throw an error, since the app delegate needs to be aware of a class before instantiating an instance of it.
 
-So, let's create a new instance of `HUMMapViewController` via `HUMMapViewController *mapViewController =
-	        [[HUMMapViewController alloc] init];`. Since we want to push new views on top of this map view controller, we also initialize a `UINavigationController` with the map view controller as its root view controller. Now, when we want to show the user new view controllers we can just push them onto that navigation controller.
+So let's create a new instance of `HUMMapViewController` via 
+`HUMMapViewController *mapViewController = [[HUMMapViewController alloc] init];`. Since we want to push new views on top of this map view controller, we also initialize a `UINavigationController` with the map view controller as its root view controller. Now, when we want to show the user new view controllers, we can just push them onto that navigation controller.
 
-Finally, set that navigation controller as the window's `rootViewController`. This will make the map view controller (since it is the only view controller in the navigation view controller's stack) the first view controller we see on a fresh launch of the app.
+Next, set that navigation controller as the window's `rootViewController`. This will make the map view controller (since it is the only view controller in the navigation view controller's stack) the first view controller we see on a fresh launch of the app.
 
-Lastly, call `makeKeyAndVisible` on the window to make the window visible so you can see your views on the device screen.
+Finally, call `makeKeyAndVisible` on the window to make the window visible. This is so you can see your views on the device screen.
 
 Run the app and you'll see an instance of your `HUMMapViewController`!
 
 ### Create the MapView
 
-Inside your implementation file, create a new property called `mapView`. Alternatively, you can place this property in the header file, but keeping properties private by placing them in the hidden interface located in the implementation file is preferable if possible. 
+Inside your implementation file, create a new property called `mapView`. Alternatively, you can place this property in the header file. It's preferable, if possible, to keep properties private by placing them in the hidden interface located in the implementation file. 
 
 Also, declare that the `HUMMapViewController` conforms to the `MKMapViewDelegate` protocol by adding `<MKMapViewDelegate>`. This allows the `HUMMapViewController` to respond to delegate messages that the `mapView` sends.
 
@@ -1647,7 +1646,7 @@ Also, declare that the `HUMMapViewController` conforms to the `MKMapViewDelegate
 	
 	@end
 
-Now we want to fill the entirety of the `HUMMapViewController`'s view with a `mapView`. Inside of your `-viewDidLoad` method, instantiate a map view and add it as a subview of the main view. 
+Now we want to fill the entirety of the `HUMMapViewController`'s view with a `mapView`. Inside your `-viewDidLoad` method, instantiate a map view and add it as a subview of the main view. 
 
 Remember to set `HUMMapView` as the delegate of `self.mapview` so it can respond to delegate messages like `-mapView:regionDidChangeAnimated:`.
 
@@ -1677,7 +1676,7 @@ Go ahead and run the app to see the big beautiful map you just created.
 
 ### Create the Add Button
 
-Now we'll create an "Add" button and add it to the navigation bar at the top of our the screen.
+Now we'll create an "Add" button and place it in the navigation bar at the top of our the screen.
 
 	// HUMMapViewController.m
 	
@@ -1693,9 +1692,9 @@ Now we'll create an "Add" button and add it to the navigation bar at the top of 
 	    self.navigationItem.leftBarButtonItem = button;
     }
     
-We want our add button to be on our navigation bar, so create an instance of `UIBarButtonItem`. The `target:action:` portion of the `UIBarButtonItem` initializer method sets the button up to call the `-addButtonPressed` method when the button is tapped.
+We want our "Add" button to be on our navigation bar, so create an instance of `UIBarButtonItem`. The `target:action:` portion of the `UIBarButtonItem` initializer method sets the button up to call the `-addButtonPressed` method when the button is tapped.
 
-In order to see the `button` on the navigation bar, set it as the `leftBarButtonItem` on the view controller's `navigationItem`.
+To see the `button` on the navigation bar, set it as the `leftBarButtonItem` on the view controller's `navigationItem`.
 
 We need to implement the method `addButtonPressed`, so add the method below the viewDidLoad method and have it log a confirmation.
 
@@ -1735,7 +1734,7 @@ Create a new subclass of `UITableViewController` called `HUMEventViewController`
         return cell;
     }
 
-The method `-tableView:cellForRowAtIndexPath:` returns a cell for every row in the tableview. Instead of instantiating and returning a new cell every time, we use `-dequeueReusableCellWithIdentifier:forIndexPath:` so that we can reuse cells that have already been instantiated. The identifier argument allows you to recycle different types of cells, in case you wanted to have a `@"GreenCellIdentifier"` and a `@"BlueCellIdentifier"`.
+The method `-tableView:cellForRowAtIndexPath:` returns a cell for every row in the tableview. Instead of instantiating and returning a new cell every time, we use `-dequeueReusableCellWithIdentifier:forIndexPath:` so we can reuse cells that have already been instantiated. The identifier argument allows you to recycle different types of cells, in case you wanted to have a `@"GreenCellIdentifier"` and a `@"BlueCellIdentifier"`.
 
 We use static strings as cell identifiers, since there's no need to create a new instance of the identifier every time we want to use it. This is why we are using `HUMEventCellIdentifier` here instead of a string literal like `@"cell"`.
 
@@ -1763,9 +1762,9 @@ Now we can replace the `-addButtonPressed` method to present a `HUMEventViewCont
 	
 2. Present a new `HUMAddEventViewController` modally.
 	
-Having the `HUMMapViewController` present modally means that the `HUMEventViewController` would animate sliding up from the bottom. 
+Having the `HUMMapViewController` present modally means the `HUMEventViewController` would animate sliding up from the bottom. 
 
-Pushing onto the navigation stack means that the `UINavigationController` we created in the `AppDelegate.m` would then contain a `HUMMapViewController` at the bottom, and a `HUMEventViewController` on the top. The topmost view controller will be visible, aka the `HUMEventViewController`.
+Pushing onto the navigation stack means the `UINavigationController` we created in the `AppDelegate.m` would contain a `HUMMapViewController` at the bottom, and a `HUMEventViewController` on the top. That topmost view controller, the `HUMEventViewController`. will be visible.
 
 This is what we're going to do, and it will also give us the "Back" functionality for dismissing the `HUMEventViewController`.
 
@@ -1782,13 +1781,13 @@ You can run the Humon app now and press the "Add" button to see your new event v
 
 # A Rails API Client With NSURLSession
 
-Before we go about making our first API request, we need to decide how we are going to make our networking calls. As mentioned in the Cocoapods chapter, the AFNetworking framework is a clean and reliable solution to making networking requests. We will show examples of using AFNetworking to make your API requests as well as examples of making requests using the built in `NSURLSession`, which all networking libraries are built on top of. AFNetworking brings a lot more to the table than just wrapping up your network requests; but, like a programming planeteer, the choice is yours.
+Before we go about making our first API request, we need to decide how we are going to make our networking calls. As mentioned in the Cocoapods chapter, the AFNetworking framework is a clean and reliable solution to making networking requests. We will show examples of using AFNetworking to make your API requests as well as examples of making requests using the built-in `NSURLSession`, which all networking libraries are built on top of. AFNetworking brings a lot more to the table than just wrapping up your network requests; but, like a programming planeteer, the choice is yours.
 
 ### Creating a Singleton Client Object
 
 Create a subclass of `NSObject` called `HUMRailsClient`. All of our API requests will be handled by one instance of the `HUMRailsClient`, so we're going to create a singleton of `HUMRailsClient`. 
 
-What we will create and refer to as a singleton isn't a dictionary-definition singleton, since we aren't completely limiting the instantiation of `HUMRailsClient` to only one object. We are, however, limiting the instantiation of `HUMRailsClient` to only one object if we always obtain the instance via the `+sharedClient` class method. Essentially, our sharedClient is a singleton if we use it consistantly but is not if we errantly decide to instantiate another instance of `HUMRailsClient` using `[[HUMRailsClient alloc] init]`.
+What we will create and refer to as a singleton isn't a dictionary-definition singleton, since we aren't completely limiting the instantiation of HUMRailsClient to only one object. We are, however, limiting the instantiation of HUMRailsClient to only one object if we always use our sharedClient. Essentially, our sharedClient is a singleton if we use it consistently but it is not if we errantly decide to instantiate another instance of HUMRailsClient using `[[HUMRailsClient alloc] init]`.
 
 Declare a class method that will return our singleton by adding `+ (instancetype)sharedClient;` to your `HUMRailsClient.h` file. We use `instancetype` as our return type to indicate that this class method will return an instance of `HUMRailsClient`. The + indicates that `sharedClient` is a class method to be called directly on the `HUMRailsClient` class. Prepending your class method with "shared" indicates to other developers that the method returns a singleton.
 
@@ -1813,7 +1812,7 @@ Now let's implement this method:
 
 First, we declare a static variable of type `HUMRailsClient`. Since it's a static variable, `_sharedClient` will last for the life of the program.
 
-Then, we use Grand Central Dispatch to execute a block of code once and only once. If you are using Xcode and begin typing `dispatch_once`, you can even use autocomplete to find and insert the entire `dispatch_once` code snippet. `dispatch_once` takes a reference to a static variable of type `dispatch_once_t` and a block of code to execute. `dispatch_once_t` is a long variable type that indicates whether or not the block of code has been executed already. On the first call of `dispatch_once`, the `onceToken` is set and the block executed, but on every subsequent call the block is not executed because the onceToken has already been set.
+Then, we use Grand Central Dispatch to execute a block of code once and only once. If you are using Xcode and begin typing `dispatch_once`, you can even use autocomplete to find and insert the entire `dispatch_once` code snippet. `dispatch_once` takes a reference to a static variable of type `dispatch_once_t` and a block of code to execute. `dispatch_once_t` is a long variable type that indicates whether the block of code has already been executed. On the first call of `dispatch_once`, the `onceToken` is set and the block executed, but on every subsequent call the block is not executed because the onceToken has already been set.
 
 Inside the block we instantiate a `HUMRailsClient` and set it as the value of the static variable `_sharedClient`. Once that is done, we simply need to return our singleton `_sharedClient`.
 
@@ -1821,9 +1820,9 @@ Inside the block we instantiate a `HUMRailsClient` and set it as the value of th
 
 iOS 7 introduced the `NSURLSession` class, which is an object that handles groups of HTTP requests. Each API request we make in a NSURLSession is encapsulated in a `NSURLSessionTask`, which executes the request asynchronously and notifies you of completion by executing a block or by calling a method on its delegate.
 
-There are three different types of `NSURLSession` objects, including one that allows your app to continue downloading data even if your app is in the background. The type of a session is determined by its `sessionConfiguration`, but for simple API requests we only need to use the default session type.
+There are three different types of `NSURLSession` objects, including one that allows your app to continue downloading data even if the app is in the background. The type of a session is determined by its `sessionConfiguration`, but for simple API requests we only need to use the default session type.
 
-Declare a session property and a static app secret string above your `@implementation` inside of `HUMRailsClient.m`.
+Declare a session property and a static app secret string above your `@implementation` inside `HUMRailsClient.m`.
 
 	// HUMRailsClient.m
 	
@@ -1836,7 +1835,7 @@ Declare a session property and a static app secret string above your `@implement
 	
 	@end
 
-We will use the `HUMAppSecret` to sign POST requests to /users so that the backend can validate that the request is coming from our mobile app. The session object will handle all of our API requests.
+We will use the `HUMAppSecret` to sign POST requests to /users so the backend can validate that the request is coming from our mobile app. The session object will handle all of our API requests.
 
 We want our `HUMRailsClient` to always have a session object, so we will overwrite the `HUMRailsClient`'s `-init` method to set the client's `session` property.
 
@@ -1943,7 +1942,7 @@ Create a subclass of `AFHTTPSessionManager` called `HUMRailsAFNClient`. Declare 
         return _sharedClient;
     }
 
-With AFNetworking, we don't have to manually set up the session configuration and session with our own custom init method. We simply initialize the client using `-initWithBaseURL:`, which means that our paths later will be relative to this `ROOT_URL`.
+With AFNetworking, we don't have to manually set up the session configuration and session with our own custom init method. We simply initialize the client using `-initWithBaseURL:`, which means our paths later will be relative to this `ROOT_URL`.
 
 ### Setting the Session Headers
 
@@ -1970,15 +1969,15 @@ Both these headers are necessary for a POST to users request. For subsequent req
 
 # The User Object
 
-Our app doesn't require username/password login, instead we will create a user object on the first run of the app and then consistantly sign our requests as this user. This behavior is useful for apps that don't require login, or have some sort of guest mode.
+Our app doesn't require username/password login. Instead, we will create a user object on the app's first run and then consistantly sign our requests as this user. This behavior is useful for apps that don't require login, or have some sort of guest mode.
 
-The user entity on the database has two relevant properties: `device_token` and `id`. We will pass along the device token with our user requests, and we can use the ID to compare users. 
+The user entity on the database has two relevant properties: `device_token` and `id`. We will pass along the device token with our user requests, and we will use the ID to compare users. 
 
 ### Creating the User Session Object
 
 When we make a POST request to /users, the backend confirms that we sent the correct app secret, creates a new user with the device_token we pass, and returns the account's ID and token. 
 
-Create a subclass of `NSObject` called `HUMUserSession`. This object will manage the current user's session, which means it will be responsible for keeping track of one user ID and one `device_token` that we'll be signing our requests with.
+Create a subclass of `NSObject` called `HUMUserSession`. This object will manage the current user's session. That means it will be responsible for keeping track of one user ID and one `device_token` that we'll be signing our requests with.
 
 The interface for our user session manager should contain 5 class methods:
 
@@ -1996,7 +1995,7 @@ The interface for our user session manager should contain 5 class methods:
 
     @end
 
-The first four class methods are for getting and setting the current user's ID and token. These methods will access the keychain to keep track of this information. We want to use the keychain since when we are storing sensitive information, like the user's token.
+The first four class methods are for getting and setting the current user's ID and token. These methods will access the keychain to keep track of this information. We want to use the keychain whenever we are storing sensitive information, like the user's token.
 
 Since we're using SSKeychain, we'll want to create a few static strings above our `@implementation`. Don't forget to `#import <SSKeychain/SSKeychain.h>` at the top of the file as well.
 
@@ -2059,7 +2058,7 @@ Next we'll want to implement the methods we defined for setting our ID and token
 
 You'll notice that we created an `IDString` with `[NSString stringWithFormat:@"%@", userID]`. This is because our `userID` returned from the API is a number, while we need a string `IDString` password to store in the keychain.
 
-Lastly, we need to implement the method that we will use in our client singleton to determine if we currently have a valid user session. It's easiest to think of this as whether or not the user is logged in.
+Finally, we need to implement the method that we will use in our client singleton to determine if we currently have a valid user session. It's easiest to think of this as whether the user is logged in.
 
 	// HUMUserSession.m
 
@@ -2085,7 +2084,7 @@ Declare a method in our `HUMRailsClient.h` that creates a POST request to /users
 
 The type of our parameter for this method is a block, which we declare here with `(void (^)(NSError *error))`. Declaring a block as our parameter type is similar to how we declare other parameter types like `(NSString *)`, where the word following the type is the name of the parameter. This block has a return type of `void` and one argument of type `NSError` so we can check if the POST completed with an error.
 
-It makes sense to typedef a new name for our completion block so that we can refer to it more easily, especially if we plan on using this block type again. Typedef-ing allows us to define a new name for an existing type, which in this case will be the new name `HUMRailsClientErrorCompletionBlock` for the block type `(void (^)(NSError *error))`. Place this typedef above the interface in HUMRailsClient.h:
+It makes sense to typedef a new name for our completion block so we can refer to it more easily, especially if we plan on using this block type again. Using typedef allows us to define a new name for an existing type, which in this case will be the new name `HUMRailsClientErrorCompletionBlock` for the block type `(void (^)(NSError *error))`. Place this typedef above the interface in HUMRailsClient.h:
 
 	typedef void(^HUMRailsClientErrorCompletionBlock)(NSError *error);
 	
@@ -2125,15 +2124,15 @@ Now that we have declared `-createCurrentUserWithCompletionBlock:` and typedef-e
 	
 First, we instantiate a `url` for our request, which in this case is our ROOT_URL (which we set up with a user-defined macro) with `@"users"` appended to it. Then we can instantiate a `request` using this URL and set the request method to POST.
 
-Now that we have a `request`, we can create a task for our `self.session` that will execute the request. The method `-dataTaskWithRequest:completionHandler:` takes two arguments, the `request` that we created before, and a block that will be run when the request is complete.
+Now that we have a `request`, we can create a task for our `self.session` that will execute the request. The method `-dataTaskWithRequest:completionHandler:` takes two arguments: the `request` that we created and a block that will be run when the request is complete.
 
-The block we pass into the method must be of a type defined by `-dataTaskWithRequest:completionHandler:`, so we pass in a block of the appropriate type as an argument with the syntax:
+The block we pass into the method must be of a type defined by `-dataTaskWithRequest:completionHandler:`, so we pass in a block of the appropriate type as an argument with this syntax:
 
 	^void (NSData *data, NSURLResponse *response, NSError *error) { 
 		// code to execute
 	}
 
-Where the block's return type is `void` and that the block's parameters are `data`, `response`, and `error`. We don't have to explicitly declare the void return type, since it can be inferred, which means we could instead use the syntax:
+Where the block's return type is `void` and the block's parameters are `data`, `response`, and `error`. We don't have to explicitly declare the void return type, since it can be inferred, which means we could instead use the syntax:
 
 	^(NSData *data, NSURLResponse *response, NSError *error) { 
 		// code to execute
@@ -2156,7 +2155,7 @@ Once the task has completed, the block we just defined will be invoked with the 
         [HUMUserSession setUserToken:responseDictionary[@"device_token"]];
         [HUMUserSession setUserID:responseDictionary[@"id"]];
         
-        // Create a new contiguration with new token
+        // Create a new configuration with new token
         NSURLSessionConfiguration *newConfiguration =
             self.session.configuration;
         [newConfiguration setHTTPAdditionalHeaders:
@@ -2183,9 +2182,9 @@ Regardless of whether or not there's an error, we want to execute the completion
 
 ### Setting the Headers Conditionally
 
-Now that we have a POST to users method and persist the token we recieve from this method, we can conditionally set our session's headers depending on if we have that token yet.
+Now that we have a POST to users method and persist the token we recieve from this method, we can conditionally set our session's headers depending on whether we have that token yet.
 
-Currently, our custom init method sets a new `tb-device-token` and `tb-app-secret` in our headers every time it initializes. These are the correct headers for POST to users, but we need different headers for all other reqeusts.
+Currently, our custom init method sets a new `tb-device-token` and `tb-app-secret` in our headers every time it initializes. These are the correct headers for POST to users, but we need different headers for all other requests.
 
 In the custom init method of our `HUMRailsClient`, change the `headers` variable to a ternary.
 
@@ -2204,11 +2203,13 @@ In the custom init method of our `HUMRailsClient`, change the `headers` variable
           @"tb-app-secret" : HUMAppSecret
           };
           
-This ternary depends on the class methods `userIsLoggedIn` and `userToken` that we defined on `HUMUserSession`, so remember to `#import "HUMUserSession.h"` at the top of the file. It sets the headers to include the saved `[HUMUserSession userToken]` if we are logged in and the app secret random device token if we aren't.
+This ternary depends on the class methods `+userIsLoggedIn` and `+userToken` that we defined on `HUMUserSession`, so remember to `#import "HUMUserSession.h"` at the top of the file. It sets the headers to include the saved `+[HUMUserSession userToken]` if we are logged in. 
+
+If we aren't logged in, we need to send a random device token `[[NSUUID UUID] UUIDString]`. We also send the app secret so the backend will accept our POST request to create a new user.
 
 # Posting a User With AFNetworking
 
-Now that we've created a method for enqueueing a task manually, lets use the AFNetworking framework to simplify things. We'll create a method on our `HUMRailsAFNClient` to POST to /users.
+Now that we've created a method for enqueueing a task manually, let's use the AFNetworking framework to simplify things. We'll create a method on our `HUMRailsAFNClient` to POST to /users.
 
 ### Declaring a Task for Making Requests
 
@@ -2258,7 +2259,7 @@ The method is called `-POST:parameters:success:failure:` and takes four argument
 
 ### Setting the Headers Conditionally
 
-Now that we have a POST to users method and persist the token we recieve from this method, we can conditionally set our session's headers depending on if we have that token yet.
+Now that we have a POST to users method and persist the token we recieve from this method, we can conditionally set our session's headers depending on whether we have that token yet.
 
 Currently, our singleton sets a new `tb-device-token` and the `tb-app-secret` in the session's headers every time it initializes. These are the correct headers for POST to users, but we need different headers for all other reqeusts.
 
@@ -2279,11 +2280,13 @@ In the `+sharedClient` method of our `HUMRailsClient`, change the `dispatch_once
                                forHTTPHeaderField:@"tb-device-token"];
     }
           
-This if statement depends on the class methods `+userIsLoggedIn` and `+userToken` that we defined on `HUMUserSession`, so remember to `#import "HUMUserSession.h"` at the top of the file. It sets the headers to include the saved `+[HUMUserSession userToken]` if we are logged in and the app secret random device token if we aren't.
+This if statement depends on the class methods `+userIsLoggedIn` and `+userToken` that we defined on `HUMUserSession`, so remember to `#import "HUMUserSession.h"` at the top of the file. It sets the headers to include the saved `+[HUMUserSession userToken]` if we are logged in. 
+
+If we aren't logged in, we need to send a random device token `[[NSUUID UUID] UUIDString]`. We also send the app secret so the backend will accept our POST request to create a new user.
 
 # Making the POST User Request
 
-We want to make a POST request to create and save a user only once on each device. So, lets conditionally call the `-createCurrentUserWithCompletionBlock:` we just created inside of `HUMMapViewController`'s `-viewDidAppear:` method. Remember to `#import "HUMRailsClient.h"` or `#import "HUMRailsAFNClient.h"`, whichever one you choose to use.
+We want to make a POST request to create and save a user only once on each device. So let's conditionally call the `-createCurrentUserWithCompletionBlock:` we just created inside `HUMMapViewController`'s `-viewDidAppear:` method. Remember to `#import "HUMRailsClient.h"` or `#import "HUMRailsAFNClient.h"`, whichever one you choose to use.
 
 	// HUMMapViewController.m
 
@@ -2312,9 +2315,9 @@ We want to make a POST request to create and save a user only once on each devic
     	}
 	}
 
-If `+[HUMUserSession userIsLoggedIn]` returns `NO`, then we haven't successfully made a POST request to /users. So, we can call `-createCurrentUserWithCompletionBlock:` to make our POST request, which saves the user ID that returns from the API request and changes the request headers to include this user ID.
+If `+[HUMUserSession userIsLoggedIn]` returns `NO`, then we haven't successfully made a POST request to /users. So we can call `-createCurrentUserWithCompletionBlock:` to make our POST request. That method saves the user ID that returns from the API request and changes the request headers to include this user ID.
 
-We'll also present a heads-up-display to users to indicate that an API call is in progress. SVProgressHUD is a CocoaPod that provides a clean and easy to use view for showing loading and percent completion. We simply call the SVProgressHUD class method `show` to display the HUD, and `+dismiss` to remove it. Remember to `#import <SVProgressHUD/SVProgressHUD.h>` since we're using it in this file.
+We'll also present a heads-up-display to users to indicate that an API call is in progress. SVProgressHUD is a CocoaPod that provides a clean and easy-to-use view for showing loading and percent completion. We simply call the SVProgressHUD class method `show` to display the HUD, and `+dismiss` to remove it. Remember to `#import <SVProgressHUD/SVProgressHUD.h>` since we're using it in this file.
 
 If you run the app and get back a completionBlock with no error, you've officially made a successful POST request and created a user on the database!
 
@@ -2343,13 +2346,13 @@ Add the following properties to your `HUMEvent.h`'s `@interface`:
 	// Properties used for placing the event on a map
 	@property (assign, nonatomic) CLLocationCoordinate2D coordinate;
 	
-We use the `copy` property attribute for the properties that are of type `NSString` so that if we set the property `userID` to a `NSMutableString` and then mutate the string, the property `userID` will not change with the mutation.
+We use the `copy` property attribute for the properties that are of type `NSString` so that if we set the property `userID` to an `NSMutableString` and then mutate the string, the property `userID` will not change with the mutation.
 
 For classes that don't have mutable subclasses, like NSDate for `startDate`, we use the `strong` property attribute.
 
 For properties that are primitives like `coordinate`, we use `assign`.
 
-We want to place our event objects on our `HUMMapViewController`'s map, so we `@import MapKit;` at the top of the file. Now we can declare that our `HUMEvent` object conforms to the `<MKAnnotation>` protocol. This protocol has a required property `coordinate`, which we have declared. Conforming to this property is covered further by the 'Getting Events from the API' section.
+We want to place our event objects on our `HUMMapViewController`'s map, so we `@import MapKit;` at the top of the file. Now we can declare that our `HUMEvent` object conforms to the `<MKAnnotation>` protocol. This protocol has a required property `coordinate`, which we have declared. Conforming to this property is covered further by the "Getting Events from the API" section.
 
 ### Methods for Initializing an Event
 
@@ -2406,7 +2409,7 @@ Declare three methods for intializing `HUMEvent` objects:
     	return [events copy];
 	}
 
-`JSONDictionary` is a method that returns a JSON formatted dictionary of all the properties on an event. This method will be used when we need JSON data to POST an event to the API. We haven't defined the `RFC3339DateFormatter` yet, but we will do so in the next section.
+`JSONDictionary` is a method that returns a JSON formatted dictionary of all the properties on an event. This method will be used when we need JSON data to POST an event to the API. The method `+ RFC3339DateFormatter` is currently undefined, but we will address that in the next section.
 
 	// HUMEvent.m
 	
@@ -2474,11 +2477,11 @@ Be sure to add `#import NSDateFormatter+HUMDefaultDateFormatter.h` at the top of
 
 # Posting an Event With NSURLSession
 
-Our `HUMRailsClient` is already all set up to use the appropriate headers that we need for POST to events. Namely, the token we receive back from POST to users. So, we simply need to define a new method for making a POST to events request.
+Our `HUMRailsClient` is already all set up to use the appropriate headers that we need for POST to events: namely, the token we receive back from POST to users. So we simply need to define a new method for making a POST to events request.
 
 ### Declaring a Task for Making Requests
 
-The completion block we'll use for our create event method should return an event ID and an error. If our request is successful, the API will return the event ID for the event it created. If our request fails, we'll return the error instead.
+The completion block we'll use for our create event method should return an event ID and an error. If our request is successful, the API will return the event ID for the event it created and a nil error. If our request fails, we'll return a nil event ID and the error.
 
 Typedef this new type of event completion block:
 
@@ -2553,7 +2556,7 @@ If the task completes without an error, we can serialize the data we receive int
 
 If the the task completes with an error, `eventID` will remain nil. 
 
-Either way, we want to execute the completion block on the main queue, since the block will be updating the UI. The completion block will return either an updated event or an error depending on whether or not the POST was successful.
+Either way, we want to execute the completion block with whatever the `eventID` and the `error` are. We also need to execute the completion block on the main queue, since the block will be updating the UI.
 
 
 # Posting an Event With AFNetworking
@@ -2562,7 +2565,7 @@ Now let's POST an event using AFNetworking.
 
 ### Declaring a Task for Making Requests
 
-The completion block we'll use for our create event method should return an event ID and an error. If our request is successful, the API will return the event ID for the event it created. If our request fails, we'll return the error instead.
+The completion block we'll use for our create event method should return an event ID and an error. If our request is successful, the API will return the event ID for the event it created and a nil error. If our request fails, we'll return a nil event ID and the error.
 
 Typedef this new type of event completion block:
 
@@ -2579,9 +2582,9 @@ and declare the event creation method:
 
 ### Creating a Task for Making Requests
 
-With AFNetworking, making a POST request with a dictionary of parameters is quite easy. We call the `-POST:parameters:success:failure` method and provide the `@"events"` path, the event's JSON dictionary, and a success and failure block. 
+With AFNetworking, making a POST request with a dictionary of parameters is quite easy. We call the `-POST:parameters:success:failure` method and provide the `@"events"` path, the event's JSON dictionary, a success block, and a failure block. 
 
-Don't forget to `#import "HUMEvent.h"` since we need to use the method `JSONDictionary` we previously defined.
+Don't forget to `#import "HUMEvent.h"` since we need to use the method `JSONDictionary` that we previously defined.
 
 	// HUMRailsClient.m
 	
@@ -2652,7 +2655,7 @@ This method implementation references two properties we don't have yet, so place
 	
 ### Adding a Submit Event Method
 
-Lets take a step back and remember what this view controller is supposed to look like. The `HUMEventViewController` will have 4 cells for each property of our event (`name`, `address`, `startDate`, `endDate`) and a submit cell. Instead of referring to these by their indexes, lets define these cell indexes in an enum at the top of `HUMEventViewController.h`. This enum starts at `HUMEventCellName = 0` and goes to `HUMEventCellCount = 5`.
+Let's take a step back and remember what this view controller is supposed to look like. The `HUMEventViewController` will have a cell for each property of our event (name, address, startDate, endDate) and a submit cell. Instead of referring to these by their indexes, let's define these cell indexes in an enum at the top of `HUMEventViewController.h`. This enum starts at `HUMEventCellName = 0` and goes to `HUMEventCellCount = 5`.
 
 	// HUMEventViewController.h
 	
@@ -2667,7 +2670,7 @@ Lets take a step back and remember what this view controller is supposed to look
 	
 Now we can change the `-tableView:numberOfRowsInSection:` to `return HUMEventCellCount;` instead of `return 5;`
 
-We can also use this new enum when we declare `-tableView:didSelectRowAtIndexPath:`to determine (in a user readable fashion) which cell was selected.
+We can also use this new enum when we declare `-tableView:didSelectRowAtIndexPath:` to determine which cell was selected.
 	
 	// HUMEventViewController.m
 	
@@ -2719,13 +2722,13 @@ Now we just have to use this new init method in the `HUMMapViewController`. Chan
 	                                         animated:YES];
 	}
 
-Now if you run the app you should be able to press the add button, tap the 5th cell in the event table view, and make a successful POST to events.
+Now, if you run the app, you should be able to press the add button, tap the 5th cell in the event table view, and make a successful POST to events.
 
 # Posting with the Event View Controller
 
 ### Creating a Custom Cell
 
-We just implemented posting a pre-made event to our API, but what we really want is to post an event based on user input. So, we need to create some custom cells for our HUMEventViewController.
+We just implemented posting a pre-made event to our API, but what we really want is to post an event based on user input. So we need to create some custom cells for our HUMEventViewController.
 
 Create a new subclass of UITableViewCell called HUMTextFieldCell. Define a property called `textField` in the header file. We'll also want to define a static string that we can use as this cell's reuse identifier.
 
@@ -2773,7 +2776,7 @@ We want the user to be able to return out of the text field, so implement the de
 
 This text field will receive and display text for the name and address properties, but will receive a date object and display text for the start and end dates.
 
-So, lets create a method for setting a date on the cell. We'll use this method on the start and end date cells. Declare it as `- (void)setDate:(NSDate *)date` in HUMTextFieldCell.h and definite it as follows:
+So, let's create a method for setting a date on the cell. We'll use this method on the start and end date cells. Declare it as `- (void)setDate:(NSDate *)date` in HUMTextFieldCell.h and define it as follows:
 
 	// HUMTextFieldCell.m
 
@@ -2788,7 +2791,7 @@ So, lets create a method for setting a date on the cell. We'll use this method o
 	    self.textField.inputView = picker;
 	}
 
-We're using a `UIDatePicker` as the `textField`'s input view to let the user pick a new date after we set the initial date on the picker. When they pick a new date, the method `-changeTextField:` will fire, as we defined with `-addTarget:action:forControlEvents:`. Don't forget to `#import "NSDateFormatter+HUMDefaultDateFormatter.h"`.
+We're using a `UIDatePicker` as the `textField`'s input view to let the user pick a new date after we set the initial date on the picker. When the user picks a new date, the method `-changeTextField:` will fire, as we defined with `-addTarget:action:forControlEvents:`. Don't forget to `#import "NSDateFormatter+HUMDefaultDateFormatter.h"`.
 
 	// HUMTextFieldCell.m
 
@@ -2888,7 +2891,7 @@ To make a POST to events with user input, we need to:
 
 Go back to the `-addButtonPressed` method in `HUMMapViewController.m` and remove the assignment of the properties `event.name` `event.address` `event.startDate` `event.endDate`. Do not remove the assignment of `event.coordinate`, since we still need that to be set by the HUMMapViewController.
 
-2) Assign our user inputted properties to the event on `HUMEventViewController`.
+2) Assign our user-entered properties to the event on `HUMEventViewController`.
 
 	// HUMEventViewController.m
 
@@ -2919,7 +2922,7 @@ To make the event GET request, typedef a completion block that will return an ar
 	
 	typedef void(^HUMRailsClientEventsCompletionBlock)(NSArray *events, NSError *error);
 	
-Then declare a method for fetching events whose parameters are a map region and a completion block of this new type. The map region will be the visible map region in our HUMMapViewController, since we only want to load events within the region we're viewing. Unlike our other API client methods, we'll return an `NSURLSessionDataTask` from this method so we can cancel the task.
+Then declare a method for fetching events whose parameters are a map region and a completion block of this new type. The `region` will be the visible map region in our HUMMapViewController, since we only want to load events within the region we're viewing. Unlike our other API client methods, we'll return an `NSURLSessionDataTask` from this method so we can cancel the task.
 
 	//HUMRailsClient.h
 	
@@ -2952,9 +2955,9 @@ Now we can implement this method:
 		return nil;
 	}
     
-The `parameters` for our GET request contain `lat`, `lon`, and `radius`. The rails app will use these values to return a list of events that are less than the `radius` (in kilometers) away from the map region's centerpoint.
+The `parameters` for our GET request contain `lat`, `lon`, and `radius`. The Rails app will use these values to return a list of events that are less than the `radius` (in kilometers) away from the map region's centerpoint.
 
-We want to inscribe our square `mapView` span inside of our circular API search area so that we're receiving more events than need to be displayed, rather than too few. We use half the width of the `mapView` (the `latitudeDelta`  property) as our radius since the lateral span is the larger value in portrait. Multiplying by 111 is simply the conversion from latitudinal degrees to kilometers.
+We want to inscribe our square `mapView` span inside our circular API search area so we receive more events than need to be displayed, rather than too few. We use half the width of the `mapView` (the `latitudeDelta` property) as our radius since the lateral span is the larger value in portrait mode. Multiplying by 111 is simply the conversion from degrees of latitude to kilometers.
     
 ### Creating the Get Events Task
 
@@ -2993,7 +2996,7 @@ Now that we've created the request for fetching events in a region, we can creat
 	    return task;
 	}
 
-Since our rails API returns from a successful GET request with a "No events in area" dictionary or an array of event JSON, our success block has to handle both cases. If we receive an array, we execute the completion block with an array of events, otherwise `events` will be `nil`.
+Since our rails API returns from a successful GET request with either a "No events in area" dictionary or an array of event JSON, our success block has to handle both cases. If we receive an array, we execute the completion block with an array of events. Otherwise, `events` will be `nil`.
 
 In the case of failure, we simply execute our completion block with an error.
 
@@ -3008,7 +3011,7 @@ To make the event GET request, typedef a completion block that will return an ar
 	
 	typedef void(^HUMRailsAFNClientEventsCompletionBlock)(NSArray *events, NSError *error);
 	
-Then declare a method for fetching events whose parameters are a map region and a completion block of this new type. The map region will be the visible map region in our `HUMMapViewController`, since we only want to load events within the region we're viewing. Unlike our other API client methods, we'll return an `NSURLSessionDataTask` from this method so we can cancel the task.
+Then declare a method for fetching events whose parameters are a map region and a completion block of this new type. The `region` will be the visible map region in our `HUMMapViewController`, since we only want to load events within the region we're viewing. Unlike our other API client methods, we'll return an `NSURLSessionDataTask` from this method so we can cancel the task.
 
 	//HUMRailsAFNClient.h
 	
@@ -3051,9 +3054,9 @@ Now we can implement this method:
     
 The `parameters` for our GET request contain `lat`, `lon`, and `radius`. The rails app will use these values to return a list of events that are less than the `radius` (in kilometers) away from the map region's centerpoint.
 
-We want to inscribe our square `mapView` span inside of our circular API search area so that we're receiving more events than need to be displayed, rather than too few. We use half the width of the `mapView` (the `latitudeDelta`  property) as our radius since the lateral span is the larger value in portrait. Multiplying by 111 is simply the conversion from latitudinal degrees to kilometers.
+We want to inscribe our square `mapView` span inside our circular API search area so we receive more events than need to be displayed, rather than too few. We use half the width of the `mapView` (the `latitudeDelta`  property) as our radius since the lateral span is the larger value in portrait mode. Multiplying by 111 is simply the conversion from latitudinal degrees to kilometers.
 
-Since our rails API returns from a successful GET request with a "No events in area" dictionary or an array of event JSON, our success block has to handle both cases. If we receive an array, we execute the completion block with an array of events, otherwise `events` will be `nil`.
+Since our rails API returns from a successful GET request with either a "No events in area" dictionary or an array of event JSON, our success block has to handle both cases. If we receive an array, we execute the completion block with an array of events, otherwise `events` will be `nil`.
 
 In the case of failure, we simply execute our completion block with an error.
 
@@ -3062,7 +3065,7 @@ In the case of failure, we simply execute our completion block with an error.
 
 ### Calling the Get Event Method
 
-When the user runs the app, we want to display events that are near their current location. So, we want to call our GET events method on `-viewDidAppear:` of the `HUMMapViewController`. We'll encapsulate this request inside a method called `-reloadEventsOnMap`, which we will define in the next section.
+When the user runs the app, we want to display events that are near the user's current location. So we want to call our GET events method on `-viewDidAppear:` of the `HUMMapViewController`. We'll encapsulate this request inside a method called `-reloadEventsOnMap`, which we will define in the next section.
 
 If we aren't logged in, we still want to call the `-createCurrentUserWithCompletionBlock:` method. Once that request goes through, we can call `-reloadEventsOnMap`.
 
@@ -3108,7 +3111,7 @@ We also want to make a new GET request when the user changes the map's region. T
 
 ### Cancelling Get Event Tasks
 
-We call our new `-reloadEventsOnMap` method from the HUMMapViewController every time the map moves. This way, we'll always display events in the map area that the user is viewing. However, if the user moves the map to a new area before the API call completes, we want to cancel the previous task since it's for a map area that the user is no longer viewing. So, we'll make a `currentEventGetTask` property which will represent the current and only GET events task that we are running.
+We call our new `-reloadEventsOnMap` method from the HUMMapViewController every time the map moves. This way, we'll always display events in the map area that the user is viewing. However, if the user moves the map to a new area before the API call completes, we want to cancel the previous task since it's for a map area that the user is no longer viewing. So we'll make a `currentEventGetTask` property, which will represent the current and only GET events task that we are running.
 
 	// HUMMapViewController.m
 	
@@ -3147,7 +3150,7 @@ Finally, we can call `-updateMapViewAnnotationsWithAnnotations:` to update the `
 
 Now we'll define the `-updateMapViewAnnotationsWithAnnotations:` method that we called in the `-reloadEventsOnMap` method.
 
-Each time we get a new array of annotations from the API, we want to remove the old annotations from our `mapView` and add the new ones. However, if an old annotations is the same as a new one, there's no sense in removing it and then placing it back on the map. Removing and adding only the annotations that are necessary reduces the amount of redrawing that's done every time the map pans, leading to a smoother scrolling experience.
+Each time we get a new array of annotations from the API, we want to remove the old annotations from our `mapView` and add the new ones. However, if an old annotation is the same as a new one, there's no sense in removing it and then placing it back on the map. Removing and adding only the annotations that are necessary reduces the amount of redrawing that's done every time the map pans, leading to a smoother scrolling experience.
 
 This method (from a [thoughtbot blog post](http://robots.thoughtbot.com/how-to-handle-large-amounts-of-data-on-maps/) on displaying annotations on MKMapViews) handles removing, adding, and keeping annotations as necessary.
     
@@ -3175,7 +3178,7 @@ Taking advantage of the `-intersectSet:` and `-minusSet:` methods lets us create
     
 ### Checking Event Equality
 
-The set methods `-intersectSet:` and `-minusSet:` call the method `-isEqual:` on each NSObject in the set. So, we need to overwrite this method on `HUMEvent`.
+The set methods `-intersectSet:` and `-minusSet:` call the method `-isEqual:` on each NSObject in the set. So we need to overwrite this method on `HUMEvent`.
 
 	// HUMEvent.m
 
@@ -3225,7 +3228,7 @@ With these two methods implemented on `HUMEvent`, we can run the application in 
 
 ### Showing a Callout for an Event
 
-Since we want to place event objects as pins on a `MKMapView`, we need to make sure our `HUMEvent` class conform to the `<MKAnnotation>` protocol. We already declared the required property, `coordinate`, which corresponds to where the pin is placed. Now we can set the text in the pin's callout view.
+Since we want to place event objects as pins on a `MKMapView`, we need to make sure our `HUMEvent` class conforms to the `<MKAnnotation>` protocol. We already declared the required property, `coordinate`, which corresponds to where the pin is placed. Now we can set the text in the pin's callout view.
 
 Check the `HUMEvent` `@interface` to confirm that it conforms to this protocol.
 
@@ -3244,7 +3247,7 @@ Since we already declared a `coordinate` property, we just need to add the `titl
 	@property (copy, nonatomic) NSString *subtitle;
 	@property (assign, nonatomic) CLLocationCoordinate2D coordinate;
 	
-We want the title and subtitle in an event's callout view to display the event name and address, so overwrite the getter methods for `-title` and `-subtitle`.
+We want the title and subtitle in an event's callout view to display the event's name and address, so overwrite the getter methods for `-title` and `-subtitle`.
 
 	// HUMEvent.m
 
@@ -3258,11 +3261,11 @@ We want the title and subtitle in an event's callout view to display the event n
     	return self.address;
 	}
 
-Now, when we place our event objects on our `mapView`, they'll display their event information when we tap on the annotation.
+Now, once we place our event objects on our `mapView`, they'll display their event information when we tap on the annotation.
 
 ### Pushing an Event View Controller
 
-In addition, we want to present a read-only `HUMEventViewController` when we tap on a pin. So, we'll see the event view controller come on screen when we tap an annotation, and when we hit the back button we'll see the annotation callout reminding us which annotation we tapped.
+In addition, we want to present a read-only `HUMEventViewController` when we tap on a pin. So we'll see the event view controller come on screen when we tap an annotation. And when we hit the back button, we'll see the annotation callout reminding us which annotation we tapped.
 
 Presenting the `HUMEventViewController` means responding to the mapView delegate method `-mapView:didSelectAnnotationView:`. As long as the annotation is a `HUMEvent` object, we want to push a new view controller with that object.
 
@@ -3306,9 +3309,9 @@ These features are currently implemented in the sample app, so feel free to refe
 
 2) Add a confirmation view controller that pushes onto the nav stack after you POST to users, with a button that lets you share your event to Facebook and Twitter.
 
-3) Add a user object and set it on each Event object. Then you can let the user PATCH and event if they are the owner.
+3) Add a user object and set it on each Event object. Then you can let the user PATCH an event if they are the owner.
 
-4) Implement a POST to attendences method to let a user indicate they're going to attend an event.
+4) Implement a POST to attendences method to let a user indicate they plan to attend an event.
 
 5) Add custom map pin images and pick a tint color for your app.
 
@@ -3318,5 +3321,5 @@ These features are currently implemented in the sample app, so feel free to refe
 
 8) Let the user pick any location, not just their current location. Use geocoding to automatically fill out the address for that location.
 
-9) Use a different date formatter to format all the user facing dates in a human readable format.
+9) Use a different date formatter to format all the user-facing dates in a human-readable format.
 

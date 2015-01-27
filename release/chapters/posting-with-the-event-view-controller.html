@@ -27,7 +27,7 @@
 <h1>Posting with the Event View Controller</h1>
 <section id="creating-a-custom-cell" class="level3">
 <h3>Creating a Custom Cell</h3>
-<p>We just implemented posting a pre-made event to our API, but what we really want is to post an event based on user input. So, we need to create some custom cells for our HUMEventViewController.</p>
+<p>We just implemented posting a pre-made event to our API, but what we really want is to post an event based on user input. So we need to create some custom cells for our HUMEventViewController.</p>
 <p>Create a new subclass of UITableViewCell called HUMTextFieldCell. Define a property called <code>textField</code> in the header file. We'll also want to define a static string that we can use as this cell's reuse identifier.</p>
 <pre><code>// HUMTextFieldCell.h
 
@@ -67,7 +67,7 @@ static NSString *kTextFieldCellID = @"kTextFieldCellID";
     return YES;
 }</code></pre>
 <p>This text field will receive and display text for the name and address properties, but will receive a date object and display text for the start and end dates.</p>
-<p>So, lets create a method for setting a date on the cell. We'll use this method on the start and end date cells. Declare it as <code>- (void)setDate:(NSDate *)date</code> in HUMTextFieldCell.h and definite it as follows:</p>
+<p>So, let's create a method for setting a date on the cell. We'll use this method on the start and end date cells. Declare it as <code>- (void)setDate:(NSDate *)date</code> in HUMTextFieldCell.h and define it as follows:</p>
 <pre><code>// HUMTextFieldCell.m
 
 - (void)setDate:(NSDate *)date
@@ -80,7 +80,7 @@ static NSString *kTextFieldCellID = @"kTextFieldCellID";
 
     self.textField.inputView = picker;
 }</code></pre>
-<p>We're using a <code>UIDatePicker</code> as the <code>textField</code>'s input view to let the user pick a new date after we set the initial date on the picker. When they pick a new date, the method <code>-changeTextField:</code> will fire, as we defined with <code>-addTarget:action:forControlEvents:</code>. Don't forget to <code>#import "NSDateFormatter+HUMDefaultDateFormatter.h"</code>.</p>
+<p>We're using a <code>UIDatePicker</code> as the <code>textField</code>'s input view to let the user pick a new date after we set the initial date on the picker. When the user picks a new date, the method <code>-changeTextField:</code> will fire, as we defined with <code>-addTarget:action:forControlEvents:</code>. Don't forget to <code>#import "NSDateFormatter+HUMDefaultDateFormatter.h"</code>.</p>
 <pre><code>// HUMTextFieldCell.m
 
 - (void)changeTextField:(UIDatePicker *)picker
@@ -170,7 +170,7 @@ switch (indexPath.row) {
 </ol>
 <p>Go back to the <code>-addButtonPressed</code> method in <code>HUMMapViewController.m</code> and remove the assignment of the properties <code>event.name</code> <code>event.address</code> <code>event.startDate</code> <code>event.endDate</code>. Do not remove the assignment of <code>event.coordinate</code>, since we still need that to be set by the HUMMapViewController.</p>
 <ol start="2" type="1">
-<li><p>Assign our user inputted properties to the event on <code>HUMEventViewController</code>.</p>
+<li><p>Assign our user-entered properties to the event on <code>HUMEventViewController</code>.</p>
 <p>// HUMEventViewController.m</p>
 <ul>
 <li><p>(void)tableView:(UITableView <em>)tableView didSelectRowAtIndexPath:(NSIndexPath </em>)indexPath { if (indexPath.row != HUMEventCellSubmit) return;</p>

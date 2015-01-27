@@ -34,7 +34,7 @@
 </blockquote>
 <p>Why this happens:</p>
 <blockquote>
-<p>Since the authenticity token is stored in the session, the client can not know its value. This prevents people from submitting forms to a Rails app without viewing the form within that app itself. Imagine that you are using service A, you logged into the service and everything is ok. Now imagine that you went to use service B, and you saw a picture you like, and pressed on the picture to view a larger size of it. Now, if some evil code was there at service B, it might send a request to service A (which you are logged into), and ask to delete your account, by sending a request to <code>http://serviceA.com/close_account</code>. This is what is known as CSRF (Cross Site Request Forgery).</p>
+<p>Since the authenticity token is stored in the session, the client cannot know its value. This prevents people from submitting forms to a Rails app without viewing the form within that app itself. Imagine that you are using service A, you logged into the service and everything is ok. Now imagine that you went to use service B, and you saw a picture you like, and pressed on the picture to view a larger size of it. Now, if some evil code was there at service B, it might send a request to service A (which you are logged into), and ask to delete your account, by sending a request to <code>http://serviceA.com/close_account</code>. This is what is known as CSRF (Cross Site Request Forgery).</p>
 </blockquote>
 <p>While protecting against CSRF attacks is a good thing, the default forgery protection strategy in Rails 4 is problematic for dealing with POST requests to APIs. If you make a POST request to a Rails endpoint (rather than using a standard web form to create a record), you will see the following error:</p>
 <pre><code>ActionController::InvalidAuthenticityToken</code></pre>
@@ -183,7 +183,7 @@ end</code></pre>
 <p>Oh yes, we are using a method we haven't defined yet! What is this <code>authorize</code> method all about? When we are creating an <code>event</code> with our API, we want to make sure that the event has an owner.</p>
 <p>In Humon, we identify users by their device token, which is being sent in the header. In early versions of this book, we sent the device token in the parameters, just like <code>address</code>, <code>lat</code>, and <code>name</code>.</p>
 <p>Later on, we got feedback that it is more typical to see auth tokens sent in request headers. At first we thought this was because of security concerns, but then we found out that SSL encrypts the entire response, including the URL.</p>
-<p>The best explanation we've found for sending tokens of any kind in the header rather than in the URL is that it accounts for user error. As shared in <a href="http://stackoverflow.com/a/20754104/1019369">this StackOverflow response</a>, putting tokens in the header "Provides extra measure of security by preventing users from inadvertently sharing URLs with their credentials embedded in them".</p>
+<p>The best explanation we've found for sending tokens of any kind in the header rather than in the URL is that it accounts for user error. As shared in <a href="http://stackoverflow.com/a/20754104/1019369">this StackOverflow response</a>, putting tokens in the header "Provides extra measure of security by preventing users from inadvertently sharing URLs with their credentials embedded in them."</p>
 <p>Another reason tokens are usually sent as headers is that it is simpler for the client to process auth tokens when they are sent as headers. For this reason, sending auth tokens in the header is common practice for APIs. Since we want to establish and follow design principles for APIs that can be used and re-used for many use cases, it make sense to go with what's popular.</p>
 <p>So, given then we are sending the <code>device_token</code> in the header, and we will be doing that for any action that requires us to know which user is making the request, it makes sense to define a method in <code>ApiController</code> that looks for the device token header and finds the user with that device token. Let's define that method now:</p>
 <pre><code># app/controllers/api_controller.rb
@@ -209,12 +209,12 @@ class ApiController &lt; ApplicationController
      request.headers['tb-device-token']
    end
  end</code></pre>
-<p>Note that we are using <code>tb-device-token</code> as our header key so that it does not clash with header keys for any other auth libraries we might implement in the future.</p>
+<p>Note that we are using <code>tb-device-token</code> as our header key so it does not clash with header keys for any other auth libraries we might implement in the future.</p>
 <p>Our error message has changed yet again, and now it is time for us to move to the final step: creating our view.</p>
 </section>
 <section id="view-1" class="level4">
 <h4>View</h4>
-<p>Our <a href="https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/controllers/api/v1/events_controller.rb"><code>EventsController</code></a> is creating an <code>event</code>, but we are still getting an error when we run our spec (note: your expectation might have a different <code>id</code> number depending on how many time's you've run your test; that's fine):</p>
+<p>Our <a href="https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/controllers/api/v1/events_controller.rb"><code>EventsController</code></a> is creating an <code>event</code>, but we are still getting an error when we run our spec (note: your expectation might have a different <code>id</code> number depending on how many times you've run your test; that's fine):</p>
 <pre><code>expect(response_json).to eq({ 'id' =&gt; event.id })
        expected: {"id"=&gt;6}
         got: {}</code></pre>

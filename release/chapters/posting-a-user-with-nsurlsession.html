@@ -32,7 +32,7 @@
 <pre><code>- (void)createCurrentUserWithCompletionBlock:
     (void (^)(NSError *error))block;</code></pre>
 <p>The type of our parameter for this method is a block, which we declare here with <code>(void (^)(NSError *error))</code>. Declaring a block as our parameter type is similar to how we declare other parameter types like <code>(NSString *)</code>, where the word following the type is the name of the parameter. This block has a return type of <code>void</code> and one argument of type <code>NSError</code> so we can check if the POST completed with an error.</p>
-<p>It makes sense to typedef a new name for our completion block so that we can refer to it more easily, especially if we plan on using this block type again. Typedef-ing allows us to define a new name for an existing type, which in this case will be the new name <code>HUMRailsClientErrorCompletionBlock</code> for the block type <code>(void (^)(NSError *error))</code>. Place this typedef above the interface in HUMRailsClient.h:</p>
+<p>It makes sense to typedef a new name for our completion block so we can refer to it more easily, especially if we plan on using this block type again. Using typedef allows us to define a new name for an existing type, which in this case will be the new name <code>HUMRailsClientErrorCompletionBlock</code> for the block type <code>(void (^)(NSError *error))</code>. Place this typedef above the interface in HUMRailsClient.h:</p>
 <pre><code>typedef void(^HUMRailsClientErrorCompletionBlock)(NSError *error);</code></pre>
 <p>The block that we typedef is the same as the block we previously declared, so now we can declare the method <code>-createCurrentUserWithCompletionBlock:</code> as so:</p>
 <pre><code>- (void)createCurrentUserWithCompletionBlock:
@@ -65,12 +65,12 @@
     [task resume];
 }</code></pre>
 <p>First, we instantiate a <code>url</code> for our request, which in this case is our ROOT_URL (which we set up with a user-defined macro) with <code>@"users"</code> appended to it. Then we can instantiate a <code>request</code> using this URL and set the request method to POST.</p>
-<p>Now that we have a <code>request</code>, we can create a task for our <code>self.session</code> that will execute the request. The method <code>-dataTaskWithRequest:completionHandler:</code> takes two arguments, the <code>request</code> that we created before, and a block that will be run when the request is complete.</p>
-<p>The block we pass into the method must be of a type defined by <code>-dataTaskWithRequest:completionHandler:</code>, so we pass in a block of the appropriate type as an argument with the syntax:</p>
+<p>Now that we have a <code>request</code>, we can create a task for our <code>self.session</code> that will execute the request. The method <code>-dataTaskWithRequest:completionHandler:</code> takes two arguments: the <code>request</code> that we created and a block that will be run when the request is complete.</p>
+<p>The block we pass into the method must be of a type defined by <code>-dataTaskWithRequest:completionHandler:</code>, so we pass in a block of the appropriate type as an argument with this syntax:</p>
 <pre><code>^void (NSData *data, NSURLResponse *response, NSError *error) { 
     // code to execute
 }</code></pre>
-<p>Where the block's return type is <code>void</code> and that the block's parameters are <code>data</code>, <code>response</code>, and <code>error</code>. We don't have to explicitly declare the void return type, since it can be inferred, which means we could instead use the syntax:</p>
+<p>Where the block's return type is <code>void</code> and the block's parameters are <code>data</code>, <code>response</code>, and <code>error</code>. We don't have to explicitly declare the void return type, since it can be inferred, which means we could instead use the syntax:</p>
 <pre><code>^(NSData *data, NSURLResponse *response, NSError *error) { 
     // code to execute
 }</code></pre>
@@ -90,7 +90,7 @@ if (!error) {
     [HUMUserSession setUserToken:responseDictionary[@"device_token"]];
     [HUMUserSession setUserID:responseDictionary[@"id"]];
     
-    // Create a new contiguration with new token
+    // Create a new configuration with new token
     NSURLSessionConfiguration *newConfiguration =
         self.session.configuration;
     [newConfiguration setHTTPAdditionalHeaders:
@@ -114,8 +114,8 @@ dispatch_async(dispatch_get_main_queue(), ^{
 </section>
 <section id="setting-the-headers-conditionally" class="level3">
 <h3>Setting the Headers Conditionally</h3>
-<p>Now that we have a POST to users method and persist the token we recieve from this method, we can conditionally set our session's headers depending on if we have that token yet.</p>
-<p>Currently, our custom init method sets a new <code>tb-device-token</code> and <code>tb-app-secret</code> in our headers every time it initializes. These are the correct headers for POST to users, but we need different headers for all other reqeusts.</p>
+<p>Now that we have a POST to users method and persist the token we recieve from this method, we can conditionally set our session's headers depending on whether we have that token yet.</p>
+<p>Currently, our custom init method sets a new <code>tb-device-token</code> and <code>tb-app-secret</code> in our headers every time it initializes. These are the correct headers for POST to users, but we need different headers for all other requests.</p>
 <p>In the custom init method of our <code>HUMRailsClient</code>, change the <code>headers</code> variable to a ternary.</p>
 <pre><code>// HUMRailsClient.m
 
@@ -132,7 +132,8 @@ NSDictionary *headers = [HUMUserSession userIsLoggedIn] ?
       @"tb-app-secret" : HUMAppSecret
       };
       </code></pre>
-<p>This ternary depends on the class methods <code>userIsLoggedIn</code> and <code>userToken</code> that we defined on <code>HUMUserSession</code>, so remember to <code>#import "HUMUserSession.h"</code> at the top of the file. It sets the headers to include the saved <code>[HUMUserSession userToken]</code> if we are logged in and the app secret random device token if we aren't.</p>
+<p>This ternary depends on the class methods <code>+userIsLoggedIn</code> and <code>+userToken</code> that we defined on <code>HUMUserSession</code>, so remember to <code>#import "HUMUserSession.h"</code> at the top of the file. It sets the headers to include the saved <code>+[HUMUserSession userToken]</code> if we are logged in.</p>
+<p>If we aren't logged in, we need to send a random device token <code>[[NSUUID UUID] UUIDString]</code>. We also send the app secret so the backend will accept our POST request to create a new user.</p>
 </section>
 </section></body>
 </html>

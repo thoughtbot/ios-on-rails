@@ -54,7 +54,7 @@ static NSString *const HUMAppSecret =
     
     return _sharedClient;
 }</code></pre>
-<p>With AFNetworking, we don't have to manually set up the session configuration and session with our own custom init method. We simply initialize the client using <code>-initWithBaseURL:</code>, which means that our paths later will be relative to this <code>ROOT_URL</code>.</p>
+<p>With AFNetworking, we don't have to manually set up the session configuration and session with our own custom init method. We simply initialize the client using <code>-initWithBaseURL:</code>, which means our paths later will be relative to this <code>ROOT_URL</code>.</p>
 </section>
 <section id="setting-the-session-headers-1" class="level3">
 <h3>Setting the Session Headers</h3>

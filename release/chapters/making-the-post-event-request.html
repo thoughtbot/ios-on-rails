@@ -64,7 +64,7 @@
 </section>
 <section id="adding-a-submit-event-method" class="level3">
 <h3>Adding a Submit Event Method</h3>
-<p>Lets take a step back and remember what this view controller is supposed to look like. The <code>HUMEventViewController</code> will have 4 cells for each property of our event (<code>name</code>, <code>address</code>, <code>startDate</code>, <code>endDate</code>) and a submit cell. Instead of referring to these by their indexes, lets define these cell indexes in an enum at the top of <code>HUMEventViewController.h</code>. This enum starts at <code>HUMEventCellName = 0</code> and goes to <code>HUMEventCellCount = 5</code>.</p>
+<p>Let's take a step back and remember what this view controller is supposed to look like. The <code>HUMEventViewController</code> will have a cell for each property of our event (name, address, startDate, endDate) and a submit cell. Instead of referring to these by their indexes, let's define these cell indexes in an enum at the top of <code>HUMEventViewController.h</code>. This enum starts at <code>HUMEventCellName = 0</code> and goes to <code>HUMEventCellCount = 5</code>.</p>
 <pre><code>// HUMEventViewController.h
 
 typedef NS_ENUM(NSUInteger, HUMEventCell) {
@@ -76,7 +76,7 @@ typedef NS_ENUM(NSUInteger, HUMEventCell) {
     HUMEventCellCount
 };</code></pre>
 <p>Now we can change the <code>-tableView:numberOfRowsInSection:</code> to <code>return HUMEventCellCount;</code> instead of <code>return 5;</code></p>
-<p>We can also use this new enum when we declare <code>-tableView:didSelectRowAtIndexPath:</code>to determine (in a user readable fashion) which cell was selected.</p>
+<p>We can also use this new enum when we declare <code>-tableView:didSelectRowAtIndexPath:</code> to determine which cell was selected.</p>
 <pre><code>// HUMEventViewController.m
 
 - (void)tableView:(UITableView *)tableView
@@ -125,7 +125,7 @@ typedef NS_ENUM(NSUInteger, HUMEventCell) {
     [self.navigationController pushViewController:eventViewController
                                          animated:YES];
 }</code></pre>
-<p>Now if you run the app you should be able to press the add button, tap the 5th cell in the event table view, and make a successful POST to events.</p>
+<p>Now, if you run the app, you should be able to press the add button, tap the 5th cell in the event table view, and make a successful POST to events.</p>
 </section>
 </section></body>
 </html>

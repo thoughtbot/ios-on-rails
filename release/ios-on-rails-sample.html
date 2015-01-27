@@ -78,15 +78,15 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
 <section id="why-this-book" class="level3">
 <h3>Why this book?</h3>
 <p>There are many ways to build the backend for an iOS application but you only need one. And depending on the complexity of the API you are going to create, different solutions work best for different applications.</p>
-<p>Just as Rails makes it possible to set up a basic web application in a matter of minutes, Rails makes it possible to set up a basic API in a matter of minutes. But deciding how to structure your API isn't easy. While experimenting with all of the options is a fun weekend project, sometimes you just want to get going. This book will help you do just that. While your API will no doubt require some tweaking while fleshing out your iOS app, the approach we will be taking is to define and build the API first, and then consume this API through our iOS app.</p>
+<p>Just as Rails makes it possible to set up a basic web application in a matter of minutes, Rails makes it possible to set up a basic API in a matter of minutes. But deciding how to structure your API isn't easy. While experimenting with all the options is a fun weekend project, sometimes you just want to get going. This book will help you do just that. While your API will no doubt require some tweaking while you flesh out your iOS app, the approach we will be taking is to define and build the API first, and then consume this API through our iOS app.</p>
 <p>The Rails portions of <em>iOS on Rails</em> will guide you through what we have found to be a robust, clean, flexible way of building out a JSON API with Rails. We provide code samples for GET, POST, and PATCH requests. In addition, we will explore some of the alternative approaches that we didn't choose and explain why we made the choices that we did.</p>
 <p>The iOS portion of the book will then walk, step-by-step, through creating an iOS application that works with the Rails API you just created. The iOS application will use each endpoint to post up objects and get back necessary data for the user. Our model objects in the iOS app will correspond with the model objects in the database, and be populated with response data from the API.</p>
 </section>
 <section id="who-is-this-book-for" class="level3">
 <h3>Who is this book for?</h3>
-<p>This book is for a developer who wants to build an iOS application with a Rails backend. It's also a book for both a Rails developer and an iOS developer to share and use in concert to create an app quickly and with more flexibility to change it than a backend-as-a-service provider like StackMob or Parse.</p>
-<p>The approach shared in this book is the result of our own experiments as Rails and iOS developers working together to build an application. The Rails portions of this book assume a basic working knowledge of how to build a web application with Rails as well as the Ruby programming language. The iOS portions of this book assume experience with object oriented programming and a basic familiarity with the Objective-C programming language.</p>
-<p>This book is intended to be used as a guide rather than a recipe. While our aim is to give you all of the tools necessary to build great Rails APIs and iOS clients, it does not cover the fundamentals of Ruby, Rails or Objective-C. That being said, if any part of the book strikes you as incomplete or confusing, we are always happy to receive pull requests and issue submissions on <a href="https://github.com/thoughtbot/ios-on-rails">GitHub</a>.</p>
+<p>This book is for a developer who wants to build an iOS application with a Rails backend. It's also a book for both a Rails developer and an iOS developer to share and use in concert. This will permit them to create an app quickly and with more flexibility to change it than a backend-as-a-service provider like StackMob or Parse.</p>
+<p>The approach shared in this book is the result of our own experiments as Rails and iOS developers working together to build an application. The Rails portions of this book assume a basic working knowledge of how to build a web application with Rails as well as familiarity with the Ruby programming language. The iOS portions of this book assume experience with object oriented programming and a basic familiarity with the Objective-C programming language.</p>
+<p>This book is intended to be used as a guide rather than a recipe. While our aim is to give you all the tools necessary to build great Rails APIs and iOS clients, it does not cover the fundamentals of Ruby, Rails or Objective-C. That being said, if any part of the book strikes you as incomplete or confusing, we are always happy to receive pull requests and issue submissions on <a href="https://github.com/thoughtbot/ios-on-rails">GitHub</a>.</p>
 <p></p>
 </section>
 </section>
@@ -94,12 +94,12 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+e+'<\/'+'a'+'>');
 <h1>Creating a GET request</h1>
 <section id="it-all-starts-with-a-request-spec" class="level3">
 <h3>It all starts with a request spec</h3>
-<p>At thoughtbot, we do test-driven and Outside-in development, which means that we start work on any feature by writing a high-level test that describes user behaviors. You can read a more detailed description of Outside-in development <a href="http://rubylearning.com/blog/2010/10/05/outside-in-development/">here</a>, but the benefits can be summarized as follows:</p>
+<p>At thoughtbot, we do test-driven and outside-in development, which means we start work on any feature by writing a high-level test that describes user behaviors. You can read a more detailed description of outside-in development <a href="http://rubylearning.com/blog/2010/10/05/outside-in-development/">here</a>, but the benefits can be summarized as follows:</p>
 <blockquote>
-<p>Outside-in along with the test-driven process helps you write just the minimum amount of code that provides value to stakeholders, and not a line more.</p>
+<p>Outside-in, along with the test-driven process, helps you write just the minimum amount of code that provides value to stakeholders, and not a line more.</p>
 </blockquote>
 <p>The external interface of our application will be the iOS app that GETs and POSTs data to the Rails app, so <a href="https://www.relishapp.com/rspec/rspec-rails/docs/feature-specs/feature-spec">feature specs</a>, which usually interact with the application via web interfaces, do not make sense. Jonas Nicklas, the creator of Capybara, <a href="http://www.elabs.se/blog/34-capybara-and-testing-apis">said it best</a>: &quot;Do not test APIs with Capybara. It wasn't designed for it.&quot;</p>
-<p>Instead, we will use <a href="https://www.relishapp.com/rspec/rspec-rails/docs/request-specs/request-spec">request specs</a>. RSpec request specs, like feature specs, are a great way to ensure the entire stack is working together properly but via HTTP verbs, response codes, and responses rather than browser interactions.</p>
+<p>Instead, we will use <a href="https://www.relishapp.com/rspec/rspec-rails/docs/request-specs/request-spec">request specs</a>. RSpec request specs, like feature specs, are a great way to ensure the entire stack is working together properly, but via HTTP verbs, response codes, and responses rather than browser interactions.</p>
 <p>When writing our request specs, we found that we were calling <code>JSON.parse(response.body)</code> over and over again. We abstracted this into a method called <a href="https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/spec/support/response_json.rb"><code>response_json</code></a>, which we use below and in all of our request specs that include a JSON response.</p>
 <pre><code># spec/requests/api/v1/events/events_spec.rb
 
@@ -130,10 +130,10 @@ end</code></pre>
 </section>
 <section id="model" class="level3">
 <h3>Model</h3>
-<p>This first error we will get for the request spec above is that our app does not have a factory named <code>event</code>. FactoryGirl guesses the class of the object based on the factory name, so creating the <code>event</code> factory is a good opportunity to set up our <code>Event</code> model.</p>
+<p>This first error we will get for the request spec above is that our app does not have a factory named <code>event</code>. FactoryGirl guesses the object's class based on the factory name, so creating the <code>event</code> factory is a good opportunity to set up our <code>Event</code> model.</p>
 <p>At the model level, Rails applications that serve a JSON API look exactly like regular web applications built with Rails. Although the views and controllers will be versioned, we will write our migrations like standard Rails migrations and keep our models within the models directory. You can see the data migrations for our example application <a href="https://github.com/thoughtbot/ios-on-rails/tree/master/example_apps/rails/db/migrate">here</a>.</p>
 <p>At this point, let's assume our <code>User</code> model has already been created.</p>
-<p>Our <code>Event</code> model has a few validations and relations, so we will write tests for those validations. In our development process, we would write the following tests line-by-line, watching them fail, and writing the lines in our model one at a time to make them pass. We will use FactoryGirl, Shoulda Matchers, and RSpec for our unit tests. To see our full test setup, see our <code>spec_helper</code> <a href="https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/spec/spec_helper.rb">here</a>.</p>
+<p>Our <code>Event</code> model has a few validations and relations, so we will write tests for those validations. In our development process, we would write the following tests line by line, watching them fail, and writing the lines in our model one at a time to make them pass. We will use FactoryGirl, Shoulda Matchers, and RSpec for our unit tests. To see our full test setup, see our <code>spec_helper</code> <a href="https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/spec/spec_helper.rb">here</a>.</p>
 <pre><code># spec/models/event_spec.rb
 
 require 'spec_helper'
@@ -184,7 +184,7 @@ end</code></pre>
 <section id="controller" class="level3">
 <h3>Controller</h3>
 <p>At this point, we can create an <code>event</code> object using FactoryGirl, but our request spec is failing on the next line. This is because we have no routes set up for the path we are using in our test's GET request (<code>get &quot;/v1/events/#{event.id}&quot;</code>). To fix this, we need to add a controller and configure our <code>routes.rb</code> file.</p>
-<p>As we discussed in the versioning section of our introduction, we will add controllers within <code>api/v1</code> directory so that we may release future versions of our API without breaking older versions of our application.</p>
+<p>As we discussed in the versioning section of our introduction, we will add controllers within <code>api/v1</code> directory so we may release future versions of our API without breaking older versions of our application.</p>
 <p>Because our <code>routes.rb</code> file tells our controllers to look for the JSON format by default, we do not need to tell our individual controllers to render JSON templates. We do, however, need to add our new paths to our routes file:</p>
 <pre><code># config/routes.rb
 
@@ -207,7 +207,7 @@ end</code></pre>
 <section id="view" class="level3">
 <h3>View</h3>
 <p>Our controller and routes are set up, but we still need one final piece before our spec will pass: a view. Our request spec is looking for a view template with some response JSON, so we need to create that view.</p>
-<p>For a Rails developer, the views are where there will be the most difference between a standard web application and a JSON API. As with our controllers, we will include our views in the <code>api/v1</code> directory so that they are versioned.</p>
+<p>For a Rails developer, the views are where the most difference will occur between a standard web application and a JSON API. As with our controllers, we will include our views in the <code>api/v1</code> directory so that they are versioned.</p>
 <p>Just like regular view partials, Jbuilder partials minimize duplication by letting us re-use blocks of view code in many different places. JSON representations of data frequently include duplication (a collection is usually an array of the same JSON structure that would be found for a single object), so partials are especially handy when creating a JSON API. We will use Jbuilder’s DSL to tell our show view to find the event partial:</p>
 <pre><code># app/views/api/v1/events/show.json.jbuilder
 
@@ -231,13 +231,13 @@ end</code></pre>
 <section id="caching-our-view" class="level4">
 <h4>Caching our view</h4>
 <p>You might be wondering what the <code>json.cache!</code> at the top of our <code>event</code> partial is doing. Jbuilder supports <a href="http://guides.rubyonrails.org/caching_with_rails.html#fragment-caching">fragment caching</a>, and you tell your app to cache a block of view code by wrapping it in a <code>json.cache!</code> block. While the load time for the JSON in our view above is going to be teeny tiny, adding fragment caching is simple and a good habit to get into for apps that are likely to expand over time.</p>
-<p>If you're interested in learning more about fragment caching, there is a great <a href="http://railscasts.com/episodes/90-fragment-caching-revised">Railscast</a> (paid) on the topic.</p>
+<p>If you're interested in learning more about fragment caching, here is a great <a href="http://railscasts.com/episodes/90-fragment-caching-revised">Railscast</a> (paid) on the topic.</p>
 </section>
 </section>
 <section id="putting-it-all-together" class="level3">
 <h3>Putting it all together</h3>
 <p>We have now successfully created our first API endpoint for Humon and our request spec should pass!</p>
-<p>But let's test it manually just to make sure. Our iOS app isn't up and running yet, so we will have to create records in Rails console. Make sure you are in your project directory in Terminal, run <code>rails console</code> and the enter the following:</p>
+<p>But let's test it manually just to make sure. Our iOS app isn't up and running yet, so we will have to create records in Rails console. Make sure you are in your project directory in Terminal, run <code>rails console</code> and then enter the following:</p>
 <pre><code>User.create(device_token: '12345')
 Event.create(
   address: '85 2nd Street',
@@ -267,11 +267,11 @@ Event.create(
 </section>
 <section id="a-rails-api-client-with-nsurlsession" class="level1">
 <h1>A Rails API Client With NSURLSession</h1>
-<p>Before we go about making our first API request, we need to decide how we are going to make our networking calls. As mentioned in the Cocoapods chapter, the AFNetworking framework is a clean and reliable solution to making networking requests. We will show examples of using AFNetworking to make your API requests as well as examples of making requests using the built in <code>NSURLSession</code>, which all networking libraries are built on top of. AFNetworking brings a lot more to the table than just wrapping up your network requests; but, like a programming planeteer, the choice is yours.</p>
+<p>Before we go about making our first API request, we need to decide how we are going to make our networking calls. As mentioned in the Cocoapods chapter, the AFNetworking framework is a clean and reliable solution to making networking requests. We will show examples of using AFNetworking to make your API requests as well as examples of making requests using the built-in <code>NSURLSession</code>, which all networking libraries are built on top of. AFNetworking brings a lot more to the table than just wrapping up your network requests; but, like a programming planeteer, the choice is yours.</p>
 <section id="creating-a-singleton-client-object" class="level3">
 <h3>Creating a Singleton Client Object</h3>
 <p>Create a subclass of <code>NSObject</code> called <code>HUMRailsClient</code>. All of our API requests will be handled by one instance of the <code>HUMRailsClient</code>, so we're going to create a singleton of <code>HUMRailsClient</code>.</p>
-<p>What we will create and refer to as a singleton isn't a dictionary-definition singleton, since we aren't completely limiting the instantiation of <code>HUMRailsClient</code> to only one object. We are, however, limiting the instantiation of <code>HUMRailsClient</code> to only one object if we always obtain the instance via the <code>+sharedClient</code> class method. Essentially, our sharedClient is a singleton if we use it consistantly but is not if we errantly decide to instantiate another instance of <code>HUMRailsClient</code> using <code>[[HUMRailsClient alloc] init]</code>.</p>
+<p>What we will create and refer to as a singleton isn't a dictionary-definition singleton, since we aren't completely limiting the instantiation of HUMRailsClient to only one object. We are, however, limiting the instantiation of HUMRailsClient to only one object if we always use our sharedClient. Essentially, our sharedClient is a singleton if we use it consistently but it is not if we errantly decide to instantiate another instance of HUMRailsClient using <code>[[HUMRailsClient alloc] init]</code>.</p>
 <p>Declare a class method that will return our singleton by adding <code>+ (instancetype)sharedClient;</code> to your <code>HUMRailsClient.h</code> file. We use <code>instancetype</code> as our return type to indicate that this class method will return an instance of <code>HUMRailsClient</code>. The + indicates that <code>sharedClient</code> is a class method to be called directly on the <code>HUMRailsClient</code> class. Prepending your class method with &quot;shared&quot; indicates to other developers that the method returns a singleton.</p>
 <p>Now let's implement this method:</p>
 <pre><code>// HUMRailsClient.m
@@ -291,14 +291,14 @@ Event.create(
     return _sharedClient;
 }</code></pre>
 <p>First, we declare a static variable of type <code>HUMRailsClient</code>. Since it's a static variable, <code>_sharedClient</code> will last for the life of the program.</p>
-<p>Then, we use Grand Central Dispatch to execute a block of code once and only once. If you are using Xcode and begin typing <code>dispatch_once</code>, you can even use autocomplete to find and insert the entire <code>dispatch_once</code> code snippet. <code>dispatch_once</code> takes a reference to a static variable of type <code>dispatch_once_t</code> and a block of code to execute. <code>dispatch_once_t</code> is a long variable type that indicates whether or not the block of code has been executed already. On the first call of <code>dispatch_once</code>, the <code>onceToken</code> is set and the block executed, but on every subsequent call the block is not executed because the onceToken has already been set.</p>
+<p>Then, we use Grand Central Dispatch to execute a block of code once and only once. If you are using Xcode and begin typing <code>dispatch_once</code>, you can even use autocomplete to find and insert the entire <code>dispatch_once</code> code snippet. <code>dispatch_once</code> takes a reference to a static variable of type <code>dispatch_once_t</code> and a block of code to execute. <code>dispatch_once_t</code> is a long variable type that indicates whether the block of code has already been executed. On the first call of <code>dispatch_once</code>, the <code>onceToken</code> is set and the block executed, but on every subsequent call the block is not executed because the onceToken has already been set.</p>
 <p>Inside the block we instantiate a <code>HUMRailsClient</code> and set it as the value of the static variable <code>_sharedClient</code>. Once that is done, we simply need to return our singleton <code>_sharedClient</code>.</p>
 </section>
 <section id="creating-a-session-for-handling-requests" class="level3">
 <h3>Creating a Session for Handling Requests</h3>
 <p>iOS 7 introduced the <code>NSURLSession</code> class, which is an object that handles groups of HTTP requests. Each API request we make in a NSURLSession is encapsulated in a <code>NSURLSessionTask</code>, which executes the request asynchronously and notifies you of completion by executing a block or by calling a method on its delegate.</p>
-<p>There are three different types of <code>NSURLSession</code> objects, including one that allows your app to continue downloading data even if your app is in the background. The type of a session is determined by its <code>sessionConfiguration</code>, but for simple API requests we only need to use the default session type.</p>
-<p>Declare a session property and a static app secret string above your <code>@implementation</code> inside of <code>HUMRailsClient.m</code>.</p>
+<p>There are three different types of <code>NSURLSession</code> objects, including one that allows your app to continue downloading data even if the app is in the background. The type of a session is determined by its <code>sessionConfiguration</code>, but for simple API requests we only need to use the default session type.</p>
+<p>Declare a session property and a static app secret string above your <code>@implementation</code> inside <code>HUMRailsClient.m</code>.</p>
 <pre><code>// HUMRailsClient.m
 
 static NSString *const HUMAppSecret =
@@ -309,7 +309,7 @@ static NSString *const HUMAppSecret =
 @property (strong, nonatomic) NSURLSession *session;
 
 @end</code></pre>
-<p>We will use the <code>HUMAppSecret</code> to sign POST requests to /users so that the backend can validate that the request is coming from our mobile app. The session object will handle all of our API requests.</p>
+<p>We will use the <code>HUMAppSecret</code> to sign POST requests to /users so the backend can validate that the request is coming from our mobile app. The session object will handle all of our API requests.</p>
 <p>We want our <code>HUMRailsClient</code> to always have a session object, so we will overwrite the <code>HUMRailsClient</code>'s <code>-init</code> method to set the client's <code>session</code> property.</p>
 <p>Custom init methods all have the same general format:</p>
 <pre><code>- (instancetype)init
@@ -404,7 +404,7 @@ static NSString *const HUMAppSecret =
     
     return _sharedClient;
 }</code></pre>
-<p>With AFNetworking, we don't have to manually set up the session configuration and session with our own custom init method. We simply initialize the client using <code>-initWithBaseURL:</code>, which means that our paths later will be relative to this <code>ROOT_URL</code>.</p>
+<p>With AFNetworking, we don't have to manually set up the session configuration and session with our own custom init method. We simply initialize the client using <code>-initWithBaseURL:</code>, which means our paths later will be relative to this <code>ROOT_URL</code>.</p>
 </section>
 <section id="setting-the-session-headers-1" class="level3">
 <h3>Setting the Session Headers</h3>

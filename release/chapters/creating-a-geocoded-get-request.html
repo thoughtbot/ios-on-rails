@@ -31,14 +31,14 @@
 <p>Geocoding is the process of finding associated geographic coordinates (often expressed as latitude and longitude) from other geographic data, such as street addresses, or ZIP codes.</p>
 </blockquote>
 <p>-- <a href="http://en.wikipedia.org/wiki/Geocoding">Wikipedia</a>.</p>
-<p>Geocoding gives us the power to take location information from humans and turn it into something that a computer can understand and reason about.</p>
-<p><a href="http://www.yelp.com">Yelp</a>, for example, does not ask businesses to add their latitude and longitude when creating a profile. Instead, they ask for the street address and zipcode, which the Yelp application transforms into a latitude and longitude that can be plotted on a map.</p>
+<p>Geocoding gives us the power to take location information from humans and turn it into something a computer can understand and reason about.</p>
+<p><a href="http://www.yelp.com">Yelp</a>, for example, does not ask businesses to add their latitude and longitude when creating a profile. Instead, it asks for the street address and zip code, which the Yelp application transforms into a latitude and longitude that can be plotted on a map.</p>
 <p>This is important because humans don't think in the decimal precision terms of latitude and longitude, but computers do. A web application that receives location information from humans will always receive a string of text, and that application cannot plot locations on a map or compute distances between points without turning that text into a set of coordinates.</p>
 <p>There are many approaches to geocoding with Rails. If you're interested in learning more, thoughbot's <a href="http://geocodingonrails.com"><em>Geocoding on Rails</em></a> provides a thorough analysis and discussion of the various options.</p>
 </section>
 <section id="geocoding-in-humon-choosing-a-library" class="level3">
 <h3>Geocoding in Humon: choosing a library</h3>
-<p>For Humon, we aren't going to be transforming one type of geographic data to another. What we want is to be able to receive a latitude and longitude from the iOS application and return the closest events to those coordinates.</p>
+<p>For Humon, we aren't going to be transforming one type of geographic data into another. What we want is to be able to receive a latitude and longitude from the iOS application and return the events closest to those coordinates.</p>
 <p>After consulting <em>Geocoding on Rails</em>, we chose the <a href="https://github.com/alexreisner/geocoder">Geocoder</a> gem for Humon. It supports distance queries, is simple to use, and is under active development.</p>
 </section>
 <section id="it-all-starts-with-a-request-spec-3" class="level3">
@@ -109,7 +109,7 @@ end</code></pre>
 <p>And when we run our test again, our error has changed:</p>
 <pre><code>ActionController::RoutingError:
    uninitialized constant Api::V1::Events</code></pre>
-<p>Nice! Our routes file now knows that we are looking for a controller within <code>Api::V1::Events</code> rather than the <code>EventsController</code>, but we haven't defined anything within that namespace. Time to define our controller. In the <a href="https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/controllers/api/v1/events/nearests_controller.rb"><code>NearestsController</code></a>, we will be using the <a href="https://github.com/alexreisner/geocoderlocation-aware-database-queries.html"><code>near</code> scope</a> (given to us by the Geocoder gem) which takes in a latitude-longitude pair, radius, and units as arguments:</p>
+<p>Nice! Our routes file now knows that we are looking for a controller within <code>Api::V1::Events</code> rather than the <code>EventsController</code>, but we haven't defined anything within that namespace. Time to define our controller. In the <a href="https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/controllers/api/v1/events/nearests_controller.rb"><code>NearestsController</code></a>, we will be using the <a href="https://github.com/alexreisner/geocoderlocation-aware-database-queries.html"><code>near</code> scope</a> (given to us by the Geocoder gem). This takes in a latitude-longitude pair, radius, and units as arguments:</p>
 <pre><code># app/controllers/api/1/events/nearests_controller.rb
 
 class Api::V1::Events::NearestsController &lt; ApiController
@@ -121,16 +121,16 @@ class Api::V1::Events::NearestsController &lt; ApiController
     )
   end
 end</code></pre>
-<p>Run the test again, and again, our test is failing:</p>
+<p>Run the test again, and again our test is failing:</p>
 <pre><code> NoMethodError:
-   undefined method `near' for #&lt;Class:0x007ffba8583468&gt;</code></pre>
+   undefined method `near` for #&lt;Class:0x007ffba8583468&gt;</code></pre>
 <p>Oh yeah! We forgot to actually add the Geocoder gem. Let's do that now.</p>
 </section>
 <section id="model-and-gemfile" class="level3">
 <h3>Model (and Gemfile)</h3>
 <p>Let's start by adding <code>gem 'geocoder'</code> to our <a href="https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/Gemfile">Gemfile</a> and running <code>bundle install</code>.</p>
-<p>We already have the <code>lat</code> and <code>lon</code> attributes on our <code>Event</code> model, so no need for a database migration. If we run our test again, however, we will get the same <code>undefined method</code> error that we got before.</p>
-<p>According to the <a href="https://github.com/alexreisner/geocoderobject-geocoding.html">Geocoder README</a>, "your model must tell Geocoder which method returns your object's geocodable address". Since our model is <em>already</em> geocoded (meaning: it already has the latitude and longitude set) we need to tell Geocoder which attributes store latitude and longitude:</p>
+<p>We already have the <code>lat</code> and <code>lon</code> attributes on our <code>Event</code> model, so no need for a database migration. If we run our test again, however, we will get the same <code>undefined method</code> error we got before.</p>
+<p>According to the <a href="https://github.com/alexreisner/geocoderobject-geocoding.html">Geocoder README</a>, "your model must tell Geocoder which method returns your object's geocodable address." Since our model is <em>already</em> geocoded (meaning: it already has the latitude and longitude set) we need to tell Geocoder which attributes store latitude and longitude:</p>
 <pre><code># app/models/event.rb
 
 class Event &lt; ActiveRecord::Base
@@ -147,7 +147,7 @@ end</code></pre>
 
 irb(main):002:0&gt; event.geocoded?
 
-NoMethodError: undefined method `geocoded?' for #&lt;Event:0x007fdb4e4353b0&gt;</code></pre>
+NoMethodError: undefined method `geocoded?` for #&lt;Event:0x007fdb4e4353b0&gt;</code></pre>
 <p>Does this error message look familiar? Answer: yes! This is the same type of error we got when we last ran our test.</p>
 <p>Let's reload our Rails console by running <code>reload!</code>, add <code>reverse_geocoded_by :lat, :lon</code> back to the <code>Event</code> model, and do the same thing:</p>
 <pre><code>irb(main):001:0&gt; event = Event.first
@@ -171,7 +171,7 @@ json.partial! 'api/v1/events/event', collection: @events, as: :event</code></pre
 </section>
 <section id="it-all-starts-with-a-request-spec-part-ii-2" class="level3">
 <h3>It all starts with a request spec, part II</h3>
-<p>We want to explicitly define what happens when there are no events nearby. Let's do that through writing a test first:</p>
+<p>We want to explicitly define what happens when no events are nearby. Let's do that through writing a test first:</p>
 <pre><code># spec/requests/api/v1/events/nearest_spec.rb
 
 describe 'GET /v1/events/nearest?lat=&amp;lon=&amp;radius=' do
@@ -195,7 +195,7 @@ end</code></pre>
 </section>
 <section id="controller-5" class="level3">
 <h3>Controller</h3>
-<p>Time to add some branching in our controller so that we're returning the correct message.</p>
+<p>Time to add some branching in our controller so we're returning the correct message.</p>
 <pre><code># app/controllers/api/v1/events/nearests_controller.rb
 
 class Api::V1::Events::NearestsController &lt; ApiController

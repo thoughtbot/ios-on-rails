@@ -24,12 +24,12 @@
 <h1>Creating a GET request</h1>
 <section id="it-all-starts-with-a-request-spec" class="level3">
 <h3>It all starts with a request spec</h3>
-<p>At thoughtbot, we do test-driven and Outside-in development, which means that we start work on any feature by writing a high-level test that describes user behaviors. You can read a more detailed description of Outside-in development <a href="http://rubylearning.com/blog/2010/10/05/outside-in-development/">here</a>, but the benefits can be summarized as follows:</p>
+<p>At thoughtbot, we do test-driven and outside-in development, which means we start work on any feature by writing a high-level test that describes user behaviors. You can read a more detailed description of outside-in development <a href="http://rubylearning.com/blog/2010/10/05/outside-in-development/">here</a>, but the benefits can be summarized as follows:</p>
 <blockquote>
-<p>Outside-in along with the test-driven process helps you write just the minimum amount of code that provides value to stakeholders, and not a line more.</p>
+<p>Outside-in, along with the test-driven process, helps you write just the minimum amount of code that provides value to stakeholders, and not a line more.</p>
 </blockquote>
 <p>The external interface of our application will be the iOS app that GETs and POSTs data to the Rails app, so <a href="https://www.relishapp.com/rspec/rspec-rails/docs/feature-specs/feature-spec">feature specs</a>, which usually interact with the application via web interfaces, do not make sense. Jonas Nicklas, the creator of Capybara, <a href="http://www.elabs.se/blog/34-capybara-and-testing-apis">said it best</a>: "Do not test APIs with Capybara. It wasn't designed for it."</p>
-<p>Instead, we will use <a href="https://www.relishapp.com/rspec/rspec-rails/docs/request-specs/request-spec">request specs</a>. RSpec request specs, like feature specs, are a great way to ensure the entire stack is working together properly but via HTTP verbs, response codes, and responses rather than browser interactions.</p>
+<p>Instead, we will use <a href="https://www.relishapp.com/rspec/rspec-rails/docs/request-specs/request-spec">request specs</a>. RSpec request specs, like feature specs, are a great way to ensure the entire stack is working together properly, but via HTTP verbs, response codes, and responses rather than browser interactions.</p>
 <p>When writing our request specs, we found that we were calling <code>JSON.parse(response.body)</code> over and over again. We abstracted this into a method called <a href="https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/spec/support/response_json.rb"><code>response_json</code></a>, which we use below and in all of our request specs that include a JSON response.</p>
 <pre><code># spec/requests/api/v1/events/events_spec.rb
 
@@ -60,10 +60,10 @@ end</code></pre>
 </section>
 <section id="model" class="level3">
 <h3>Model</h3>
-<p>This first error we will get for the request spec above is that our app does not have a factory named <code>event</code>. FactoryGirl guesses the class of the object based on the factory name, so creating the <code>event</code> factory is a good opportunity to set up our <code>Event</code> model.</p>
+<p>This first error we will get for the request spec above is that our app does not have a factory named <code>event</code>. FactoryGirl guesses the object's class based on the factory name, so creating the <code>event</code> factory is a good opportunity to set up our <code>Event</code> model.</p>
 <p>At the model level, Rails applications that serve a JSON API look exactly like regular web applications built with Rails. Although the views and controllers will be versioned, we will write our migrations like standard Rails migrations and keep our models within the models directory. You can see the data migrations for our example application <a href="https://github.com/thoughtbot/ios-on-rails/tree/master/example_apps/rails/db/migrate">here</a>.</p>
 <p>At this point, let's assume our <code>User</code> model has already been created.</p>
-<p>Our <code>Event</code> model has a few validations and relations, so we will write tests for those validations. In our development process, we would write the following tests line-by-line, watching them fail, and writing the lines in our model one at a time to make them pass. We will use FactoryGirl, Shoulda Matchers, and RSpec for our unit tests. To see our full test setup, see our <code>spec_helper</code> <a href="https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/spec/spec_helper.rb">here</a>.</p>
+<p>Our <code>Event</code> model has a few validations and relations, so we will write tests for those validations. In our development process, we would write the following tests line by line, watching them fail, and writing the lines in our model one at a time to make them pass. We will use FactoryGirl, Shoulda Matchers, and RSpec for our unit tests. To see our full test setup, see our <code>spec_helper</code> <a href="https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/spec/spec_helper.rb">here</a>.</p>
 <pre><code># spec/models/event_spec.rb
 
 require 'spec_helper'
@@ -114,7 +114,7 @@ end</code></pre>
 <section id="controller" class="level3">
 <h3>Controller</h3>
 <p>At this point, we can create an <code>event</code> object using FactoryGirl, but our request spec is failing on the next line. This is because we have no routes set up for the path we are using in our test's GET request (<code>get "/v1/events/#{event.id}"</code>). To fix this, we need to add a controller and configure our <code>routes.rb</code> file.</p>
-<p>As we discussed in the versioning section of our introduction, we will add controllers within <code>api/v1</code> directory so that we may release future versions of our API without breaking older versions of our application.</p>
+<p>As we discussed in the versioning section of our introduction, we will add controllers within <code>api/v1</code> directory so we may release future versions of our API without breaking older versions of our application.</p>
 <p>Because our <code>routes.rb</code> file tells our controllers to look for the JSON format by default, we do not need to tell our individual controllers to render JSON templates. We do, however, need to add our new paths to our routes file:</p>
 <pre><code># config/routes.rb
 
@@ -137,7 +137,7 @@ end</code></pre>
 <section id="view" class="level3">
 <h3>View</h3>
 <p>Our controller and routes are set up, but we still need one final piece before our spec will pass: a view. Our request spec is looking for a view template with some response JSON, so we need to create that view.</p>
-<p>For a Rails developer, the views are where there will be the most difference between a standard web application and a JSON API. As with our controllers, we will include our views in the <code>api/v1</code> directory so that they are versioned.</p>
+<p>For a Rails developer, the views are where the most difference will occur between a standard web application and a JSON API. As with our controllers, we will include our views in the <code>api/v1</code> directory so that they are versioned.</p>
 <p>Just like regular view partials, Jbuilder partials minimize duplication by letting us re-use blocks of view code in many different places. JSON representations of data frequently include duplication (a collection is usually an array of the same JSON structure that would be found for a single object), so partials are especially handy when creating a JSON API. We will use Jbuilder&#x2019;s DSL to tell our show view to find the event partial:</p>
 <pre><code># app/views/api/v1/events/show.json.jbuilder
 
@@ -161,13 +161,13 @@ end</code></pre>
 <section id="caching-our-view" class="level4">
 <h4>Caching our view</h4>
 <p>You might be wondering what the <code>json.cache!</code> at the top of our <code>event</code> partial is doing. Jbuilder supports <a href="http://guides.rubyonrails.org/caching_with_rails.htmlfragment-caching.html">fragment caching</a>, and you tell your app to cache a block of view code by wrapping it in a <code>json.cache!</code> block. While the load time for the JSON in our view above is going to be teeny tiny, adding fragment caching is simple and a good habit to get into for apps that are likely to expand over time.</p>
-<p>If you're interested in learning more about fragment caching, there is a great <a href="http://railscasts.com/episodes/90-fragment-caching-revised">Railscast</a> (paid) on the topic.</p>
+<p>If you're interested in learning more about fragment caching, here is a great <a href="http://railscasts.com/episodes/90-fragment-caching-revised">Railscast</a> (paid) on the topic.</p>
 </section>
 </section>
 <section id="putting-it-all-together" class="level3">
 <h3>Putting it all together</h3>
 <p>We have now successfully created our first API endpoint for Humon and our request spec should pass!</p>
-<p>But let's test it manually just to make sure. Our iOS app isn't up and running yet, so we will have to create records in Rails console. Make sure you are in your project directory in Terminal, run <code>rails console</code> and the enter the following:</p>
+<p>But let's test it manually just to make sure. Our iOS app isn't up and running yet, so we will have to create records in Rails console. Make sure you are in your project directory in Terminal, run <code>rails console</code> and then enter the following:</p>
 <pre><code>User.create(device_token: '12345')
 Event.create(
   address: '85 2nd Street',
