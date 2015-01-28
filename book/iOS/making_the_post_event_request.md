@@ -97,7 +97,7 @@ Now we just have to use this new init method in the `HUMMapViewController`. Chan
 
 	- (void)addButtonPressed
 	{
-	    // Create a fake event
+	    // Create a fake event at the centerpoint of the map
 	    HUMEvent *event = [[HUMEvent alloc] init];
 	    event.name = @"Picnic";
 	    event.address = @"123 Fake St.";

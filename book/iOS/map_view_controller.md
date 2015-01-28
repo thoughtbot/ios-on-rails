@@ -59,9 +59,9 @@ Also, declare that the `HUMMapViewController` conforms to the `MKMapViewDelegate
 	
 	@end
 
-Now we want to fill the entirety of the `HUMMapViewController`'s view with a `mapView`. Inside your `-viewDidLoad` method, instantiate a map view and add it as a subview of the main view. 
+Now we want to fill the entirety of the `HUMMapViewController`'s view with a `mapView`. Inside your `-viewDidLoad` method, instantiate a map view and add it as a subview of the main view. Remember to set `HUMMapView` as the delegate of `self.mapview` so it can respond to delegate messages like `-mapView:regionDidChangeAnimated:`.
 
-Remember to set `HUMMapView` as the delegate of `self.mapview` so it can respond to delegate messages like `-mapView:regionDidChangeAnimated:`.
+Also, we set the title of this view controller to the name of our app, `@"Humon"`. For more information on why we used an `NSLocalizedString` here instead of a `@"plain old string literal"`, please visit the [Apple Developer Library](https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html#//apple_ref/doc/uid/10000051i-CH6). The short explanation is that we use localized strings for all text that will be displayed to a user. That way we can easily translate our app from English to other languages.
 
 	// HUMMapViewController.m
 	
@@ -75,14 +75,37 @@ Remember to set `HUMMapView` as the delegate of `self.mapview` so it can respond
 		self.title = NSLocalizedString(@"Humon", nil);
 		
 		// Create and add a mapView as a subview of the main view
-        self.mapView = [[MKMapView alloc] initWithFrame:self.view.frame];
-        self.mapView.delegate = self;
-        [self.view addSubview:self.mapView];
+		self.mapView = [[MKMapView alloc] initWithFrame:self.view.frame];
+		self.mapView.delegate = self;
+		[self.view addSubview:self.mapView];
+		
+		// Find the map's center point and add a red dot
 	}
 	
 	@end
+
+When a user adds an event, the new event's coordinate will be at the center of the visible map. Replace the last comment in `viewDidLoad` with the following to add a red dot to the center of the map, so users will know where their new event is being added.
+
+The `masksToBounds` and `cornerRadius` properties mask the edges of the square `centerpointView` so it looks like a circle.
+
+	// HUMMapViewController.m
 	
-Also, we set the title of this view controller to the name of our app, `@"Humon"`. For more information on why we used an `NSLocalizedString` here instead of a `@"plain old string literal"`, please visit the [Apple Developer Library](https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html#//apple_ref/doc/uid/10000051i-CH6). The short explanation is that we use localized strings for all text that will be displayed to a user. That way we can easily translate our app from English to other languages.
+	// Find the map's center point
+	CGFloat centerpointRadius = 4;
+	CGFloat statusBarHeight = [UIApplication sharedApplication]
+                              .statusBarFrame.size.height;
+	CGRect centerpointRect = CGRectMake(self.view.center.x - centerpointRadius,
+	                                    self.view.center.y - centerpointRadius 
+	                                    - statusBarHeight,
+	                                    2 * centerpointRadius,
+	                                    2 * centerpointRadius);
+	
+	// Add a red dot to the center point
+	UIView *centerpointView = [[UIView alloc] initWithFrame:centerpointRect];
+	centerpointView.backgroundColor = [UIColor redColor];
+	centerpointView.layer.masksToBounds = YES;
+	centerpointView.layer.cornerRadius = centerpointRadius;
+	[self.view addSubview:centerpointView];
 	
 Go ahead and run the app to see the big beautiful map you just created.
 

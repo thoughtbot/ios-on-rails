@@ -80,6 +80,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		083423640EC1EFC720C87E75 /* Pods-HumonUITests.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HumonUITests.beta.xcconfig"; path = "Pods/Target Support Files/Pods-HumonUITests/Pods-HumonUITests.beta.xcconfig"; sourceTree = "<group>"; };
 		090EF9771922DE6600998481 /* HUMAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HUMAnnotationView.h; path = Views/HUMAnnotationView.h; sourceTree = "<group>"; };
 		090EF9781922DE6600998481 /* HUMAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HUMAnnotationView.m; path = Views/HUMAnnotationView.m; sourceTree = "<group>"; };
 		093FFD891819DA4B0006E686 /* HUMDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = HUMDataModel.xcdatamodel; sourceTree = "<group>"; };
@@ -158,12 +159,20 @@
 		09EFA6A71949147700C0DA20 /* HUMJSONFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMJSONFileManager.m; sourceTree = "<group>"; };
 		09EFA6AA194916E900C0DA20 /* HUMJSONFileManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMJSONFileManagerTests.m; sourceTree = "<group>"; };
 		09EFA6AC1949182B00C0DA20 /* HUMJSONFileManagerKiwiTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMJSONFileManagerKiwiTests.m; sourceTree = "<group>"; };
+		1C7E715D7A2722AB53E23E8F /* Pods-HumonUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HumonUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HumonUITests/Pods-HumonUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		1E1949C7BA83AB55561381D1 /* Pods-HumonUITests.alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HumonUITests.alpha.xcconfig"; path = "Pods/Target Support Files/Pods-HumonUITests/Pods-HumonUITests.alpha.xcconfig"; sourceTree = "<group>"; };
 		36F6FB009F914E0BB4DE201B /* libPods-HumonUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HumonUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		494D5B60B9C74C878D89F660 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
-		68E9FE1BF314452EA719FB0F /* Pods-HumonTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HumonTests.xcconfig"; path = "Pods/Pods-HumonTests.xcconfig"; sourceTree = "<group>"; };
+		3BF5BA378883CDC8EB862C38 /* Pods-HumonUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HumonUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-HumonUITests/Pods-HumonUITests.release.xcconfig"; sourceTree = "<group>"; };
+		4696776C717E88870E3D14F8 /* Pods.alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.alpha.xcconfig; path = "Pods/Target Support Files/Pods/Pods.alpha.xcconfig"; sourceTree = "<group>"; };
+		68499540436979739A026233 /* Pods.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.beta.xcconfig; path = "Pods/Target Support Files/Pods/Pods.beta.xcconfig"; sourceTree = "<group>"; };
+		689ED5AEB0254FF1EC4538D0 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		9B9E902ACF20470E9806E200 /* libPods-HumonTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HumonTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A087C54C12844AC0A6C2AA0D /* Pods-HumonUITests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HumonUITests.xcconfig"; path = "Pods/Pods-HumonUITests.xcconfig"; sourceTree = "<group>"; };
+		A24996AB328D33A2FA2EF6BC /* Pods-HumonTests.alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HumonTests.alpha.xcconfig"; path = "Pods/Target Support Files/Pods-HumonTests/Pods-HumonTests.alpha.xcconfig"; sourceTree = "<group>"; };
 		D996E00A1E7349AE89853F21 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		DBAE311D9CDC3AD9E81917CF /* Pods-HumonTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HumonTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-HumonTests/Pods-HumonTests.release.xcconfig"; sourceTree = "<group>"; };
+		E71771406619332FA190A0D5 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		F03AE016AB82F9D0C4B81309 /* Pods-HumonTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HumonTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HumonTests/Pods-HumonTests.debug.xcconfig"; sourceTree = "<group>"; };
+		F4A58EEA547FDC9C1EBA0F53 /* Pods-HumonTests.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HumonTests.beta.xcconfig"; path = "Pods/Target Support Files/Pods-HumonTests/Pods-HumonTests.beta.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -318,9 +327,7 @@
 				093FFDD01832AA720006E686 /* HumonUITests */,
 				0991A9B6181085D000881332 /* Frameworks */,
 				0991A9B5181085D000881332 /* Products */,
-				494D5B60B9C74C878D89F660 /* Pods.xcconfig */,
-				68E9FE1BF314452EA719FB0F /* Pods-HumonTests.xcconfig */,
-				A087C54C12844AC0A6C2AA0D /* Pods-HumonUITests.xcconfig */,
+				A313B487A77BD93318A100AD /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -412,6 +419,25 @@
 				09EFA69E1949071300C0DA20 /* HUMEventJson.json */,
 			);
 			name = JSONFiles;
+			sourceTree = "<group>";
+		};
+		A313B487A77BD93318A100AD /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E71771406619332FA190A0D5 /* Pods.debug.xcconfig */,
+				689ED5AEB0254FF1EC4538D0 /* Pods.release.xcconfig */,
+				68499540436979739A026233 /* Pods.beta.xcconfig */,
+				4696776C717E88870E3D14F8 /* Pods.alpha.xcconfig */,
+				F03AE016AB82F9D0C4B81309 /* Pods-HumonTests.debug.xcconfig */,
+				DBAE311D9CDC3AD9E81917CF /* Pods-HumonTests.release.xcconfig */,
+				F4A58EEA547FDC9C1EBA0F53 /* Pods-HumonTests.beta.xcconfig */,
+				A24996AB328D33A2FA2EF6BC /* Pods-HumonTests.alpha.xcconfig */,
+				1C7E715D7A2722AB53E23E8F /* Pods-HumonUITests.debug.xcconfig */,
+				3BF5BA378883CDC8EB862C38 /* Pods-HumonUITests.release.xcconfig */,
+				083423640EC1EFC720C87E75 /* Pods-HumonUITests.beta.xcconfig */,
+				1E1949C7BA83AB55561381D1 /* Pods-HumonUITests.alpha.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -587,7 +613,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8E59AEA0F0464C78B6122293 /* Check Pods Manifest.lock */ = {
@@ -617,7 +643,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-HumonTests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HumonTests/Pods-HumonTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		ECCB639087AE48FE88F178E7 /* Copy Pods Resources */ = {
@@ -632,7 +658,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-HumonUITests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HumonUITests/Pods-HumonUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -739,7 +765,7 @@
 /* Begin XCBuildConfiguration section */
 		093FFDDB1832AA730006E686 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A087C54C12844AC0A6C2AA0D /* Pods-HumonUITests.xcconfig */;
+			baseConfigurationReference = 1C7E715D7A2722AB53E23E8F /* Pods-HumonUITests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Humon.app/Humon";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -762,7 +788,7 @@
 		};
 		093FFDDC1832AA730006E686 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A087C54C12844AC0A6C2AA0D /* Pods-HumonUITests.xcconfig */;
+			baseConfigurationReference = 3BF5BA378883CDC8EB862C38 /* Pods-HumonUITests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Humon.app/Humon";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -781,7 +807,7 @@
 		};
 		093FFDDD1832AA730006E686 /* Beta */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A087C54C12844AC0A6C2AA0D /* Pods-HumonUITests.xcconfig */;
+			baseConfigurationReference = 083423640EC1EFC720C87E75 /* Pods-HumonUITests.beta.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Humon.app/Humon";
 				COPY_PHASE_STRIP = NO;
@@ -801,7 +827,7 @@
 		};
 		093FFDDE1832AA730006E686 /* Alpha */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A087C54C12844AC0A6C2AA0D /* Pods-HumonUITests.xcconfig */;
+			baseConfigurationReference = 1E1949C7BA83AB55561381D1 /* Pods-HumonUITests.alpha.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Humon.app/Humon";
 				COPY_PHASE_STRIP = NO;
@@ -855,14 +881,17 @@
 		};
 		0950F1DA1810A57400A78A36 /* Alpha */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 494D5B60B9C74C878D89F660 /* Pods.xcconfig */;
+			baseConfigurationReference = 4696776C717E88870E3D14F8 /* Pods.alpha.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				COPY_PHASE_STRIP = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Humon/Humon-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = "ROOT_URL='@\"https://humon-staging.herokuapp.com/v1/\"'";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"ROOT_URL='@\\\"https://humon-staging.herokuapp.com/v1/\\\"'",
+				);
 				INFOPLIST_FILE = "Humon/Humon-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -871,7 +900,7 @@
 		};
 		0950F1DB1810A57400A78A36 /* Alpha */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 68E9FE1BF314452EA719FB0F /* Pods-HumonTests.xcconfig */;
+			baseConfigurationReference = A24996AB328D33A2FA2EF6BC /* Pods-HumonTests.alpha.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Humon.app/Humon";
 				COPY_PHASE_STRIP = NO;
@@ -926,14 +955,17 @@
 		};
 		0950F1DD1810A57C00A78A36 /* Beta */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 494D5B60B9C74C878D89F660 /* Pods.xcconfig */;
+			baseConfigurationReference = 68499540436979739A026233 /* Pods.beta.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				COPY_PHASE_STRIP = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Humon/Humon-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = "ROOT_URL='@\"https://api.humon.io/v1/\"'";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"ROOT_URL='@\\\"https://api.humon.io/v1/\\\"'",
+				);
 				INFOPLIST_FILE = "Humon/Humon-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -942,7 +974,7 @@
 		};
 		0950F1DE1810A57C00A78A36 /* Beta */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 68E9FE1BF314452EA719FB0F /* Pods-HumonTests.xcconfig */;
+			baseConfigurationReference = F4A58EEA547FDC9C1EBA0F53 /* Pods-HumonTests.beta.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Humon.app/Humon";
 				COPY_PHASE_STRIP = NO;
@@ -1033,7 +1065,7 @@
 		};
 		0991A9E7181085D000881332 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 494D5B60B9C74C878D89F660 /* Pods.xcconfig */;
+			baseConfigurationReference = E71771406619332FA190A0D5 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1041,8 +1073,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Humon/Humon-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"ROOT_URL='@\"https://humon-staging.herokuapp.com/v1/\"'",
-					"DEBUG=1",
+					"$(inherited)",
+					"ROOT_URL='@\\\"https://humon-staging.herokuapp.com/v1/\\\"'",
 				);
 				INFOPLIST_FILE = "Humon/Humon-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1052,13 +1084,16 @@
 		};
 		0991A9E8181085D000881332 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 494D5B60B9C74C878D89F660 /* Pods.xcconfig */;
+			baseConfigurationReference = 689ED5AEB0254FF1EC4538D0 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Humon/Humon-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = "ROOT_URL='@\"https://api.humon.io/v1/\"'";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"ROOT_URL='@\\\"https://api.humon.io/v1/\\\"'",
+				);
 				INFOPLIST_FILE = "Humon/Humon-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -1067,7 +1102,7 @@
 		};
 		0991A9EA181085D000881332 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 68E9FE1BF314452EA719FB0F /* Pods-HumonTests.xcconfig */;
+			baseConfigurationReference = F03AE016AB82F9D0C4B81309 /* Pods-HumonTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Humon.app/Humon";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1090,7 +1125,7 @@
 		};
 		0991A9EB181085D000881332 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 68E9FE1BF314452EA719FB0F /* Pods-HumonTests.xcconfig */;
+			baseConfigurationReference = DBAE311D9CDC3AD9E81917CF /* Pods-HumonTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Humon.app/Humon";
 				FRAMEWORK_SEARCH_PATHS = (

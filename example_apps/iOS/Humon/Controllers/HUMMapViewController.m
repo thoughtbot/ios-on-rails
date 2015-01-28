@@ -21,6 +21,7 @@
 @interface HUMMapViewController () <MKMapViewDelegate>
 
 @property (strong, nonatomic) MKMapView *mapView;
+@property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) NSURLSessionTask *currentEventGetTask;
 
 @property (assign, nonatomic) BOOL hasUpdatedUserLocation;
@@ -74,6 +75,11 @@
 
 - (void)createMapView
 {
+    self.locationManager = [[CLLocationManager alloc] init];
+    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+        [self.locationManager requestWhenInUseAuthorization];
+    }
+    
     self.mapView = [[MKMapView alloc] initWithFrame:self.view.bounds];
     self.mapView.translatesAutoresizingMaskIntoConstraints = NO;
     self.mapView.delegate = self;
