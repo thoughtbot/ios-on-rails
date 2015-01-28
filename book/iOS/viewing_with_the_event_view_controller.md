@@ -39,7 +39,7 @@ Now, once we place our event objects on our `mapView`, they'll display their eve
 
 ### Pushing an Event View Controller
 
-In addition, we want to present a read-only `HUMEventViewController` when we tap on a pin. So we'll see the event view controller come on screen when we tap an annotation. And when we hit the back button, we'll see the annotation callout reminding us which annotation we tapped.
+In addition, we want to present a read-only `HUMEventViewController` when we tap on a annotation. When we hit the back button, we'll still see the annotation callout reminding us which event we tapped.
 
 Presenting the `HUMEventViewController` means responding to the mapView delegate method `-mapView:didSelectAnnotationView:`. As long as the annotation is a `HUMEvent` object, we want to push a new view controller with that object.
 

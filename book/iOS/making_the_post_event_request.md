@@ -68,8 +68,9 @@ We can also use this new enum when we declare `-tableView:didSelectRowAtIndexPat
 	{
 	    // Return if the user didn't select the submit cell
 	    // This is the same as (indexPath.row != 5) but much more readable
-	    if (indexPath.row != HUMEventCellSubmit)
+	    if (indexPath.row != HUMEventCellSubmit) {
 	        return;
+	    }
 	
 	    // Post the event
 	    [SVProgressHUD show];

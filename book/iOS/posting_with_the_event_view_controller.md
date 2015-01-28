@@ -2,7 +2,7 @@
 
 ### Creating a Custom Cell
 
-We just implemented posting a pre-made event to our API, but what we really want is to post an event based on user input. So we need to create some custom cells for our HUMEventViewController.
+We just implemented posting a dummy event to our API, but what we really want is to post an event based on user input. So we need to create some custom cells for our HUMEventViewController.
 
 Create a new subclass of UITableViewCell called HUMTextFieldCell. Define a property called `textField` in the header file. We'll also want to define a static string that we can use as this cell's reuse identifier.
 
@@ -157,23 +157,24 @@ Now that all of our cell properties are set, we can run the app and see what it 
 
 ### Reflecting Cell Input
 
-We have our new cell properties, but we are still relying on the fake event data we set in the `HUMMapViewController.m`.
-
-To make a POST to events with user input, we need to:
+We have our new cell properties, but we are still relying on the fake event data we set in the `HUMMapViewController.m`. To make a POST to events with user input, we need to:
 
 1) Remove the fake data we placed in `HUMMapViewController.m`.
 
+2) Assign our user-entered properties to the event on `HUMEventViewController`.
+
 Go back to the `-addButtonPressed` method in `HUMMapViewController.m` and remove the assignment of the properties `event.name` `event.address` `event.startDate` `event.endDate`. Do not remove the assignment of `event.coordinate`, since we still need that to be set by the HUMMapViewController.
 
-2) Assign our user-entered properties to the event on `HUMEventViewController`.
+Then, replace `-tableView:didSelectRowAtIndexPath:` in `HUMEventViewController.m` with the following:
 
 	// HUMEventViewController.m
 
 	- (void)tableView:(UITableView *)tableView
 	    didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	{
-	    if (indexPath.row != HUMEventCellSubmit)
+	    if (indexPath.row != HUMEventCellSubmit) {
 	        return;
+	    }
 	
 	    self.event.name = self.nameCell.textField.text;
 	    self.event.address = self.addressCell.textField.text;

@@ -4,9 +4,9 @@
 
 ### Create the New View Controller
 
-![Creating a new view controller](images/ios_app_skeleton_6.png)
-
 Create a new view controller subclass called `HUMMapViewController` by selecting File > New > File. This will create a header (.h) file and implementation (.m) file.
+
+![Creating a new view controller](images/ios_app_skeleton_6.png)
 
 ### Set the Root View Controller
 
@@ -77,7 +77,6 @@ Remember to set `HUMMapView` as the delegate of `self.mapview` so it can respond
 		// Create and add a mapView as a subview of the main view
         self.mapView = [[MKMapView alloc] initWithFrame:self.view.frame];
         self.mapView.delegate = self;
-        self.mapView.showsUserLocation = YES;
         [self.view addSubview:self.mapView];
 	}
 	

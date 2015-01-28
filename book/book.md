@@ -37,13 +37,9 @@
 
 <<[iOS/api_client.md]
 
-<<[iOS/api_client_afn.md]
-
 <<[iOS/user_object.md]
 
 <<[iOS/posting_a_user.md]
-
-<<[iOS/posting_a_user_afn.md]
 
 <<[iOS/making_the_post_user_request.md]
 
@@ -51,15 +47,11 @@
 
 <<[iOS/posting_an_event.md]
 
-<<[iOS/posting_an_event_afn.md]
-
 <<[iOS/making_the_post_event_request.md]
 
 <<[iOS/posting_with_the_event_view_controller.md]
 
 <<[iOS/getting_an_event.md]
-
-<<[iOS/getting_an_event_afn.md]
 
 <<[iOS/displaying_events.md]
 

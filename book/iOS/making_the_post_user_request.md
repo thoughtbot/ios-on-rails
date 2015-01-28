@@ -1,6 +1,6 @@
 # Making the POST User Request
 
-We want to make a POST request to create and save a user only once on each device. So let's conditionally call the `-createCurrentUserWithCompletionBlock:` we just created inside `HUMMapViewController`'s `-viewDidAppear:` method. Remember to `#import "HUMRailsClient.h"` or `#import "HUMRailsAFNClient.h"`, whichever one you choose to use.
+We want to make a POST request to create and save a user only once on each device. So let's conditionally call the `-createCurrentUserWithCompletionBlock:` we just created inside `HUMMapViewController`'s `-viewDidAppear:` method. Remember to `#import "HUMRailsClient.h"`.
 
 	// HUMMapViewController.m
 
@@ -12,8 +12,6 @@ We want to make a POST request to create and save a user only once on each devic
         
         	[SVProgressHUD show];
         
-        	// We could also make this request using our AFN client.
-        	// [[HUMRailsAFNClient sharedClient]
         	[[HUMRailsClient sharedClient] 
         		createCurrentUserWithCompletionBlock:^(NSError *error) {
             

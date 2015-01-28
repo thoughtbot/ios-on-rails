@@ -1,4 +1,4 @@
-# The Add an Event View Controller
+# The Event View Controller
 
 ![Table View for event details](images/ios_app_skeleton_2.png)
 
@@ -11,7 +11,7 @@ Create a new subclass of `UITableViewController` called `HUMEventViewController`
 	- (NSInteger)tableView:(UITableView *)tableView 
 		numberOfRowsInSection:(NSInteger)section
 	{
-    	return 6;
+    	return 5;
 	}
 
     - (UITableViewCell *)tableView:(UITableView *)tableView
@@ -42,15 +42,15 @@ To create a static string, place `static NSString *const HUMEventCellIdentifier 
 
 If we want to be able to reuse cells using the `HUMEventCellIdentifier`, we have to register a class that the `tableView` will create or reuse an instance of when we call `dequeueReusableCellWithIdentifier:forIndexPath:`. We do this inside of `viewDidLoad`.
 
-### Linking the Add Button to the HUMAddEventViewController
+### Linking the Add Button to the HUMEventViewController
 
-Now that we have created a `HUMAddEventViewController` we can create and show the add view from the `HUMMapViewController`. Go back to the `HUMMapViewController`'s implementation file and add `#import "HUMEventViewController.h"` below the `#import "HUMMapViewController.h"` to import the header file we created in the previous section.
+Now that we have created a `HUMEventViewController` we can create and show the add view from the `HUMMapViewController`. Go back to the `HUMMapViewController`'s implementation file and add `#import "HUMEventViewController.h"` below the `#import "HUMMapViewController.h"` to import the header file we created in the previous section.
 
 Now we can replace the `-addButtonPressed` method to present a `HUMEventViewController`. When we press the "Add" button on top of the map view, we can either:
 
 1. Push a new `HUMEventViewController` onto the navigation stack managed by the `UINavigationController` we created in the `AppDelegate.m`.
 	
-2. Present a new `HUMAddEventViewController` modally.
+2. Present a new `HUMEventViewController` modally.
 	
 Having the `HUMMapViewController` present modally means the `HUMEventViewController` would animate sliding up from the bottom. 
 

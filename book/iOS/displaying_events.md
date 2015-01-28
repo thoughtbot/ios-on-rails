@@ -4,7 +4,7 @@
 
 When the user runs the app, we want to display events that are near the user's current location. So we want to call our GET events method on `-viewDidAppear:` of the `HUMMapViewController`. We'll encapsulate this request inside a method called `-reloadEventsOnMap`, which we will define in the next section.
 
-If we aren't logged in, we still want to call the `-createCurrentUserWithCompletionBlock:` method. Once that request goes through, we can call `-reloadEventsOnMap`.
+If we aren't logged in, we want to call the `-createCurrentUserWithCompletionBlock:` method. Once that request goes through, we can call `-reloadEventsOnMap`.
 
 If we are logged in we can go ahead and just call `[self reloadEventsOnMap]`.
 
