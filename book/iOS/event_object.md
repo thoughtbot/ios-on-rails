@@ -117,8 +117,7 @@ Declare three methods for intializing `HUMEvent` objects:
 
 Since our rails app uses RFC 3339 formatting when sending and recieving dates in JSON, we have to use an NSDateFormatter that can translate these RFC 3339 date strings.
 
-![Creating a Category](images/ios_making_an_event_1.png)
-![Naming a Category](images/ios_making_an_event_2.png)
+![Creating a category](images/ios_event_object_1.png)
 
 Create a new category on NSDateFormatter that will contain all of our default date formatters. Notice that the naming scheme for categories is `ClassYoureAddingCategoryTo+CategoryName`. 
 

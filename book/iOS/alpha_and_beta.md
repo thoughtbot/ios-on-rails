@@ -8,35 +8,33 @@ Setting these manually is perfectly fine as well, but keeping separate configura
 
 ### Setting Up the New Schemes
 
-1. **Create the new configuration**
+![Create the new configuration and scheme](images/ios_alpha_and_beta_1.png)
 
-	![Create the new configuration](images/ios_alpha_and_beta_1.png)
+1. **Create the new configuration**
 
     Select the Humon project and create a new configuration that's a duplicate of release, and call this new configuration Beta.
 	
 2. **Create the new scheme**
 
-	![Create the new scheme](images/ios_alpha_and_beta_2.png)
-
 	Create a new scheme that's a duplicate of the main Humon scheme. Call this scheme HumonBeta.
-	
-	![Set the scheme's build configuration](images/ios_alpha_and_beta_3.png)
 	
 	Set this scheme's run build configuration and archive build configuration to Beta.
 
-3. **Automate the bundle identifier and display name**
+![Set the scheme's build configuration](images/ios_alpha_and_beta_3.png)
 
-	![Automate the bundle identifier and display name](images/ios_alpha_and_beta_5.png)
+3. **Automate the bundle identifier and display name**
 
 	Under "Info", change the Bundle identifier and the Bundle display name to include `${CONFIGURATION}`. `${CONFIGURATION}` evaluates to the name of the current build configuration.
    
 	Now the name of the Beta app will display as HumonBeta and the bundle identifier will be com.thoughtbot.HumonBeta.
+
+![Automate the bundle identifier and display name](images/ios_alpha_and_beta_5.png)
 	
 4. **Use the user-defined setting in a pre-processor macro.**
-
-	![Use the ROOT_URL in a pre-processor macro](images/ios_alpha_and_beta_6.png)
 	
 	Under "Build Settings", search for preprocessor macros and add `ROOT_URL='@"yourProductionURL/"'` to the release and Beta configurations and `ROOT_URL='@"yourStagingURL/"'` for debug and Alpha configurations.
+	
+![Use the ROOT_URL in a pre-processor macro](images/ios_alpha_and_beta_4.png)
 	
 5. **Build the app using the new scheme.**
 

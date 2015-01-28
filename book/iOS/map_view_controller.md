@@ -47,6 +47,8 @@ Run the app and you'll see an instance of your `HUMMapViewController`!
 
 ### Create the MapView
 
+First, import MapKit by placing `@import MapKit;` at the top of `HUMMapViewController.m`.
+
 Inside your implementation file, create a new property called `mapView`. Alternatively, you can place this property in the header file. It's preferable, if possible, to keep properties private by placing them in the hidden interface located in the implementation file. 
 
 Also, declare that the `HUMMapViewController` conforms to the `MKMapViewDelegate` protocol by adding `<MKMapViewDelegate>`. This allows the `HUMMapViewController` to respond to delegate messages that the `mapView` sends.
