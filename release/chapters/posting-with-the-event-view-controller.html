@@ -27,7 +27,7 @@
 <h1>Posting with the Event View Controller</h1>
 <section id="creating-a-custom-cell" class="level3">
 <h3>Creating a Custom Cell</h3>
-<p>We just implemented posting a pre-made event to our API, but what we really want is to post an event based on user input. So we need to create some custom cells for our HUMEventViewController.</p>
+<p>We just implemented posting a dummy event to our API, but what we really want is to post an event based on user input. So we need to create some custom cells for our HUMEventViewController.</p>
 <p>Create a new subclass of UITableViewCell called HUMTextFieldCell. Define a property called <code>textField</code> in the header file. We'll also want to define a static string that we can use as this cell's reuse identifier.</p>
 <pre><code>// HUMTextFieldCell.h
 
@@ -163,20 +163,30 @@ switch (indexPath.row) {
 </section>
 <section id="reflecting-cell-input" class="level3">
 <h3>Reflecting Cell Input</h3>
-<p>We have our new cell properties, but we are still relying on the fake event data we set in the <code>HUMMapViewController.m</code>.</p>
-<p>To make a POST to events with user input, we need to:</p>
+<p>We have our new cell properties, but we are still relying on the fake event data we set in the <code>HUMMapViewController.m</code>. To make a POST to events with user input, we need to:</p>
 <ol type="1">
-<li>Remove the fake data we placed in <code>HUMMapViewController.m</code>.</li>
+<li><p>Remove the fake data we placed in <code>HUMMapViewController.m</code>.</p></li>
+<li><p>Assign our user-entered properties to the event on <code>HUMEventViewController</code>.</p></li>
 </ol>
 <p>Go back to the <code>-addButtonPressed</code> method in <code>HUMMapViewController.m</code> and remove the assignment of the properties <code>event.name</code> <code>event.address</code> <code>event.startDate</code> <code>event.endDate</code>. Do not remove the assignment of <code>event.coordinate</code>, since we still need that to be set by the HUMMapViewController.</p>
-<ol start="2" type="1">
-<li><p>Assign our user-entered properties to the event on <code>HUMEventViewController</code>.</p>
-<p>// HUMEventViewController.m</p>
-<ul>
-<li><p>(void)tableView:(UITableView <em>)tableView didSelectRowAtIndexPath:(NSIndexPath </em>)indexPath { if (indexPath.row != HUMEventCellSubmit) return;</p>
-<p>self.event.name = self.nameCell.textField.text; self.event.address = self.addressCell.textField.text; self.event.startDate = [(UIDatePicker *) self.startCell.textField.inputView date]; self.event.endDate = [(UIDatePicker *) self.endCell.textField.inputView date]; ... }</p></li>
-</ul></li>
-</ol>
+<p>Then, replace <code>-tableView:didSelectRowAtIndexPath:</code> in <code>HUMEventViewController.m</code> with the following:</p>
+<pre><code>// HUMEventViewController.m
+
+- (void)tableView:(UITableView *)tableView
+    didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row != HUMEventCellSubmit) {
+        return;
+    }
+
+    self.event.name = self.nameCell.textField.text;
+    self.event.address = self.addressCell.textField.text;
+    self.event.startDate = [(UIDatePicker *)
+        self.startCell.textField.inputView date];
+    self.event.endDate = [(UIDatePicker *)
+        self.endCell.textField.inputView date];
+    ...
+}</code></pre>
 <p>Now, go ahead and run the app. The event object that gets posted by the <code>HUMEventViewController</code> now reflects user input.</p>
 </section>
 </section></body>

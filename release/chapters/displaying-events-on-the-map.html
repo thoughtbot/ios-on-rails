@@ -28,7 +28,7 @@
 <section id="calling-the-get-event-method" class="level3">
 <h3>Calling the Get Event Method</h3>
 <p>When the user runs the app, we want to display events that are near the user's current location. So we want to call our GET events method on <code>-viewDidAppear:</code> of the <code>HUMMapViewController</code>. We'll encapsulate this request inside a method called <code>-reloadEventsOnMap</code>, which we will define in the next section.</p>
-<p>If we aren't logged in, we still want to call the <code>-createCurrentUserWithCompletionBlock:</code> method. Once that request goes through, we can call <code>-reloadEventsOnMap</code>.</p>
+<p>If we aren't logged in, we want to call the <code>-createCurrentUserWithCompletionBlock:</code> method. Once that request goes through, we can call <code>-reloadEventsOnMap</code>.</p>
 <p>If we are logged in we can go ahead and just call <code>[self reloadEventsOnMap]</code>.</p>
 <pre><code>// HUMMapViewController.m
 

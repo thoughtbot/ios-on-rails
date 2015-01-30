@@ -1457,25 +1457,27 @@ And just like that, our test is now passing.
 # Introduction
 
 The iOS portion of this book will cover creating a new Xcode project, using a
-few Cocoapods to help you get started, and making basic API requests to the API
+few CocoaPods to help you get started, and making basic API requests to the API
 you just created.
 
-If you haven't created a project with Xcode before, images are included to
-help you navigate the wilds that are Apple's dev tools. Xcode is an
-exciting editor that may take a bit of getting used to, so if you would like a
-primer, please visit [Apple's Xcode
+If you haven't created a project with Xcode before, images are included to help 
+you navigate the wilds that are Apple's dev tools. Xcode is an exciting editor 
+that may take a bit of getting used to, so if you would like a primer, please 
+visit [Apple's Xcode
 Overview.]("https://developer.apple.com/library/mac/documentation/ToolsLanguages/Conceptual/Xcode_Overview/About_Xcode/about.html")
 
-Rails developers will find that Cocoapods feels quite familiar given that the
+Rails developers will find that CocoaPods feels quite familiar given that the
 dependency manager is written in Ruby and allows you to use iOS libraries,
 similar to how you use Ruby gems. A good understanding of object oriented
 programming is also required for the iOS portion of this book. Like Rails, iOS
-uses the Model-View-Controller design pattern, with the small caveat that most of your
-controllers will instead be called ViewControllers.
+uses the Model-View-Controller design pattern, with the small caveat that most 
+of your controllers will instead be called ViewControllers.
 
 # A New Xcode Project
 
-As with any iOS app, the first step is to create a new project in Xcode. Create a new "Single View Project" with your own name and identifier. Running the project for the first time will yield a white screen.
+As with any iOS app, the first step is to create a new project in Xcode. Create 
+a new "Single View Project" with your own name and identifier. Running the 
+project for the first time will yield a white screen.
 
 ![Pick an Empty Application](images/ios_new_xcode_project_1.png)
 
@@ -1529,7 +1531,7 @@ Setting these manually is perfectly fine as well, but keeping separate configura
 
 Before we create our new iOS project, lets discuss the libraries and resources we will use.
 
-We'll be using CocoaPods to manage our dependencies. Cocoapods is a Ruby gem and command line tool that makes it easy to add dependencies to your project. Alternatively, you can use Git submodules, but using CocoaPods is our preference due to its ease of implementation and the wide variety of third-party libraries available as pods. CocoaPods will not only download the libraries we need and link them to our project in Xcode, it will also allow us to easily manage and update which version of each library we want to use.
+We'll be using CocoaPods to manage our dependencies. CocoaPods is a Ruby gem and command line tool that makes it easy to add dependencies to your project. Alternatively, you can use Git submodules, but using CocoaPods is our preference due to its ease of implementation and the wide variety of third-party libraries available as pods. CocoaPods will not only download the libraries we need and link them to our project in Xcode, it will also allow us to easily manage and update which version of each library we want to use.
 
 With a background in Ruby, it may help to think of CocoaPod "pods" as gems, meaning that podfiles function similarly to gemfiles and podspecs are similar to gemspecs. `$ pod install` can be thought of as running `$ bundle install`, except for the fact that a pod install inserts the actual libraries into your project's pod directory.
 
@@ -1539,13 +1541,15 @@ What follows is a succinct version of the instructions on the [CocoaPods](http:/
 
 1. `$ gem install cocoapods`
 
-2. Create a podfile text file in your iOS project's root directory using your editor of choice.
+2. Navigate to your iOS project's root directory.
 
-3. `$ pod install`
+3. Create a text file named `Podfile` using your editor of choice.
 
-4. If you have your iOS project open in Xcode, close it and reopen the workspace that Cocoapods generated for you.
+4. `$ pod install`
 
-5. When using CocoaPods in conjunction with Git, you may choose to ignore the Pods directory so the libraries that CocoaPods downloads are not under version control. If you want to do this, add `Pods` your .gitignore. Anyone who clones your project will have the Podfile and can `$ pod install` to retrieve the libraries and versions that the project requires.
+5. If you have your iOS project open in Xcode, close it and reopen the workspace that CocoaPods generated for you.
+
+6. When using CocoaPods in conjunction with Git, you may choose to ignore the Pods directory so the libraries that CocoaPods downloads are not under version control. If you want to do this, add `Pods` your .gitignore. Anyone who clones your project will need to `$ pod install` to retrieve the libraries that the project requires.
 
 ### Humon's Podfile
 
@@ -1553,22 +1557,12 @@ Installing the CocoaPods gem and creating a podfile is covered in more detail on
 
 	platform :ios, '7.0'
 	
-	pod 'AFNetworking', '~> 2.4.1'
 	pod 'SSKeychain', '~> 1.2.2'
 	pod 'SVProgressHUD', '~> 1.0'
-	
-	target :HumonTests  do
-	  pod 'Kiwi', '~> 2.3.0'
-	  pod 'OHHTTPStubs', '~> 3.0.2'
-	end
-	
-	target :HumonUITests, :exclusive => true do
-	  pod 'KIF', '~> 3.0.8'
-	end
 
-The `:exclusive => true do` block ensures that the HumonUITests target only links to the testing frameworks inside the block. The frameworks outside the block will still be available to HumonUITests target since they'll be available to the main Humon target.
+SSKeychain will help us save user info to the keychain. SVProgressHUD will let us display loading views to the user.
 
-AFNetworking will handle our API network requests, SSKeychain will help us save user info to the keychain, and SVProgressHUD will let us display loading views to the user.
+We will manually make our API requests, but we could alternatively use AFNetworking. Chapters on using AFNetworking are included in this book's [GitHub repo.](https://github.com/thoughtbot/ios-on-rails)
 
 Another important Pod to add is either Hockey or TestFlight to distribute our app to Beta testers. That process is outlined superbly on either of their developer support pages.
 
@@ -1580,10 +1574,7 @@ The Humon app is going to have two view controllers. We will create empty versio
 
 1. The initial view will contain a large map with pins for events that are near you, events you've created, and events you are tracking. It will also contain a button for adding a new event.
 
-2. The views for creating and viewing an event will be very similar. The entire view will be filled with a table which has space for the address, name, and time of an event.
-
-	Creating and viewing will be handled by distinct view controller classes but each of these will be a subclass of an overarching event view controller class.
-
+2. The views for creating and viewing an event will be very similar. The entire view will be filled with a table which has space for the address, name, and time of an event. The only difference is that the text fields for creating an event will be editable.
 
 # The Map View Controller
 
@@ -1591,9 +1582,9 @@ The Humon app is going to have two view controllers. We will create empty versio
 
 ### Create the New View Controller
 
-![Creating a new view controller](images/ios_app_skeleton_6.png)
-
 Create a new view controller subclass called `HUMMapViewController` by selecting File > New > File. This will create a header (.h) file and implementation (.m) file.
+
+![Creating a new view controller](images/ios_app_skeleton_6.png)
 
 ### Set the Root View Controller
 
@@ -1664,7 +1655,6 @@ Remember to set `HUMMapView` as the delegate of `self.mapview` so it can respond
 		// Create and add a mapView as a subview of the main view
         self.mapView = [[MKMapView alloc] initWithFrame:self.view.frame];
         self.mapView.delegate = self;
-        self.mapView.showsUserLocation = YES;
         [self.view addSubview:self.mapView];
 	}
 	
@@ -1708,7 +1698,7 @@ We need to implement the method `addButtonPressed`, so add the method below the 
 Go ahead and run your project. If everything is set up correctly, you should see a full screen mapView and a button for adding events.
 
 
-# The Add an Event View Controller
+# The Event View Controller
 
 ![Table View for event details](images/ios_app_skeleton_2.png)
 
@@ -1721,7 +1711,7 @@ Create a new subclass of `UITableViewController` called `HUMEventViewController`
 	- (NSInteger)tableView:(UITableView *)tableView 
 		numberOfRowsInSection:(NSInteger)section
 	{
-    	return 6;
+    	return 5;
 	}
 
     - (UITableViewCell *)tableView:(UITableView *)tableView
@@ -1752,15 +1742,15 @@ To create a static string, place `static NSString *const HUMEventCellIdentifier 
 
 If we want to be able to reuse cells using the `HUMEventCellIdentifier`, we have to register a class that the `tableView` will create or reuse an instance of when we call `dequeueReusableCellWithIdentifier:forIndexPath:`. We do this inside of `viewDidLoad`.
 
-### Linking the Add Button to the HUMAddEventViewController
+### Linking the Add Button to the HUMEventViewController
 
-Now that we have created a `HUMAddEventViewController` we can create and show the add view from the `HUMMapViewController`. Go back to the `HUMMapViewController`'s implementation file and add `#import "HUMEventViewController.h"` below the `#import "HUMMapViewController.h"` to import the header file we created in the previous section.
+Now that we have created a `HUMEventViewController` we can create and show the add view from the `HUMMapViewController`. Go back to the `HUMMapViewController`'s implementation file and add `#import "HUMEventViewController.h"` below the `#import "HUMMapViewController.h"` to import the header file we created in the previous section.
 
 Now we can replace the `-addButtonPressed` method to present a `HUMEventViewController`. When we press the "Add" button on top of the map view, we can either:
 
 1. Push a new `HUMEventViewController` onto the navigation stack managed by the `UINavigationController` we created in the `AppDelegate.m`.
 	
-2. Present a new `HUMAddEventViewController` modally.
+2. Present a new `HUMEventViewController` modally.
 	
 Having the `HUMMapViewController` present modally means the `HUMEventViewController` would animate sliding up from the bottom. 
 
@@ -1780,8 +1770,6 @@ This is what we're going to do, and it will also give us the "Back" functionalit
 You can run the Humon app now and press the "Add" button to see your new event view controller.
 
 # A Rails API Client With NSURLSession
-
-Before we go about making our first API request, we need to decide how we are going to make our networking calls. As mentioned in the Cocoapods chapter, the AFNetworking framework is a clean and reliable solution to making networking requests. We will show examples of using AFNetworking to make your API requests as well as examples of making requests using the built-in `NSURLSession`, which all networking libraries are built on top of. AFNetworking brings a lot more to the table than just wrapping up your network requests; but, like a programming planeteer, the choice is yours.
 
 ### Creating a Singleton Client Object
 
@@ -1879,7 +1867,7 @@ Next, we use that `sessionConfiguration` to create an `NSURLSession`, and set th
 
 ### Setting the Session Headers
 
-Setting the session headers on the `sessionConfiguration` is particularly important, since sending the app secret and a token is necessary for user creation, and a token is necessary for all other requests. 
+Setting the session headers on the `sessionConfiguration` is particularly important. The custom session headers include our token and app secret, which are needed for a POST to the users endpoint. For other requests we will only need the token. The headers also indicate that our content type is JSON.
 
 	// HUMRailsClient.m
 	
@@ -1900,72 +1888,7 @@ Setting the session headers on the `sessionConfiguration` is particularly import
 	    return self;
 	}
 
-Our custom session headers indicate that our content type is JSON and set the token and app secret. These are the headers that we need for a POST to the users endpoint. For requests other than that we will only need the token.
-
 Currently, we are using a client generated device ID as our token, but our plan is to eventually replace that with an auth token generated by the backend.
-
-# A Rails API Client With AFNetworking
-
-Now that we've created our own networking client, let's see how we could do this using the AFNetworking framework. We'll create another client that is a subclass of AFNetworking's session manager instead of NSObject.
-
-### Declare the App Secret
-
-As we did in our other client, declare a static string constant above your implementation that is the same app secret that your backend uses.
-
-	// HUMRailsAFNClient.m
-
-	static NSString *const HUMAppSecret =
-	    @"yourOwnUniqueAppSecretThatYouShouldRandomlyGenerateAndKeepSecret";
-
-### Creating a Singleton Client Object
-
-Create a subclass of `AFHTTPSessionManager` called `HUMRailsAFNClient`. Declare a class method that will return a shared client singleton as we did in our other client by adding `+ (instancetype)sharedClient;` to your `HUMRailsAFNClient.h` file. The implementation of this method looks similar as well:
-
-	// HUMRailsAFNClient.m
-	
-    + (instancetype)sharedClient
-    {
-        static HUMRailsAFNClient *_sharedClient = nil;
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            
-            NSURL *baseURL = [NSURL URLWithString:ROOT_URL];
-            _sharedClient = [[HUMRailsAFNClient alloc] initWithBaseURL:baseURL];
-            
-            [_sharedClient.requestSerializer setValue:HUMAFNAppSecret
-                                   forHTTPHeaderField:@"tb-app-secret"];
-            [_sharedClient.requestSerializer setValue:[[NSUUID UUID] UUIDString]
-                                   forHTTPHeaderField:@"tb-device-token"];
-    
-    	});
-        
-        return _sharedClient;
-    }
-
-With AFNetworking, we don't have to manually set up the session configuration and session with our own custom init method. We simply initialize the client using `-initWithBaseURL:`, which means our paths later will be relative to this `ROOT_URL`.
-
-### Setting the Session Headers
-
-As before, we need to set custom header fields.
-
-	// HUMRailsAFNClient.m
-
-    + (instancetype)sharedClient
-    {
-    
-    	...
-    
-            [_sharedClient.requestSerializer setValue:HUMAFNAppSecret
-                                   forHTTPHeaderField:@"tb-app-secret"];
-            [_sharedClient.requestSerializer setValue:[[NSUUID UUID] UUIDString]
-                                   forHTTPHeaderField:@"tb-device-token"];
-                                   
-        });
-                                   
-        return _sharedClient;
-    }       
-	        
-Both these headers are necessary for a POST to users request. For subsequent requests, we'll only need the token. We'll change them once we've made a successful POST to users.
 
 # The User Object
 
@@ -2207,86 +2130,9 @@ This ternary depends on the class methods `+userIsLoggedIn` and `+userToken` tha
 
 If we aren't logged in, we need to send a random device token `[[NSUUID UUID] UUIDString]`. We also send the app secret so the backend will accept our POST request to create a new user.
 
-# Posting a User With AFNetworking
-
-Now that we've created a method for enqueueing a task manually, let's use the AFNetworking framework to simplify things. We'll create a method on our `HUMRailsAFNClient` to POST to /users.
-
-### Declaring a Task for Making Requests
-
-Before we declare the method for user creation, let's typedef a new name for a completion block type. This time, we'll typedef the block type `(void (^)(NSError *error))` as `HUMRailsAFNClientErrorCompletionBlock`. Place this typedef above the interface in `HUMRailsAFNClient.h`:
-
-	typedef void(^HUMRailsAFNClientErrorCompletionBlock)(NSError *error);
-	
-Now we can declare the `createCurrentUserWithCompletionBlock:` method in `HUMRailsAFNClient.h`.
-
-	- (void)createCurrentUserWithCompletionBlock:
-		(HUMRailsAFNClientErrorCompletionBlock)block;
-
-### Creating a Task for Making Requests
-
-When defining the method `-createCurrentUserWithCompletionBlock:`, we can use one of the convenient methods that we inherit from `AFHTTPSessionManager` to create and execute a task.
-
-	// HUMRailsAFNClient.m
-
-    - (void)createCurrentUserWithCompletionBlock:
-        (HUMRailsAFNClientErrorCompletionBlock)block
-    {
-        [self POST:@"users" parameters:@{@"device_token" : @"435353"}
-           success:^(NSURLSessionDataTask *task, id responseObject) {
-               
-	        [HUMUserSession setUserID:responseObject[@"id"]];
-	        [HUMUserSession setUserToken:responseObject[@"device_token"]];
-	        [self.requestSerializer setValue:responseObject[@"device_token"]
-	                         forHTTPHeaderField:@"tb-device-token"];
-            block(nil);
-               
-           } failure:^(NSURLSessionDataTask *task, NSError *error) {
-               
-            block(error);
-               
-        }];
-    }
-
-The method is called `-POST:parameters:success:failure:` and takes four arguments.
-
-1. The path that we're POSTing to is `@"users"`, which will be appended to our `ROOT_URL` that we set when initializing the client.
-
-2. The parameters for this POST request are `nil`, since the `HTTPHeaderField` contains our `HUMAppSecret`. We don't need to send any additional data for this specific POST request.
-
-3. A completion block that will execute if the request is successful. If the request is successful we set the current user's ID and token to what we got back in the `responseObject`. We also set the device_token in the header field so we can start signing our requests as that user. Finally, we execute the completion block with `nil` as an argument since we have no error.
-
-4. A completion block that executes if there was an error when executing the POST task. This completion block executes the completion block we provided, with the `error` as an argument to indicate that our POST wasn't successful.
-
-### Setting the Headers Conditionally
-
-Now that we have a POST to users method and persist the token we recieve from this method, we can conditionally set our session's headers depending on whether we have that token yet.
-
-Currently, our singleton sets a new `tb-device-token` and the `tb-app-secret` in the session's headers every time it initializes. These are the correct headers for POST to users, but we need different headers for all other reqeusts.
-
-In the `+sharedClient` method of our `HUMRailsClient`, change the `dispatch_once` block to contain:
-
-	// HUMRailsAFNClient.m
-	
-    NSURL *baseURL = [NSURL URLWithString:ROOT_URL];
-    _sharedClient = [[HUMRailsAFNClient alloc] initWithBaseURL:baseURL];
-
-    if ([HUMUserSession userIsLoggedIn]) {
-        [_sharedClient.requestSerializer setValue:[HUMUserSession userToken]
-                               forHTTPHeaderField:@"tb-device-token"];
-    } else {
-        [_sharedClient.requestSerializer setValue:HUMAFNAppSecret
-                               forHTTPHeaderField:@"tb-app-secret"];
-        [_sharedClient.requestSerializer setValue:[[NSUUID UUID] UUIDString]
-                               forHTTPHeaderField:@"tb-device-token"];
-    }
-          
-This if statement depends on the class methods `+userIsLoggedIn` and `+userToken` that we defined on `HUMUserSession`, so remember to `#import "HUMUserSession.h"` at the top of the file. It sets the headers to include the saved `+[HUMUserSession userToken]` if we are logged in. 
-
-If we aren't logged in, we need to send a random device token `[[NSUUID UUID] UUIDString]`. We also send the app secret so the backend will accept our POST request to create a new user.
-
 # Making the POST User Request
 
-We want to make a POST request to create and save a user only once on each device. So let's conditionally call the `-createCurrentUserWithCompletionBlock:` we just created inside `HUMMapViewController`'s `-viewDidAppear:` method. Remember to `#import "HUMRailsClient.h"` or `#import "HUMRailsAFNClient.h"`, whichever one you choose to use.
+We want to make a POST request to create and save a user only once on each device. So let's conditionally call the `-createCurrentUserWithCompletionBlock:` we just created inside `HUMMapViewController`'s `-viewDidAppear:` method. Remember to `#import "HUMRailsClient.h"`.
 
 	// HUMMapViewController.m
 
@@ -2298,8 +2144,6 @@ We want to make a POST request to create and save a user only once on each devic
         
         	[SVProgressHUD show];
         
-        	// We could also make this request using our AFN client.
-        	// [[HUMRailsAFNClient sharedClient]
         	[[HUMRailsClient sharedClient] 
         		createCurrentUserWithCompletionBlock:^(NSError *error) {
             
@@ -2559,56 +2403,6 @@ If the the task completes with an error, `eventID` will remain nil.
 Either way, we want to execute the completion block with whatever the `eventID` and the `error` are. We also need to execute the completion block on the main queue, since the block will be updating the UI.
 
 
-# Posting an Event With AFNetworking
-
-Now let's POST an event using AFNetworking.
-
-### Declaring a Task for Making Requests
-
-The completion block we'll use for our create event method should return an event ID and an error. If our request is successful, the API will return the event ID for the event it created and a nil error. If our request fails, we'll return a nil event ID and the error.
-
-Typedef this new type of event completion block:
-
-	// HUMRailsAFNClient.h
-
-	typedef void(^HUMRailsAFNClientEventIDCompletionBlock)(NSString *eventID, NSError *error);
-
-and declare the event creation method:
-
-	// HUMRailsAFNClient.h
-
-	- (void)createEvent:(HUMEvent *)event
-        	withCompletionBlock:(HUMRailsAFNClientEventIDCompletionBlock)block;
-
-### Creating a Task for Making Requests
-
-With AFNetworking, making a POST request with a dictionary of parameters is quite easy. We call the `-POST:parameters:success:failure` method and provide the `@"events"` path, the event's JSON dictionary, a success block, and a failure block. 
-
-Don't forget to `#import "HUMEvent.h"` since we need to use the method `JSONDictionary` that we previously defined.
-
-	// HUMRailsClient.m
-	
-	- (void)createEvent:(HUMEvent *)event
-	    withCompletionBlock:(HUMRailsAFNClientEventIDCompletionBlock)block
-	{
-	    [self POST:@"events"
-	    parameters:[event JSONDictionary]
-	       success:^(NSURLSessionDataTask *task, id responseObject) {
-	           
-	        NSString *eventID = [NSString stringWithFormat:@"%@",
-	                             responseObject[@"id"]];
-	        block(eventID, nil);
-	           
-	    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-	        
-	        block(nil, error);
-	        
-	    }];
-	}
-
-In the case of success, we want to return the `eventID` that we receive back from the API. If there's a failure, we execute the completion block with the `error` we receive. We don't have to worry about forcing the completion block to the main thread since the success and failure blocks are fired off on the main thread.
-
-
 # Making the POST Event Request
 
 ### Creating a New Init Method
@@ -2679,8 +2473,9 @@ We can also use this new enum when we declare `-tableView:didSelectRowAtIndexPat
 	{
 	    // Return if the user didn't select the submit cell
 	    // This is the same as (indexPath.row != 5) but much more readable
-	    if (indexPath.row != HUMEventCellSubmit)
+	    if (indexPath.row != HUMEventCellSubmit) {
 	        return;
+	    }
 	
 	    // Post the event
 	    [SVProgressHUD show];
@@ -2728,7 +2523,7 @@ Now, if you run the app, you should be able to press the add button, tap the 5th
 
 ### Creating a Custom Cell
 
-We just implemented posting a pre-made event to our API, but what we really want is to post an event based on user input. So we need to create some custom cells for our HUMEventViewController.
+We just implemented posting a dummy event to our API, but what we really want is to post an event based on user input. So we need to create some custom cells for our HUMEventViewController.
 
 Create a new subclass of UITableViewCell called HUMTextFieldCell. Define a property called `textField` in the header file. We'll also want to define a static string that we can use as this cell's reuse identifier.
 
@@ -2883,23 +2678,24 @@ Now that all of our cell properties are set, we can run the app and see what it 
 
 ### Reflecting Cell Input
 
-We have our new cell properties, but we are still relying on the fake event data we set in the `HUMMapViewController.m`.
-
-To make a POST to events with user input, we need to:
+We have our new cell properties, but we are still relying on the fake event data we set in the `HUMMapViewController.m`. To make a POST to events with user input, we need to:
 
 1) Remove the fake data we placed in `HUMMapViewController.m`.
 
+2) Assign our user-entered properties to the event on `HUMEventViewController`.
+
 Go back to the `-addButtonPressed` method in `HUMMapViewController.m` and remove the assignment of the properties `event.name` `event.address` `event.startDate` `event.endDate`. Do not remove the assignment of `event.coordinate`, since we still need that to be set by the HUMMapViewController.
 
-2) Assign our user-entered properties to the event on `HUMEventViewController`.
+Then, replace `-tableView:didSelectRowAtIndexPath:` in `HUMEventViewController.m` with the following:
 
 	// HUMEventViewController.m
 
 	- (void)tableView:(UITableView *)tableView
 	    didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	{
-	    if (indexPath.row != HUMEventCellSubmit)
+	    if (indexPath.row != HUMEventCellSubmit) {
 	        return;
+	    }
 	
 	    self.event.name = self.nameCell.textField.text;
 	    self.event.address = self.addressCell.textField.text;
@@ -3001,73 +2797,13 @@ Since our rails API returns from a successful GET request with either a "No even
 In the case of failure, we simply execute our completion block with an error.
 
 
-# Getting Events With AFNetworking
-
-### Declaring the Get Events Method
-
-To make the event GET request, typedef a completion block that will return an array of events or an error once we receive event JSON from the API.
-
-	//HUMRailsAFNClient.h
-	
-	typedef void(^HUMRailsAFNClientEventsCompletionBlock)(NSArray *events, NSError *error);
-	
-Then declare a method for fetching events whose parameters are a map region and a completion block of this new type. The `region` will be the visible map region in our `HUMMapViewController`, since we only want to load events within the region we're viewing. Unlike our other API client methods, we'll return an `NSURLSessionDataTask` from this method so we can cancel the task.
-
-	//HUMRailsAFNClient.h
-	
-	- (NSURLSessionDataTask *)fetchEventsInRegion:(MKCoordinateRegion)region
-        	withCompletionBlock:(HUMRailsAFNClientEventsCompletionBlock)block;
-        	
-### Creating the Get Events Request
-
-Now we can implement this method:
-
-	// HUMRailsAFNClient.m
-	
-	- (NSURLSessionDataTask *)fetchEventsInRegion:(MKCoordinateRegion)region
-	        withCompletionBlock:(HUMRailsAFNClientEventsCompletionBlock)block
-	{
-	    // region.span.latitudeDelta/2*111 is how we find the aproximate radius
-	    // that the screen is displaying in km.
-	    NSDictionary *parameters = @{
-	                               @"lat" : @(region.center.latitude),
-	                               @"lon" : @(region.center.longitude),
-	                               @"radius" : @(region.span.latitudeDelta/2*111)
-	                               };
-	    
-	    return [self GET:@"events/nearests"
-	          parameters:parameters
-	             success:^(NSURLSessionDataTask *task, id responseObject) {
-	          
-	            NSArray *events;
-	            if ([responseObject isKindOfClass:[NSArray class]]) {
-	                events = [HUMEvent eventsWithJSON:responseObject];
-	            }
-	            block(events, nil);
-	                 
-	          } failure:^(NSURLSessionDataTask *task, NSError *error) {
-	              
-	            block(nil, error);
-	        
-	    }];
-	}
-    
-The `parameters` for our GET request contain `lat`, `lon`, and `radius`. The rails app will use these values to return a list of events that are less than the `radius` (in kilometers) away from the map region's centerpoint.
-
-We want to inscribe our square `mapView` span inside our circular API search area so we receive more events than need to be displayed, rather than too few. We use half the width of the `mapView` (the `latitudeDelta`  property) as our radius since the lateral span is the larger value in portrait mode. Multiplying by 111 is simply the conversion from latitudinal degrees to kilometers.
-
-Since our rails API returns from a successful GET request with either a "No events in area" dictionary or an array of event JSON, our success block has to handle both cases. If we receive an array, we execute the completion block with an array of events, otherwise `events` will be `nil`.
-
-In the case of failure, we simply execute our completion block with an error.
-
-
 # Displaying Events on the Map
 
 ### Calling the Get Event Method
 
 When the user runs the app, we want to display events that are near the user's current location. So we want to call our GET events method on `-viewDidAppear:` of the `HUMMapViewController`. We'll encapsulate this request inside a method called `-reloadEventsOnMap`, which we will define in the next section.
 
-If we aren't logged in, we still want to call the `-createCurrentUserWithCompletionBlock:` method. Once that request goes through, we can call `-reloadEventsOnMap`.
+If we aren't logged in, we want to call the `-createCurrentUserWithCompletionBlock:` method. Once that request goes through, we can call `-reloadEventsOnMap`.
 
 If we are logged in we can go ahead and just call `[self reloadEventsOnMap]`.
 
@@ -3265,7 +3001,7 @@ Now, once we place our event objects on our `mapView`, they'll display their eve
 
 ### Pushing an Event View Controller
 
-In addition, we want to present a read-only `HUMEventViewController` when we tap on a pin. So we'll see the event view controller come on screen when we tap an annotation. And when we hit the back button, we'll see the annotation callout reminding us which annotation we tapped.
+In addition, we want to present a read-only `HUMEventViewController` when we tap on a annotation. When we hit the back button, we'll still see the annotation callout reminding us which event we tapped.
 
 Presenting the `HUMEventViewController` means responding to the mapView delegate method `-mapView:didSelectAnnotationView:`. As long as the annotation is a `HUMEvent` object, we want to push a new view controller with that object.
 
@@ -3305,21 +3041,24 @@ Now that we've created an app that can interact with our API using the POST and 
 
 These features are currently implemented in the sample app, so feel free to reference the code there if you choose to try any of these.
 
-1) Use [Auto Layout](https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/AutolayoutPG/Introduction/Introduction.html) on all the views in the app so the app can be used in landscape.
+1) Implement unit tests using Kiwi or the built-in XCTest. Tests in both languages are included in the example app for you to reference.
 
-2) Add a confirmation view controller that pushes onto the nav stack after you POST to users, with a button that lets you share your event to Facebook and Twitter.
+2) Use [Auto Layout](https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/AutolayoutPG/Introduction/Introduction.html) on all the views in the app so the app can be used in landscape.
 
-3) Add a user object and set it on each Event object. Then you can let the user PATCH an event if they are the owner.
+3) Use [AFNetworking](https://github.com/AFNetworking/AFNetworking) to handle your API requests. Chapters on using AFNetworking are included in this book's [GitHub repo.](https://github.com/thoughtbot/ios-on-rails)
 
-4) Implement a POST to attendences method to let a user indicate they plan to attend an event.
+4) Add a confirmation view controller that pushes onto the nav stack after you POST to users, with a button that lets you share your event to Facebook and Twitter.
 
-5) Add custom map pin images and pick a tint color for your app.
+5) Add a user object and set it on each Event object. Then you can let the user PATCH an event if they are the owner.
 
-6) Insert a date picker into the table view, rather than having it pop up from the bottom as the `textView`'s `-inputView`.
+6) Implement a POST to attendences method to let a user indicate they plan to attend an event.
 
-7) Prevent the user from attempting to POST an event if they haven't filled out the required fields. Ignore option fields when you're determining validity.
+7) Add custom map pin images and pick a tint color for your app.
 
-8) Let the user pick any location, not just their current location. Use geocoding to automatically fill out the address for that location.
+8) Insert a date picker into the table view, rather than having it pop up from the bottom as the `textView`'s `-inputView`.
 
-9) Use a different date formatter to format all the user-facing dates in a human-readable format.
+9) Prevent the user from attempting to POST an event if they haven't filled out the required fields. Ignore optional fields when you're determining validity.
 
+10) Let the user pick any location, not just their current location. Use geocoding to automatically fill out the address for that location.
+
+11) Use a different date formatter to format all the user-facing dates in a human-readable format.

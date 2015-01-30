@@ -57,7 +57,7 @@
 </section>
 <section id="pushing-an-event-view-controller" class="level3">
 <h3>Pushing an Event View Controller</h3>
-<p>In addition, we want to present a read-only <code>HUMEventViewController</code> when we tap on a pin. So we'll see the event view controller come on screen when we tap an annotation. And when we hit the back button, we'll see the annotation callout reminding us which annotation we tapped.</p>
+<p>In addition, we want to present a read-only <code>HUMEventViewController</code> when we tap on a annotation. When we hit the back button, we'll still see the annotation callout reminding us which event we tapped.</p>
 <p>Presenting the <code>HUMEventViewController</code> means responding to the mapView delegate method <code>-mapView:didSelectAnnotationView:</code>. As long as the annotation is a <code>HUMEvent</code> object, we want to push a new view controller with that object.</p>
 <pre><code>// HUMMapViewController.m
 

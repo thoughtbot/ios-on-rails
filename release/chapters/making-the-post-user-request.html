@@ -25,7 +25,7 @@
 </head>
 <body><section id="making-the-post-user-request" class="level1">
 <h1>Making the POST User Request</h1>
-<p>We want to make a POST request to create and save a user only once on each device. So let's conditionally call the <code>-createCurrentUserWithCompletionBlock:</code> we just created inside <code>HUMMapViewController</code>'s <code>-viewDidAppear:</code> method. Remember to <code>#import "HUMRailsClient.h"</code> or <code>#import "HUMRailsAFNClient.h"</code>, whichever one you choose to use.</p>
+<p>We want to make a POST request to create and save a user only once on each device. So let's conditionally call the <code>-createCurrentUserWithCompletionBlock:</code> we just created inside <code>HUMMapViewController</code>'s <code>-viewDidAppear:</code> method. Remember to <code>#import "HUMRailsClient.h"</code>.</p>
 <pre><code>// HUMMapViewController.m
 
 - (void)viewDidAppear:(BOOL)animated
@@ -36,8 +36,6 @@
     
         [SVProgressHUD show];
     
-        // We could also make this request using our AFN client.
-        // [[HUMRailsAFNClient sharedClient]
         [[HUMRailsClient sharedClient] 
             createCurrentUserWithCompletionBlock:^(NSError *error) {
         

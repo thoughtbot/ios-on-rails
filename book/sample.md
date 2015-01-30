@@ -47,7 +47,7 @@ If you have any questions, or just want to get in touch, drop us a line at
 
 <<[iOS/api_client.md]
 
-<<[iOS/api_client_afn.md]
+<<[iOS/AFNetworking/api_client_afn.md]
 
 # Closing
 

@@ -26,7 +26,7 @@
 <body><section id="posting-an-event-with-nsurlsession" class="level1">
 <h1>Posting an Event With NSURLSession</h1>
 <p>Our <code>HUMRailsClient</code> is already all set up to use the appropriate headers that we need for POST to events: namely, the token we receive back from POST to users. So we simply need to define a new method for making a POST to events request.</p>
-<section id="declaring-a-task-for-making-requests-2" class="level3">
+<section id="declaring-a-task-for-making-requests-1" class="level3">
 <h3>Declaring a Task for Making Requests</h3>
 <p>The completion block we'll use for our create event method should return an event ID and an error. If our request is successful, the API will return the event ID for the event it created and a nil error. If our request fails, we'll return a nil event ID and the error.</p>
 <p>Typedef this new type of event completion block:</p>
@@ -39,7 +39,7 @@ typedef void(^HUMRailsClientEventIDCompletionBlock)(NSString *eventID, NSError *
 - (void)createEvent:(HUMEvent *)event
         withCompletionBlock:(HUMRailsClientEventIDCompletionBlock)block;</code></pre>
 </section>
-<section id="creating-a-task-for-making-requests-2" class="level3">
+<section id="creating-a-task-for-making-requests-1" class="level3">
 <h3>Creating a Task for Making Requests</h3>
 <p>Define the event creation method as follows:</p>
 <pre><code>// HUMRailsClient.m    
