@@ -4,14 +4,9 @@
 
 ## About this book
 
-*The book is currently in Beta. These means we are actively writing and revising
-content and the example applications. You'll receive all updates to the book and
-have direct access to the GitHub repository for the book and example
-applications, where you can watch the magic happen and file GitHub issues.*
-
 Welcome to the iOS on Rails eBook sample. This is published directly from the
 book, so that you can get a sense for the content, style, and delivery of the
-product.  We’ve included three sample sections. One is specific to Rails and
+product. We've included three sample sections. One is specific to Rails and
 shows how to handle GET requests. The last two are iOS specific, and cover
 creating your API client from scratch or with AFNetworking.
 
@@ -32,8 +27,8 @@ give us feedback about what we’ve written and what you’d like to see.
 
 ## Contact us
 
-If you have any questions, or just want to get in touch, drop us a line at 
-[learn@thoughtbot.com](mailto:learn@thoughtbot.com).
+If you have any questions, or just want to get in touch, drop us a line at
+[books@thoughtbot.com](mailto:books@thoughtbot.com).
 
 \mainmatter
 
@@ -51,7 +46,7 @@ If you have any questions, or just want to get in touch, drop us a line at
 
 # Closing
 
-Thanks for checking out the sample of our iOS on Rails eBook.  If you’d
+Thanks for checking out the sample of our iOS on Rails eBook. If you’d
 like to get access to the full content, the example applications, ongoing
 updates, you can pick it up on our website:
 
