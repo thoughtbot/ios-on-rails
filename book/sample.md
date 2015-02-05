@@ -42,8 +42,6 @@ If you have any questions, or just want to get in touch, drop us a line at
 
 <<[iOS/api_client.md]
 
-<<[iOS/AFNetworking/api_client_afn.md]
-
 # Closing
 
 Thanks for checking out the sample of our iOS on Rails eBook. If you’d
