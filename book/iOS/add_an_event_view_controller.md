@@ -17,7 +17,7 @@ Create a new subclass of `UITableViewController` called `HUMEventViewController`
     - (UITableViewCell *)tableView:(UITableView *)tableView
              cellForRowAtIndexPath:(NSIndexPath *)indexPath
     {
-        UITableViewCell *cell = [[tableView
+        UITableViewCell *cell = [tableView
                         dequeueReusableCellWithIdentifier:HUMEventCellIdentifier
                                              forIndexPath:indexPath];    
         
