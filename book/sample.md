@@ -1,4 +1,4 @@
-% iOS on Rails (Beta)
+% iOS on Rails
 
 \clearpage
 
