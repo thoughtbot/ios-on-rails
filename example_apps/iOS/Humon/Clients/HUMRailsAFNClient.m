@@ -26,15 +26,10 @@ static NSString *const HUMAFNAppSecret =
 
         if ([HUMUserSession userIsLoggedIn]) {
             [_sharedClient.requestSerializer setValue:[HUMUserSession userToken]
-                                   forHTTPHeaderField:@"tb-device-token"];
+                                   forHTTPHeaderField:@"tb-auth-token"];
         } else {
             [_sharedClient.requestSerializer setValue:HUMAFNAppSecret
                                    forHTTPHeaderField:@"tb-app-secret"];
-            // Currently the backend uses a device ID the client generates
-            // as our user token. Here we set that ID.
-            // We have plans to change the backend to generate user tokens for us.
-            [_sharedClient.requestSerializer setValue:[[NSUUID UUID] UUIDString]
-                                   forHTTPHeaderField:@"tb-device-token"];
         }
         
     });
@@ -49,9 +44,9 @@ static NSString *const HUMAFNAppSecret =
        success:^(NSURLSessionDataTask *task, id responseObject) {
            
         [HUMUserSession setUserID:responseObject[@"id"]];
-        [HUMUserSession setUserToken:responseObject[@"device_token"]];
-        [self.requestSerializer setValue:responseObject[@"device_token"]
-                         forHTTPHeaderField:@"tb-device-token"];
+        [HUMUserSession setUserToken:responseObject[@"auth_token"]];
+        [self.requestSerializer setValue:responseObject[@"auth_token"]
+                         forHTTPHeaderField:@"tb-auth-token"];
         block(nil);
            
        } failure:^(NSURLSessionDataTask *task, NSError *error) {

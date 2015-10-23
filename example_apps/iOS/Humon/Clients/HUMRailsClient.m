@@ -47,19 +47,15 @@ static NSString *const HUMAppSecret =
     sessionConfiguration.timeoutIntervalForRequest = 30.0;
     sessionConfiguration.timeoutIntervalForResource = 30.0;
 
-    // Currently the backend uses a device ID the client generates
-    // as our user token. Here we set that ID.
-    // We have plans to change the backend to generate user tokens for us.
     NSDictionary *headers = [HUMUserSession userIsLoggedIn] ?
         @{
           @"Accept" : @"application/json",
           @"Content-Type" : @"application/json",
-          @"tb-device-token" : [HUMUserSession userToken]
+          @"tb-auth-token" : [HUMUserSession userToken]
           } :
         @{
           @"Accept" : @"application/json",
           @"Content-Type" : @"application/json",
-          @"tb-device-token" : [[NSUUID UUID] UUIDString],
           @"tb-app-secret" : HUMAppSecret
           };
     [sessionConfiguration setHTTPAdditionalHeaders:headers];
@@ -86,7 +82,7 @@ static NSString *const HUMAppSecret =
                                                 JSONObjectWithData:data
                                                 options:kNilOptions
                                                 error:nil];
-            [HUMUserSession setUserToken:responseDictionary[@"device_token"]];
+            [HUMUserSession setUserToken:responseDictionary[@"auth_token"]];
             [HUMUserSession setUserID:responseDictionary[@"id"]];
 
             NSURLSessionConfiguration *newConfiguration =
@@ -95,7 +91,7 @@ static NSString *const HUMAppSecret =
                 @{
                     @"Accept" : @"application/json",
                     @"Content-Type" : @"application/json",
-                    @"tb-device-token" : responseDictionary[@"device_token"]
+                    @"tb-auth-token" : responseDictionary[@"auth_token"]
                 }];
             
             [self.session finishTasksAndInvalidate];
