@@ -1,4 +1,4 @@
-% iOS on Rails (Beta)
+% iOS on Rails
 % thoughtbot; Jessie Young; Diana Zmuda
 
 \clearpage
@@ -1491,35 +1491,33 @@ Setting these manually is perfectly fine as well, but keeping separate configura
 
 ### Setting Up the New Schemes
 
-1. **Create the new configuration**
+![Create the new configuration and scheme](images/ios_alpha_and_beta_1.png)
 
-	![Create the new configuration](images/ios_alpha_and_beta_1.png)
+1. **Create the new configuration**
 
     Select the Humon project and create a new configuration that's a duplicate of release, and call this new configuration Beta.
 	
 2. **Create the new scheme**
 
-	![Create the new scheme](images/ios_alpha_and_beta_2.png)
-
 	Create a new scheme that's a duplicate of the main Humon scheme. Call this scheme HumonBeta.
-	
-	![Set the scheme's build configuration](images/ios_alpha_and_beta_3.png)
 	
 	Set this scheme's run build configuration and archive build configuration to Beta.
 
-3. **Automate the bundle identifier and display name**
+![Set the scheme's build configuration](images/ios_alpha_and_beta_3.png)
 
-	![Automate the bundle identifier and display name](images/ios_alpha_and_beta_5.png)
+3. **Automate the bundle identifier and display name**
 
 	Under "Info", change the Bundle identifier and the Bundle display name to include `${CONFIGURATION}`. `${CONFIGURATION}` evaluates to the name of the current build configuration.
    
 	Now the name of the Beta app will display as HumonBeta and the bundle identifier will be com.thoughtbot.HumonBeta.
+
+![Automate the bundle identifier and display name](images/ios_alpha_and_beta_5.png)
 	
 4. **Use the user-defined setting in a pre-processor macro.**
-
-	![Use the ROOT_URL in a pre-processor macro](images/ios_alpha_and_beta_6.png)
 	
 	Under "Build Settings", search for preprocessor macros and add `ROOT_URL='@"yourProductionURL/"'` to the release and Beta configurations and `ROOT_URL='@"yourStagingURL/"'` for debug and Alpha configurations.
+	
+![Use the ROOT_URL in a pre-processor macro](images/ios_alpha_and_beta_4.png)
 	
 5. **Build the app using the new scheme.**
 
@@ -1625,6 +1623,8 @@ Run the app and you'll see an instance of your `HUMMapViewController`!
 
 ### Create the MapView
 
+First, import MapKit by placing `@import MapKit;` at the top of `HUMMapViewController.m`.
+
 Inside your implementation file, create a new property called `mapView`. Alternatively, you can place this property in the header file. It's preferable, if possible, to keep properties private by placing them in the hidden interface located in the implementation file. 
 
 Also, declare that the `HUMMapViewController` conforms to the `MKMapViewDelegate` protocol by adding `<MKMapViewDelegate>`. This allows the `HUMMapViewController` to respond to delegate messages that the `mapView` sends.
@@ -1637,9 +1637,9 @@ Also, declare that the `HUMMapViewController` conforms to the `MKMapViewDelegate
 	
 	@end
 
-Now we want to fill the entirety of the `HUMMapViewController`'s view with a `mapView`. Inside your `-viewDidLoad` method, instantiate a map view and add it as a subview of the main view. 
+Now we want to fill the entirety of the `HUMMapViewController`'s view with a `mapView`. Inside your `-viewDidLoad` method, instantiate a map view and add it as a subview of the main view. Remember to set `HUMMapView` as the delegate of `self.mapview` so it can respond to delegate messages like `-mapView:regionDidChangeAnimated:`.
 
-Remember to set `HUMMapView` as the delegate of `self.mapview` so it can respond to delegate messages like `-mapView:regionDidChangeAnimated:`.
+Also, we set the title of this view controller to the name of our app, `@"Humon"`. For more information on why we used an `NSLocalizedString` here instead of a `@"plain old string literal"`, please visit the [Apple Developer Library](https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html#//apple_ref/doc/uid/10000051i-CH6). The short explanation is that we use localized strings for all text that will be displayed to a user. That way we can easily translate our app from English to other languages.
 
 	// HUMMapViewController.m
 	
@@ -1653,14 +1653,37 @@ Remember to set `HUMMapView` as the delegate of `self.mapview` so it can respond
 		self.title = NSLocalizedString(@"Humon", nil);
 		
 		// Create and add a mapView as a subview of the main view
-        self.mapView = [[MKMapView alloc] initWithFrame:self.view.frame];
-        self.mapView.delegate = self;
-        [self.view addSubview:self.mapView];
+		self.mapView = [[MKMapView alloc] initWithFrame:self.view.frame];
+		self.mapView.delegate = self;
+		[self.view addSubview:self.mapView];
+		
+		// Find the map's center point and add a red dot
 	}
 	
 	@end
+
+When a user adds an event, the new event's coordinate will be at the center of the visible map. Replace the last comment in `viewDidLoad` with the following to add a red dot to the center of the map, so users will know where their new event is being added.
+
+The `masksToBounds` and `cornerRadius` properties mask the edges of the square `centerpointView` so it looks like a circle.
+
+	// HUMMapViewController.m
 	
-Also, we set the title of this view controller to the name of our app, `@"Humon"`. For more information on why we used an `NSLocalizedString` here instead of a `@"plain old string literal"`, please visit the [Apple Developer Library](https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html#//apple_ref/doc/uid/10000051i-CH6). The short explanation is that we use localized strings for all text that will be displayed to a user. That way we can easily translate our app from English to other languages.
+	// Find the map's center point
+	CGFloat centerpointRadius = 4;
+	CGFloat statusBarHeight = [UIApplication sharedApplication]
+                              .statusBarFrame.size.height;
+	CGRect centerpointRect = CGRectMake(self.view.center.x - centerpointRadius,
+	                                    self.view.center.y - centerpointRadius 
+	                                    - statusBarHeight,
+	                                    2 * centerpointRadius,
+	                                    2 * centerpointRadius);
+	
+	// Add a red dot to the center point
+	UIView *centerpointView = [[UIView alloc] initWithFrame:centerpointRect];
+	centerpointView.backgroundColor = [UIColor redColor];
+	centerpointView.layer.masksToBounds = YES;
+	centerpointView.layer.cornerRadius = centerpointRadius;
+	[self.view addSubview:centerpointView];
 	
 Go ahead and run the app to see the big beautiful map you just created.
 
@@ -1717,7 +1740,7 @@ Create a new subclass of `UITableViewController` called `HUMEventViewController`
     - (UITableViewCell *)tableView:(UITableView *)tableView
              cellForRowAtIndexPath:(NSIndexPath *)indexPath
     {
-        UITableViewCell *cell = [[tableView
+        UITableViewCell *cell = [tableView
                         dequeueReusableCellWithIdentifier:HUMEventCellIdentifier
                                              forIndexPath:indexPath];    
         
@@ -2284,8 +2307,7 @@ Declare three methods for intializing `HUMEvent` objects:
 
 Since our rails app uses RFC 3339 formatting when sending and recieving dates in JSON, we have to use an NSDateFormatter that can translate these RFC 3339 date strings.
 
-![Creating a Category](images/ios_making_an_event_1.png)
-![Naming a Category](images/ios_making_an_event_2.png)
+![Creating a category](images/ios_event_object_1.png)
 
 Create a new category on NSDateFormatter that will contain all of our default date formatters. Notice that the naming scheme for categories is `ClassYoureAddingCategoryTo+CategoryName`. 
 
@@ -2502,7 +2524,7 @@ Now we just have to use this new init method in the `HUMMapViewController`. Chan
 
 	- (void)addButtonPressed
 	{
-	    // Create a fake event
+	    // Create a fake event at the centerpoint of the map
 	    HUMEvent *event = [[HUMEvent alloc] init];
 	    event.name = @"Picnic";
 	    event.address = @"123 Fake St.";
