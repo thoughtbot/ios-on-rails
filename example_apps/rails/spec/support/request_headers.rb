@@ -1,11 +1,11 @@
 module RequestHeaders
-  def set_headers(device_token = nil)
+  def set_headers(auth_token = nil)
     app_secret = 'secretkey'
     ENV['TB_APP_SECRET'] = app_secret
 
     {
       'tb-app-secret' => app_secret,
-      'tb-device-token' => device_token,
+      'tb-auth-token' => auth_token,
       'Content-Type' => 'application/json'
     }
   end

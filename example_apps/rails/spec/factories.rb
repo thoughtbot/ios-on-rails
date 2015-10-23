@@ -33,6 +33,6 @@ FactoryGirl.define do
   end
 
   factory :user do
-    device_token { generate(:token) }
+    auth_token { generate(:token) }
   end
 end

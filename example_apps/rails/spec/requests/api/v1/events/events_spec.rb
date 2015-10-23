@@ -26,8 +26,8 @@ end
 describe 'POST /v1/events' do
   it 'saves the address, lat, lon, name, owner, and started_at date' do
     date = Time.zone.now
-    device_token = '123abcd456xyz'
-    owner = create(:user, device_token: device_token)
+    auth_token = '123abcd456xyz'
+    owner = create(:user, auth_token: auth_token)
 
     post '/v1/events', {
       address: '123 Example St.',
@@ -37,7 +37,7 @@ describe 'POST /v1/events' do
       name: 'Fun Place!!',
       started_at: date,
     }.to_json,
-    set_headers(device_token)
+    set_headers(auth_token)
 
     event = Event.last
     expect(response_json).to eq({ 'id' => event.id })
@@ -51,11 +51,11 @@ describe 'POST /v1/events' do
   end
 
   it 'returns an error message when invalid' do
-    device_token = '123abcd456xyz'
+    auth_token = '123abcd456xyz'
 
     post '/v1/events',
       {}.to_json,
-      set_headers(device_token)
+      set_headers(auth_token)
 
     expect(response_json).to eq({
       'message' => 'Validation Failed',
@@ -86,7 +86,7 @@ describe 'PATCH /v1/events/:id' do
         id: event.owner.id
       }
     }.to_json,
-    set_headers(event.owner.device_token)
+    set_headers(event.owner.auth_token)
 
     event = event.reload
     expect(event.name).to eq new_name
@@ -107,7 +107,7 @@ describe 'PATCH /v1/events/:id' do
         id: event.owner.id
       }
     }.to_json,
-    set_headers(event.owner.device_token)
+    set_headers(event.owner.auth_token)
 
     event = event.reload
     expect(event.name).to_not be nil

@@ -1,11 +1,11 @@
 class User < ActiveRecord::Base
-  validates :device_token, uniqueness: true, presence: true
+  validates :auth_token, uniqueness: true, presence: true
 
-  before_validation :set_device_token
+  before_validation :set_auth_token
 
   private
 
-  def set_device_token
-    self.device_token ||= SecureRandom.uuid
+  def set_auth_token
+    self.auth_token ||= SecureRandom.uuid
   end
 end

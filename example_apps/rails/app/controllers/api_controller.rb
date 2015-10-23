@@ -3,7 +3,7 @@ class ApiController < ApplicationController
 
   def authorize
     if authorization_token
-      yield User.find_by(device_token: authorization_token)
+      yield User.find_by(auth_token: authorization_token)
     else
       render nothing: true, status: 401
     end
@@ -16,6 +16,6 @@ class ApiController < ApplicationController
   end
 
   def authorization_header
-    request.headers['tb-device-token']
+    request.headers['tb-auth-token']
   end
 end

@@ -1,2 +1,2 @@
-json.device_token @user.device_token
+json.auth_token @user.auth_token
 json.id @user.id

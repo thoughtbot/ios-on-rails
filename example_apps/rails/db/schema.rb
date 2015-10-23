@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20131031224142) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "attendances", force: true do |t|
+  create_table "attendances", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer  "event_id",   null: false
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 20131031224142) do
 
   add_index "attendances", ["event_id", "user_id"], name: "index_attendances_on_event_id_and_user_id", unique: true, using: :btree
 
-  create_table "delayed_jobs", force: true do |t|
+  create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   default: 0, null: false
     t.integer  "attempts",   default: 0, null: false
     t.text     "handler",                null: false
@@ -41,13 +41,13 @@ ActiveRecord::Schema.define(version: 20131031224142) do
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
-  create_table "events", force: true do |t|
+  create_table "events", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "ended_at"
     t.string   "name",       null: false
-    t.integer  "user_id",    null: false
     t.datetime "started_at", null: false
+    t.integer  "user_id",    null: false
     t.string   "address"
     t.float    "lat",        null: false
     t.float    "lon",        null: false
@@ -55,12 +55,12 @@ ActiveRecord::Schema.define(version: 20131031224142) do
 
   add_index "events", ["user_id"], name: "index_events_on_user_id", using: :btree
 
-  create_table "users", force: true do |t|
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-    t.string   "device_token"
+  create_table "users", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "auth_token"
   end
 
-  add_index "users", ["device_token"], name: "index_users_on_device_token", unique: true, using: :btree
+  add_index "users", ["auth_token"], name: "index_users_on_auth_token", unique: true, using: :btree
 
 end

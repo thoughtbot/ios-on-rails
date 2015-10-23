@@ -7,7 +7,7 @@ describe 'POST /v1/users' do
     user = User.last
     expect(response_json).to eq(
       {
-        'device_token' => user.device_token,
+        'auth_token' => user.auth_token,
         'id' => user.id
        }
     )
