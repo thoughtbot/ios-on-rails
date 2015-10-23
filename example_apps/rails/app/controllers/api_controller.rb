@@ -3,7 +3,7 @@ class ApiController < ApplicationController
 
   def authorize
     if authorization_token
-      yield User.find_or_initialize_by(device_token: authorization_token)
+      yield User.find_by(device_token: authorization_token)
     else
       render nothing: true, status: 401
     end

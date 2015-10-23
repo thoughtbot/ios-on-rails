@@ -2,17 +2,15 @@ class Api::V1::UsersController < ApiController
   before_filter :authorize_app_secret, only: [:create]
 
   def create
-    authorize do |user|
-      @user = user
+    @user = User.new
 
-      if @user.save
-        render
-      else
-        render json: {
-          message: 'Validation Failed',
-          errors: @user.errors.full_messages
-        }, status: 422
-      end
+    if @user.save
+      render
+    else
+      render json: {
+        message: 'Validation Failed',
+        errors: @user.errors.full_messages
+      }, status: 422
     end
   end
 

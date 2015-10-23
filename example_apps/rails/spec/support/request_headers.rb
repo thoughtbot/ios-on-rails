@@ -1,5 +1,5 @@
 module RequestHeaders
-  def set_headers(device_token)
+  def set_headers(device_token = nil)
     app_secret = 'secretkey'
     ENV['TB_APP_SECRET'] = app_secret
 
