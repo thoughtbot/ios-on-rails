@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+
+# Set up the staging and production apps.
+if heroku join --app humon-staging &> /dev/null; then
+  git remote add staging git@heroku.com:humon-staging.git || true
+  printf 'You are a collaborator on the "humon-staging" Heroku app
+'
+else
+  printf 'Ask for access to the "humon-staging" Heroku app
+'
+fi
+
+if heroku join --app humon-production &> /dev/null; then
+  git remote add production git@heroku.com:humon-production.git || true
+  printf 'You are a collaborator on the "humon-production" Heroku app
+'
+else
+  printf 'Ask for access to the "humon-production" Heroku app
+'
+fi
