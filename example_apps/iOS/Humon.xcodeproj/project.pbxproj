@@ -47,6 +47,7 @@
 		09B78380191AC61A003BDA23 /* HUMEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09B7837F191AC61A003BDA23 /* HUMEventViewController.m */; };
 		09B78383191AD041003BDA23 /* HUMEditEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09B78382191AD041003BDA23 /* HUMEditEventViewController.m */; };
 		09B78386191AD126003BDA23 /* HUMViewEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09B78385191AD126003BDA23 /* HUMViewEventViewController.m */; };
+		09E962F81C7BA1F300D6E8EF /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 09E962F71C7BA1F300D6E8EF /* LaunchScreen.xib */; };
 		09EFA6901947BD1100C0DA20 /* HUMUserKiwiTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 09EFA68E1947BD1000C0DA20 /* HUMUserKiwiTests.m */; };
 		09EFA6911947BD1100C0DA20 /* HUMUserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 09EFA68F1947BD1000C0DA20 /* HUMUserTests.m */; };
 		09EFA6941947BD2000C0DA20 /* HUMUserSessionKiwiTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 09EFA6921947BD2000C0DA20 /* HUMUserSessionKiwiTests.m */; };
@@ -148,6 +149,7 @@
 		09B78382191AD041003BDA23 /* HUMEditEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMEditEventViewController.m; sourceTree = "<group>"; };
 		09B78384191AD126003BDA23 /* HUMViewEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUMViewEventViewController.h; sourceTree = "<group>"; };
 		09B78385191AD126003BDA23 /* HUMViewEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMViewEventViewController.m; sourceTree = "<group>"; };
+		09E962F71C7BA1F300D6E8EF /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		09EFA68E1947BD1000C0DA20 /* HUMUserKiwiTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMUserKiwiTests.m; sourceTree = "<group>"; };
 		09EFA68F1947BD1000C0DA20 /* HUMUserTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMUserTests.m; sourceTree = "<group>"; };
 		09EFA6921947BD2000C0DA20 /* HUMUserSessionKiwiTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HUMUserSessionKiwiTests.m; sourceTree = "<group>"; };
@@ -377,6 +379,7 @@
 			children = (
 				0991A9CF181085D000881332 /* Images.xcassets */,
 				0991A9BF181085D000881332 /* Humon-Info.plist */,
+				09E962F71C7BA1F300D6E8EF /* LaunchScreen.xib */,
 				0991A9C0181085D000881332 /* InfoPlist.strings */,
 				0991A9C3181085D000881332 /* main.m */,
 				0991A9C5181085D000881332 /* Humon-Prefix.pch */,
@@ -510,7 +513,7 @@
 			attributes = {
 				CLASSPREFIX = HUM;
 				LastTestingUpgradeCheck = 0600;
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = thoughtbot;
 				TargetAttributes = {
 					093FFDCA1832AA720006E686 = {
@@ -555,6 +558,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0991A9D0181085D000881332 /* Images.xcassets in Resources */,
+				09E962F81C7BA1F300D6E8EF /* LaunchScreen.xib in Resources */,
 				0991A9C2181085D000881332 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -780,6 +784,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "HumonUITests/HumonUITests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.thoughtbot.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -799,6 +804,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HumonUITests/HumonUITests-Prefix.pch";
 				INFOPLIST_FILE = "HumonUITests/HumonUITests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.thoughtbot.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -819,6 +825,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HumonUITests/HumonUITests-Prefix.pch";
 				INFOPLIST_FILE = "HumonUITests/HumonUITests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.thoughtbot.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -839,6 +846,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HumonUITests/HumonUITests-Prefix.pch";
 				INFOPLIST_FILE = "HumonUITests/HumonUITests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.thoughtbot.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -893,6 +901,7 @@
 					"ROOT_URL='@\\\"https://humon-staging.herokuapp.com/v1/\\\"'",
 				);
 				INFOPLIST_FILE = "Humon/Humon-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.thoughtbot.${PRODUCT_NAME:rfc1034identifier}${CONFIGURATION}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -913,6 +922,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Humon/Humon-Prefix.pch";
 				INFOPLIST_FILE = "HumonTests/HumonTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.thoughtbot.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -967,6 +977,7 @@
 					"ROOT_URL='@\\\"https://api.humon.io/v1/\\\"'",
 				);
 				INFOPLIST_FILE = "Humon/Humon-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.thoughtbot.${PRODUCT_NAME:rfc1034identifier}${CONFIGURATION}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -987,6 +998,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Humon/Humon-Prefix.pch";
 				INFOPLIST_FILE = "HumonTests/HumonTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.thoughtbot.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -1011,6 +1023,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1077,6 +1090,7 @@
 					"ROOT_URL='@\\\"https://humon-staging.herokuapp.com/v1/\\\"'",
 				);
 				INFOPLIST_FILE = "Humon/Humon-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.thoughtbot.${PRODUCT_NAME:rfc1034identifier}${CONFIGURATION}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1095,6 +1109,7 @@
 					"ROOT_URL='@\\\"https://api.humon.io/v1/\\\"'",
 				);
 				INFOPLIST_FILE = "Humon/Humon-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.thoughtbot.${PRODUCT_NAME:rfc1034identifier}${CONFIGURATION}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1117,6 +1132,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "HumonTests/HumonTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.thoughtbot.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -1136,6 +1152,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Humon/Humon-Prefix.pch";
 				INFOPLIST_FILE = "HumonTests/HumonTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.thoughtbot.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
