@@ -28,8 +28,6 @@ Create a subclass of `AFHTTPSessionManager` called `HUMRailsAFNClient`. Declare 
             
             [_sharedClient.requestSerializer setValue:HUMAFNAppSecret
                                    forHTTPHeaderField:@"tb-app-secret"];
-            [_sharedClient.requestSerializer setValue:[[NSUUID UUID] UUIDString]
-                                   forHTTPHeaderField:@"tb-device-token"];
     
     	});
         
@@ -38,25 +36,4 @@ Create a subclass of `AFHTTPSessionManager` called `HUMRailsAFNClient`. Declare 
 
 With AFNetworking, we don't have to manually set up the session configuration and session with our own custom init method. We simply initialize the client using `-initWithBaseURL:`, which means our paths later will be relative to this `ROOT_URL`.
 
-### Setting the Session Headers
-
-As before, we need to set custom header fields.
-
-	// HUMRailsAFNClient.m
-
-    + (instancetype)sharedClient
-    {
-    
-    	...
-    
-            [_sharedClient.requestSerializer setValue:HUMAFNAppSecret
-                                   forHTTPHeaderField:@"tb-app-secret"];
-            [_sharedClient.requestSerializer setValue:[[NSUUID UUID] UUIDString]
-                                   forHTTPHeaderField:@"tb-device-token"];
-                                   
-        });
-                                   
-        return _sharedClient;
-    }       
-	        
-Both these headers are necessary for a POST to users request. For subsequent requests, we'll only need the token. We'll change them once we've made a successful POST to users.
+As before, we need to set custom header fields to include the app secret. The app secret is necessary for a POST to users request, and will be replaced by the user's auth token for subsequent request.

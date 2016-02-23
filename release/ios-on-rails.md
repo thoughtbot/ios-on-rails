@@ -1491,35 +1491,48 @@ Setting these manually is perfectly fine as well, but keeping separate configura
 
 ### Setting Up the New Schemes
 
-![Create the new configuration and scheme](images/ios_alpha_and_beta_1.png)
+![1. Create the new configuration](images/ios_alpha_and_beta_6.png)
 
 1. **Create the new configuration**
 
-    Select the Humon project and create a new configuration that's a duplicate of release, and call this new configuration Beta.
-	
+    Select the Humon project in the file navigator and then the Humon project in the editor. Under the "Info" tab, use the plus button to create a new configuration that's a duplicate of release. Call this new configuration Beta.
+
+
+![2. Create the new scheme](images/ios_alpha_and_beta_1.png)
+
 2. **Create the new scheme**
 
-	Create a new scheme that's a duplicate of the main Humon scheme. Call this scheme HumonBeta.
-	
-	Set this scheme's run build configuration and archive build configuration to Beta.
+	Open the scheme drop down next to the stop button. Select `New Scheme...` and create a duplicate of the main Humon scheme. Call this scheme HumonBeta.
 
-![Set the scheme's build configuration](images/ios_alpha_and_beta_3.png)
 
-3. **Automate the bundle identifier and display name**
+![3. Configure the scheme](images/ios_alpha_and_beta_3.png)
 
-	Under "Info", change the Bundle identifier and the Bundle display name to include `${CONFIGURATION}`. `${CONFIGURATION}` evaluates to the name of the current build configuration.
-   
-	Now the name of the Beta app will display as HumonBeta and the bundle identifier will be com.thoughtbot.HumonBeta.
+3. **Configure the scheme**
 
-![Automate the bundle identifier and display name](images/ios_alpha_and_beta_5.png)
-	
-4. **Use the user-defined setting in a pre-processor macro.**
-	
-	Under "Build Settings", search for preprocessor macros and add `ROOT_URL='@"yourProductionURL/"'` to the release and Beta configurations and `ROOT_URL='@"yourStagingURL/"'` for debug and Alpha configurations.
-	
-![Use the ROOT_URL in a pre-processor macro](images/ios_alpha_and_beta_4.png)
-	
-5. **Build the app using the new scheme.**
+	Set this scheme's run build configuration and archive build configuration to the Beta configuration you created in step 1.
+
+
+![4. Share the scheme](images/ios_alpha_and_beta_2.png)
+
+4. **Share the scheme**
+
+	We want this scheme to be shared so that any other developers working on this app will be able to access it. Open the scheme drop down we used in step 2 and select `Manage Schemes...` instead. Set the Humon and HumonBeta scheme to shared.
+
+
+![5. Automate the bundle identifier and display name](images/ios_alpha_and_beta_5.png)
+
+5. **Automate the bundle identifier and display name**
+
+	Select the Humon project in the file navigator and then the Humon target in the editor. Under the "Info" tab, change the Bundle display name to include `${CONFIGURATION}`. `${CONFIGURATION}` evaluates to the name of the current build configuration. Now the name of the Beta app will display as HumonBeta.
+
+
+![6. Add a ROOT_URL to pre-processor macros](images/ios_alpha_and_beta_4.png)
+
+6. **Add a ROOT_URL to pre-processor macros**
+
+	Under the "Build Settings" tab, search for preprocessor macros and add `ROOT_URL='@"yourProductionURL/"'` to the Beta and release configurations as well as `ROOT_URL='@"yourStagingURL/"'` to the debug configuration.
+
+7. **Build the app using the new scheme**
 
 	The app's name should display as HumonBeta if everything has been configured correctly. In addition, you can now use `ROOT_URL` instead of a string literal everywhere you want to conditionally use your staging or production base URL.
 
@@ -1890,7 +1903,7 @@ Next, we use that `sessionConfiguration` to create an `NSURLSession`, and set th
 
 ### Setting the Session Headers
 
-Setting the session headers on the `sessionConfiguration` is particularly important. The custom session headers include our token and app secret, which are needed for a POST to the users endpoint. For other requests we will only need the token. The headers also indicate that our content type is JSON.
+Setting the session headers on the `sessionConfiguration` is particularly important. The custom session headers include our app secret, which is needed for POSTing to the users endpoint. The headers also indicate that our content type is JSON.
 
 	// HUMRailsClient.m
 	
@@ -1901,7 +1914,6 @@ Setting the session headers on the `sessionConfiguration` is particularly import
 	    NSDictionary *headers = @{
 	          @"Accept" : @"application/json",
 	          @"Content-Type" : @"application/json",
-	          @"tb-device-token" : [[NSUUID UUID] UUIDString],
 	          @"tb-app-secret" : HUMAppSecret
 	          };
 	    [sessionConfiguration setHTTPAdditionalHeaders:headers];
@@ -1911,7 +1923,7 @@ Setting the session headers on the `sessionConfiguration` is particularly import
 	    return self;
 	}
 
-Currently, we are using a client generated device ID as our token, but our plan is to eventually replace that with an auth token generated by the backend.
+Other requests (such as POSTing to the events endpoint) will require the session headers to contain a user's auth token. So eventually we will need to conditionally set the HTTP additional headers based on whether we have a user's auth token stored.
 
 # The User Object
 
@@ -2098,7 +2110,7 @@ Once the task has completed, the block we just defined will be invoked with the 
                                             JSONObjectWithData:data
                                             options:kNilOptions
                                             error:nil];
-        [HUMUserSession setUserToken:responseDictionary[@"device_token"]];
+        [HUMUserSession setUserToken:responseDictionary[@"auth_token"]];
         [HUMUserSession setUserID:responseDictionary[@"id"]];
         
         // Create a new configuration with new token
@@ -2108,7 +2120,7 @@ Once the task has completed, the block we just defined will be invoked with the 
             @{
                 @"Accept" : @"application/json",
                 @"Content-Type" : @"application/json",
-                @"tb-device-token" : responseDictionary[@"device_token"]
+                @"tb-auth-token" : responseDictionary[@"auth_token"]
             }];
         [self.session finishTasksAndInvalidate];
         self.session = [NSURLSession sessionWithConfiguration:
@@ -2120,17 +2132,17 @@ Once the task has completed, the block we just defined will be invoked with the 
         block(error);
     });
 
-If there is no error, we can create a dictionary using the response data from the task. This dictionary will contain a `device_token` and an `id`. We can save these using the class methods we created on `HUMUserSession`.
+If there is no error, we can create a dictionary using the response data from the task. This dictionary will contain a `auth_token` and an `id` for a user. We can save these using the class methods we created on `HUMUserSession`.
 
-Now that we have a `device_token` that is associated with a user in the database, we want to sign all our requests with it. Create a `newConfiguration` that is a copy of the old configuration, place the `device_token` in the `newConfiguration`'s header, and set `self.session` to a new session that uses the `newConfiguration`.
+Now that we have an `auth_token` that is associated with a user in the database, we want to sign all our requests with it. Create a `newConfiguration` that is a copy of the old configuration, place the `device_token` in the `newConfiguration`'s header, and set `self.session` to a new session that uses the `newConfiguration`.
 
 Regardless of whether or not there's an error, we want to execute the completion block we passed into the method `-createCurrentUserWithCompletionBlock:`. Since we will be updating the UI in this completion block, we have to force the completion block to execute on the main thread using `dispatch_async`. Alternatively, you could use `NSOperationQueue` to execute the block on the main thread, but since we are just sending off a block I chose to use `dispatch_async`.
 
 ### Setting the Headers Conditionally
 
-Now that we have a POST to users method and persist the token we recieve from this method, we can conditionally set our session's headers depending on whether we have that token yet.
+Now that we have a POST to the users endpoint method and we store the token recieved from this method, we can conditionally set our session's headers depending on whether we have a stored auth token.
 
-Currently, our custom init method sets a new `tb-device-token` and `tb-app-secret` in our headers every time it initializes. These are the correct headers for POST to users, but we need different headers for all other requests.
+Currently, our custom init method sets a `tb-app-secret` in our headers every time it initializes. This is the correct header for a POST to users, but we need different headers for all our other requests.
 
 In the custom init method of our `HUMRailsClient`, change the `headers` variable to a ternary.
 
@@ -2140,18 +2152,17 @@ In the custom init method of our `HUMRailsClient`, change the `headers` variable
         @{
           @"Accept" : @"application/json",
           @"Content-Type" : @"application/json",
-          @"tb-device-token" : [HUMUserSession userToken]
+          @"tb-auth-token" : [HUMUserSession userToken]
           } :
         @{
           @"Accept" : @"application/json",
           @"Content-Type" : @"application/json",
-          @"tb-device-token" : [[NSUUID UUID] UUIDString],
           @"tb-app-secret" : HUMAppSecret
           };
           
 This ternary depends on the class methods `+userIsLoggedIn` and `+userToken` that we defined on `HUMUserSession`, so remember to `#import "HUMUserSession.h"` at the top of the file. It sets the headers to include the saved `+[HUMUserSession userToken]` if we are logged in. 
 
-If we aren't logged in, we need to send a random device token `[[NSUUID UUID] UUIDString]`. We also send the app secret so the backend will accept our POST request to create a new user.
+If we aren't logged in, we need to send the app secret so the backend will accept our POST request to create a new user.
 
 # Making the POST User Request
 
