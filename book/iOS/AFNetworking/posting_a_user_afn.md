@@ -26,9 +26,9 @@ When defining the method `-createCurrentUserWithCompletionBlock:`, we can use on
            success:^(NSURLSessionDataTask *task, id responseObject) {
                
 	        [HUMUserSession setUserID:responseObject[@"id"]];
-	        [HUMUserSession setUserToken:responseObject[@"device_token"]];
-	        [self.requestSerializer setValue:responseObject[@"device_token"]
-	                         forHTTPHeaderField:@"tb-device-token"];
+	        [HUMUserSession setUserToken:responseObject[@"auth_token"]];
+	        [self.requestSerializer setValue:responseObject[@"auth_token"]
+	                         forHTTPHeaderField:@"tb-auth-token"];
             block(nil);
                
            } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -44,7 +44,7 @@ The method is called `-POST:parameters:success:failure:` and takes four argument
 
 2. The parameters for this POST request are `nil`, since the `HTTPHeaderField` contains our `HUMAppSecret`. We don't need to send any additional data for this specific POST request.
 
-3. A completion block that will execute if the request is successful. If the request is successful we set the current user's ID and token to what we got back in the `responseObject`. We also set the device_token in the header field so we can start signing our requests as that user. Finally, we execute the completion block with `nil` as an argument since we have no error.
+3. A completion block that will execute if the request is successful. If the request is successful we set the current user's ID and token to what we got back in the `responseObject`. We also set the `tb-auth-token` in the header field so we can start signing our requests as that user. Finally, we execute the completion block with `nil` as an argument since we have no error.
 
 4. A completion block that executes if there was an error when executing the POST task. This completion block executes the completion block we provided, with the `error` as an argument to indicate that our POST wasn't successful.
 
@@ -52,7 +52,7 @@ The method is called `-POST:parameters:success:failure:` and takes four argument
 
 Now that we have a POST to users method and persist the token we recieve from this method, we can conditionally set our session's headers depending on whether we have that token yet.
 
-Currently, our singleton sets a new `tb-device-token` and the `tb-app-secret` in the session's headers every time it initializes. These are the correct headers for POST to users, but we need different headers for all other reqeusts.
+Currently, our singleton adds `tb-app-secret` to the session's headers every time it initializes. This is the correct header for a POST to users, but we need different headers for all our other reqeusts.
 
 In the `+sharedClient` method of our `HUMRailsClient`, change the `dispatch_once` block to contain:
 
@@ -63,14 +63,12 @@ In the `+sharedClient` method of our `HUMRailsClient`, change the `dispatch_once
 
     if ([HUMUserSession userIsLoggedIn]) {
         [_sharedClient.requestSerializer setValue:[HUMUserSession userToken]
-                               forHTTPHeaderField:@"tb-device-token"];
+                               forHTTPHeaderField:@"tb-auth-token"];
     } else {
         [_sharedClient.requestSerializer setValue:HUMAFNAppSecret
                                forHTTPHeaderField:@"tb-app-secret"];
-        [_sharedClient.requestSerializer setValue:[[NSUUID UUID] UUIDString]
-                               forHTTPHeaderField:@"tb-device-token"];
     }
           
 This if statement depends on the class methods `+userIsLoggedIn` and `+userToken` that we defined on `HUMUserSession`, so remember to `#import "HUMUserSession.h"` at the top of the file. It sets the headers to include the saved `+[HUMUserSession userToken]` if we are logged in. 
 
-If we aren't logged in, we need to send a random device token `[[NSUUID UUID] UUIDString]`. We also send the app secret so the backend will accept our POST request to create a new user.
+If we aren't logged in, we need to send the app secret so the backend will accept our POST request to create a new user.
