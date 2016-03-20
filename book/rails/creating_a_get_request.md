@@ -5,7 +5,7 @@
 At thoughtbot, we do test-driven and outside-in development, which means we
 start work on any feature by writing a high-level test that describes user
 behaviors. You can read a more detailed description of outside-in development
-[here](http://rubylearning.com/blog/2010/10/05/outside-in-development/), but the
+[here](http://rubylearning.com/blog/2010/10/05/an-introduction-to-outside-in-development/), but the
 benefits can be summarized as follows:
 
 >  Outside-in, along with the test-driven process, helps you write just the
