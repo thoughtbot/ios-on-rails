@@ -79,7 +79,7 @@ Once the task has completed, the block we just defined will be invoked with the 
                                             JSONObjectWithData:data
                                             options:kNilOptions
                                             error:nil];
-        [HUMUserSession setUserToken:responseDictionary[@"device_token"]];
+        [HUMUserSession setUserToken:responseDictionary[@"auth_token"]];
         [HUMUserSession setUserID:responseDictionary[@"id"]];
         
         // Create a new configuration with new token
@@ -89,7 +89,7 @@ Once the task has completed, the block we just defined will be invoked with the 
             @{
                 @"Accept" : @"application/json",
                 @"Content-Type" : @"application/json",
-                @"tb-device-token" : responseDictionary[@"device_token"]
+                @"tb-auth-token" : responseDictionary[@"auth_token"]
             }];
         [self.session finishTasksAndInvalidate];
         self.session = [NSURLSession sessionWithConfiguration:
@@ -101,17 +101,17 @@ Once the task has completed, the block we just defined will be invoked with the 
         block(error);
     });
 
-If there is no error, we can create a dictionary using the response data from the task. This dictionary will contain a `device_token` and an `id`. We can save these using the class methods we created on `HUMUserSession`.
+If there is no error, we can create a dictionary using the response data from the task. This dictionary will contain an `auth_token` and an `id` for a user. We can save these using the class methods we created on `HUMUserSession`.
 
-Now that we have a `device_token` that is associated with a user in the database, we want to sign all our requests with it. Create a `newConfiguration` that is a copy of the old configuration, place the `device_token` in the `newConfiguration`'s header, and set `self.session` to a new session that uses the `newConfiguration`.
+Now that we have an `auth_token` that is associated with a user in the database, we will use it to sign our requests. Create a `newConfiguration` that is a copy of the old configuration, place the `auth_token` in the `newConfiguration`'s header, and set `self.session` to a new session that uses the `newConfiguration`.
 
 Regardless of whether or not there's an error, we want to execute the completion block we passed into the method `-createCurrentUserWithCompletionBlock:`. Since we will be updating the UI in this completion block, we have to force the completion block to execute on the main thread using `dispatch_async`. Alternatively, you could use `NSOperationQueue` to execute the block on the main thread, but since we are just sending off a block I chose to use `dispatch_async`.
 
 ### Setting the Headers Conditionally
 
-Now that we have a POST to users method and persist the token we recieve from this method, we can conditionally set our session's headers depending on whether we have that token yet.
+Now that we have a POST to the users endpoint method and we store the token recieved from this method, we can conditionally set our session's headers depending on whether we have a stored auth token.
 
-Currently, our custom init method sets a new `tb-device-token` and `tb-app-secret` in our headers every time it initializes. These are the correct headers for POST to users, but we need different headers for all other requests.
+Currently, our custom init method sets a `tb-app-secret` in our headers every time it initializes. This is the correct header for a POST request to /users, but we need different headers for all our other requests.
 
 In the custom init method of our `HUMRailsClient`, change the `headers` variable to a ternary.
 
@@ -121,15 +121,14 @@ In the custom init method of our `HUMRailsClient`, change the `headers` variable
         @{
           @"Accept" : @"application/json",
           @"Content-Type" : @"application/json",
-          @"tb-device-token" : [HUMUserSession userToken]
+          @"tb-auth-token" : [HUMUserSession userToken]
           } :
         @{
           @"Accept" : @"application/json",
           @"Content-Type" : @"application/json",
-          @"tb-device-token" : [[NSUUID UUID] UUIDString],
           @"tb-app-secret" : HUMAppSecret
           };
           
 This ternary depends on the class methods `+userIsLoggedIn` and `+userToken` that we defined on `HUMUserSession`, so remember to `#import "HUMUserSession.h"` at the top of the file. It sets the headers to include the saved `+[HUMUserSession userToken]` if we are logged in. 
 
-If we aren't logged in, we need to send a random device token `[[NSUUID UUID] UUIDString]`. We also send the app secret so the backend will accept our POST request to create a new user.
+If we aren't logged in, we need to send the app secret so the backend will accept our POST request to create a new user.
