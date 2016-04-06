@@ -25,8 +25,6 @@
 
 <<[iOS/a_new_xcode_project.md]
 
-<<[iOS/alpha_and_beta.md]
-
 <<[iOS/cocoapods.md]
 
 <<[iOS/app_skeleton.md]
