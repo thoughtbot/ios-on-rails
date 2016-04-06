@@ -1,21 +1,14 @@
-//
-//  HUMMapViewController.m
-//  Humon
-//
-//  Created by Diana Zmuda on 11/5/13.
-//  Copyright (c) 2013 thoughtbot. All rights reserved.
-//
-
 #import "HUMAnnotationView.h"
 #import "HUMEditEventViewController.h"
 #import "HUMEvent.h"
 #import "HUMLocateEventViewController.h"
 #import "HUMMapViewController.h"
-#import "HUMRailsAFNClient.h"
 #import "HUMRailsClient.h"
 #import "HUMUser.h"
 #import "HUMUserSession.h"
 #import "HUMViewEventViewController.h"
+#import "HUMEventViewControllerFromBook.h"
+#import <SVProgressHUD/SVProgressHUD.h>
 @import MapKit;
 
 @interface HUMMapViewController () <MKMapViewDelegate>
@@ -53,8 +46,6 @@
         [SVProgressHUD showWithStatus:
             NSLocalizedString(@"Loading Events", nil)];
 
-        // We could also make this request using our AFN client.
-        // [[HUMRailsAFNClient sharedClient]
         [[HUMRailsClient sharedClient]
             createCurrentUserWithCompletionBlock:^(NSError *error) {
 
@@ -83,7 +74,6 @@
     self.mapView = [[MKMapView alloc] initWithFrame:self.view.bounds];
     self.mapView.translatesAutoresizingMaskIntoConstraints = NO;
     self.mapView.delegate = self;
-    self.mapView.showsUserLocation = YES;
     [self.view addSubview:self.mapView];
 
     [self.view addConstraint:[NSLayoutConstraint
@@ -119,16 +109,35 @@
                               attribute:NSLayoutAttributeCenterX
                               multiplier:1.0
                               constant:0.0]];
+
+    CLLocationManager *locationManager = [[CLLocationManager alloc] init];
+    [locationManager requestWhenInUseAuthorization];
+    self.mapView.showsUserLocation = YES;
 }
 
+// this is the addButtonPressed method from the book
+// which uses the map's current centerpoint
+- (void)addButtonPressedUsingEventViewControllerFromBook
+{
+    HUMEvent *event = [[HUMEvent alloc] init];
+    event.coordinate = self.mapView.centerCoordinate;
+
+    HUMEventViewControllerFromBook *eventViewController =
+    [[HUMEventViewControllerFromBook alloc] initWithEvent:event editable:YES];
+    [self.navigationController pushViewController:eventViewController
+                                         animated:YES];
+}
+
+// this is the new addButtonPressed method
+// which includes an intermediate location pin placement screen
 - (void)addButtonPressed
 {
     HUMLocateEventViewController *locateEventController =
-        [[HUMLocateEventViewController alloc]
-         initWithVisibleRect:self.mapView.visibleMapRect];
+    [[HUMLocateEventViewController alloc]
+     initWithVisibleRect:self.mapView.visibleMapRect];
     UINavigationController *navigationController =
-        [[UINavigationController alloc]
-         initWithRootViewController:locateEventController];
+    [[UINavigationController alloc]
+     initWithRootViewController:locateEventController];
     [self presentViewController:navigationController
                        animated:YES
                      completion:nil];
@@ -219,8 +228,6 @@
     
     [self.currentEventGetTask cancel];
 
-    // We could also make this request using our AFN client.
-    // self.currentEventGetTask =  [[HUMRailsAFNClient sharedClient]
     self.currentEventGetTask = [[HUMRailsClient sharedClient]
         fetchEventsInRegion:self.mapView.region
         withCompletionBlock:^(NSArray *events, NSError *error) {

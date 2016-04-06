@@ -1,11 +1,3 @@
-//
-//  HUMLocateEventViewController.m
-//  Humon
-//
-//  Created by Diana Zmuda on 4/23/14.
-//  Copyright (c) 2014 thoughtbot. All rights reserved.
-//
-
 #import "HUMAddEventViewController.h"
 #import "HUMEvent.h"
 #import "HUMLocateEventViewController.h"

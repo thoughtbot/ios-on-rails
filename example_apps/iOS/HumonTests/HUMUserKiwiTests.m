@@ -1,11 +1,3 @@
-//
-//  HUMUserKiwiTests.m
-//  Humon
-//
-//  Created by Diana Zmuda on 12/20/13.
-//  Copyright (c) 2013 thoughtbot. All rights reserved.
-//
-
 #import "Kiwi.h"
 #import "HUMUser.h"
 #import "HUMUserSession.h"

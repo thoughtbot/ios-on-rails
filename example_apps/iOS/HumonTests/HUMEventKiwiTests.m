@@ -1,11 +1,3 @@
-//
-//  HUMEventKiwiTests.m
-//  Humon
-//
-//  Created by Diana Zmuda on 1/9/14.
-//  Copyright (c) 2014 thoughtbot. All rights reserved.
-//
-
 #import "Kiwi.h"
 #import "HUMEvent.h"
 #import "HUMJSONFileManager.h"

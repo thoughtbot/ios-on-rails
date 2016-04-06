@@ -1,11 +1,3 @@
-//
-//  HUMNameCell.m
-//  Humon
-//
-//  Created by Diana Zmuda on 12/16/13.
-//  Copyright (c) 2013 thoughtbot. All rights reserved.
-//
-
 #import "HUMNameCell.h"
 
 @interface HUMNameCell ()
@@ -33,7 +25,6 @@
     UITextField *textField = [[UITextField alloc] init];
     textField.translatesAutoresizingMaskIntoConstraints = NO;
     [textField setPlaceholder:NSLocalizedString(@"Name your event", nil)];
-    [textField setDelegate:self];
     [self.contentView addSubview:textField];
 
     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0.0]];

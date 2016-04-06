@@ -1,11 +1,3 @@
-//
-//  HUMEventViewController.m
-//  Humon
-//
-//  Created by Diana Zmuda on 5/7/14.
-//  Copyright (c) 2014 thoughtbot. All rights reserved.
-//
-
 #import "HUMAppearanceManager.h"
 #import "HUMEvent.h"
 #import "HUMEventViewController.h"
@@ -128,11 +120,7 @@ static NSInteger HUMEventFooterHeight = 88;
 - (CGFloat)tableView:(UITableView *)tableView
     heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == 0) {
-        return self.tableView.rowHeight;
-    } else {
-        return kTimePickerCellHeight;
-    }
+    return self.tableView.rowHeight;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView

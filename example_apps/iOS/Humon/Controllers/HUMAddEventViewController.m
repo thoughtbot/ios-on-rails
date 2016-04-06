@@ -1,19 +1,12 @@
-//
-//  HUMAddEventViewController.m
-//  Humon
-//
-//  Created by Diana Zmuda on 11/5/13.
-//  Copyright (c) 2013 thoughtbot. All rights reserved.
-//
-
 #import "HUMAddEventViewController.h"
 #import "HUMConfirmationViewController.h"
 #import "HUMEvent.h"
 #import "HUMFooterView.h"
-#import "HUMRailsAFNClient.h"
 #import "HUMRailsClient.h"
 #import "HUMTextFieldCell.h"
+#import <SVProgressHUD/SVProgressHUD.h>
 @import AddressBook;
+@import UIKit;
 
 @interface HUMAddEventViewController () <UITextFieldDelegate>
 
@@ -72,8 +65,6 @@
 
     [SVProgressHUD show];
 
-    // We could also make this request using our AFN client.
-    // [[HUMRailsAFNClient sharedClient] createEvent:self.event
     [[HUMRailsClient sharedClient] createEvent:self.event
         withCompletionBlock:^(NSString *eventID, NSError *error) {
 

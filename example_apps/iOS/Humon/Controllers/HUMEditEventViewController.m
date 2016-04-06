@@ -1,17 +1,9 @@
-//
-//  HUMEditEventViewController.m
-//  Humon
-//
-//  Created by Diana Zmuda on 5/7/14.
-//  Copyright (c) 2014 thoughtbot. All rights reserved.
-//
-
 #import "HUMConfirmationViewController.h"
 #import "HUMEditEventViewController.h"
 #import "HUMEvent.h"
 #import "HUMFooterView.h"
-#import "HUMRailsAFNClient.h"
 #import "HUMRailsClient.h"
+#import <SVProgressHUD/SVProgressHUD.h>
 
 @interface HUMEditEventViewController ()
 
@@ -44,8 +36,6 @@
 
     [SVProgressHUD show];
 
-    // We could also make this request using our AFN client.
-    //[[HUMRailsAFNClient sharedClient] changeEvent:self.event
     [[HUMRailsClient sharedClient] changeEvent:self.event
         withCompletionBlock:^(NSString *eventID, NSError *error) {
 

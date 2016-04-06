@@ -1,13 +1,6 @@
-//
-//  HUMEvent.h
-//  Humon
-//
-//  Created by Diana Zmuda on 11/25/13.
-//  Copyright (c) 2013 thoughtbot. All rights reserved.
-//
-
 @class HUMUser;
 @import MapKit;
+@import Foundation;
 
 @interface HUMEvent : NSObject <MKAnnotation>
 

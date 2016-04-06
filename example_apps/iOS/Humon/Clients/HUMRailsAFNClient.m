@@ -1,17 +1,10 @@
-//
-//  HUMRailsAFNClient.m
-//  Humon
-//
-//  Created by Diana Zmuda on 11/12/13.
-//  Copyright (c) 2013 thoughtbot. All rights reserved.
-//
-
 #import "HUMEvent.h"
 #import "HUMRailsAFNClient.h"
 #import "HUMUserSession.h"
 
 static NSString *const HUMAFNAppSecret =
     @"yourOwnUniqueAppSecretThatYouShouldRandomlyGenerateAndKeepSecret";
+static NSString *const HUMRootURL = @"https://humon-staging.herokuapp.com/v1/";
 
 @implementation HUMRailsAFNClient
 
@@ -21,7 +14,7 @@ static NSString *const HUMAFNAppSecret =
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         
-        NSURL *baseURL = [NSURL URLWithString:ROOT_URL];
+        NSURL *baseURL = [NSURL URLWithString:HUMRootURL];
         _sharedClient = [[HUMRailsAFNClient alloc] initWithBaseURL:baseURL];
 
         if ([HUMUserSession userIsLoggedIn]) {

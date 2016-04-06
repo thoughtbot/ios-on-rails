@@ -1,10 +1,4 @@
-//
-//  HUMNameCell.h
-//  Humon
-//
-//  Created by Diana Zmuda on 12/16/13.
-//  Copyright (c) 2013 thoughtbot. All rights reserved.
-//
+@import UIKit;
 
 static NSString *kNameCellID = @"kNameCellID";
 

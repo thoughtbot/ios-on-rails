@@ -1,17 +1,10 @@
-//
-//  HUMRailsClient.m
-//  Humon
-//
-//  Created by Diana Zmuda on 11/11/13.
-//  Copyright (c) 2013 thoughtbot. All rights reserved.
-//
-
 #import "HUMEvent.h"
 #import "HUMRailsClient.h"
 #import "HUMUserSession.h"
 
 static NSString *const HUMAppSecret =
     @"yourOwnUniqueAppSecretThatYouShouldRandomlyGenerateAndKeepSecret";
+static NSString *const HUMRootURL = @"https://humon-staging.herokuapp.com/v1/";
 
 @interface HUMRailsClient ()
 
@@ -68,7 +61,7 @@ static NSString *const HUMAppSecret =
 - (void)createCurrentUserWithCompletionBlock:
     (HUMRailsClientErrorCompletionBlock)block
 {
-    NSString *urlString = [NSString stringWithFormat:@"%@users", ROOT_URL];
+    NSString *urlString = [NSString stringWithFormat:@"%@users", HUMRootURL];
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url];
     [request setHTTPMethod:@"POST"];
@@ -115,7 +108,7 @@ static NSString *const HUMAppSecret =
                         options:kNilOptions
                         error:nil];
     
-    NSString *urlString = [NSString stringWithFormat:@"%@events", ROOT_URL];
+    NSString *urlString = [NSString stringWithFormat:@"%@events", HUMRootURL];
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url];
     [request setHTTPMethod:@"POST"];
@@ -153,7 +146,7 @@ static NSString *const HUMAppSecret =
                         error:nil];
 
     NSString *urlString = [NSString stringWithFormat:@"%@events/%@",
-                           ROOT_URL, event.eventID];
+                           HUMRootURL, event.eventID];
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url];
     [request setHTTPMethod:@"PATCH"];
@@ -194,7 +187,7 @@ static NSString *const HUMAppSecret =
                             @(region.span.latitudeDelta/2*111)];
 
     NSString *urlString = [NSString stringWithFormat:@"%@events/nearests%@",
-                           ROOT_URL, parameters];
+                           HUMRootURL, parameters];
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url];
     [request setHTTPMethod:@"GET"];
@@ -227,13 +220,13 @@ static NSString *const HUMAppSecret =
 - (void)createAttendanceForEvent:(HUMEvent *)event
              withCompletionBlock:(HUMRailsClientErrorCompletionBlock)block
 {
-    NSDictionary *json = @{@"event" :
-                             @{@"id" : event.eventID}};
+    NSDictionary *json = @{@"event" : @{@"id" : event.eventID}};
     NSData *JSONdata = [NSJSONSerialization dataWithJSONObject:json
                                                        options:0
                                                          error:nil];
 
-    NSString *urlString = [NSString stringWithFormat:@"%@attendances",ROOT_URL];
+    NSString *urlString = [NSString stringWithFormat:@"%@attendances",
+                           HUMRootURL];
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url];
     [request setHTTPMethod:@"POST"];

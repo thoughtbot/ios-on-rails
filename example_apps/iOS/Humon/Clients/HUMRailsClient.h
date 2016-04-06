@@ -1,11 +1,3 @@
-//
-//  HUMRailsClient.h
-//  Humon
-//
-//  Created by Diana Zmuda on 11/11/13.
-//  Copyright (c) 2013 thoughtbot. All rights reserved.
-//
-
 @class HUMEvent, HUMEvent;
 @import MapKit;
 

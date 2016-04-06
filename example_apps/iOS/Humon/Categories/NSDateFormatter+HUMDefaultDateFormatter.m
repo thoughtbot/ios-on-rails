@@ -1,11 +1,3 @@
-//
-//  NSDateFormatter+HUMDefaultDateFormatter.m
-//  Humon
-//
-//  Created by Diana Zmuda on 12/2/13.
-//  Copyright (c) 2013 thoughtbot. All rights reserved.
-//
-
 #import "NSDateFormatter+HUMDefaultDateFormatter.h"
 
 @implementation NSDateFormatter (HUMDefaultDateFormatter)

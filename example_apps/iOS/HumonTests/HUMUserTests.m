@@ -1,11 +1,3 @@
-//
-//  HUMUserTests.m
-//  Humon
-//
-//  Created by Diana Zmuda on 1/7/14.
-//  Copyright (c) 2014 thoughtbot. All rights reserved.
-//
-
 #import <XCTest/XCTest.h>
 #import "HUMUser.h"
 #import "HUMUserSession.h"

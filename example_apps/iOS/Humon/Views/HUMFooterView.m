@@ -1,11 +1,3 @@
-//
-//  HUMFooterView.m
-//  Humon
-//
-//  Created by Diana Zmuda on 4/24/14.
-//  Copyright (c) 2014 thoughtbot. All rights reserved.
-//
-
 #import "HUMFooterView.h"
 #import "HUMButton.h"
 
