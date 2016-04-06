@@ -39,12 +39,13 @@ iOS 7 introduced the `NSURLSession` class, which is an object that handles group
 
 There are three different types of `NSURLSession` objects, including one that allows your app to continue downloading data even if the app is in the background. The type of a session is determined by its `sessionConfiguration`, but for simple API requests we only need to use the default session type.
 
-Declare a session property and a static app secret string above your `@implementation` inside `HUMRailsClient.m`.
+Declare a session property of the default `NSURLSession` class on your `HUMRailsClient`. We will also need a static app secret string and static root url string to communicate with our Rails app. Add these above your `@implementation` inside `HUMRailsClient.m`.
 
 	// HUMRailsClient.m
 	
 	static NSString *const HUMAppSecret =
 	    @"yourOwnUniqueAppSecretThatYouShouldRandomlyGenerateAndKeepSecret";
+	static NSString *const HUMRootURL = @"https://humon-staging.herokuapp.com/v1/";
 	
 	@interface HUMRailsClient ()
 	

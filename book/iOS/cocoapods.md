@@ -2,17 +2,25 @@
 
 ### Using CococaPods
 
-Before we create our new iOS project, lets discuss the libraries and resources we will use.
+Before we create our new iOS project, 
+lets discuss the libraries and resources we will use.
 
-We'll be using CocoaPods to manage our dependencies. CocoaPods is a Ruby gem and command line tool that makes it easy to add dependencies to your project. Alternatively, you can use Git submodules, but using CocoaPods is our preference due to its ease of implementation and the wide variety of third-party libraries available as pods. CocoaPods will not only download the libraries we need and link them to our project in Xcode, it will also allow us to easily manage and update which version of each library we want to use.
-
-With a background in Ruby, it may help to think of CocoaPod "pods" as gems, meaning that podfiles function similarly to gemfiles and podspecs are similar to gemspecs. `$ pod install` can be thought of as running `$ bundle install`, except for the fact that a pod install inserts the actual libraries into your project's pod directory.
+We'll be using CocoaPods to manage our dependencies. 
+CocoaPods is a Ruby gem and command line tool 
+that makes it easy to add dependencies to your project. 
+We prefer CocoaPods over Git submodules 
+due to its ease of implementation 
+and the wide variety of third-party libraries available as pods. 
+CocoaPods will not only download the libraries we need 
+and link them to our project in Xcode, 
+it will also allow us to easily manage 
+and update which version of each library we want to use.
 
 ### CocoaPods Setup
 
 What follows is a succinct version of the instructions on the [CocoaPods](http://guides.cocoapods.org/using/getting-started.html) website:
 
-1. `$ gem install cocoapods`
+1. `$ gem install cocoapods` or `$ gem install cocoapods --pre` to use the latest version. The Podfile we provide in the next section uses CocoaPods v1.0 syntax.
 
 2. Navigate to your iOS project's root directory.
 
@@ -26,17 +34,16 @@ What follows is a succinct version of the instructions on the [CocoaPods](http:/
 
 ### Humon's Podfile
 
-Installing the CocoaPods gem and creating a podfile is covered in more detail on their website. Below is the podfile we're going to use for this project, which indicates what libraries we'll be using.
+Installing the CocoaPods gem and creating a podfile is covered in more detail on their website. 
+Below is the podfile we're going to use for this project.
 
 	platform :ios, '7.0'
-	
-	pod 'SSKeychain', '~> 1.2.2'
-	pod 'SVProgressHUD', '~> 1.0'
 
-SSKeychain will help us save user info to the keychain. SVProgressHUD will let us display loading views to the user.
+	target 'Humon' do
+		pod 'SSKeychain', '~> 1.2.2'
+		pod 'SVProgressHUD', '~> 1.0'
+	end
 
-We will manually make our API requests, but we could alternatively use AFNetworking. Chapters on using AFNetworking are included in this book's [GitHub repo.](https://github.com/thoughtbot/ios-on-rails)
-
-Another important Pod to add is either Hockey or TestFlight to distribute our app to Beta testers. That process is outlined superbly on either of their developer support pages.
-
+SSKeychain will help us save user info to the keychain. 
+SVProgressHUD will let us display loading views to the user. 
 Once you've updated your podfile, go ahead and run `$ pod install`

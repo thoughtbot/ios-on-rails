@@ -28,9 +28,15 @@ The method `-tableView:cellForRowAtIndexPath:` returns a cell for every row in t
 
 We use static strings as cell identifiers, since there's no need to create a new instance of the identifier every time we want to use it. This is why we are using `HUMEventCellIdentifier` here instead of a string literal like `@"cell"`.
 
-To create a static string, place `static NSString *const HUMEventCellIdentifier = @"HUMEventCellIdentifier";` inside your `HUMEventViewController` implementation file. Now you can refer to this `@"HUMEventCellIdentifier"` string as `HUMEventCellIdentifier` throughout the file.
+Create a static string named `HUMEventCellIdentifier` and place it just below your imports. Now you can refer to this `@"HUMEventCellIdentifier"` string as `HUMEventCellIdentifier` throughout the file.
 
 	// HUMEventViewController.m
+	
+	#import "HUMEventViewController.h"
+	
+	static NSString *const HUMEventCellIdentifier = @"HUMEventCellIdentifier";
+	
+	...
 	
 	- (void)viewDidLoad
 	{

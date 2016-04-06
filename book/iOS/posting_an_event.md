@@ -33,7 +33,7 @@ Define the event creation method as follows:
 	                        options:kNilOptions
 	                        error:nil];
 	    
-	    NSString *urlString = [NSString stringWithFormat:@"%@events", ROOT_URL];
+	    NSString *urlString = [NSString stringWithFormat:@"%@events", HUMRootURL];
 	    NSURL *url = [NSURL URLWithString:urlString];
 	    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url];
 	    [request setHTTPMethod:@"POST"];

@@ -65,7 +65,7 @@ So, let's create a method for setting a date on the cell. We'll use this method 
 	    self.textField.inputView = picker;
 	}
 
-We're using a `UIDatePicker` as the `textField`'s input view to let the user pick a new date after we set the initial date on the picker. When the user picks a new date, the method `-changeTextField:` will fire, as we defined with `-addTarget:action:forControlEvents:`. Don't forget to `#import "NSDateFormatter+HUMDefaultDateFormatter.h"`.
+We're using a `UIDatePicker` as the `textField`'s input view to let the user pick a new date after we set the initial date on the picker. When the user picks a new date, the method `-changeTextField:` will fire, as we defined with `-addTarget:action:forControlEvents:`.
 
 	// HUMTextFieldCell.m
 
@@ -74,6 +74,8 @@ We're using a `UIDatePicker` as the `textField`'s input view to let the user pic
 	    self.textField.text = [[NSDateFormatter hum_RFC3339DateFormatter]
 	                           stringFromDate:picker.date];
 	}
+	
+Don't forget to `#import "NSDateFormatter+HUMDefaultDateFormatter.h"` as well.
 
 ### Using a Custom Cell
 
@@ -159,9 +161,9 @@ Now that all of our cell properties are set, we can run the app and see what it 
 
 We have our new cell properties, but we are still relying on the fake event data we set in the `HUMMapViewController.m`. To make a POST to events with user input, we need to:
 
-1) Remove the fake data we placed in `HUMMapViewController.m`.
+1. Remove the fake data we placed in `HUMMapViewController.m`.
 
-2) Assign our user-entered properties to the event on `HUMEventViewController`.
+2. Assign our user-entered properties to the event on `HUMEventViewController`.
 
 Go back to the `-addButtonPressed` method in `HUMMapViewController.m` and remove the assignment of the properties `event.name` `event.address` `event.startDate` `event.endDate`. Do not remove the assignment of `event.coordinate`, since we still need that to be set by the HUMMapViewController.
 

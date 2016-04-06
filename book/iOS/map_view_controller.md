@@ -6,13 +6,13 @@
 
 Create a new view controller subclass called `HUMMapViewController` by selecting File > New > File. This will create a header (.h) file and implementation (.m) file.
 
-![Creating a new view controller](images/ios_app_skeleton_6.png)
+![Creating a new view controller](images/ios_app_skeleton_3.png)
 
 ### Set the Root View Controller
 
 Now that we have a view controller subclass that will serve as our initial view controller in the app, we can show this view controller on launch. The app delegate has a method for exactly this purpose, called `-application:didFinishLaunchingWithOptions:`, which we will overwrite.
 
-	// HUMAppDelegate.m
+	// AppDelegate.m
 
 	- (BOOL)application:(UIApplication *)application
 	    didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -34,10 +34,9 @@ Now that we have a view controller subclass that will serve as our initial view 
 
 The `UIWindow` class handles the task of presenting views onto the device's screen. In the app delegate, the method should already set `self.window` to an instance of `UIWindow`.
 
-To set an instance of `HUMMapViewController` as the initial view controller that we see, we need to add `#import "HUMMapViewController.h"` near the top of the `HUMAppDelegate.m`. If we don't, the compiler will throw an error, since the app delegate needs to be aware of a class before instantiating an instance of it.
+To set an instance of `HUMMapViewController` as the initial view controller that we see, we need to add `#import "HUMMapViewController.h"` near the top of the `AppDelegate.m`. If we don't, the compiler will throw an error, since the app delegate needs to be aware of a class before instantiating an instance of it.
 
-So let's create a new instance of `HUMMapViewController` via 
-`HUMMapViewController *mapViewController = [[HUMMapViewController alloc] init];`. Since we want to push new views on top of this map view controller, we also initialize a `UINavigationController` with the map view controller as its root view controller. Now, when we want to show the user new view controllers, we can just push them onto that navigation controller.
+So let's create a new instance of `HUMMapViewController` via `[[HUMMapViewController alloc] init];`. Since we want to push new views on top of this map view controller, we also initialize a `UINavigationController` with the map view controller as its root view controller. Now, when we want to show the user new view controllers, we can just push them onto that navigation controller.
 
 Next, set that navigation controller as the window's `rootViewController`. This will make the map view controller (since it is the only view controller in the navigation view controller's stack) the first view controller we see on a fresh launch of the app.
 

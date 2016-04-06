@@ -32,7 +32,7 @@ Now that we have declared `-createCurrentUserWithCompletionBlock:` and typedef-e
 		(HUMRailsClientCompletionBlock)block
 	{
     	// Create a request for the POST to /users
-    	NSString *urlString = [NSString stringWithFormat:@"%@users", ROOT_URL];
+    	NSString *urlString = [NSString stringWithFormat:@"%@users", HUMRootURL];
     	NSURL *url = [NSURL URLWithString:urlString];
     	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     	[request setHTTPMethod:@"POST"];
