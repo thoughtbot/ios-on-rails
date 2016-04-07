@@ -70,8 +70,8 @@ GET request: with a request spec.
     describe 'POST /v1/events' do
       it 'saves the address, lat, lon, name, and started_at date' do
         date = Time.zone.now
-        device_token = '123abcd456xyz'
-        owner = create(:user, device_token: device_token)
+        auth_token = '123abcd456xyz'
+        owner = create(:user, auth_token: auth_token)
 
         post '/v1/events', {
           address: '123 Example St.',
@@ -84,7 +84,7 @@ GET request: with a request spec.
             id: owner.id
           }
         }.to_json,
-        set_headers(device_token)
+        set_headers(auth_token)
 
         event = Event.last
         expect(response_json).to eq({ 'id' => event.id })
@@ -99,15 +99,15 @@ GET request: with a request spec.
     end
 
 In this test we are using a method called `set_headers` and passing the
-`device_token` into the method. This is a helper method that we will use
+`auth_token` into the method. This is a helper method that we will use
 in many request specs, so let's define it outside of this spec file:
 
     # spec/support/request_headers.rb
 
     module RequestHeaders
-      def set_headers(device_token)
+      def set_headers(auth_token)
         {
-          'tb-device-token' => device_token,
+          'tb-auth-token' => auth_token,
           'Content-Type' => 'application/json'
         }
       end
@@ -237,16 +237,10 @@ Oh yes, we are using a method we haven't defined yet! What is this `authorize`
 method all about? When we are creating an `event` with our API, we want to make
 sure that the event has an owner.
 
-In Humon, we identify users by their device token, which is being sent in the
-header. In early versions of this book, we sent the device token in the
-parameters, just like `address`, `lat`, and `name`.
-
-Later on, we got feedback that it is more typical to see auth tokens sent in
-request headers. At first we thought this was because of security concerns, but
-then we found out that SSL encrypts the entire response, including the URL.
-
-The best explanation we've found for sending tokens of any kind in the header
-rather than in the URL is that it accounts for user error. As shared in [this
+In Humon, we identify users by their auth token, which is being sent in the
+request header. We are sending tokens in the header rather than in the URL
+because it is standard practice, even though SSL encrypts the entire request.
+As shared in [this
 StackOverflow response](http://stackoverflow.com/a/20754104/1019369), putting
 tokens in the header "Provides extra measure of security by preventing users
 from inadvertently sharing URLs with their credentials embedded in them."
@@ -257,10 +251,10 @@ sending auth tokens in the header is common practice for APIs. Since we want to
 establish and follow design principles for APIs that can be used and re-used for
 many use cases, it make sense to go with what's popular.
 
-So, given then we are sending the `device_token` in the header, and we will be
+So, given then we are sending the `auth_token` in the header, and we will be
 doing that for any action that requires us to know which user is making the
 request, it makes sense to define a method in `ApiController` that looks for
-the device token header and finds the user with that device token.
+the auth token header and finds the user with that auth token.
 Let's define that method now:
 
     # app/controllers/api_controller.rb
@@ -270,7 +264,7 @@ Let's define that method now:
 
       def authorize
         if authorization_token
-          yield User.find_or_initialize_by(device_token: authorization_token)
+          yield User.find_by(auth_token: authorization_token)
         else
           render nothing: true, status: 401
         end
@@ -283,11 +277,11 @@ Let's define that method now:
        end
 
        def authorization_header
-         request.headers['tb-device-token']
+         request.headers['tb-auth-token']
        end
      end
 
-Note that we are using `tb-device-token` as our header key so it does not clash
+Note that we are using `tb-auth-token` as our header key so it does not clash
 with header keys for any other auth libraries we might implement in the future.
 
 Our error message has changed yet again, and now it is time for us to move to
@@ -352,9 +346,9 @@ POST request spec):
     ...
 
      it 'returns an error message when invalid' do
-        device_token = '123abcd456xyz'
+        auth_token = '123abcd456xyz'
 
-        post '/v1/events', {}.to_json, set_headers(device_token)
+        post '/v1/events', {}.to_json, set_headers(auth_token)
 
         expect(response_json).to eq({
           'message' => 'Validation Failed',

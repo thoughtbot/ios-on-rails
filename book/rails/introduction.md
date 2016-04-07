@@ -13,10 +13,10 @@ user can have only one attendance per event.
 
 ![Humon database representation](images/humon-database-representation.png)
 
-The Humon application does not ask for a username or password. Instead, we will
-use an ID unique to the device ('device token') to track unique users. The iOS
-portion of the book will discuss where this token comes from. For now, all you
-need to know is that users are identified by their devices. This approach does
+The Humon application does not ask for a username or password.
+Instead, we will assign an auth token to all new devices using our API.
+The iOS device is responsible for storing this token
+and signing all requests with it. This approach does
 not allow for multiple users per device or a single account across mutliple
 devices, but it does enable users to start using the application immediately.
 Our desire to create the simplest application possible led us to choose
@@ -171,6 +171,11 @@ environment variables from a `.env` file while in development mode. We also add
 secret sent by the client on POST users does not match the app secret in the
 API, a `404 Not Found` is returned.
 
-To see how we implemented an app secret for POST users, [see the `before_action`
-in our
-`UsersController`](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/controllers/api/v1/users_controller.rb).
+For all requests (except for a POST users request), we require that the header
+contain a `tb-auth-token`. During a POST users request, we create an auth token
+for a user and return it in the response JSON. The iOS app stores
+that token and sets it in the header of every subsequent request.
+
+To see how we implemented an app secret and auth tokens for POST users, see the
+[`before_filter` in our `UsersController`](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/controllers/api/v1/users_controller.rb)
+and the [`before_validation` in our `User model`.](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/models/user.rb)

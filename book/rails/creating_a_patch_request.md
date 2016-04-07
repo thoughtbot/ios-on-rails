@@ -32,7 +32,7 @@ PATCH request.
           },
           started_at: event.started_at
         }.to_json,
-        set_headers(event.owner.device_token)
+        set_headers(event.owner.auth_token)
 
         event.reload
         expect(event.name).to eq new_name
@@ -173,7 +173,7 @@ To test drive that logic we will write a request spec:
            },
            started_at: event.started_at
          }.to_json,
-         set_headers(event.owner.device_token)
+         set_headers(event.owner.auth_token)
 
          event.reload
          expect(event.name).to_not be nil

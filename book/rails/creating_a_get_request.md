@@ -240,13 +240,13 @@ yet, so we will have to create records in Rails console. Make sure you are in
 your project directory in Terminal, run `rails console` and then enter the
 following:
 
-    User.create(device_token: '12345')
+    User.create(auth_token: '12345')
     Event.create(
       address: '85 2nd Street',
       lat: 37.8050217,
       lon: -122.409155,
       name: 'Best event OF ALL TIME!',
-      owner: User.find_by(device_token: '12345'),
+      owner: User.find_by(auth_token: '12345'),
       started_at: Time.zone.now
     )
 
