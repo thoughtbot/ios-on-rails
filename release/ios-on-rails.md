@@ -242,7 +242,7 @@ in our
 At thoughtbot, we do test-driven and outside-in development, which means we
 start work on any feature by writing a high-level test that describes user
 behaviors. You can read a more detailed description of outside-in development
-[here](http://rubylearning.com/blog/2010/10/05/outside-in-development/), but the
+[here](http://rubylearning.com/blog/2010/10/05/an-introduction-to-outside-in-development/), but the
 benefits can be summarized as follows:
 
 >  Outside-in, along with the test-driven process, helps you write just the
@@ -1456,88 +1456,66 @@ And just like that, our test is now passing.
 
 # Introduction
 
-The iOS portion of this book will cover creating a new Xcode project, using a
-few CocoaPods to help you get started, and making basic API requests to the API
-you just created.
+The iOS portion of this book will cover creating an Xcode project, 
+using CocoaPods, 
+making requests to the API you just created, 
+and displaying the JSON you receive.
 
-If you haven't created a project with Xcode before, images are included to help 
-you navigate the wilds that are Apple's dev tools. Xcode is an exciting editor 
-that may take a bit of getting used to, so if you would like a primer, please 
-visit [Apple's Xcode
-Overview.]("https://developer.apple.com/library/mac/documentation/ToolsLanguages/Conceptual/Xcode_Overview/About_Xcode/about.html")
+If you haven't created a project with Xcode before, 
+we have included a few images 
+to assist your understanding of Apple's dev tools. 
+Xcode is an exciting editor that takes a bit of getting used to, 
+so if you would like a primer please visit 
+[Apple's Xcode Overview.](https://developer.apple.com/library/mac/documentation/ToolsLanguages/Conceptual/Xcode_Overview/index.html)
 
-Rails developers will find that CocoaPods feels quite familiar given that the
-dependency manager is written in Ruby and allows you to use iOS libraries,
-similar to how you use Ruby gems. A good understanding of object oriented
-programming is also required for the iOS portion of this book. Like Rails, iOS
-uses the Model-View-Controller design pattern, with the small caveat that most 
-of your controllers will instead be called ViewControllers.
+CocoaPods should feel quite familiar to Ruby developers, 
+since it is written in Ruby 
+and allows you to use iOS libraries similarly to how you use Ruby gems. 
+Like Rails, iOS uses the Model-View-Controller design pattern, 
+with the small caveat that most of your controllers 
+will instead be called ViewControllers.
 
 # A New Xcode Project
 
-As with any iOS app, the first step is to create a new project in Xcode. Create 
-a new "Single View Project" with your own name and identifier. Running the 
-project for the first time will yield a white screen.
+For all iOS apps, the first step is to create a new project in Xcode. 
+Create a new "Single View Project" with your own name and identifier. 
+Running the project for the first time will yield a white screen.
 
 ![Pick an Empty Application](images/ios_new_xcode_project_1.png)
 
-# Alpha and Beta Schemes
+We want our app to target iOS 8.0 and above. 
+Open the Humon project in the file navigator and select the Humon target. 
+Under the "General" tab, select 8.0 as the Deployment Target.
 
-Distributing a Beta version of your app to testers before submitting to the app store is a vital part of the submittal process for medium- to large-scale apps. Humon may be a small app now, but we are going to set up an Alpha and Beta configuration and scheme so as to follow best practices.
+![Change the Deployment Target](images/ios_new_xcode_project_2.png)
 
-Every time you want to distribute a new build to Beta testers, you'll archive it and save it for ad hoc distribution. So what we're going to do is create a Beta scheme that we'll use every time we archive a Beta version of the app. We'll use the default Humon scheme for archiving the app's actual production version. The only differences between the new schemes will be the API endpoint (staging or production) we're hitting, the app name on the home screen, and the app's bundle ID.
-
-Setting these manually is perfectly fine as well, but keeping separate configurations for Alpha, Beta, and production ensures that we never forget something important, like switching out the staging endpoint. The following steps will refer to creating the Beta scheme. They are exactly the same for creating an Alpha scheme.
-
-### Setting Up the New Schemes
-
-![Create the new configuration and scheme](images/ios_alpha_and_beta_1.png)
-
-1. **Create the new configuration**
-
-    Select the Humon project and create a new configuration that's a duplicate of release, and call this new configuration Beta.
-	
-2. **Create the new scheme**
-
-	Create a new scheme that's a duplicate of the main Humon scheme. Call this scheme HumonBeta.
-	
-	Set this scheme's run build configuration and archive build configuration to Beta.
-
-![Set the scheme's build configuration](images/ios_alpha_and_beta_3.png)
-
-3. **Automate the bundle identifier and display name**
-
-	Under "Info", change the Bundle identifier and the Bundle display name to include `${CONFIGURATION}`. `${CONFIGURATION}` evaluates to the name of the current build configuration.
-   
-	Now the name of the Beta app will display as HumonBeta and the bundle identifier will be com.thoughtbot.HumonBeta.
-
-![Automate the bundle identifier and display name](images/ios_alpha_and_beta_5.png)
-	
-4. **Use the user-defined setting in a pre-processor macro.**
-	
-	Under "Build Settings", search for preprocessor macros and add `ROOT_URL='@"yourProductionURL/"'` to the release and Beta configurations and `ROOT_URL='@"yourStagingURL/"'` for debug and Alpha configurations.
-	
-![Use the ROOT_URL in a pre-processor macro](images/ios_alpha_and_beta_4.png)
-	
-5. **Build the app using the new scheme.**
-
-	The app's name should display as HumonBeta if everything has been configured correctly. In addition, you can now use `ROOT_URL` instead of a string literal everywhere you want to conditionally use your staging or production base URL.
+A useful resource for new Objective-C projects is GitHub's 
+[gitignore template. ](https://github.com/github/gitignore/blob/master/Objective-C.gitignore)
+Add a gitignore to your new project before creating your first commit.
 
 # Managing Dependencies
 
 ### Using CococaPods
 
-Before we create our new iOS project, lets discuss the libraries and resources we will use.
+Before we create our new iOS project, 
+lets discuss the libraries and resources we will use.
 
-We'll be using CocoaPods to manage our dependencies. CocoaPods is a Ruby gem and command line tool that makes it easy to add dependencies to your project. Alternatively, you can use Git submodules, but using CocoaPods is our preference due to its ease of implementation and the wide variety of third-party libraries available as pods. CocoaPods will not only download the libraries we need and link them to our project in Xcode, it will also allow us to easily manage and update which version of each library we want to use.
-
-With a background in Ruby, it may help to think of CocoaPod "pods" as gems, meaning that podfiles function similarly to gemfiles and podspecs are similar to gemspecs. `$ pod install` can be thought of as running `$ bundle install`, except for the fact that a pod install inserts the actual libraries into your project's pod directory.
+We'll be using CocoaPods to manage our dependencies. 
+CocoaPods is a Ruby gem and command line tool 
+that makes it easy to add dependencies to your project. 
+We prefer CocoaPods over Git submodules 
+due to its ease of implementation 
+and the wide variety of third-party libraries available as pods. 
+CocoaPods will not only download the libraries we need 
+and link them to our project in Xcode, 
+it will also allow us to easily manage 
+and update which version of each library we want to use.
 
 ### CocoaPods Setup
 
 What follows is a succinct version of the instructions on the [CocoaPods](http://guides.cocoapods.org/using/getting-started.html) website:
 
-1. `$ gem install cocoapods`
+1. `$ gem install cocoapods` or `$ gem install cocoapods --pre` to use the latest version. The Podfile we provide in the next section uses CocoaPods v1.0 syntax.
 
 2. Navigate to your iOS project's root directory.
 
@@ -1551,28 +1529,44 @@ What follows is a succinct version of the instructions on the [CocoaPods](http:/
 
 ### Humon's Podfile
 
-Installing the CocoaPods gem and creating a podfile is covered in more detail on their website. Below is the podfile we're going to use for this project, which indicates what libraries we'll be using.
+Installing the CocoaPods gem and creating a podfile is covered in more detail on their website. 
+Below is the podfile we're going to use for this project.
 
 	platform :ios, '7.0'
-	
-	pod 'SSKeychain', '~> 1.2.2'
-	pod 'SVProgressHUD', '~> 1.0'
 
-SSKeychain will help us save user info to the keychain. SVProgressHUD will let us display loading views to the user.
+	target 'Humon' do
+		pod 'SSKeychain', '~> 1.2.2'
+		pod 'SVProgressHUD', '~> 1.0'
+	end
 
-We will manually make our API requests, but we could alternatively use AFNetworking. Chapters on using AFNetworking are included in this book's [GitHub repo.](https://github.com/thoughtbot/ios-on-rails)
-
-Another important Pod to add is either Hockey or TestFlight to distribute our app to Beta testers. That process is outlined superbly on either of their developer support pages.
-
+SSKeychain will help us save user info to the keychain. 
+SVProgressHUD will let us display loading views to the user. 
 Once you've updated your podfile, go ahead and run `$ pod install`
 
 # The Mobile App's Skeleton
 
-The Humon app is going to have two view controllers. We will create empty versions of these now.
+The Humon app is going to have two view controllers:
 
-1. The initial view will contain a large map with pins for events that are near you, events you've created, and events you are tracking. It will also contain a button for adding a new event.
+1. The initial view will be a large map view with pins for events that are near you. It will also contain a button for creating a new event.
 
-2. The views for creating and viewing an event will be very similar. The entire view will be filled with a table which has space for the address, name, and time of an event. The only difference is that the text fields for creating an event will be editable.
+2. The views for creating and viewing an event will be very similar. The view will be a table with cells for the address, name, and time of an event. The only difference is that the text fields for creating an event will be editable.
+
+We can either create our view controllers programatically or use Storyboards. 
+For the purposes of this book, we will be creating all our view controllers programatically. 
+Storyboards are incredibly useful tools for visually laying out an app's view controllers, 
+but learning about Interface Builder is out of scope for this book. 
+Apple provides a good introduction to Interface Builder and 
+[Storyboards](https://developer.apple.com/library/ios/recipes/xcode_help-IB_storyboard/_index.html)
+ in their Developer Library.
+
+To use programatically created view controllers instead of the Storyboard 
+provided by Xcode:
+
+1. Delete the Main.storyboard file in the file navigator. Choose "Move to Trash" rather than just "Remove Reference".
+
+2. Select the Humon project in the file navigator. Select the Humon target and under the "Info" tab, delete the "Main storyboard file base name". This will remove the reference to the Storyboard you deleted.
+
+![Delete the Storyboard from the Info Plist](images/ios_new_xcode_project_3.png)
 
 # The Map View Controller
 
@@ -1582,13 +1576,13 @@ The Humon app is going to have two view controllers. We will create empty versio
 
 Create a new view controller subclass called `HUMMapViewController` by selecting File > New > File. This will create a header (.h) file and implementation (.m) file.
 
-![Creating a new view controller](images/ios_app_skeleton_6.png)
+![Creating a new view controller](images/ios_app_skeleton_3.png)
 
 ### Set the Root View Controller
 
 Now that we have a view controller subclass that will serve as our initial view controller in the app, we can show this view controller on launch. The app delegate has a method for exactly this purpose, called `-application:didFinishLaunchingWithOptions:`, which we will overwrite.
 
-	// HUMAppDelegate.m
+	// AppDelegate.m
 
 	- (BOOL)application:(UIApplication *)application
 	    didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -1610,10 +1604,9 @@ Now that we have a view controller subclass that will serve as our initial view 
 
 The `UIWindow` class handles the task of presenting views onto the device's screen. In the app delegate, the method should already set `self.window` to an instance of `UIWindow`.
 
-To set an instance of `HUMMapViewController` as the initial view controller that we see, we need to add `#import "HUMMapViewController.h"` near the top of the `HUMAppDelegate.m`. If we don't, the compiler will throw an error, since the app delegate needs to be aware of a class before instantiating an instance of it.
+To set an instance of `HUMMapViewController` as the initial view controller that we see, we need to add `#import "HUMMapViewController.h"` near the top of the `AppDelegate.m`. If we don't, the compiler will throw an error, since the app delegate needs to be aware of a class before instantiating an instance of it.
 
-So let's create a new instance of `HUMMapViewController` via 
-`HUMMapViewController *mapViewController = [[HUMMapViewController alloc] init];`. Since we want to push new views on top of this map view controller, we also initialize a `UINavigationController` with the map view controller as its root view controller. Now, when we want to show the user new view controllers, we can just push them onto that navigation controller.
+So let's create a new instance of `HUMMapViewController` via `[[HUMMapViewController alloc] init];`. Since we want to push new views on top of this map view controller, we also initialize a `UINavigationController` with the map view controller as its root view controller. Now, when we want to show the user new view controllers, we can just push them onto that navigation controller.
 
 Next, set that navigation controller as the window's `rootViewController`. This will make the map view controller (since it is the only view controller in the navigation view controller's stack) the first view controller we see on a fresh launch of the app.
 
@@ -1751,9 +1744,15 @@ The method `-tableView:cellForRowAtIndexPath:` returns a cell for every row in t
 
 We use static strings as cell identifiers, since there's no need to create a new instance of the identifier every time we want to use it. This is why we are using `HUMEventCellIdentifier` here instead of a string literal like `@"cell"`.
 
-To create a static string, place `static NSString *const HUMEventCellIdentifier = @"HUMEventCellIdentifier";` inside your `HUMEventViewController` implementation file. Now you can refer to this `@"HUMEventCellIdentifier"` string as `HUMEventCellIdentifier` throughout the file.
+Create a static string named `HUMEventCellIdentifier` and place it just below your imports. Now you can refer to this `@"HUMEventCellIdentifier"` string as `HUMEventCellIdentifier` throughout the file.
 
 	// HUMEventViewController.m
+	
+	#import "HUMEventViewController.h"
+	
+	static NSString *const HUMEventCellIdentifier = @"HUMEventCellIdentifier";
+	
+	...
 	
 	- (void)viewDidLoad
 	{
@@ -1833,12 +1832,13 @@ iOS 7 introduced the `NSURLSession` class, which is an object that handles group
 
 There are three different types of `NSURLSession` objects, including one that allows your app to continue downloading data even if the app is in the background. The type of a session is determined by its `sessionConfiguration`, but for simple API requests we only need to use the default session type.
 
-Declare a session property and a static app secret string above your `@implementation` inside `HUMRailsClient.m`.
+Declare a session property of the default `NSURLSession` class on your `HUMRailsClient`. We will also need a static app secret string and static root url string to communicate with our Rails app. Add these above your `@implementation` inside `HUMRailsClient.m`.
 
 	// HUMRailsClient.m
 	
 	static NSString *const HUMAppSecret =
 	    @"yourOwnUniqueAppSecretThatYouShouldRandomlyGenerateAndKeepSecret";
+	static NSString *const HUMRootURL = @"https://humon-staging.herokuapp.com/v1/";
 	
 	@interface HUMRailsClient ()
 	
@@ -1890,7 +1890,7 @@ Next, we use that `sessionConfiguration` to create an `NSURLSession`, and set th
 
 ### Setting the Session Headers
 
-Setting the session headers on the `sessionConfiguration` is particularly important. The custom session headers include our token and app secret, which are needed for a POST to the users endpoint. For other requests we will only need the token. The headers also indicate that our content type is JSON.
+Setting the session headers on the `sessionConfiguration` is particularly important. The custom session headers include our app secret, which is needed for POSTing to the users endpoint. The headers also indicate that our content type is JSON.
 
 	// HUMRailsClient.m
 	
@@ -1901,7 +1901,6 @@ Setting the session headers on the `sessionConfiguration` is particularly import
 	    NSDictionary *headers = @{
 	          @"Accept" : @"application/json",
 	          @"Content-Type" : @"application/json",
-	          @"tb-device-token" : [[NSUUID UUID] UUIDString],
 	          @"tb-app-secret" : HUMAppSecret
 	          };
 	    [sessionConfiguration setHTTPAdditionalHeaders:headers];
@@ -1911,7 +1910,7 @@ Setting the session headers on the `sessionConfiguration` is particularly import
 	    return self;
 	}
 
-Currently, we are using a client generated device ID as our token, but our plan is to eventually replace that with an auth token generated by the backend.
+Other requests (such as POSTing to the events endpoint) will require the session headers to contain a user's auth token. Later, we will conditionally set the HTTP additional headers based on whether we have a user's auth token stored.
 
 # The User Object
 
@@ -2051,7 +2050,7 @@ Now that we have declared `-createCurrentUserWithCompletionBlock:` and typedef-e
 		(HUMRailsClientCompletionBlock)block
 	{
     	// Create a request for the POST to /users
-    	NSString *urlString = [NSString stringWithFormat:@"%@users", ROOT_URL];
+    	NSString *urlString = [NSString stringWithFormat:@"%@users", HUMRootURL];
     	NSURL *url = [NSURL URLWithString:urlString];
     	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     	[request setHTTPMethod:@"POST"];
@@ -2098,7 +2097,7 @@ Once the task has completed, the block we just defined will be invoked with the 
                                             JSONObjectWithData:data
                                             options:kNilOptions
                                             error:nil];
-        [HUMUserSession setUserToken:responseDictionary[@"device_token"]];
+        [HUMUserSession setUserToken:responseDictionary[@"auth_token"]];
         [HUMUserSession setUserID:responseDictionary[@"id"]];
         
         // Create a new configuration with new token
@@ -2108,7 +2107,7 @@ Once the task has completed, the block we just defined will be invoked with the 
             @{
                 @"Accept" : @"application/json",
                 @"Content-Type" : @"application/json",
-                @"tb-device-token" : responseDictionary[@"device_token"]
+                @"tb-auth-token" : responseDictionary[@"auth_token"]
             }];
         [self.session finishTasksAndInvalidate];
         self.session = [NSURLSession sessionWithConfiguration:
@@ -2120,17 +2119,17 @@ Once the task has completed, the block we just defined will be invoked with the 
         block(error);
     });
 
-If there is no error, we can create a dictionary using the response data from the task. This dictionary will contain a `device_token` and an `id`. We can save these using the class methods we created on `HUMUserSession`.
+If there is no error, we can create a dictionary using the response data from the task. This dictionary will contain an `auth_token` and an `id` for a user. We can save these using the class methods we created on `HUMUserSession`.
 
-Now that we have a `device_token` that is associated with a user in the database, we want to sign all our requests with it. Create a `newConfiguration` that is a copy of the old configuration, place the `device_token` in the `newConfiguration`'s header, and set `self.session` to a new session that uses the `newConfiguration`.
+Now that we have an `auth_token` that is associated with a user in the database, we will use it to sign our requests. Create a `newConfiguration` that is a copy of the old configuration, place the `auth_token` in the `newConfiguration`'s header, and set `self.session` to a new session that uses the `newConfiguration`.
 
 Regardless of whether or not there's an error, we want to execute the completion block we passed into the method `-createCurrentUserWithCompletionBlock:`. Since we will be updating the UI in this completion block, we have to force the completion block to execute on the main thread using `dispatch_async`. Alternatively, you could use `NSOperationQueue` to execute the block on the main thread, but since we are just sending off a block I chose to use `dispatch_async`.
 
 ### Setting the Headers Conditionally
 
-Now that we have a POST to users method and persist the token we recieve from this method, we can conditionally set our session's headers depending on whether we have that token yet.
+Now that we have a POST to the users endpoint method and we store the token recieved from this method, we can conditionally set our session's headers depending on whether we have a stored auth token.
 
-Currently, our custom init method sets a new `tb-device-token` and `tb-app-secret` in our headers every time it initializes. These are the correct headers for POST to users, but we need different headers for all other requests.
+Currently, our custom init method sets a `tb-app-secret` in our headers every time it initializes. This is the correct header for a POST request to /users, but we need different headers for all our other requests.
 
 In the custom init method of our `HUMRailsClient`, change the `headers` variable to a ternary.
 
@@ -2140,18 +2139,17 @@ In the custom init method of our `HUMRailsClient`, change the `headers` variable
         @{
           @"Accept" : @"application/json",
           @"Content-Type" : @"application/json",
-          @"tb-device-token" : [HUMUserSession userToken]
+          @"tb-auth-token" : [HUMUserSession userToken]
           } :
         @{
           @"Accept" : @"application/json",
           @"Content-Type" : @"application/json",
-          @"tb-device-token" : [[NSUUID UUID] UUIDString],
           @"tb-app-secret" : HUMAppSecret
           };
           
 This ternary depends on the class methods `+userIsLoggedIn` and `+userToken` that we defined on `HUMUserSession`, so remember to `#import "HUMUserSession.h"` at the top of the file. It sets the headers to include the saved `+[HUMUserSession userToken]` if we are logged in. 
 
-If we aren't logged in, we need to send a random device token `[[NSUUID UUID] UUIDString]`. We also send the app secret so the backend will accept our POST request to create a new user.
+If we aren't logged in, we need to send the app secret so the backend will accept our POST request to create a new user.
 
 # Making the POST User Request
 
@@ -2376,7 +2374,7 @@ Define the event creation method as follows:
 	                        options:kNilOptions
 	                        error:nil];
 	    
-	    NSString *urlString = [NSString stringWithFormat:@"%@events", ROOT_URL];
+	    NSString *urlString = [NSString stringWithFormat:@"%@events", HUMRootURL];
 	    NSURL *url = [NSURL URLWithString:urlString];
 	    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url];
 	    [request setHTTPMethod:@"POST"];
@@ -2608,7 +2606,7 @@ So, let's create a method for setting a date on the cell. We'll use this method 
 	    self.textField.inputView = picker;
 	}
 
-We're using a `UIDatePicker` as the `textField`'s input view to let the user pick a new date after we set the initial date on the picker. When the user picks a new date, the method `-changeTextField:` will fire, as we defined with `-addTarget:action:forControlEvents:`. Don't forget to `#import "NSDateFormatter+HUMDefaultDateFormatter.h"`.
+We're using a `UIDatePicker` as the `textField`'s input view to let the user pick a new date after we set the initial date on the picker. When the user picks a new date, the method `-changeTextField:` will fire, as we defined with `-addTarget:action:forControlEvents:`.
 
 	// HUMTextFieldCell.m
 
@@ -2617,6 +2615,8 @@ We're using a `UIDatePicker` as the `textField`'s input view to let the user pic
 	    self.textField.text = [[NSDateFormatter hum_RFC3339DateFormatter]
 	                           stringFromDate:picker.date];
 	}
+	
+Don't forget to `#import "NSDateFormatter+HUMDefaultDateFormatter.h"` as well.
 
 ### Using a Custom Cell
 
@@ -2702,9 +2702,9 @@ Now that all of our cell properties are set, we can run the app and see what it 
 
 We have our new cell properties, but we are still relying on the fake event data we set in the `HUMMapViewController.m`. To make a POST to events with user input, we need to:
 
-1) Remove the fake data we placed in `HUMMapViewController.m`.
+1. Remove the fake data we placed in `HUMMapViewController.m`.
 
-2) Assign our user-entered properties to the event on `HUMEventViewController`.
+2. Assign our user-entered properties to the event on `HUMEventViewController`.
 
 Go back to the `-addButtonPressed` method in `HUMMapViewController.m` and remove the assignment of the properties `event.name` `event.address` `event.startDate` `event.endDate`. Do not remove the assignment of `event.coordinate`, since we still need that to be set by the HUMMapViewController.
 
@@ -3059,28 +3059,28 @@ Now you should be able to tap on an annotation and see the appropriate read-only
 
 # Finishing Touches
 
-Now that we've created an app that can interact with our API using the POST and GET methods, we can think about implementing more features. 
+Now that we've created an app that can interact with our API using the POST and GET methods 
+we can think about implementing more features. 
 
-These features are currently implemented in the sample app, so feel free to reference the code there if you choose to try any of these.
+These features are currently implemented in the sample app 
+so feel free to reference the code there if you choose to try any of these.
 
-1) Implement unit tests using Kiwi or the built-in XCTest. Tests in both languages are included in the example app for you to reference.
+1. Implement unit tests using Kiwi or the built-in XCTest. Tests in both languages are included in the example app for you to reference.
 
-2) Use [Auto Layout](https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/AutolayoutPG/Introduction/Introduction.html) on all the views in the app so the app can be used in landscape.
+2. Use [Auto Layout](https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/AutolayoutPG/index.html) on all the views in the app so the app can be used in landscape.
 
-3) Use [AFNetworking](https://github.com/AFNetworking/AFNetworking) to handle your API requests. Chapters on using AFNetworking are included in this book's [GitHub repo.](https://github.com/thoughtbot/ios-on-rails)
+3. Add a confirmation view controller that pushes onto the nav stack after you POST to users, with a button that lets you share your event to Facebook and Twitter.
 
-4) Add a confirmation view controller that pushes onto the nav stack after you POST to users, with a button that lets you share your event to Facebook and Twitter.
+4. Add a `user` property to the Event class. Then you can conditionally let the user PATCH an event if they are the owner.
 
-5) Add a user object and set it on each Event object. Then you can let the user PATCH an event if they are the owner.
+5. Implement a POST to attendences method to let a user indicate they plan to attend an event.
 
-6) Implement a POST to attendences method to let a user indicate they plan to attend an event.
+6. Add custom map pin images and pick a tint color for your app.
 
-7) Add custom map pin images and pick a tint color for your app.
+7. Insert a date picker into the table view, rather than having it pop up from the bottom as the `textView`'s `-inputView`.
 
-8) Insert a date picker into the table view, rather than having it pop up from the bottom as the `textView`'s `-inputView`.
+8. Prevent the user from attempting to POST an event if they haven't filled out the required fields. Ignore optional fields when you're determining validity.
 
-9) Prevent the user from attempting to POST an event if they haven't filled out the required fields. Ignore optional fields when you're determining validity.
+9. Let the user pick any location, not just their current location. Use geocoding to automatically fill out the address for that location.
 
-10) Let the user pick any location, not just their current location. Use geocoding to automatically fill out the address for that location.
-
-11) Use a different date formatter to format all the user-facing dates in a human-readable format.
+10. Use a different date formatter to format all the user-facing dates in a human-readable format.
