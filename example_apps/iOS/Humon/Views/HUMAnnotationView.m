@@ -32,6 +32,7 @@
         image = [UIImage imageNamed:@"HUMPlacemarkSmallGrey"];
     }
     self.image = image;
+    self.centerOffset = CGPointMake(0, -25/2);
 
     return self;
 }
