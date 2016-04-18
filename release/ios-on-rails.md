@@ -73,10 +73,10 @@ user can have only one attendance per event.
 
 ![Humon database representation](images/humon-database-representation.png)
 
-The Humon application does not ask for a username or password. Instead, we will
-use an ID unique to the device ('device token') to track unique users. The iOS
-portion of the book will discuss where this token comes from. For now, all you
-need to know is that users are identified by their devices. This approach does
+The Humon application does not ask for a username or password.
+Instead, we will assign an auth token to all new devices using our API.
+The iOS device is responsible for storing this token
+and signing all requests with it. This approach does
 not allow for multiple users per device or a single account across mutliple
 devices, but it does enable users to start using the application immediately.
 Our desire to create the simplest application possible led us to choose
@@ -231,9 +231,14 @@ environment variables from a `.env` file while in development mode. We also add
 secret sent by the client on POST users does not match the app secret in the
 API, a `404 Not Found` is returned.
 
-To see how we implemented an app secret for POST users, [see the `before_action`
-in our
-`UsersController`](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/controllers/api/v1/users_controller.rb).
+For all requests (except for a POST users request), we require that the header
+contain a `tb-auth-token`. During a POST users request, we create an auth token
+for a user and return it in the response JSON. The iOS app stores
+that token and sets it in the header of every subsequent request.
+
+To see how we implemented an app secret and auth tokens for POST users, see the
+[`before_filter` in our `UsersController`](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/controllers/api/v1/users_controller.rb)
+and the [`before_validation` in our `User model`.](https://github.com/thoughtbot/ios-on-rails/blob/master/example_apps/rails/app/models/user.rb)
 
 # Creating a GET request
 
@@ -477,13 +482,13 @@ yet, so we will have to create records in Rails console. Make sure you are in
 your project directory in Terminal, run `rails console` and then enter the
 following:
 
-    User.create(device_token: '12345')
+    User.create(auth_token: '12345')
     Event.create(
       address: '85 2nd Street',
       lat: 37.8050217,
       lon: -122.409155,
       name: 'Best event OF ALL TIME!',
-      owner: User.find_by(device_token: '12345'),
+      owner: User.find_by(auth_token: '12345'),
       started_at: Time.zone.now
     )
 
@@ -583,8 +588,8 @@ GET request: with a request spec.
     describe 'POST /v1/events' do
       it 'saves the address, lat, lon, name, and started_at date' do
         date = Time.zone.now
-        device_token = '123abcd456xyz'
-        owner = create(:user, device_token: device_token)
+        auth_token = '123abcd456xyz'
+        owner = create(:user, auth_token: auth_token)
 
         post '/v1/events', {
           address: '123 Example St.',
@@ -597,7 +602,7 @@ GET request: with a request spec.
             id: owner.id
           }
         }.to_json,
-        set_headers(device_token)
+        set_headers(auth_token)
 
         event = Event.last
         expect(response_json).to eq({ 'id' => event.id })
@@ -612,15 +617,15 @@ GET request: with a request spec.
     end
 
 In this test we are using a method called `set_headers` and passing the
-`device_token` into the method. This is a helper method that we will use
+`auth_token` into the method. This is a helper method that we will use
 in many request specs, so let's define it outside of this spec file:
 
     # spec/support/request_headers.rb
 
     module RequestHeaders
-      def set_headers(device_token)
+      def set_headers(auth_token)
         {
-          'tb-device-token' => device_token,
+          'tb-auth-token' => auth_token,
           'Content-Type' => 'application/json'
         }
       end
@@ -750,16 +755,10 @@ Oh yes, we are using a method we haven't defined yet! What is this `authorize`
 method all about? When we are creating an `event` with our API, we want to make
 sure that the event has an owner.
 
-In Humon, we identify users by their device token, which is being sent in the
-header. In early versions of this book, we sent the device token in the
-parameters, just like `address`, `lat`, and `name`.
-
-Later on, we got feedback that it is more typical to see auth tokens sent in
-request headers. At first we thought this was because of security concerns, but
-then we found out that SSL encrypts the entire response, including the URL.
-
-The best explanation we've found for sending tokens of any kind in the header
-rather than in the URL is that it accounts for user error. As shared in [this
+In Humon, we identify users by their auth token, which is being sent in the
+request header. We are sending tokens in the header rather than in the URL
+because it is standard practice, even though SSL encrypts the entire request.
+As shared in [this
 StackOverflow response](http://stackoverflow.com/a/20754104/1019369), putting
 tokens in the header "Provides extra measure of security by preventing users
 from inadvertently sharing URLs with their credentials embedded in them."
@@ -770,10 +769,10 @@ sending auth tokens in the header is common practice for APIs. Since we want to
 establish and follow design principles for APIs that can be used and re-used for
 many use cases, it make sense to go with what's popular.
 
-So, given then we are sending the `device_token` in the header, and we will be
+So, given then we are sending the `auth_token` in the header, and we will be
 doing that for any action that requires us to know which user is making the
 request, it makes sense to define a method in `ApiController` that looks for
-the device token header and finds the user with that device token.
+the auth token header and finds the user with that auth token.
 Let's define that method now:
 
     # app/controllers/api_controller.rb
@@ -783,7 +782,7 @@ Let's define that method now:
 
       def authorize
         if authorization_token
-          yield User.find_or_initialize_by(device_token: authorization_token)
+          yield User.find_by(auth_token: authorization_token)
         else
           render nothing: true, status: 401
         end
@@ -796,11 +795,11 @@ Let's define that method now:
        end
 
        def authorization_header
-         request.headers['tb-device-token']
+         request.headers['tb-auth-token']
        end
      end
 
-Note that we are using `tb-device-token` as our header key so it does not clash
+Note that we are using `tb-auth-token` as our header key so it does not clash
 with header keys for any other auth libraries we might implement in the future.
 
 Our error message has changed yet again, and now it is time for us to move to
@@ -865,9 +864,9 @@ POST request spec):
     ...
 
      it 'returns an error message when invalid' do
-        device_token = '123abcd456xyz'
+        auth_token = '123abcd456xyz'
 
-        post '/v1/events', {}.to_json, set_headers(device_token)
+        post '/v1/events', {}.to_json, set_headers(auth_token)
 
         expect(response_json).to eq({
           'message' => 'Validation Failed',
@@ -962,7 +961,7 @@ PATCH request.
           },
           started_at: event.started_at
         }.to_json,
-        set_headers(event.owner.device_token)
+        set_headers(event.owner.auth_token)
 
         event.reload
         expect(event.name).to eq new_name
@@ -1103,7 +1102,7 @@ To test drive that logic we will write a request spec:
            },
            started_at: event.started_at
          }.to_json,
-         set_headers(event.owner.device_token)
+         set_headers(event.owner.auth_token)
 
          event.reload
          expect(event.name).to_not be nil
@@ -1231,7 +1230,7 @@ require a controller of its own, we will create an `events` directory within
             'lat' => near_event.lat,
             'lon' => near_event.lon,
             'name' => near_event.name,
-            'owner' => { 'device_token' => near_event.owner.device_token },
+            'owner' => { 'auth_token' => near_event.owner.auth_token },
             'started_at' => near_event.started_at.as_json,
           },
           {
@@ -1241,7 +1240,7 @@ require a controller of its own, we will create an `events` directory within
             'lat' => farther_event.lat,
             'lon' => farther_event.lon,
             'name' => farther_event.name,
-            'owner' => { 'device_token' => farther_event.owner.device_token },
+            'owner' => { 'auth_token' => farther_event.owner.auth_token },
             'started_at' => farther_event.started_at.as_json,
           }
         ])

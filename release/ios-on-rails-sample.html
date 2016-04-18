@@ -224,13 +224,13 @@ end</code></pre>
 <h3>Putting it all together</h3>
 <p>We have now successfully created our first API endpoint for Humon and our request spec should pass!</p>
 <p>But let’s test it manually just to make sure. Our iOS app isn’t up and running yet, so we will have to create records in Rails console. Make sure you are in your project directory in Terminal, run <code>rails console</code> and then enter the following:</p>
-<pre><code>User.create(device_token: '12345')
+<pre><code>User.create(auth_token: '12345')
 Event.create(
   address: '85 2nd Street',
   lat: 37.8050217,
   lon: -122.409155,
   name: 'Best event OF ALL TIME!',
-  owner: User.find_by(device_token: '12345'),
+  owner: User.find_by(auth_token: '12345'),
   started_at: Time.zone.now
 )</code></pre>
 <p>Assuming this created your first event (<code>id</code> will equal 1) and you are running <code>rails server</code> in Terminal (you will need to exit from Rails console or open a new Terminal window to do this), when you visit <code>localhost:3000/v1/events/1</code> in your browser you should see something like this:</p>
