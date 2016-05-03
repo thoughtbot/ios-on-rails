@@ -6,9 +6,9 @@ The user entity on the database has two relevant properties: `auth_token` and `i
 
 ### Creating the User Session Object
 
-When we make a POST request to /users, the backend confirms that we sent the correct app secret, creates a new user with the device_token we pass, and returns the account's ID and token. 
+When we make a POST request to /users, the backend confirms that we sent the correct app secret, creates a new user with an `auth_token`, and returns the account's ID and token. 
 
-Create a subclass of `NSObject` called `HUMUserSession`. This object will manage the current user's session. That means it will be responsible for keeping track of one user ID and one `device_token` that we'll be signing our requests with.
+Create a subclass of `NSObject` called `HUMUserSession`. This object will manage the current user's session. That means it will be responsible for keeping track of one user ID and one `auth_token` that we'll be signing our requests with.
 
 The interface for our user session manager should contain 5 class methods:
 
