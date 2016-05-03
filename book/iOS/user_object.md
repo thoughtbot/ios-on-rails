@@ -2,7 +2,7 @@
 
 Our app doesn't require username/password login. Instead, we will create a user object on the app's first run and then consistantly sign our requests as this user. This behavior is useful for apps that don't require login, or have some sort of guest mode.
 
-The user entity on the database has two relevant properties: `device_token` and `id`. We will pass along the device token with our user requests, and we will use the ID to compare users. 
+The user entity on the database has two relevant properties: `auth_token` and `id`. We will use the auth token to sign our user's requests, and we will use the ID to compare users.
 
 ### Creating the User Session Object
 
