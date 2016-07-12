@@ -4,13 +4,15 @@
 
 ### Create the New View Controller Class
 
-Create a new view controller subclass called `MapViewController` by selecting File > New > File.
+Create a new view controller subclass called `MapViewController` by selecting File > New > File. Make sure to select the "Swift File" option.
 
 ![Creating a new view controller](images/ios_app_skeleton_3.png)
 
 Select the new `MapViewController.swift` file and declare the `MapViewController` class as follows:
 
 	// MapViewController.swift
+	
+	import UIKit
 	
 	class MapViewController: UIViewController {
 	}

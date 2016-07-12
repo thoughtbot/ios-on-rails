@@ -6,13 +6,13 @@
 
 <<[iOS/app_skeleton.md] DONE
 
-<<[iOS/map_view_controller.md] DO
+<<[iOS/map_view_controller.md] DONE
 
 <<[iOS/add_an_event_view_controller.md] DO
 
 <<[iOS/api_client.md] DONE
 
-<<[iOS/user_object.md] DONE
+<<[iOS/user_object.md] DO KEYCHAIN PART
 
 <<[iOS/posting_a_user.md]DONE
 
