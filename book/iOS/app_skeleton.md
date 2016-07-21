@@ -60,7 +60,3 @@ IMAGE OF CURRENT VIEW CONTROLLER IN STORYBOARD
 6. If you like, you can rearrange the `navigation controller`, `view controller`, and `table view controller` in the storyboard so all the segues or "arrows" are pointing to the right.
 
 7. Now run the app and see that the initial view controller has changed to a `navigation controller` with a map `view controller`. Tap on the `bar button item` to see the event `table view controller`.
-
-
-
-

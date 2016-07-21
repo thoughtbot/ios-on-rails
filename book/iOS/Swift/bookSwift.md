@@ -8,7 +8,7 @@
 
 <<[iOS/map_view_controller.md] DONE
 
-<<[iOS/add_an_event_view_controller.md] DO
+<<[iOS/add_an_event_view_controller.md] DONE
 
 <<[iOS/api_client.md] DONE
 

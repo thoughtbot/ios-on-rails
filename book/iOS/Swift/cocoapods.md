@@ -20,7 +20,7 @@ and update which version of each library we want to use.
 
 What follows is a succinct version of the instructions on the [CocoaPods](http://guides.cocoapods.org/using/getting-started.html) website:
 
-1. `$ gem install cocoapods` or `$ gem install cocoapods --pre` to use the latest version. The Podfile we provide in the next section uses CocoaPods v1.0 syntax.
+1. `$ gem install cocoapods` or `$ gem install cocoapods` to use the latest version. The Podfile we provide in the next section uses CocoaPods v1.0 syntax.
 
 2. Navigate to your iOS project's root directory.
 
