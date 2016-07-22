@@ -1,0 +1,11 @@
+platform :ios, "8.0"
+use_frameworks!
+
+target 'HumonSwift' do
+
+# pod 'Locksmith', '~> 2.0'
+pod 'Locksmith', :git => 'https://github.com/matthewpalmer/Locksmith.git', :branch => 'swift-3.0'
+# https://github.com/davbeck/Locksmith/tree/swift-3.0
+# https://github.com/matthewpalmer/Locksmith/tree/swift-3.0
+
+end
