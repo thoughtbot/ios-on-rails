@@ -1,0 +1,535 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		842A0FBB19FC8CFE002F9AB4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A0FBA19FC8CFE002F9AB4 /* AppDelegate.swift */; };
+		842A0FBE19FC8CFE002F9AB4 /* HumonSwift.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 842A0FBC19FC8CFE002F9AB4 /* HumonSwift.xcdatamodeld */; };
+		842A0FC319FC8CFE002F9AB4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 842A0FC119FC8CFE002F9AB4 /* Main.storyboard */; };
+		842A0FC519FC8CFE002F9AB4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 842A0FC419FC8CFE002F9AB4 /* Images.xcassets */; };
+		842A0FC819FC8CFE002F9AB4 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 842A0FC619FC8CFE002F9AB4 /* LaunchScreen.xib */; };
+		842A0FD419FC8CFF002F9AB4 /* HumonSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A0FD319FC8CFF002F9AB4 /* HumonSwiftTests.swift */; };
+		8483407D1A82DC410053C684 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8483407C1A82DC410053C684 /* MapViewController.swift */; };
+		8483407F1A82DCF10053C684 /* EventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8483407E1A82DCF10053C684 /* EventViewController.swift */; };
+		848340851A82F3600053C684 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 848340841A82F3600053C684 /* MapKit.framework */; };
+		848340881A83FAA80053C684 /* HumonClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848340871A83FAA80053C684 /* HumonClient.swift */; };
+		8483408A1A83FAB90053C684 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848340891A83FAB90053C684 /* User.swift */; };
+		8483408C1A83FDB90053C684 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8483408B1A83FDB90053C684 /* Event.swift */; };
+		848340901A8402830053C684 /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8483408F1A8402830053C684 /* UserSession.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		842A0FCE19FC8CFF002F9AB4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 842A0FAD19FC8CFE002F9AB4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 842A0FB419FC8CFE002F9AB4;
+			remoteInfo = HumonSwift;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		842A0FB519FC8CFE002F9AB4 /* HumonSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HumonSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		842A0FB919FC8CFE002F9AB4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		842A0FBA19FC8CFE002F9AB4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		842A0FBD19FC8CFE002F9AB4 /* HumonSwift.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = HumonSwift.xcdatamodel; sourceTree = "<group>"; };
+		842A0FC219FC8CFE002F9AB4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		842A0FC419FC8CFE002F9AB4 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		842A0FC719FC8CFE002F9AB4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		842A0FCD19FC8CFF002F9AB4 /* HumonSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HumonSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		842A0FD219FC8CFF002F9AB4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		842A0FD319FC8CFF002F9AB4 /* HumonSwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumonSwiftTests.swift; sourceTree = "<group>"; };
+		8483407C1A82DC410053C684 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		8483407E1A82DCF10053C684 /* EventViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventViewController.swift; sourceTree = "<group>"; };
+		848340841A82F3600053C684 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		848340871A83FAA80053C684 /* HumonClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumonClient.swift; sourceTree = "<group>"; };
+		848340891A83FAB90053C684 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		8483408B1A83FDB90053C684 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		8483408F1A8402830053C684 /* UserSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		842A0FB219FC8CFE002F9AB4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				848340851A82F3600053C684 /* MapKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		842A0FCA19FC8CFF002F9AB4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		842A0FAC19FC8CFE002F9AB4 = {
+			isa = PBXGroup;
+			children = (
+				842A0FB719FC8CFE002F9AB4 /* HumonSwift */,
+				842A0FD019FC8CFF002F9AB4 /* HumonSwiftTests */,
+				842A0FB619FC8CFE002F9AB4 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		842A0FB619FC8CFE002F9AB4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				842A0FB519FC8CFE002F9AB4 /* HumonSwift.app */,
+				842A0FCD19FC8CFF002F9AB4 /* HumonSwiftTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		842A0FB719FC8CFE002F9AB4 /* HumonSwift */ = {
+			isa = PBXGroup;
+			children = (
+				842A0FBA19FC8CFE002F9AB4 /* AppDelegate.swift */,
+				8483408E1A83FDC80053C684 /* Controllers */,
+				848340861A82F38F0053C684 /* Frameworks */,
+				8483408D1A83FDC10053C684 /* Models */,
+				848340801A82DD3E0053C684 /* Nibs */,
+				842A0FB819FC8CFE002F9AB4 /* Supporting Files */,
+				848340811A82DD470053C684 /* ViewControllers */,
+			);
+			path = HumonSwift;
+			sourceTree = "<group>";
+		};
+		842A0FB819FC8CFE002F9AB4 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				842A0FBC19FC8CFE002F9AB4 /* HumonSwift.xcdatamodeld */,
+				842A0FC419FC8CFE002F9AB4 /* Images.xcassets */,
+				842A0FB919FC8CFE002F9AB4 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		842A0FD019FC8CFF002F9AB4 /* HumonSwiftTests */ = {
+			isa = PBXGroup;
+			children = (
+				842A0FD319FC8CFF002F9AB4 /* HumonSwiftTests.swift */,
+				842A0FD119FC8CFF002F9AB4 /* Supporting Files */,
+			);
+			path = HumonSwiftTests;
+			sourceTree = "<group>";
+		};
+		842A0FD119FC8CFF002F9AB4 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				842A0FD219FC8CFF002F9AB4 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		848340801A82DD3E0053C684 /* Nibs */ = {
+			isa = PBXGroup;
+			children = (
+				842A0FC619FC8CFE002F9AB4 /* LaunchScreen.xib */,
+				842A0FC119FC8CFE002F9AB4 /* Main.storyboard */,
+			);
+			name = Nibs;
+			sourceTree = "<group>";
+		};
+		848340811A82DD470053C684 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				8483407C1A82DC410053C684 /* MapViewController.swift */,
+				8483407E1A82DCF10053C684 /* EventViewController.swift */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		848340861A82F38F0053C684 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				848340841A82F3600053C684 /* MapKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8483408D1A83FDC10053C684 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				8483408B1A83FDB90053C684 /* Event.swift */,
+				848340891A83FAB90053C684 /* User.swift */,
+				8483408F1A8402830053C684 /* UserSession.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		8483408E1A83FDC80053C684 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				848340871A83FAA80053C684 /* HumonClient.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		842A0FB419FC8CFE002F9AB4 /* HumonSwift */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 842A0FD719FC8CFF002F9AB4 /* Build configuration list for PBXNativeTarget "HumonSwift" */;
+			buildPhases = (
+				842A0FB119FC8CFE002F9AB4 /* Sources */,
+				842A0FB219FC8CFE002F9AB4 /* Frameworks */,
+				842A0FB319FC8CFE002F9AB4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HumonSwift;
+			productName = HumonSwift;
+			productReference = 842A0FB519FC8CFE002F9AB4 /* HumonSwift.app */;
+			productType = "com.apple.product-type.application";
+		};
+		842A0FCC19FC8CFF002F9AB4 /* HumonSwiftTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 842A0FDA19FC8CFF002F9AB4 /* Build configuration list for PBXNativeTarget "HumonSwiftTests" */;
+			buildPhases = (
+				842A0FC919FC8CFF002F9AB4 /* Sources */,
+				842A0FCA19FC8CFF002F9AB4 /* Frameworks */,
+				842A0FCB19FC8CFF002F9AB4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				842A0FCF19FC8CFF002F9AB4 /* PBXTargetDependency */,
+			);
+			name = HumonSwiftTests;
+			productName = HumonSwiftTests;
+			productReference = 842A0FCD19FC8CFF002F9AB4 /* HumonSwiftTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		842A0FAD19FC8CFE002F9AB4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftMigration = 0720;
+				LastSwiftUpdateCheck = 0720;
+				LastUpgradeCheck = 0800;
+				ORGANIZATIONNAME = "Diana Zmuda";
+				TargetAttributes = {
+					842A0FB419FC8CFE002F9AB4 = {
+						CreatedOnToolsVersion = 6.1;
+						DevelopmentTeam = C8N3RVUWKZ;
+						DevelopmentTeamName = "Diana Zmuda (Personal Team)";
+						LastSwiftMigration = 0800;
+						ProvisioningStyle = Automatic;
+					};
+					842A0FCC19FC8CFF002F9AB4 = {
+						CreatedOnToolsVersion = 6.1;
+						LastSwiftMigration = 0800;
+						TestTargetID = 842A0FB419FC8CFE002F9AB4;
+					};
+				};
+			};
+			buildConfigurationList = 842A0FB019FC8CFE002F9AB4 /* Build configuration list for PBXProject "HumonSwift" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 842A0FAC19FC8CFE002F9AB4;
+			productRefGroup = 842A0FB619FC8CFE002F9AB4 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				842A0FB419FC8CFE002F9AB4 /* HumonSwift */,
+				842A0FCC19FC8CFF002F9AB4 /* HumonSwiftTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		842A0FB319FC8CFE002F9AB4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				842A0FC319FC8CFE002F9AB4 /* Main.storyboard in Resources */,
+				842A0FC819FC8CFE002F9AB4 /* LaunchScreen.xib in Resources */,
+				842A0FC519FC8CFE002F9AB4 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		842A0FCB19FC8CFF002F9AB4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		842A0FB119FC8CFE002F9AB4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				842A0FBB19FC8CFE002F9AB4 /* AppDelegate.swift in Sources */,
+				8483407D1A82DC410053C684 /* MapViewController.swift in Sources */,
+				8483408A1A83FAB90053C684 /* User.swift in Sources */,
+				848340881A83FAA80053C684 /* HumonClient.swift in Sources */,
+				842A0FBE19FC8CFE002F9AB4 /* HumonSwift.xcdatamodeld in Sources */,
+				8483408C1A83FDB90053C684 /* Event.swift in Sources */,
+				8483407F1A82DCF10053C684 /* EventViewController.swift in Sources */,
+				848340901A8402830053C684 /* UserSession.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		842A0FC919FC8CFF002F9AB4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				842A0FD419FC8CFF002F9AB4 /* HumonSwiftTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		842A0FCF19FC8CFF002F9AB4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 842A0FB419FC8CFE002F9AB4 /* HumonSwift */;
+			targetProxy = 842A0FCE19FC8CFF002F9AB4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		842A0FC119FC8CFE002F9AB4 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				842A0FC219FC8CFE002F9AB4 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		842A0FC619FC8CFE002F9AB4 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				842A0FC719FC8CFE002F9AB4 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		842A0FD519FC8CFF002F9AB4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		842A0FD619FC8CFF002F9AB4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		842A0FD819FC8CFF002F9AB4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = HumonSwift/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.thoughtbot.HumonApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		842A0FD919FC8CFF002F9AB4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = HumonSwift/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.thoughtbot.HumonApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		842A0FDB19FC8CFF002F9AB4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = HumonSwiftTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "DZ.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HumonSwift.app/HumonSwift";
+			};
+			name = Debug;
+		};
+		842A0FDC19FC8CFF002F9AB4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = HumonSwiftTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "DZ.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HumonSwift.app/HumonSwift";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		842A0FB019FC8CFE002F9AB4 /* Build configuration list for PBXProject "HumonSwift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				842A0FD519FC8CFF002F9AB4 /* Debug */,
+				842A0FD619FC8CFF002F9AB4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		842A0FD719FC8CFF002F9AB4 /* Build configuration list for PBXNativeTarget "HumonSwift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				842A0FD819FC8CFF002F9AB4 /* Debug */,
+				842A0FD919FC8CFF002F9AB4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		842A0FDA19FC8CFF002F9AB4 /* Build configuration list for PBXNativeTarget "HumonSwiftTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				842A0FDB19FC8CFF002F9AB4 /* Debug */,
+				842A0FDC19FC8CFF002F9AB4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		842A0FBC19FC8CFE002F9AB4 /* HumonSwift.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				842A0FBD19FC8CFE002F9AB4 /* HumonSwift.xcdatamodel */,
+			);
+			currentVersion = 842A0FBD19FC8CFE002F9AB4 /* HumonSwift.xcdatamodel */;
+			path = HumonSwift.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 842A0FAD19FC8CFE002F9AB4 /* Project object */;
+}
