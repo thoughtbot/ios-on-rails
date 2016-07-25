@@ -24,8 +24,15 @@ In the attributes inspector, set the custom class of the `table view controller`
 
 ### Create Static Cells
 
-In the storyboard, drag four `table view cells` from the object library at the bottom of the utilities sidebar to the area below the blank cell in the `table view controller`.
-We will use these extra cells to gather information from the user to create a new event.
+In the document outline, select the "Table View" below the "Event View Controller". This is the table view that our Event View Controller manages.
 
-IMAGE OF NEW STATIC CELLS
+IMAGE OF DOCUMENT OUTLINE
+
+Open the attributes inspector in the the utilities sidebar. Incrase the number of prototype cells in the table view to 5 and switch the content from "Dynamic Prototypes" to "Static Cells". We will use these cells to gather information from the user to create a new event.
+
+IMAGE OF ATTRIBUTES INSPECTOR CELL INCREASE
+
+Drag a `text field` from the object library at the bottom of the attributes inspector into four of the blank cells in the `table view controller`.
+
+IMAGE OF PROTOTYPE CELLS
 
