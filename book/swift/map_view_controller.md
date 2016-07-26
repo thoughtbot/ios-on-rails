@@ -35,6 +35,8 @@ First, import MapKit by placing `import MapKit` at the top of `MapViewController
 
 With `MapViewController.swift` open in the editor, toggle the assistant editor. This will show `Main.storyboard` in the assistant editor on the right, allowing us to connect the Swift file to the Storyboard file.
 
+IMAGE OF ASSISTANT EDITOR
+
 Hold down `ctrl` and drag from the Storyboard's map view to inside the `MapViewController` class. Name the map view `mapView`.
 
 Once you've created an outlet for your `mapView`, your `MapViewController` class should look like this:
