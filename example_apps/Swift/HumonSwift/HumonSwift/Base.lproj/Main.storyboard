@@ -148,7 +148,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                     <connections>
-                                                        <action selector="datePickerEditingDidBegin:" destination="qDU-if-Zrc" eventType="editingDidBegin" id="fbo-Fc-fVd"/>
+                                                        <action selector="datePickerEditingDidBegin:" destination="qDU-if-Zrc" eventType="editingDidBegin" id="k6Y-i8-EAS"/>
                                                         <outlet property="delegate" destination="qDU-if-Zrc" id="J08-JI-r6S"/>
                                                     </connections>
                                                 </textField>
@@ -179,7 +179,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                     <connections>
-                                                        <action selector="datePickerEditingDidBegin:" destination="qDU-if-Zrc" eventType="editingDidBegin" id="ydN-no-fcj"/>
+                                                        <action selector="datePickerEditingDidBegin:" destination="qDU-if-Zrc" eventType="editingDidBegin" id="p9t-Zn-Gst"/>
                                                         <outlet property="delegate" destination="qDU-if-Zrc" id="EuK-Qj-Td7"/>
                                                     </connections>
                                                 </textField>
@@ -199,23 +199,6 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="Xt3-PY-Rf4" style="IBUITableViewCellStyleDefault" id="Z22-70-Pcs">
-                                        <rect key="frame" x="0.0" y="176" width="375" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Z22-70-Pcs" id="gPF-L6-yUF">
-                                            <frame key="frameInset" width="375" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Submit" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Xt3-PY-Rf4">
-                                                    <frame key="frameInset" minX="15" width="345" height="43"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.28235294119999998" green="0.66274509800000003" blue="0.53333333329999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -224,7 +207,13 @@
                             <outlet property="delegate" destination="qDU-if-Zrc" id="ULv-hn-3xQ"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Add an Event" id="e7T-me-dQg"/>
+                    <navigationItem key="navigationItem" title="Add an Event" id="e7T-me-dQg">
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="uyP-tF-toB">
+                            <connections>
+                                <action selector="saveEvent:" destination="qDU-if-Zrc" id="KfH-5a-s7m"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="addressTextField" destination="Bl7-u3-YGn" id="5zL-4Y-xsa"/>
                         <outlet property="endAtTextField" destination="766-Bu-e2Q" id="AKS-Fc-EkL"/>

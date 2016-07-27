@@ -22,25 +22,6 @@ class EventViewController: UITableViewController, UITextFieldDelegate {
     var client = HumonClient()
     var coordinate: CLLocationCoordinate2D?
 
-    func tableView(tableView: UITableView,
-        didSelectRowAtIndexPath indexPath: NSIndexPath) {
-            if indexPath.row == 4 {
-                if fieldsAreValid == true {
-                    let event = Event(name: nameTextField.text ?? "",
-                                      address: addressTextField.text ?? "",
-                                      coordinate: coordinate ?? CLLocationCoordinate2D(),
-                                      startDate: (startAtTextField.inputView as? UIDatePicker)?.date ?? Date(),
-                                      endDate: (endAtTextField.inputView as? UIDatePicker)?.date)
-                    client.postEvent(event: event) { [weak self] in
-                        _ = self?.navigationController?.popToRootViewController(animated: true)
-                    }
-                } else {
-                    // show fields are invalid
-                }
-            }
-
-    }
-
     private var fieldsAreValid: Bool {
         return nameTextField.text?.characters.count > 0 &&
             addressTextField.text?.characters.count > 0
@@ -51,9 +32,24 @@ class EventViewController: UITableViewController, UITextFieldDelegate {
         return true
     }
 
+    @IBAction func saveEvent(_ sender: UIBarButtonItem) {
+        if fieldsAreValid == true {
+            let event = Event(name: nameTextField.text ?? "",
+                              address: addressTextField.text ?? "",
+                              coordinate: coordinate ?? CLLocationCoordinate2D(),
+                              startDate: (startAtTextField.inputView as? UIDatePicker)?.date ?? Date(),
+                              endDate: (endAtTextField.inputView as? UIDatePicker)?.date)
+            client.postEvent(event: event) { [weak self] in
+                _ = self?.navigationController?.popToRootViewController(animated: true)
+            }
+        } else {
+            // show fields are invalid
+        }
+    }
+
     // BOOK NOTE: tell people how to connect this method to editing did begin
 
-    @IBAction func datePickerEditingDidBegin(sender: UITextField) {
+    @IBAction func datePickerEditingDidBegin(_ sender: UITextField) {
         let datePicker = UIDatePicker()
         sender.inputView = datePicker
         datePicker.addTarget(self,
@@ -70,4 +66,5 @@ class EventViewController: UITableViewController, UITextFieldDelegate {
             endAtTextField.text = date
         }
     }
+
 }
