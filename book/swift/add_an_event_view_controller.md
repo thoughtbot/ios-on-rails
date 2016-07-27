@@ -55,7 +55,7 @@ IMAGE OF IB ACTION POPUP
 	    @IBOutlet weak var startAtTextField: UITextField!
 	    @IBOutlet weak var endAtTextField: UITextField!
 	
-		@IBAction func createEvent(_ sender: AnyObject) {
+		@IBAction func saveEvent(_ sender: AnyObject) {
     	}
     	
 	}

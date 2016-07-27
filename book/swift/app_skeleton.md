@@ -4,7 +4,7 @@ The Humon app is going to have two view controllers:
 
 1. The initial view will be a large map view with pins for events that are near you. It will also contain a button for creating a new event.
 
-2. The views for creating and viewing an event will be very similar. The view will be a table with cells for the address, name, and time of an event. The only difference is that the text fields for creating an event will be editable.
+2. The view for creating an event will be a table with cells for the address, name, and time of an event.
 
 We can either create our view controllers programatically or use Storyboards. 
 Storyboards are incredibly useful tools for visually laying out an app's view controllers.
