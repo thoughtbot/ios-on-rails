@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe User, 'Validations' do
   it { should validate_uniqueness_of(:auth_token) }
+  it { should validate_presence_of(:auth_token) }
 end
 
 describe User, '#auth_token' do
