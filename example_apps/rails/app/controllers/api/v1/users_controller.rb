@@ -1,5 +1,5 @@
 class Api::V1::UsersController < ApiController
-  before_filter :authorize_app_secret, only: [:create]
+  before_action :authorize_app_secret, only: [:create]
 
   def create
     @user = User.new
@@ -18,7 +18,7 @@ class Api::V1::UsersController < ApiController
 
   def authorize_app_secret
     unless correct_app_secret?
-      render nothing: true, status: 404
+      head :not_found
     end
   end
 

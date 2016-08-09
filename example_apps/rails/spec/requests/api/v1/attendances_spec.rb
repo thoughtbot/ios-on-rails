@@ -5,10 +5,10 @@ describe 'POST /v1/attendances' do
     event = create(:event)
     user = create(:user)
 
-    post '/v1/attendances', {
-      event: { id: event.id },
-    }.to_json,
-    set_headers(user.auth_token)
+    post '/v1/attendances',
+      params: { event: { id: event.id } },
+      headers: set_headers(user.auth_token),
+      as: :json
 
     expect(event.reload.attendances.count).to eq 1
   end
@@ -18,10 +18,10 @@ describe 'POST /v1/attendances' do
     user = create(:user)
 
     2.times do
-      post '/v1/attendances', {
-        event: { id: event.id },
-      }.to_json,
-      set_headers(user.auth_token)
+      post '/v1/attendances',
+        params: { event: { id: event.id } },
+        headers: set_headers(user.auth_token),
+        as: :json
     end
 
     expect(event.reload.attendances.count).to eq 1

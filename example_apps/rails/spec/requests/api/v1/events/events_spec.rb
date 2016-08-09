@@ -29,15 +29,17 @@ describe 'POST /v1/events' do
     auth_token = '123abcd456xyz'
     owner = create(:user, auth_token: auth_token)
 
-    post '/v1/events', {
+    post '/v1/events',
+     params: {
       address: '123 Example St.',
       ended_at: date,
       lat: 1.0,
       lon: 1.0,
       name: 'Fun Place!!',
       started_at: date,
-    }.to_json,
-    set_headers(auth_token)
+    },
+    headers: set_headers(auth_token),
+    as: :json
 
     event = Event.last
     expect(response_json).to eq({ 'id' => event.id })
@@ -54,8 +56,9 @@ describe 'POST /v1/events' do
     auth_token = '123abcd456xyz'
 
     post '/v1/events',
-      {}.to_json,
-      set_headers(auth_token)
+      params: {},
+      headers: set_headers(auth_token),
+      as: :json
 
     expect(response_json).to eq({
       'message' => 'Validation Failed',
@@ -75,18 +78,20 @@ describe 'PATCH /v1/events/:id' do
     event = create(:event, name: 'Old name')
     new_name = 'New name'
 
-    patch "/v1/events/#{event.id}", {
-      address: event.address,
-      ended_at: event.ended_at,
-      lat: event.lat,
-      lon: event.lon,
-      name: new_name,
-      started_at: event.started_at,
-      owner: {
-        id: event.owner.id
-      }
-    }.to_json,
-    set_headers(event.owner.auth_token)
+    patch "/v1/events/#{event.id}",
+      params: {
+        address: event.address,
+        ended_at: event.ended_at,
+        lat: event.lat,
+        lon: event.lon,
+        name: new_name,
+        started_at: event.started_at,
+        owner: {
+          id: event.owner.id
+        }
+      },
+      headers: set_headers(event.owner.auth_token),
+      as: :json
 
     event = event.reload
     expect(event.name).to eq new_name
@@ -96,18 +101,20 @@ describe 'PATCH /v1/events/:id' do
   it 'returns an error message when invalid' do
     event = create(:event)
 
-    patch "/v1/events/#{event.id}", {
-      address: event.address,
-      ended_at: event.ended_at,
-      lat: event.lat,
-      lon: event.lon,
-      name: nil,
-      started_at: event.started_at,
-      owner: {
-        id: event.owner.id
-      }
-    }.to_json,
-    set_headers(event.owner.auth_token)
+    patch "/v1/events/#{event.id}",
+      params: {
+        address: event.address,
+        ended_at: event.ended_at,
+        lat: event.lat,
+        lon: event.lon,
+        name: nil,
+        started_at: event.started_at,
+        owner: {
+          id: event.owner.id
+        }
+      },
+      headers: set_headers(event.owner.auth_token),
+      as: :json
 
     event = event.reload
     expect(event.name).to_not be nil
