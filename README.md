@@ -13,10 +13,3 @@ The book is currently available in the following formats:
 
 For the HTML version, clone the repository and look at the HTML so that images
 and other assets are properly loaded.
-
-## Questions?
-
-If you have a customer support question, please email <books@thoughtbot.com>.
-
-If you are a [Upcase](https://upcase.com) subscriber 
-visit <http://forum.thoughtbot.com> for discussion and technical questions.
