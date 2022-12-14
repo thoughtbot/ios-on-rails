@@ -1,20 +1,16 @@
 # Introduction
 
-The iOS portion of this book will cover creating an Xcode project, 
-using CocoaPods, 
-making requests to the API you just created, 
-and displaying the JSON you receive.
+The Mobile part of this book will cover creating a React Native project. It uses
+TypeScript to make requests to the API you built and display the JSON you
+receive.
 
-If you haven't created a project with Xcode before, 
-we have included a few images 
-to assist your understanding of Apple's dev tools. 
-Xcode is an exciting editor that takes a bit of getting used to, 
-so if you would like a primer please visit 
-[Apple's Xcode Overview.](https://developer.apple.com/library/mac/documentation/ToolsLanguages/Conceptual/Xcode_Overview/index.html)
+If you are yet to use [React Native][], we have included a few images to assist
+your understanding of the dev tools. React Native combines the best parts of
+native development with React. It allows us to create native mobile apps for
+Android and iOS using the same codebase.
 
-CocoaPods should feel quite familiar to Ruby developers, 
-since it is written in Ruby 
-and allows you to use iOS libraries similarly to how you use Ruby gems. 
-Like Rails, iOS uses the Model-View-Controller design pattern, 
-with the small caveat that most of your controllers 
-will instead be called ViewControllers.
+[TypeScript][] is a typed programming language that builds on JavaScript. It
+gives you better tooling at any scale.
+
+[react native]: https://reactnative.dev/
+[typescript]: https://www.typescriptlang.org/
