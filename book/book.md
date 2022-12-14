@@ -21,38 +21,38 @@
 
 \part{Building the Humon iOS App}
 
-<<[iOS/introduction.md]
+<<[react_native/introduction.md]
 
-<<[iOS/a_new_xcode_project.md]
+<<[react_native/a_new_xcode_project.md]
 
-<<[iOS/cocoapods.md]
+<<[react_native/cocoapods.md]
 
-<<[iOS/app_skeleton.md]
+<<[react_native/app_skeleton.md]
 
-<<[iOS/map_view_controller.md]
+<<[react_native/map_view_controller.md]
 
-<<[iOS/add_an_event_view_controller.md]
+<<[react_native/add_an_event_view_controller.md]
 
-<<[iOS/api_client.md]
+<<[react_native/api_client.md]
 
-<<[iOS/user_object.md]
+<<[react_native/user_object.md]
 
-<<[iOS/posting_a_user.md]
+<<[react_native/posting_a_user.md]
 
-<<[iOS/making_the_post_user_request.md]
+<<[react_native/making_the_post_user_request.md]
 
-<<[iOS/event_object.md]
+<<[react_native/event_object.md]
 
-<<[iOS/posting_an_event.md]
+<<[react_native/posting_an_event.md]
 
-<<[iOS/making_the_post_event_request.md]
+<<[react_native/making_the_post_event_request.md]
 
-<<[iOS/posting_with_the_event_view_controller.md]
+<<[react_native/posting_with_the_event_view_controller.md]
 
-<<[iOS/getting_an_event.md]
+<<[react_native/getting_an_event.md]
 
-<<[iOS/displaying_events.md]
+<<[react_native/displaying_events.md]
 
-<<[iOS/viewing_with_the_event_view_controller.md]
+<<[react_native/viewing_with_the_event_view_controller.md]
 
-<<[iOS/finishing_touches.md]
+<<[react_native/finishing_touches.md]
