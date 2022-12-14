@@ -23,7 +23,7 @@
 
 <<[react_native/introduction.md]
 
-<<[react_native/a_new_xcode_project.md]
+<<[react_native/a_new_react_native_project.md]
 
 <<[react_native/cocoapods.md]
 
