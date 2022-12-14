@@ -40,7 +40,7 @@ If you have any questions, or just want to get in touch, drop us a line at
 
 \part{Building the Humon iOS App}
 
-<<[iOS/api_client.md]
+<<[react_native/api_client.md]
 
 # Closing
 
